@@ -1,0 +1,36 @@
+@import "index";
+
+.chipStyle{
+  border-radius: 50px;
+  border: 2px solid $ugoro;
+  padding: 5px 10px 5px 10px;
+  background-color: $backGround;
+  font-family: $fontBody;
+  font-size: 13px;
+  font-weight: 500;
+  margin: 2px;
+  transition: 0.2s linear;
+  color: $ugoro;
+}
+
+
+
+.contentDisplay{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  .labelText{
+    margin-right: 5px;
+    cursor: default;
+  }
+
+  .labelIcon{
+    cursor: pointer;
+  }
+
+  .labelIcon:hover {
+    color:$red;
+  }
+}

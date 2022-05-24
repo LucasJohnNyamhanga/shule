@@ -1,0 +1,60 @@
+@import "index";
+ .card{
+    width: 100%;
+    height: 42px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    box-shadow: $boxShadowRealBox;
+    font-family: $fontBody;
+    font-weight: 400;
+    font-size: 18px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 15px;
+    padding-right: 15px;
+
+    .controls{
+        width: 50px;
+        padding-right: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        .icons{
+            cursor: pointer;
+        }
+    }
+
+    .labelText{
+        display: flex;
+        flex-direction: row;
+        width: 50%;
+        justify-content: space-between;
+
+        .labelTextInText{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .published{
+            font-size: small;
+            font-weight: 500;
+            font-family: $fontBody;
+            cursor: pointer;
+
+            .publisedPublised{
+                color:$lightblue;
+            }
+
+            .publisedUnPublised{
+                color: $ugoro;
+            }
+        }
+    }
+  }

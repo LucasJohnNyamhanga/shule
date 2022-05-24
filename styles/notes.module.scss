@@ -1,0 +1,86 @@
+@import "index";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.innerContainer {
+  width: 100%;
+  height: 100%;
+  max-width: 1300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .containerHeader {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    height: 110px;
+    justify-content: center;
+    align-items: center;
+
+    .header {
+      font-family: $fontHeader;
+      font-size: 22px;
+      font-weight: 500;
+    }
+  }
+
+  .containerBody {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: row;
+
+    .leftInnercontainerBody {
+      width: 300px;
+      padding: 0px 15px 5px 0px;
+      font-family: $fontBody;
+      color: $ugoro;
+      font-weight: 500;
+      font-size: large;
+
+      .topicTittle {
+        padding: 10px 5px 5px 10px;
+        font-family: $fontBody;
+        font-style: normal;
+        font-size: medium;
+        border-left: 8px solid $gray;
+        border-right: 2px solid $gray;
+        cursor: pointer;
+        color: $gray;
+        border-bottom: 1px solid $gray;
+        border-top: 1px solid $gray;
+      }
+
+      .topicTittle:hover {
+        border-left: 8px solid $lightkahawa;
+        background-color: $lightkahawa;
+        color: $ugoro;
+      }
+
+      .Active {
+        border-right: 0px solid $lightblue;
+        border-top: 2px solid $lightblue !important;
+        border-bottom: 2px solid $lightblue;
+        border-left: 8px solid $lightblue;
+        font-style: italic;
+        font-weight: 500;
+        color: $lightblue;
+      }
+    }
+
+    .rightInnercontainerBody {
+      width: 100%;
+      padding: 20px;
+      height: 100%;
+    }
+  }
+}

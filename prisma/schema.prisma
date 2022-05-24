@@ -1,0 +1,161 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id            Int             @id @default(autoincrement())
+  firstName     String
+  lastName      String
+  image         String?
+  username      String?
+  password      String?
+  isAdmin       Boolean         @default(false)
+  isSuperUser   Boolean         @default(false)
+  dateJoined    DateTime        @default(now())
+  subject       subject[]
+  form          form[]
+  topic         topic[]
+  note          note[]
+  subjectReview subjectReview[]
+  formReview    formReview[]
+  topicReview   topicReview[]
+  question      question[]
+}
+
+model subject {
+  id                Int     @id @default(autoincrement())
+  subjectName       String
+  subjectDefinition String @db.LongText
+  imageLocation     String?
+  published         Boolean @default(false)
+  forms             form[]
+  topic             topic[]
+  note              note[]
+  usersId           Int     @default(1)
+  users             users   @relation(fields: [usersId], references: [id])
+}
+
+model form {
+  id       Int       @id @default(autoincrement())
+  formName String
+  subjects subject[]
+  topic    topic[]
+  note     note[]
+  usersId  Int       @default(1)
+  users    users     @relation(fields: [usersId], references: [id])
+}
+
+model topic {
+  id              Int     @id @default(autoincrement())
+  topicName       String
+  topicDefinition String?
+  published       Boolean @default(false)
+  subjectId       Int
+  formId          Int
+  subject         subject @relation(fields: [subjectId], references: [id])
+  form            form    @relation(fields: [formId], references: [id])
+  note            note?
+  usersId         Int     @default(1)
+  users           users   @relation(fields: [usersId], references: [id])
+}
+
+model note {
+  id        Int      @id @default(autoincrement())
+  content   String   @db.LongText
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  published Boolean  @default(false)
+  subjectId Int
+  formId    Int
+  usersId   Int      @default(1)
+  topicId   Int      @unique
+  subject   subject  @relation(fields: [subjectId], references: [id])
+  form      form     @relation(fields: [formId], references: [id])
+  topic     topic    @relation(fields: [topicId], references: [id])
+  users     users    @relation(fields: [usersId], references: [id])
+}
+
+
+model subjectReview {
+  id                Int     @id @default(autoincrement())
+  subjectName       String
+  subjectDefinition String @db.LongText
+  imageLocation     String?
+  published         Boolean @default(false)
+  forms             formReview[]
+  topic             topicReview[]
+  review            review[]
+  usersId           Int     @default(1)
+  users             users   @relation(fields: [usersId], references: [id])
+}
+
+model formReview {
+  id       Int             @id @default(autoincrement())
+  formName String
+  subjects subjectReview[]
+  topic    topicReview[]
+  review   review[]
+  usersId  Int             @default(1)
+  users    users           @relation(fields: [usersId], references: [id])
+}
+
+model topicReview {
+  id              Int           @id @default(autoincrement())
+  topicName       String
+  topicDefinition String?
+  published       Boolean       @default(false)
+  subjectId       Int
+  formId          Int
+  subject         subjectReview @relation(fields: [subjectId], references: [id])
+  form            formReview    @relation(fields: [formId], references: [id])
+  usersId         Int           @default(1)
+  users           users         @relation(fields: [usersId], references: [id])
+  review          review[]
+}
+
+model review {
+  id        Int           @id @default(autoincrement())
+  name      String
+  published       Boolean       @default(false)
+  topicId   Int
+  topic     topicReview   @relation(fields: [topicId], references: [id])
+  subjectId Int
+  subject   subjectReview @relation(fields: [subjectId], references: [id])
+  formId    Int
+  form      formReview    @relation(fields: [formId], references: [id])
+  question  question[]
+}
+
+model question {
+  id               Int            @id @default(autoincrement())
+  question         String         @db.LongText
+  published       Boolean       @default(false)
+  answer           answer[]
+  answerDetails String @db.LongText @default("")
+  questionFormatId Int
+  questionFormat   questionFormat @relation(fields: [questionFormatId], references: [id])
+  reviewId         Int
+  review           review         @relation(fields: [reviewId], references: [id])
+  usersId          Int            @default(1)
+  users            users          @relation(fields: [usersId], references: [id])
+}
+
+model questionFormat {
+  id       Int        @id @default(autoincrement())
+  name     String
+  question question[]
+}
+
+model answer {
+  id         Int      @id @default(autoincrement())
+  answer     String   @db.LongText
+  valid Boolean @default(false)
+  questionId Int
+  question   question @relation(fields: [questionId], references: [id])
+}

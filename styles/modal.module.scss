@@ -1,0 +1,151 @@
+@import 'index';
+
+.nav {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.headerContainer {
+	display: flex;
+	flex-direction: column;
+}
+
+.header {
+	font-size: 15px;
+}
+
+.headerBelow {
+	display: flex;
+	flex-direction: column;
+	color: $ugoro;
+	font-size: 12px;
+}
+
+.question {
+	display: flex;
+	flex-direction: column;
+}
+
+.questionQuestion {
+	display: flex;
+	flex-direction: row;
+	width: fit-content;
+	height: 100%;
+	justify-content: center;
+	align-items: center;
+}
+
+.questionNumber {
+	align-self: flex-start;
+	margin-top: 16px;
+	margin-right: 5px;
+}
+
+.answer {
+	display: flex;
+	flex-direction: column;
+	padding: 10px;
+	border: 2px solid $lightkahawa;
+	margin-bottom: 5px;
+	border-radius: 5px;
+	margin-left: 15px;
+	margin-right: 15px;
+	cursor: pointer;
+}
+
+.answer:hover {
+	border: 2px solid $kahawa;
+	box-shadow: $boxShadowAnswers;
+	transition: 150ms;
+}
+
+.progressQuestionStatus {
+	margin-top: 15px;
+	font-weight: 500;
+	margin-bottom: 5px;
+}
+
+.statusQuestion {
+	padding-top: 5px;
+	width: 100%;
+	display: grid;
+	justify-content: center;
+	grid-auto-rows: max-content;
+	grid-gap: 5px;
+	grid-template-columns: repeat(auto-fill, minmax(26px, 26px));
+}
+
+.status {
+	border: 1px solid black;
+	margin-left: 5px;
+	width: 26px;
+	height: 26px;
+	border-radius: 50%;
+	background-color: $answerBackground;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+}
+
+.answersLayout {
+	display: flex;
+	flex-direction: row;
+	border: 2px solid $lightkahawa;
+	margin-bottom: 10px;
+	border-radius: 5px;
+	margin-left: 15px;
+	margin-right: 15px;
+	justify-content: flex-start;
+	align-items: center;
+	cursor: pointer;
+}
+
+.answersLayout:hover {
+	border: 2px solid $kahawa;
+	transition: 150ms;
+	box-shadow: $boxShadowAnswers;
+}
+
+.answersLayout:hover .word {
+	border-left: 2px solid $kahawa;
+	transition: 150ms;
+}
+
+.letter {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	width: fit-content;
+	padding: 8px;
+	font-family: $fontHeader;
+	font-weight: 500;
+	font-size: 16px;
+}
+
+.word {
+	border-left: 2px solid $lightkahawa;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.resultStatus {
+	margin-top: 10px;
+}
+
+.correct {
+	background-color: green;
+	color: #fff;
+}
+
+.wrong {
+	background-color: red;
+	color: #fff;
+}
+
+.modal {
+	transition: 500ms;
+}

@@ -1,0 +1,93 @@
+@import "index";
+.searchContainerMain {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.searchContainer {
+  margin-top: 5px;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 0px solid $ugoro;
+
+  .category {
+    padding-left: 10px;
+    padding-right: 10px;
+    width: fit-content;
+    height: 42px;
+    border: 3px solid $ugoro;
+    border-right: 1px solid $ugoro;
+    border-radius: 5px 0px 0px 5px;
+    font-size: 16px;
+    font-family: $fontHeader;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    font-weight: 500;
+    cursor: default;
+    color: $ugoro;
+    background-color: $white;
+  }
+
+  input {
+    border: 3px solid $ugoro;
+    border-right: 0px solid transparent;
+    border-left: 0px solid transparent;
+    padding-left: 12px;
+    padding-right: 10px;
+    font-size: 18px;
+    width: 100%;
+    height: 42px;
+    outline: none;
+    font-family: $fontBody;
+  }
+
+  .searchButton {
+    display: flex;
+    font-size: 18px;
+    width: 120px;
+    align-items: center;
+    justify-content: center;
+    height: 42px;
+    background-color: $ugoro;
+    color: $lightkahawa;
+    font-family: $fontHeader;
+    border-radius: 0px 5px 5px 0px;
+  }
+
+  .searchButton:hover {
+    cursor: pointer;
+    background-color: $lightkahawa;
+    color: $ugoro;
+  }
+
+  .clearContainer {
+    padding-right: 10px;
+    display: flex;
+    justify-content: center;
+    border: 3px solid $ugoro;
+    border-right: 0px solid transparent;
+    border-left: 0px solid transparent;
+    height: 42px;
+    align-items: center;
+    background-color: $white;
+
+    .clear {
+      font-size: 18px;
+      cursor: pointer;
+      background-color: $white;
+    }
+  }
+}

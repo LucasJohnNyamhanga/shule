@@ -1,0 +1,20 @@
+@import "index";
+
+.chipStyle{
+  border-radius: 50px;
+  border: 2px solid $ugoro;
+  padding: 5px 10px 5px 10px;
+  background-color: $backGround;
+  font-family: $fontBody;
+  font-size: 13px;
+  font-weight: 500;
+  margin: 2px;
+  transition: 0.2s linear;
+  color: $ugoro;
+  cursor: pointer;
+}
+
+.chipStyle:hover {
+  background-color: $ugoro;
+  color: $lightkahawa;
+}
