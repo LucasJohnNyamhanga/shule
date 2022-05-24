@@ -747,7 +747,7 @@ export default function CustomizedDialogs({
 					) : (
 						<div>No question available</div>
 					)}
-					{<div>{score}</div>}
+					{<div>Making new score board</div>}
 				</DialogContent>
 				<DialogActions>
 					<div className={Styles.nav}>
