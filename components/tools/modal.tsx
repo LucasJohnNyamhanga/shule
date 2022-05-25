@@ -152,7 +152,9 @@ export default function CustomizedDialogs({
 }: dataModal) {
 	const [open, setOpen] = useState(false);
 	const [score, setScore] = useState(0);
+	const [attempted, setAttempted] = useState(0);
 	const [previous, setPrevious] = useState(false);
+	const [result, setResults] = useState(false);
 	const [next, setNext] = useState(false);
 	const [questionAvailable, setQuestionAvailable] = useState(false);
 	const [questionList, setQuestionList] = useState<dataQuestion>([]);
@@ -236,6 +238,14 @@ export default function CustomizedDialogs({
 		let { wrongAnswer } = WrongAnswerDetails;
 		wrongAnswer = [];
 		setWrongAnswerDetails({ wrongAnswer });
+		setScore(0);
+		setQuestionAvailable(false);
+		setResults(false);
+
+		let { answerInputs } = defaultAnswer;
+		answerInputs = [];
+		setDefaultAnswer({ answerInputs });
+		setAttempted(0);
 	};
 
 	const retriveData = () => {
@@ -315,7 +325,7 @@ export default function CustomizedDialogs({
 		if (questionType == 'True or False') {
 			answerTag = target.dataset.answer!;
 		}
-
+		setAttempted(attempted + 1);
 		let correct;
 		let correctStatus: boolean;
 		for (let index = 0; index < answers.length; index++) {
@@ -419,6 +429,7 @@ export default function CustomizedDialogs({
 	};
 
 	let handleSimilarity = (validAnswer: string) => {
+		setAttempted(attempted + 1);
 		const html = validAnswer;
 		const text = convert(html, {
 			wordwrap: false,
@@ -467,7 +478,7 @@ export default function CustomizedDialogs({
 
 	let handleSimilarityFillIn = (validAnswer: string) => {
 		let correctStatus: boolean;
-
+		setAttempted(attempted + 1);
 		const html = validAnswer;
 		const text = convert(html, {
 			wordwrap: false,
@@ -512,7 +523,12 @@ export default function CustomizedDialogs({
 	};
 
 	let handleQuizResults = () => {
+		setResults(true);
 		console.log((score / questionList.length) * 100 + '%');
+	};
+
+	let handleExit = () => {
+		handleClose();
 	};
 
 	return (
@@ -542,13 +558,17 @@ export default function CustomizedDialogs({
 							className={
 								Styles.headerBelow
 							}>{`${form} > ${subject} > ${topic}`}</div>
-						<div className={Styles.headerBelow}>{`Question ${index + 1} of ${
-							questionList.length
-						}`}</div>
+						{!result ? (
+							<div className={Styles.headerBelow}>{`Question ${index + 1} of ${
+								questionList.length
+							}`}</div>
+						) : (
+							<div className={Styles.headerBelow}>Result Status</div>
+						)}
 					</div>
 				</BootstrapDialogTitle>
 				<DialogContent dividers>
-					{questionAvailable ? (
+					{questionAvailable && !result && (
 						<div className={Styles.question}>
 							{questionList[index].questionFormat.name == 'True or False' && (
 								<>
@@ -744,15 +764,26 @@ export default function CustomizedDialogs({
 								</>
 							)}
 						</div>
-					) : (
-						<div>No question available</div>
 					)}
-					{<div>Making new score board</div>}
+
+					{!questionAvailable && !result && <div>No question available</div>}
+					{questionAvailable && result && (
+						<>
+							<div className={Styles.result}>
+								Score: {Math.floor((score / questionList.length) * 100)}%{' '}
+							</div>
+							<div className={Styles.scoreStatus}>
+								<div>Correct: {score}</div>
+								<div>Incorrect: {attempted - score}</div>
+								<div>Unattempted: {questionList.length - attempted}</div>
+							</div>
+						</>
+					)}
 				</DialogContent>
 				<DialogActions>
 					<div className={Styles.nav}>
 						<div>
-							{previous && (
+							{!result && previous && (
 								<Button autoFocus onClick={handlePrevious}>
 									Previous
 								</Button>
@@ -760,14 +791,19 @@ export default function CustomizedDialogs({
 						</div>
 
 						<div>
-							{next && (
+							{!result && next && (
 								<Button autoFocus onClick={handleNext}>
 									Next
 								</Button>
 							)}
-							{!next && questionList.length == index + 1 && (
+							{!next && !result && questionList.length == index + 1 && (
 								<Button autoFocus onClick={handleQuizResults}>
 									Results
+								</Button>
+							)}
+							{result && (
+								<Button autoFocus onClick={handleExit}>
+									Exit
 								</Button>
 							)}
 						</div>

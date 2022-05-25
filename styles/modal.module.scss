@@ -149,3 +149,25 @@
 .modal {
 	transition: 500ms;
 }
+
+.result {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 50px;
+	font-family: $fontHeader;
+}
+
+.scoreStatus {
+	display: flex;
+	flex-direction: column;
+	font-family: $fontBody;
+	color: $black;
+	font-size: 15px;
+}
+
+.scoreStatus > div {
+	margin: 1px;
+	font-weight: 400;
+}
