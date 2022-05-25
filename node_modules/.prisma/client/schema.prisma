@@ -26,6 +26,9 @@ model users {
   formReview    formReview[]
   topicReview   topicReview[]
   question      question[]
+  subjectExams subjectExams[]
+  formExams formExams[]
+  exam exam[]
 }
 
 model subject {
@@ -158,4 +161,52 @@ model answer {
   valid Boolean @default(false)
   questionId Int
   question   question @relation(fields: [questionId], references: [id])
+}
+
+//Exams
+
+model subjectExams {
+  id                Int     @id @default(autoincrement())
+  name       String
+  definition String @db.LongText
+  imageLocation     String?
+  published         Boolean @default(false)
+  forms             formExams[]
+  examType examType[]
+  usersId           Int     @default(1)
+  users             users   @relation(fields: [usersId], references: [id])
+}
+
+model formExams {
+  id       Int             @id @default(autoincrement())
+  name String
+  subjects subjectExams[]
+  examType examType[]
+  usersId  Int             @default(1)
+  users    users           @relation(fields: [usersId], references: [id])
+}
+
+model examType {
+  id Int @id @default(autoincrement())
+  name String
+  definition String @db.LongText
+  published         Boolean @default(false)
+  subjectId Int
+  subjectExams subjectExams @relation(fields: [subjectId], references: [id])
+  formExamsId Int
+  formExams formExams @relation(fields: [formExamsId], references: [id])
+  exam exam[]
+}
+
+model exam {
+  id Int @id @default(autoincrement())
+  description String @db.LongText
+  year Int 
+  hasAnswers Boolean @default(false)
+  published         Boolean @default(false)
+  examTypeId Int
+  examType examType @relation(fields: [examTypeId], references: [id])
+  exam String @db.LongText
+  usersId  Int             @default(1)
+  users    users           @relation(fields: [usersId], references: [id])
 }
