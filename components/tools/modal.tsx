@@ -22,6 +22,7 @@ import axios from 'axios';
 import InputTextMui from '../../components/tools/InputTextMui';
 import stringSimilarity from 'string-similarity';
 import { convert } from 'html-to-text';
+import Loader from '../tools/loader';
 
 const Transition = forwardRef(function Transition(
 	props: TransitionProps & {
@@ -151,6 +152,7 @@ export default function CustomizedDialogs({
 	form,
 }: dataModal) {
 	const [open, setOpen] = useState(false);
+	const [loader, setloader] = useState(true);
 	const [score, setScore] = useState(0);
 	const [attempted, setAttempted] = useState(0);
 	const [previous, setPrevious] = useState(false);
@@ -267,6 +269,7 @@ export default function CustomizedDialogs({
 					createMajorListTF(notesFromServer.length);
 					setQuestionList(notesFromServer);
 					setQuestionAvailable(true);
+					setloader(false);
 				} else {
 					setQuestionAvailable(false);
 				}
@@ -552,7 +555,9 @@ export default function CustomizedDialogs({
 							className={
 								Styles.headerBelow
 							}>{`${form} > ${subject} > ${topic}`}</div>
-						{!result ? (
+						{loader ? (
+							<div className={Styles.headerBelow}>Loading questions...</div>
+						) : !result ? (
 							<div className={Styles.headerBelow}>{`Question ${index + 1} of ${
 								questionList.length
 							}`}</div>
@@ -760,7 +765,14 @@ export default function CustomizedDialogs({
 						</div>
 					)}
 
-					{!questionAvailable && !result && <div>No question available</div>}
+					{!loader && !questionAvailable && !result && (
+						<div>No question available</div>
+					)}
+					{loader && (
+						<div className={Styles.loader}>
+							<Loader />
+						</div>
+					)}
 					{questionAvailable && result && (
 						<>
 							<div className={Styles.result}>

@@ -147,7 +147,7 @@
 }
 
 .modal {
-	transition: 500ms;
+	transition: 150ms;
 }
 
 .result {
@@ -165,9 +165,18 @@
 	font-family: $fontBody;
 	color: $black;
 	font-size: 15px;
+	margin-top: 10px;
 }
 
 .scoreStatus > div {
 	margin: 1px;
 	font-weight: 400;
+}
+
+.loader {
+	margin-top: 20px;
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	align-items: center;
 }
