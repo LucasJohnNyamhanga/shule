@@ -241,7 +241,6 @@ export default function CustomizedDialogs({
 		setScore(0);
 		setQuestionAvailable(false);
 		setResults(false);
-
 		let { answerInputs } = defaultAnswer;
 		answerInputs = [];
 		setDefaultAnswer({ answerInputs });
@@ -524,11 +523,6 @@ export default function CustomizedDialogs({
 
 	let handleQuizResults = () => {
 		setResults(true);
-		console.log((score / questionList.length) * 100 + '%');
-	};
-
-	let handleExit = () => {
-		handleClose();
 	};
 
 	return (
@@ -776,6 +770,7 @@ export default function CustomizedDialogs({
 								<div>Correct: {score}</div>
 								<div>Incorrect: {attempted - score}</div>
 								<div>Unattempted: {questionList.length - attempted}</div>
+								<div>Tuzo Point: 5</div>
 							</div>
 						</>
 					)}
@@ -802,7 +797,7 @@ export default function CustomizedDialogs({
 								</Button>
 							)}
 							{result && (
-								<Button autoFocus onClick={handleExit}>
+								<Button autoFocus onClick={handleClose}>
 									Exit
 								</Button>
 							)}
