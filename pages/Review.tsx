@@ -1,10 +1,9 @@
-import type { NextPage } from 'next';
+import type { NextPage, InferGetStaticPropsType } from 'next';
 import Hero from '../components/layout/Hero';
 import { type } from 'os';
 import Study from '../components/layout/Study';
 import { prisma } from '../db/prisma';
 import type { GetStaticProps } from 'next';
-import { InferGetStaticPropsType } from 'next';
 import { NavContext } from '../components/context/StateContext';
 import { useContext, useEffect } from 'react';
 
@@ -60,8 +59,8 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Review: NextPage = ({
-	subjects,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	subjects,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -81,7 +80,7 @@ const Review: NextPage = ({
 				buttonText={'Register Now.'}
 				linker={`/`}
 			/>
-			<Study subjects={subjects} focus={'Review'} />
+			<Study subjects={subjects} focus={`Let's Review`} />
 		</>
 	);
 };
