@@ -115,6 +115,10 @@ const Index = () => {
 	const subjectReview = useRef<HTMLDivElement>(null!);
 	const topicReview = useRef<HTMLDivElement>(null!);
 	const formReview = useRef<HTMLDivElement>(null!);
+	const subjectExam = useRef<HTMLDivElement>(null!);
+	const formExam = useRef<HTMLDivElement>(null!);
+	const examType = useRef<HTMLDivElement>(null!);
+	const exam = useRef<HTMLDivElement>(null!);
 	// const user = useRef<HTMLDivElement>(null!);
 
 	let handleNav = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -1030,20 +1034,20 @@ const Index = () => {
 									<div className={Styles.text}>Subjects</div>
 								</div>
 								<div
-									ref={topic}
-									id='Topics'
-									onClick={(e) => handleNav(e)}
-									className={Styles.topicTittle}>
-									<NotesIcon />
-									<div className={Styles.text}>Topics</div>
-								</div>
-								<div
 									ref={form}
 									id='Forms'
 									onClick={(e) => handleNav(e)}
 									className={Styles.topicTittle}>
 									<SchoolIcon />
 									<div className={Styles.text}>Forms</div>
+								</div>
+								<div
+									ref={topic}
+									id='Topics'
+									onClick={(e) => handleNav(e)}
+									className={Styles.topicTittle}>
+									<NotesIcon />
+									<div className={Styles.text}>Topics</div>
 								</div>
 								<div
 									ref={notes}
@@ -1067,20 +1071,20 @@ const Index = () => {
 									<div className={Styles.text}>Subjects</div>
 								</div>
 								<div
-									ref={topicReview}
-									id='TopicsReview'
-									onClick={(e) => handleNav(e)}
-									className={Styles.topicTittle}>
-									<NotesIcon />
-									<div className={Styles.text}>Topics</div>
-								</div>
-								<div
 									ref={formReview}
 									id='FormsReview'
 									onClick={(e) => handleNav(e)}
 									className={Styles.topicTittle}>
 									<SchoolIcon />
 									<div className={Styles.text}>Forms</div>
+								</div>
+								<div
+									ref={topicReview}
+									id='TopicsReview'
+									onClick={(e) => handleNav(e)}
+									className={Styles.topicTittle}>
+									<NotesIcon />
+									<div className={Styles.text}>Topics</div>
 								</div>
 								<div
 									ref={review}
@@ -1101,6 +1105,43 @@ const Index = () => {
 							</div>
 							<div>
 								<div className={Styles.TopicHeaderNotes}>Exams</div>
+							</div>
+							<div className={Styles.containerBody}>
+								<div
+									ref={subjectExam}
+									id='SubjectsExam'
+									onClick={(e) => handleNav(e)}
+									className={Styles.topicTittle}>
+									<Books />
+									<div className={Styles.text}>Subjects</div>
+								</div>
+								<div
+									ref={formExam}
+									id='FormsExam'
+									onClick={(e) => handleNav(e)}
+									className={Styles.topicTittle}>
+									<SchoolIcon />
+									<div className={Styles.text}>Forms</div>
+								</div>
+								<div
+									ref={examType}
+									id='ExamType'
+									onClick={(e) => handleNav(e)}
+									className={Styles.topicTittle}>
+									<NotesIcon />
+									<div className={Styles.text}>Exam Types</div>
+								</div>
+								<div
+									ref={exam}
+									id='Exam'
+									onClick={(e) => handleNav(e)}
+									className={Styles.topicTittle}>
+									<SummarizeIcon />
+									<div className={Styles.text}>Exams</div>
+								</div>
+							</div>
+							<div>
+								<div className={Styles.TopicHeaderNotes}>References</div>
 							</div>
 						</div>
 					</div>
