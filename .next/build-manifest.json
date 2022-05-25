@@ -15,16 +15,6 @@
     "static/development/_middlewareManifest.js"
   ],
   "pages": {
-    "/Review": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/Review.js"
-    ],
-    "/Review/Physics/FormOne": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/Review/Physics/FormOne.js"
-    ],
     "/_app": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
