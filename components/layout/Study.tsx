@@ -14,9 +14,10 @@ type dataType = {
 		}[];
 	}[];
 	focus: string;
+	link: string;
 };
 
-const Study = ({ subjects, focus }: dataType) => {
+const Study = ({ subjects, focus, link }: dataType) => {
 	// console.log(subjects);
 
 	return (
@@ -31,7 +32,7 @@ const Study = ({ subjects, focus }: dataType) => {
 							image={subject.imageLocation}
 							imageDescription={'Shule'}
 							forms={subject.forms}
-							link={`/${focus}/${subject.subjectName}`}
+							link={`/${link}/${subject.subjectName}`}
 						/>
 					))}
 				</div>

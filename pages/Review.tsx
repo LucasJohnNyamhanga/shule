@@ -59,8 +59,8 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Review: NextPage = ({
-    	subjects,
-    }: InferGetStaticPropsType<typeof getStaticProps>) => {
+	subjects,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -80,7 +80,7 @@ const Review: NextPage = ({
 				buttonText={'Register Now.'}
 				linker={`/`}
 			/>
-			<Study subjects={subjects} focus={`Let's Review`} />
+			<Study subjects={subjects} focus={`Let's Review`} link={'Review'} />
 		</>
 	);
 };

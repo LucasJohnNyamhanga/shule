@@ -18,7 +18,7 @@ type userData = {
 }[];
 
 export const getStaticProps: GetStaticProps = async () => {
-	const subjectsFromServer: userData = await prisma.subject.findMany({
+	const subjectsFromServer = await prisma.subjectExams.findMany({
 		where: {
 			published: true,
 		},
@@ -61,8 +61,8 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Exams: NextPage = ({
-    	subjects,
-    }: InferGetStaticPropsType<typeof getStaticProps>) => {
+	subjects,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -82,7 +82,7 @@ const Exams: NextPage = ({
 				buttonText={'Register Now.'}
 				linker={`/`}
 			/>
-			<Study subjects={subjects} focus={`Let's Examinate`} />
+			<Study subjects={subjects} link={`Exams`} focus={`Let's Examinate`} />
 		</>
 	);
 };

@@ -80,7 +80,7 @@ const Home: NextPage = ({
 				buttonText={'Register Now.'}
 				linker={`/`}
 			/>
-			<Study subjects={subjects} focus={`Let's study Notes`} />
+			<Study subjects={subjects} focus={`Let's study Notes`} link={'Notes'} />
 		</>
 	);
 };

@@ -167,8 +167,8 @@ model answer {
 
 model subjectExams {
   id                Int     @id @default(autoincrement())
-  name       String
-  definition String @db.LongText
+  subjectName       String
+  subjectDefinition String @db.LongText
   imageLocation     String?
   published         Boolean @default(false)
   forms             formExams[]
@@ -179,7 +179,7 @@ model subjectExams {
 
 model formExams {
   id       Int             @id @default(autoincrement())
-  name String
+  formName String
   subjects subjectExams[]
   examType examType[]
   usersId  Int             @default(1)

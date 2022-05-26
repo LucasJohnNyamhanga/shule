@@ -37,6 +37,8 @@ const Index = () => {
 	const [subjectsReview, setSubjectsReview] = useState([]);
 	const [forms, setForms] = useState([]);
 	const [formsReview, setFormsReview] = useState([]);
+	const [formsExam, setFormsExam] = useState([]);
+	const [subjectExamList, setSubjectsExam] = useState([]);
 	const [topics, setTopics] = useState([]);
 	const [topicsReview, setTopicsReview] = useState([]);
 	const [notesData, setNotesData] = useState([]);
@@ -58,6 +60,9 @@ const Index = () => {
 	const [selectOptionForms, setSelectOptionForms] = useState<dataTypeSelect>(
 		[]
 	);
+	const [selectOptionExam, setSelectOptionExam] = useState<dataTypeSelect>([]);
+	const [selectOptionFormsExam, setSelectOptionFormsExam] =
+		useState<dataTypeSelect>([]);
 	const [selectOptionReview, setSelectOptionReview] = useState<dataTypeSelect>(
 		[]
 	);
@@ -168,9 +173,11 @@ const Index = () => {
 				break;
 			case 'SubjectsExam':
 				subjectExam.current.classList.add(Styles.Active);
+				retriaveSubjectsExam();
 				break;
 			case 'FormsExam':
 				formExam.current.classList.add(Styles.Active);
+				retriaveSubjectsExam();
 				break;
 			case 'ExamType':
 				examType.current.classList.add(Styles.Active);
@@ -249,6 +256,68 @@ const Index = () => {
 				}
 
 				setSelectOptionForms(data);
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+			})
+			.then(function () {
+				// always executed
+			});
+	};
+
+	const retriaveSubjectsExam = async () => {
+		axios
+			.get('http://localhost:3000/api/subjectsExam')
+			.then(function (response) {
+				const subjectsFromServer = JSON.parse(JSON.stringify(response.data));
+				// handle success
+				console.log(subjectsFromServer);
+				setSubjectsExam(subjectsFromServer);
+				let data = [];
+				let template: templateType = {
+					value: '',
+					label: '',
+				};
+				for (const selectSubject of subjectsFromServer) {
+					template = {
+						value: selectSubject.id,
+						label: selectSubject.subjectName,
+					};
+					data.push(template);
+				}
+
+				setSelectOptionExam(data);
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+			})
+			.then(function () {
+				// always executed
+			});
+
+		axios
+			.get('http://localhost:3000/api/formsExam')
+			.then(function (response) {
+				const FormsFromServer = JSON.parse(JSON.stringify(response.data));
+				// handle success
+				console.log(FormsFromServer);
+				setFormsExam(FormsFromServer);
+				let data = [];
+				let template: templateType = {
+					value: '',
+					label: '',
+				};
+				for (const form of FormsFromServer) {
+					template = {
+						value: form.id,
+						label: form.formName,
+					};
+					data.push(template);
+				}
+
+				setSelectOptionFormsExam(data);
 			})
 			.catch(function (error) {
 				// handle error
@@ -348,6 +417,27 @@ const Index = () => {
 			})
 			.then(function (response) {
 				retriaveSubjectsReview();
+				let jibu: string = response.data.message;
+				notifySuccess(jibu);
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+				notifyError('Error has occured, try later.');
+			})
+			.then(function () {
+				// always executed
+			});
+	};
+
+	let handleUpdateSubjectExam = (published: boolean, id: number) => {
+		axios
+			.post('http://localhost:3000/api/updateDraftOrPublishedExam', {
+				id,
+				published: !published,
+			})
+			.then(function (response) {
+				retriaveSubjectsExam();
 				let jibu: string = response.data.message;
 				notifySuccess(jibu);
 			})
@@ -1631,8 +1721,31 @@ const Index = () => {
 							<div className={Styles.subject}>
 								<div className={Styles.subjectHeader}>
 									<div className={Styles.subjectHeaderText}>
-										Welcome to the SubjectExam Dashboard
+										Subjects In Exam Management
 									</div>
+									<Link passHref href='/Admin/Exam/Create/Subject'>
+										<div className={Styles.subjectHeaderButton}>
+											Create Subject in Exam
+										</div>
+									</Link>
+								</div>
+								<div className={Styles.subjectBody}>
+									{subjectExamList.map(
+										(subject: {
+											subjectName: string;
+											id: number;
+											published: boolean;
+										}) => (
+											<CardBox
+												handleUpdate={handleUpdateSubjectExam}
+												link={'/Admin/Exam/Edit/Subject/' + subject.id}
+												label={subject.subjectName}
+												published={subject.published}
+												id={subject.id}
+												key={subject.id}
+											/>
+										)
+									)}
 								</div>
 							</div>
 						</div>
@@ -1643,8 +1756,25 @@ const Index = () => {
 							<div className={Styles.subject}>
 								<div className={Styles.subjectHeader}>
 									<div className={Styles.subjectHeaderText}>
-										Welcome to the FormExam Dashboard
+										Forms In Exam Management
 									</div>
+									<Link passHref href='/Admin/Exam/Create/Form'>
+										<div className={Styles.subjectHeaderButton}>
+											Create Form in Exam
+										</div>
+									</Link>
+								</div>
+								<div className={Styles.subjectBody}>
+									{formsExam.map((form: { id: number; formName: string }) => (
+										<CardBox
+											handleUpdate={handleUpdateSubjectExam}
+											link={'/Admin/Exam/Edit/Form/' + form.id}
+											label={form.formName}
+											id={form.id}
+											key={form.id}
+											published={''}
+										/>
+									))}
 								</div>
 							</div>
 						</div>
