@@ -166,7 +166,18 @@ const Index = () => {
 				formReview.current.classList.add(Styles.Active);
 				retriaveSubjectsReview();
 				break;
-
+			case 'SubjectsExam':
+				subjectExam.current.classList.add(Styles.Active);
+				break;
+			case 'FormsExam':
+				formExam.current.classList.add(Styles.Active);
+				break;
+			case 'ExamType':
+				examType.current.classList.add(Styles.Active);
+				break;
+			case 'Exam':
+				exam.current.classList.add(Styles.Active);
+				break;
 			default:
 				break;
 		}
@@ -182,6 +193,10 @@ const Index = () => {
 		subjectReview.current.classList.remove(Styles.Active);
 		topicReview.current.classList.remove(Styles.Active);
 		formReview.current.classList.remove(Styles.Active);
+		subjectExam.current.classList.remove(Styles.Active);
+		formExam.current.classList.remove(Styles.Active);
+		examType.current.classList.remove(Styles.Active);
+		exam.current.classList.remove(Styles.Active);
 	};
 
 	const retriaveSubjectsReview = async () => {
@@ -1610,6 +1625,55 @@ const Index = () => {
 						</div>
 					)}
 					{/* //! END OF QUESTIONS DISPLAY ONLY */}
+					{/* //!start of SUBJECT EXAM desplay */}
+					{navValue == 'SubjectsExam' && (
+						<div className={Styles.rightInnercontainerBody}>
+							<div className={Styles.subject}>
+								<div className={Styles.subjectHeader}>
+									<div className={Styles.subjectHeaderText}>
+										Welcome to the SubjectExam Dashboard
+									</div>
+								</div>
+							</div>
+						</div>
+					)}
+					{/* //! END OF SUBJECT EXAM DISPLAY ONLY */}
+					{navValue == 'FormsExam' && (
+						<div className={Styles.rightInnercontainerBody}>
+							<div className={Styles.subject}>
+								<div className={Styles.subjectHeader}>
+									<div className={Styles.subjectHeaderText}>
+										Welcome to the FormExam Dashboard
+									</div>
+								</div>
+							</div>
+						</div>
+					)}
+					{/* //! END OF FORM EXAM DISPLAY ONLY */}
+					{navValue == 'ExamType' && (
+						<div className={Styles.rightInnercontainerBody}>
+							<div className={Styles.subject}>
+								<div className={Styles.subjectHeader}>
+									<div className={Styles.subjectHeaderText}>
+										Welcome to the ExamType Dashboard
+									</div>
+								</div>
+							</div>
+						</div>
+					)}
+					{/* //! END OF EXAM TYPE  DISPLAY ONLY */}
+					{navValue == 'Exam' && (
+						<div className={Styles.rightInnercontainerBody}>
+							<div className={Styles.subject}>
+								<div className={Styles.subjectHeader}>
+									<div className={Styles.subjectHeaderText}>
+										Welcome to the Exam Dashboard
+									</div>
+								</div>
+							</div>
+						</div>
+					)}
+					{/* //! END OF EXAM DISPLAY ONLY */}
 				</div>
 			</div>
 		</div>
