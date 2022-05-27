@@ -29,7 +29,7 @@ type dataTypeSelect = {
 	label: string;
 }[];
 
-const Index = () => {
+const Index = ({}) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	const [navValue, setNavValue] = useState('');
@@ -41,6 +41,7 @@ const Index = () => {
 	const [subjectExamList, setSubjectsExam] = useState([]);
 	const [topics, setTopics] = useState([]);
 	const [topicsReview, setTopicsReview] = useState([]);
+	const [examTypeList, setExamTypeList] = useState([]);
 	const [notesData, setNotesData] = useState([]);
 	const [reviewData, setReviewData] = useState([]);
 	const [questionData, setQuestionData] = useState([]);
@@ -50,6 +51,7 @@ const Index = () => {
 	);
 	const [activateTopics, setActivateTopics] = useState(false);
 	const [activateTopicsREview, setActivateTopicsReview] = useState(false);
+	const [activateExamType, setActivateExamType] = useState(false);
 	const [activateNotesDisplay, setActivateNotesDisplay] = useState(false);
 	const [activateQuestionsDisplay, setActivateQuestionsDisplay] =
 		useState(false);
@@ -84,6 +86,11 @@ const Index = () => {
 	});
 
 	const [topicDetailsReview, setTopicDetailsReview] = useState({
+		formId: '',
+		subjectId: '',
+	});
+
+	const [topicDetailsExam, setTopicDetailsExam] = useState({
 		formId: '',
 		subjectId: '',
 	});
@@ -181,6 +188,7 @@ const Index = () => {
 				break;
 			case 'ExamType':
 				examType.current.classList.add(Styles.Active);
+				retriaveSubjectsExam();
 				break;
 			case 'Exam':
 				exam.current.classList.add(Styles.Active);
@@ -188,6 +196,7 @@ const Index = () => {
 			default:
 				break;
 		}
+		smoothScroll();
 	};
 
 	let removeActive = () => {
@@ -302,7 +311,6 @@ const Index = () => {
 			.then(function (response) {
 				const FormsFromServer = JSON.parse(JSON.stringify(response.data));
 				// handle success
-				console.log(FormsFromServer);
 				setFormsExam(FormsFromServer);
 				let data = [];
 				let template: templateType = {
@@ -482,6 +490,27 @@ const Index = () => {
 				let jibu: string = response.data.message;
 				notifySuccess(jibu);
 				retriaveTopicsDataReview();
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+				notifyError('Error has occured, try later.');
+			})
+			.then(function () {
+				// always executed
+			});
+	};
+
+	let handleUpdateExamType = (published: boolean, id: number) => {
+		axios
+			.post('http://localhost:3000/api/updateDraftOrPublishedExamType', {
+				id,
+				published: !published,
+			})
+			.then(function (response) {
+				let jibu: string = response.data.message;
+				notifySuccess(jibu);
+				retriaveTopicsDataExam();
 			})
 			.catch(function (error) {
 				// handle error
@@ -683,6 +712,17 @@ const Index = () => {
 		setActivateTopicsReview(false);
 	};
 
+	//*exam
+	let handleSelectedTopicSubjectExam = (value: string) => {
+		setTopicDetailsExam({ ...topicDetailsExam, subjectId: value });
+		setActivateExamType(false);
+	};
+
+	let handleSelectedTopicFormExam = (value: string) => {
+		setTopicDetailsExam({ ...topicDetailsExam, formId: value });
+		setActivateExamType(false);
+	};
+
 	//* notes
 
 	let handleSelectedNotesSubject = (value: string) => {
@@ -788,6 +828,38 @@ const Index = () => {
 						console.log(topicsFromServer);
 					} else {
 						setActivateTopics(false);
+						notifyError('Ooops, No topics available yet.');
+					}
+				})
+				.catch(function (error) {
+					// handle error
+					console.log(error);
+					notifyError('Something went wrong.');
+				})
+				.then(function () {
+					// always executed
+				});
+		} else {
+			notifyError('All fields should be filled.');
+		}
+	};
+
+	let retriaveTopicsDataExam = () => {
+		if (topicDetailsExam.formId != '' && topicDetailsExam.subjectId != '') {
+			axios({
+				method: 'post',
+				url: 'http://localhost:3000/api/examType',
+				data: topicDetailsExam,
+			})
+				.then(function (response) {
+					const topicsFromServer = JSON.parse(JSON.stringify(response.data));
+					// handle success
+					if (topicsFromServer.length != 0) {
+						setExamTypeList(topicsFromServer);
+						setActivateExamType(true);
+						console.log(topicsFromServer);
+					} else {
+						setActivateExamType(false);
 						notifyError('Ooops, No topics available yet.');
 					}
 				})
@@ -1105,6 +1177,13 @@ const Index = () => {
 			.then(function () {
 				// always executed
 			});
+	};
+
+	let smoothScroll = () => {
+		scroll({
+			top: 0,
+			behavior: 'smooth',
+		});
 	};
 
 	useEffect(() => {
@@ -1785,8 +1864,53 @@ const Index = () => {
 							<div className={Styles.subject}>
 								<div className={Styles.subjectHeader}>
 									<div className={Styles.subjectHeaderText}>
-										Welcome to the ExamType Dashboard
+										Exam Types In Exam Management
 									</div>
+									<Link passHref href='/Admin/Exam/Create/ExamType'>
+										<div className={Styles.subjectHeaderButton}>
+											Create Exam Type
+										</div>
+									</Link>
+								</div>
+								<div className={Styles.selectDivTopic}>
+									<SelectMiu
+										displayLabel='Select Subject'
+										show={true}
+										forms={selectOptionExam}
+										handlechange={handleSelectedTopicSubjectExam}
+										value={topicDetailsExam.subjectId}
+									/>
+									<SelectMiu
+										displayLabel='Select Form'
+										show={true}
+										forms={selectOptionFormsExam}
+										handlechange={handleSelectedTopicFormExam}
+										value={topicDetailsExam.formId}
+									/>
+								</div>
+								<div
+									onClick={retriaveTopicsDataExam}
+									className={Styles.subjectHeaderButton}>
+									Retrieve Exam Type
+								</div>
+								<div className={Styles.subjectBody}>
+									{activateExamType &&
+										examTypeList.map(
+											(examType: {
+												name: string;
+												id: number;
+												published: boolean;
+											}) => (
+												<CardBox
+													handleUpdate={handleUpdateExamType}
+													link={'/Admin/Exam/Edit/examType/' + examType.id}
+													label={examType.name}
+													published={examType.published}
+													id={examType.id}
+													key={examType.id}
+												/>
+											)
+										)}
 								</div>
 							</div>
 						</div>
@@ -1797,8 +1921,56 @@ const Index = () => {
 							<div className={Styles.subject}>
 								<div className={Styles.subjectHeader}>
 									<div className={Styles.subjectHeaderText}>
-										Welcome to the Exam Dashboard
+										Exam Management
 									</div>
+									<Link passHref href='/Admin/Exam/Create/Exam'>
+										<div className={Styles.subjectHeaderButton}>
+											Create Exam
+										</div>
+									</Link>
+								</div>
+								<div className={Styles.selectDivTopic}>
+									<SelectMiu
+										displayLabel='Select Subject'
+										show={true}
+										forms={selectOption}
+										handlechange={handleSelectedNotesSubject}
+										value={notesDetails.subjectId}
+									/>
+									<SelectMiu
+										displayLabel='Select Form'
+										show={true}
+										forms={selectOptionForms}
+										handlechange={handleSelectedNotesForm}
+										value={notesDetails.formId}
+									/>
+									{activateNotes && (
+										<SelectMiu
+											displayLabel='Select Topic'
+											show={true}
+											forms={topicsNotes}
+											handlechange={handleSelectedNotes}
+											value={notesDetails.topicId}
+										/>
+									)}
+								</div>
+								<div
+									onClick={retriaveNotesDataNow}
+									className={Styles.subjectHeaderButton}>
+									Retrieve Exams
+								</div>
+								<div className={Styles.subjectBody}>
+									{activateNotesDisplay &&
+										notesData.map((note: notesData) => (
+											<CardBox
+												handleUpdate={handleUpdateNotes}
+												link={`/Admin/Notes/Edit/Note/${note.id}`}
+												label={note.topic.topicName}
+												published={''}
+												id={note.id}
+												key={note.id}
+											/>
+										))}
 								</div>
 							</div>
 						</div>

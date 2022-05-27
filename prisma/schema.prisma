@@ -193,8 +193,8 @@ model examType {
   published         Boolean @default(false)
   subjectId Int
   subjectExams subjectExams @relation(fields: [subjectId], references: [id])
-  formExamsId Int
-  formExams formExams @relation(fields: [formExamsId], references: [id])
+  formId Int
+  formExams formExams @relation(fields: [formId], references: [id])
   exam exam[]
 }
 
