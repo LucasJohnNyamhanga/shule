@@ -12,7 +12,8 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	const { examTypeId, exam, description, year } = req.body;
+	const { examTypeId, exam, description, year, hasAnswers } = req.body;
+	let hasAnswer = hasAnswers == 'true' ? true : false;
 	let typeId = parseInt(examTypeId);
 	let yearDone = parseInt(year);
 	try {
@@ -22,6 +23,7 @@ export default async function handler(
 				description,
 				exam,
 				year: yearDone,
+				hasAnswers: hasAnswer,
 			},
 		});
 		res.status(200).json({

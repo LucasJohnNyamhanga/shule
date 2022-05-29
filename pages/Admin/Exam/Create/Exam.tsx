@@ -67,10 +67,10 @@ type formData = {
 }[];
 
 const Notes = ({
-	forms,
-	subjects,
-	examType,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	forms,
+    	subjects,
+    	examType,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -93,6 +93,7 @@ const Notes = ({
 		exam: '',
 		description: '',
 		year: '',
+		hasAnswers: '',
 	});
 
 	const notify = (message: string) => toast(message);
@@ -222,6 +223,7 @@ const Notes = ({
 						exam: '',
 						description: '',
 						year: '',
+						hasAnswers: '',
 					});
 					setExamDetails({
 						formId: '',
@@ -261,6 +263,21 @@ const Notes = ({
 		setExamSelectValue({ ...examSelectValue, [name]: value });
 	};
 
+	const [trueAndFalse, setTrueAndFalse] = useState([
+		{
+			label: 'True',
+			value: 'true',
+		},
+		{
+			label: 'False',
+			value: 'false',
+		},
+	]);
+
+	let handleAnswerValid = (value: string) => {
+		setExamSelectValue({ ...examSelectValue, hasAnswers: value });
+	};
+
 	return (
 		<div className={Styles.container}>
 			<Toaster position='bottom-left' />
@@ -278,6 +295,13 @@ const Notes = ({
 							content={examSelectValue.description}
 							name='description'
 							handleChange={handleTextInput}
+						/>
+						<SelectMiu
+							displayLabel='Exam has Answers'
+							show={true}
+							forms={trueAndFalse}
+							handlechange={handleAnswerValid}
+							value={examSelectValue.hasAnswers}
 						/>
 						<CkEditor
 							content={handleContent}

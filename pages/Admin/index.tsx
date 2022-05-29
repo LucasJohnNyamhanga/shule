@@ -8,7 +8,7 @@ import Books from '@mui/icons-material/ImportContacts';
 import SchoolIcon from '@mui/icons-material/School';
 import { type } from 'os';
 import axios from 'axios';
-import { question, review, topic } from '@prisma/client';
+import { exam, question, review, topic } from '@prisma/client';
 import Link from 'next/link';
 import CardBox from '../../components/tools/cardBoxStyle';
 import toast, { Toaster } from 'react-hot-toast';
@@ -42,20 +42,25 @@ const Index = ({}) => {
 	const [topics, setTopics] = useState([]);
 	const [topicsReview, setTopicsReview] = useState([]);
 	const [examTypeList, setExamTypeList] = useState([]);
+	const [examList, setExamList] = useState([]);
 	const [notesData, setNotesData] = useState([]);
+	const [examData, setExamData] = useState([]);
 	const [reviewData, setReviewData] = useState([]);
 	const [questionData, setQuestionData] = useState([]);
 	const [topicsNotes, setTopicsNotes] = useState<dataTypeSelect>([]);
 	const [topicsNotesReview, setTopicsNotesReview] = useState<dataTypeSelect>(
 		[]
 	);
+	const [examListSelect, SetexamListSelect] = useState<dataTypeSelect>([]);
 	const [activateTopics, setActivateTopics] = useState(false);
 	const [activateTopicsREview, setActivateTopicsReview] = useState(false);
 	const [activateExamType, setActivateExamType] = useState(false);
 	const [activateNotesDisplay, setActivateNotesDisplay] = useState(false);
+	const [activateExamDisplay, setActivateExamDisplay] = useState(false);
 	const [activateQuestionsDisplay, setActivateQuestionsDisplay] =
 		useState(false);
 	const [activateNotes, setActivateNotes] = useState(false);
+	const [activateExam, setActivateExam] = useState(false);
 	const [activateNotesReview, setActivateNotesReview] = useState(false);
 	const [changerNotes, setChangerNotes] = useState(0);
 	const [selectOption, setSelectOption] = useState<dataTypeSelect>([]);
@@ -105,6 +110,12 @@ const Index = ({}) => {
 		formId: '',
 		subjectId: '',
 		topicId: '',
+	});
+
+	const [DetailsExam, setDetailsExam] = useState({
+		formId: '',
+		subjectId: '',
+		examTypeId: '',
 	});
 
 	const [detailsQuestions, setDetailsQuestions] = useState({
@@ -192,6 +203,7 @@ const Index = ({}) => {
 				break;
 			case 'Exam':
 				exam.current.classList.add(Styles.Active);
+				retriaveSubjectsExam();
 				break;
 			default:
 				break;
@@ -281,7 +293,6 @@ const Index = ({}) => {
 			.then(function (response) {
 				const subjectsFromServer = JSON.parse(JSON.stringify(response.data));
 				// handle success
-				console.log(subjectsFromServer);
 				setSubjectsExam(subjectsFromServer);
 				let data = [];
 				let template: templateType = {
@@ -417,6 +428,27 @@ const Index = ({}) => {
 			});
 	};
 
+	let handleUpdatePublishExam = (published: boolean, id: number) => {
+		axios
+			.post('http://localhost:3000/api/updateDraftOrPublishedExamination', {
+				id,
+				published: !published,
+			})
+			.then(function (response) {
+				let jibu: string = response.data.message;
+				notifySuccess(jibu);
+				retriaveExamDataNow();
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+				notifyError('Error has occured, try later.');
+			})
+			.then(function () {
+				// always executed
+			});
+	};
+
 	let handleUpdateSubjectReview = (published: boolean, id: number) => {
 		axios
 			.post('http://localhost:3000/api/updateDraftOrPublishedsubjectReview', {
@@ -510,7 +542,7 @@ const Index = ({}) => {
 			.then(function (response) {
 				let jibu: string = response.data.message;
 				notifySuccess(jibu);
-				retriaveTopicsDataExam();
+				retriaveTopicsDataExamType();
 			})
 			.catch(function (error) {
 				// handle error
@@ -712,7 +744,7 @@ const Index = ({}) => {
 		setActivateTopicsReview(false);
 	};
 
-	//*exam
+	//*examType
 	let handleSelectedTopicSubjectExam = (value: string) => {
 		setTopicDetailsExam({ ...topicDetailsExam, subjectId: value });
 		setActivateExamType(false);
@@ -737,6 +769,22 @@ const Index = ({}) => {
 
 	let handleSelectedNotes = (value: string) => {
 		setNotesDetails({ ...notesDetails, topicId: value });
+	};
+
+	//* exam
+
+	let handleSelectedExamSubject = (value: string) => {
+		setDetailsExam({ ...DetailsExam, subjectId: value });
+		setChangerNotes(changerNotes + 1);
+	};
+
+	let handleSelectedExamForm = (value: string) => {
+		setDetailsExam({ ...DetailsExam, formId: value });
+		setChangerNotes(changerNotes + 1);
+	};
+
+	let handleSelectedExam = (value: string) => {
+		setDetailsExam({ ...DetailsExam, examTypeId: value });
 	};
 
 	//* review
@@ -844,7 +892,7 @@ const Index = ({}) => {
 		}
 	};
 
-	let retriaveTopicsDataExam = () => {
+	let retriaveTopicsDataExamType = () => {
 		if (topicDetailsExam.formId != '' && topicDetailsExam.subjectId != '') {
 			axios({
 				method: 'post',
@@ -855,11 +903,11 @@ const Index = ({}) => {
 					const topicsFromServer = JSON.parse(JSON.stringify(response.data));
 					// handle success
 					if (topicsFromServer.length != 0) {
-						setExamTypeList(topicsFromServer);
-						setActivateExamType(true);
+						setExamList(topicsFromServer);
+						setActivateExam(true);
 						console.log(topicsFromServer);
 					} else {
-						setActivateExamType(false);
+						setActivateExam(false);
 						notifyError('Ooops, No topics available yet.');
 					}
 				})
@@ -902,6 +950,49 @@ const Index = ({}) => {
 						}
 						setTopicsNotes(data);
 						setActivateNotes(true);
+					} else {
+						notifyError(`Ooops, No topics available for selection.`);
+					}
+				})
+				.catch(function (error) {
+					// handle error
+					console.log(error);
+					notifyError('Something went wrong.');
+				})
+				.then(function () {
+					// always executed
+				});
+		}
+	};
+
+	let retriaveDataForExam = () => {
+		if (DetailsExam.formId != '' && DetailsExam.subjectId != '') {
+			setActivateExam(false);
+			setActivateExamDisplay(false);
+			axios({
+				method: 'post',
+				url: 'http://localhost:3000/api/examType',
+				data: DetailsExam,
+			})
+				.then(function (response) {
+					const topicsFromServer = JSON.parse(JSON.stringify(response.data));
+					// handle success
+					if (topicsFromServer.length != 0) {
+						let data = [];
+						let template: templateType = {
+							value: '',
+							label: '',
+						};
+						for (const examType of topicsFromServer) {
+							template = {
+								value: examType.id,
+								label: examType.name,
+							};
+							data.push(template);
+						}
+						SetexamListSelect(data);
+						console.log(examListSelect);
+						setActivateExam(true);
 					} else {
 						notifyError(`Ooops, No topics available for selection.`);
 					}
@@ -1078,6 +1169,41 @@ const Index = ({}) => {
 		}
 	};
 
+	let retriaveExamDataNow = () => {
+		if (
+			DetailsExam.formId != '' &&
+			DetailsExam.subjectId != '' &&
+			DetailsExam.examTypeId != ''
+		) {
+			axios({
+				method: 'post',
+				url: 'http://localhost:3000/api/exam',
+				data: DetailsExam,
+			})
+				.then(function (response) {
+					const notesFromServer = JSON.parse(JSON.stringify(response.data));
+					// handle success
+					if (notesFromServer.length != 0) {
+						setExamData(notesFromServer);
+						setActivateExamDisplay(true);
+					} else {
+						setActivateExamDisplay(false);
+						notifyError('Ooops, No exam found');
+					}
+				})
+				.catch(function (error) {
+					// handle error
+					console.log(error);
+					notifyError('Something went wrong.');
+				})
+				.then(function () {
+					// always executed
+				});
+		} else {
+			notifyError('Oops, All fields should be selected.');
+		}
+	};
+
 	let retriaveReviewDataNow = () => {
 		if (
 			notesDetailsReview.formId != '' &&
@@ -1190,9 +1316,17 @@ const Index = ({}) => {
 		setActivateNotesDisplay(false);
 		retriaveTopicsDataForNotes();
 		retriaveTopicsDataForReview();
+		retriaveDataForExam();
 		setNavActive('Admin');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [changerNotes, navActive]);
+
+	let truncateLimit = 18;
+	function truncate(str: string) {
+		return str.length > truncateLimit
+			? str.slice(0, truncateLimit) + '...'
+			: str;
+	}
 
 	return (
 		<div className={Styles.container}>
@@ -1889,7 +2023,7 @@ const Index = ({}) => {
 									/>
 								</div>
 								<div
-									onClick={retriaveTopicsDataExam}
+									onClick={retriaveTopicsDataExamType}
 									className={Styles.subjectHeaderButton}>
 									Retrieve Exam Type
 								</div>
@@ -1933,42 +2067,44 @@ const Index = ({}) => {
 									<SelectMiu
 										displayLabel='Select Subject'
 										show={true}
-										forms={selectOption}
-										handlechange={handleSelectedNotesSubject}
-										value={notesDetails.subjectId}
+										forms={selectOptionExam}
+										handlechange={handleSelectedExamSubject}
+										value={DetailsExam.subjectId}
 									/>
 									<SelectMiu
 										displayLabel='Select Form'
 										show={true}
-										forms={selectOptionForms}
-										handlechange={handleSelectedNotesForm}
-										value={notesDetails.formId}
+										forms={selectOptionFormsExam}
+										handlechange={handleSelectedExamForm}
+										value={DetailsExam.formId}
 									/>
-									{activateNotes && (
+									{activateExam && (
 										<SelectMiu
-											displayLabel='Select Topic'
+											displayLabel='Select Exam Category'
 											show={true}
-											forms={topicsNotes}
-											handlechange={handleSelectedNotes}
+											forms={examListSelect}
+											handlechange={handleSelectedExam}
 											value={notesDetails.topicId}
 										/>
 									)}
 								</div>
 								<div
-									onClick={retriaveNotesDataNow}
+									onClick={retriaveExamDataNow}
 									className={Styles.subjectHeaderButton}>
 									Retrieve Exams
 								</div>
 								<div className={Styles.subjectBody}>
-									{activateNotesDisplay &&
-										notesData.map((note: notesData) => (
+									{activateExamDisplay &&
+										examData.map((exam: exam) => (
 											<CardBox
-												handleUpdate={handleUpdateNotes}
-												link={`/Admin/Notes/Edit/Note/${note.id}`}
-												label={note.topic.topicName}
-												published={''}
-												id={note.id}
-												key={note.id}
+												handleUpdate={handleUpdatePublishExam}
+												link={`/Admin/Exam/Edit/Exam/${exam.id}`}
+												label={`${truncate(exam.description)}  ${exam.year}${
+													exam.hasAnswers ? `  [SOLVED]` : ''
+												}`}
+												published={exam.published}
+												id={exam.id}
+												key={exam.id}
 											/>
 										))}
 								</div>
