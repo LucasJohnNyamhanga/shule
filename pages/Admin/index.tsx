@@ -993,6 +993,7 @@ const Index = ({}) => {
 						SetexamListSelect(data);
 						console.log(examListSelect);
 						setActivateExam(true);
+						setActivateExamDisplay(true);
 					} else {
 						notifyError(`Ooops, No topics available for selection.`);
 					}
@@ -1321,7 +1322,7 @@ const Index = ({}) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [changerNotes, navActive]);
 
-	let truncateLimit = 18;
+	let truncateLimit = 20;
 	function truncate(str: string) {
 		return str.length > truncateLimit
 			? str.slice(0, truncateLimit) + '...'
@@ -2084,7 +2085,7 @@ const Index = ({}) => {
 											show={true}
 											forms={examListSelect}
 											handlechange={handleSelectedExam}
-											value={notesDetails.topicId}
+											value={DetailsExam.examTypeId}
 										/>
 									)}
 								</div>

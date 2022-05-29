@@ -1,5 +1,4 @@
 import { GetStaticProps, GetStaticPaths, InferGetStaticPropsType } from 'next';
-import { InferGetStaticPropsType } from 'next';
 import { prisma } from '../../../../db/prisma';
 import { review, topic, topicReview } from '@prisma/client';
 import React, { useContext, useEffect } from 'react';

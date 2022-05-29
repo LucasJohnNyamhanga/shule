@@ -2,8 +2,5 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/api/formsExam": "pages/api/formsExam.js",
-  "/api/exam": "pages/api/exam.js",
-  "/api/examType": "pages/api/examType.js",
-  "/api/subjectsExam": "pages/api/subjectsExam.js"
+  "/Exams/Physics/FormOne": "pages/Exams/Physics/FormOne.js"
 }

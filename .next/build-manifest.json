@@ -15,11 +15,6 @@
     "static/development/_middlewareManifest.js"
   ],
   "pages": {
-    "/Admin": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/Admin.js"
-    ],
     "/Exams/Physics/FormOne": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",

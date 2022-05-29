@@ -2,10 +2,17 @@ import React, { ReactNode, useContext, useEffect, useState } from 'react';
 import Styles from '../../../../styles/reviewDisplay.module.scss';
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import { type } from 'os';
-import { review, topic, topicReview } from '@prisma/client';
+import {
+	exam,
+	examType,
+	formExams,
+	note,
+	review,
+	topic,
+	topicReview,
+} from '@prisma/client';
 import { prisma } from '../../../../db/prisma';
-import type { GetStaticProps } from 'next';
-import { InferGetStaticPropsType } from 'next';
+import type { GetStaticProps, InferGetStaticPropsType } from 'next';
 import parse from 'html-react-parser';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -20,26 +27,26 @@ const subjectLocatorLink = 'Physics';
 const formLocatorLink = 'FormOne';
 
 export const getStaticProps: GetStaticProps = async () => {
-	const topicsFromServer = await prisma.topicReview.findMany({
+	const topicsFromServer = await prisma.examType.findMany({
 		where: {
 			published: true,
-			subject: {
+			subjectExams: {
 				subjectName: subjectLocator,
 			},
-			form: {
+			formExams: {
 				formName: formLocator,
 			},
 		},
 		select: {
 			id: true,
-			topicName: true,
-			topicDefinition: true,
-			form: {
+			name: true,
+			definition: true,
+			formExams: {
 				select: {
 					formName: true,
 				},
 			},
-			subject: {
+			subjectExams: {
 				select: {
 					subjectName: true,
 				},
@@ -48,35 +55,36 @@ export const getStaticProps: GetStaticProps = async () => {
 	});
 	const topics = JSON.parse(JSON.stringify(topicsFromServer));
 
-	const noteFromServer = await prisma.topicReview.findMany({
+	const noteFromServer = await prisma.examType.findMany({
 		take: 1,
 		where: {
 			published: true,
-			subject: {
+			subjectExams: {
 				subjectName: subjectLocator,
 			},
-			form: {
+			formExams: {
 				formName: formLocator,
 			},
 		},
 		select: {
 			id: true,
-			form: {
+			formExams: {
 				select: {
 					formName: true,
 				},
 			},
-			subject: {
+			subjectExams: {
 				select: {
 					subjectName: true,
 				},
 			},
-			topicName: true,
-			topicDefinition: true,
-			review: {
+			name: true,
+			definition: true,
+			exam: {
 				select: {
 					id: true,
-					name: true,
+					description: true,
+					exam: true,
 				},
 			},
 		},
@@ -106,10 +114,10 @@ const Index = ({
 		return <Error statusCode={404} />;
 	}
 
-	if (note[0].review == null || note[0].review == 'undefined') {
+	if (note[0].exam == null || note[0].exam == 'undefined') {
 		return (
 			<div className={Styles.notFound}>
-				Reviews for ${note[0].topicName} topic will be available soon.
+				Reviews for ${note[0].exam.exam} topic will be available soon.
 			</div>
 		);
 	}
@@ -127,9 +135,9 @@ const Index = ({
 			<div className={Styles.innerContainer}>
 				<div className={Styles.leftInnercontainerBody}>
 					<div className={Styles.sticky}>
-						<div className={Styles.topicHeader}>Topics list</div>
+						<div className={Styles.topicHeader}>Exam Category List</div>
 						<div className={Styles.titleList}>
-							{topics.map((topic: topic) => (
+							{topics.map((topic: examType) => (
 								<div key={topic.id}>
 									<Link
 										passHref
@@ -142,7 +150,7 @@ const Index = ({
 														? `${Styles.topicTittle} ${Styles.Active}`
 														: Styles.topicTittle
 												}>
-												{topic.topicName}
+												{topic.definition}
 											</div>
 										</a>
 									</Link>
@@ -153,22 +161,22 @@ const Index = ({
 				</div>
 				<div className={Styles.rightInnercontainerBody}>
 					<div className={Styles.mobile}>
-						<Drawer
+						{/* <Drawer
 							textHeader={'LIST OF TOPICS'}
 							topic={topics}
 							active={note[0].id}
 							link={'Review'}
-						/>
+						/> */}
 					</div>
 					<div className={Styles.BodyHeader}>
-						{note[0].subject.subjectName} <ChevronRightOutlinedIcon />{' '}
-						{note[0].form.formName} <ChevronRightOutlinedIcon />{' '}
-						{note[0].topicName}
+						{note[0].subjectExams.subjectName} <ChevronRightOutlinedIcon />{' '}
+						{note[0].formExams.formName} <ChevronRightOutlinedIcon />{' '}
+						{note[0].name}
 					</div>
 					<div className={Styles.BodyContent}>
 						<div className={Styles.modal}>
-							{note.map((topic: any) =>
-								topic.review.map((review: review) => (
+							{/* {note.map((topic: formExams) =>
+								topic.exam.map((review: review) => (
 									<Modal
 										key={review.id}
 										name={review.name}
@@ -178,7 +186,7 @@ const Index = ({
 										form={note[0].form.formName}
 									/>
 								))
-							)}
+							)} */}
 						</div>
 					</div>
 				</div>
