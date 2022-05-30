@@ -100,9 +100,9 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Index = ({
-	topics,
-	note,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	topics,
+    	note,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -121,6 +121,8 @@ const Index = ({
 			</div>
 		);
 	}
+
+	console.log(note[0]);
 
 	//!mambo yanaanza
 
@@ -175,18 +177,16 @@ const Index = ({
 					</div>
 					<div className={Styles.BodyContent}>
 						<div className={Styles.modal}>
-							{/* {note.map((topic: formExams) =>
-								topic.exam.map((review: review) => (
-									<Modal
-										key={review.id}
-										name={review.name}
-										id={review.id}
-										subject={note[0].subject.subjectName}
-										topic={note[0].topicName}
-										form={note[0].form.formName}
-									/>
-								))
-							)} */}
+							{note[0].exam.map((type: examType) => (
+								<Modal
+									key={type.id}
+									name={type.name}
+									id={type.id}
+									subject={note[0].subjectExams.subjectName}
+									topic={note[0].name}
+									form={note[0].formExams.formName}
+								/>
+							))}
 						</div>
 					</div>
 				</div>

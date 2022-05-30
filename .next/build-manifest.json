@@ -15,10 +15,20 @@
     "static/development/_middlewareManifest.js"
   ],
   "pages": {
+    "/Exams": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/Exams.js"
+    ],
     "/Exams/Physics/FormOne": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/Exams/Physics/FormOne.js"
+    ],
+    "/Exams/Physics/FormOne/[id]": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/Exams/Physics/FormOne/[id].js"
     ],
     "/_app": [
       "static/chunks/webpack.js",

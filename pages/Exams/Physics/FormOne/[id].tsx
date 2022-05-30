@@ -1,6 +1,6 @@
 import { GetStaticProps, GetStaticPaths, InferGetStaticPropsType } from 'next';
 import { prisma } from '../../../../db/prisma';
-import { review, topic, topicReview } from '@prisma/client';
+import { exam, examType, review, topic, topicReview } from '@prisma/client';
 import React, { useContext, useEffect } from 'react';
 import Styles from '../../../../styles/reviewDisplay.module.scss';
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
@@ -20,28 +20,28 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	const id = context.params?.id;
 	let Id = parseInt(String(id));
 	// ...
-	const topicData = await prisma.topicReview.findUnique({
+	const topicData = await prisma.examType.findUnique({
 		where: {
 			id: Id,
 		},
 		select: {
 			id: true,
-			topicName: true,
-			topicDefinition: true,
-			subject: {
+			name: true,
+			definition: true,
+			subjectExams: {
 				select: {
 					subjectName: true,
 				},
 			},
-			form: {
+			formExams: {
 				select: {
 					formName: true,
 				},
 			},
-			review: {
+			exam: {
 				select: {
 					id: true,
-					name: true,
+					description: true,
 				},
 			},
 		},
@@ -49,34 +49,34 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 	const thisTopicData = JSON.parse(JSON.stringify(topicData));
 
-	const topicsFromServer = await prisma.topicReview.findMany({
+	const topicsFromServer = await prisma.examType.findMany({
 		where: {
 			published: true,
-			subject: {
+			subjectExams: {
 				subjectName: subjectLocator,
 			},
-			form: {
+			formExams: {
 				formName: formLocator,
 			},
 		},
 		select: {
 			id: true,
-			topicName: true,
-			topicDefinition: true,
-			subject: {
+			name: true,
+			definition: true,
+			subjectExams: {
 				select: {
 					subjectName: true,
 				},
 			},
-			form: {
+			formExams: {
 				select: {
 					formName: true,
 				},
 			},
-			review: {
+			exam: {
 				select: {
 					id: true,
-					name: true,
+					description: true,
 				},
 			},
 		},
@@ -93,18 +93,15 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
 	// ...
-	const notesServer = await prisma.topicReview.findMany({
+	const examTypeServer = await prisma.examType.findMany({
 		select: {
 			id: true,
 		},
 	});
+	const examType = JSON.parse(JSON.stringify(examTypeServer));
 
-	type dataNote = {
-		id: number;
-	};
-	const notesData = JSON.parse(JSON.stringify(notesServer));
-	const paths = notesData.map((note: dataNote) => {
-		let id = String(note.id);
+	const paths = examType.map((type: examType) => {
+		let id = String(type.id);
 		return {
 			params: {
 				id: `${id}`,
@@ -118,9 +115,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const Index = ({
-    	topics,
-    	thisTopicData,
-    }: InferGetStaticPropsType<typeof getStaticProps>) => {
+	topics,
+	thisTopicData,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -128,7 +125,7 @@ const Index = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [navActive]);
 
-	if (thisTopicData.review == null || thisTopicData.review == 'undefined') {
+	if (thisTopicData.exam == null || thisTopicData.exam == 'undefined') {
 		return (
 			<div className={Styles.notFound}>
 				Reviews for ${thisTopicData.topicName} topic will be available soon.
@@ -136,28 +133,16 @@ const Index = ({
 		);
 	}
 
-	type dataTopic = {
-		id: number;
-		topicName: string;
-		topicDefinition: string;
-		subject: {
-			subjectName: string;
-		};
-		form: {
-			formName: string;
-		};
-	};
-
 	//!mambo yanaanza
 
 	return (
 		<div className={Styles.container}>
 			<Head>
-				<title>{thisTopicData.topicName}</title>
+				<title>{thisTopicData.name}</title>
 				<meta name='viewport' content='initial-scale=1.0, width=device-width' />
-				<meta name='description' content={thisTopicData.topicDefinition} />
+				<meta name='description' content={thisTopicData.definition} />
 				{/* //!add keywords */}
-				<meta name='keywords' content={thisTopicData.topicName} />
+				<meta name='keywords' content={thisTopicData.name} />
 			</Head>
 			<div className={Styles.innerContainer}>
 				<div className={Styles.leftInnercontainerBody}>
@@ -165,7 +150,7 @@ const Index = ({
 						<div className={Styles.topicHeader}>Topics list</div>
 
 						<div className={Styles.titleList}>
-							{topics.map((topic: dataTopic) => (
+							{topics.map((topic: examType) => (
 								<div key={topic.id}>
 									<Link
 										passHref
@@ -178,7 +163,7 @@ const Index = ({
 														? `${Styles.topicTittle} ${Styles.Active}`
 														: Styles.topicTittle
 												}>
-												{topic.topicName}
+												{topic.name}
 											</div>
 										</a>
 									</Link>
@@ -189,28 +174,28 @@ const Index = ({
 				</div>
 				<div className={Styles.rightInnercontainerBody}>
 					<div className={Styles.mobile}>
-						<Drawer
+						{/* <Drawer
 							textHeader={'LIST OF TOPICS'}
 							topic={topics}
 							active={thisTopicData.id}
 							link={'Review'}
-						/>
+						/> */}
 					</div>
 					<div className={Styles.BodyHeader}>
-						{thisTopicData.subject.subjectName} <ChevronRightOutlinedIcon />{' '}
-						{thisTopicData.form.formName} <ChevronRightOutlinedIcon />{' '}
-						{thisTopicData.topicName}
+						{thisTopicData.subjectExams.subjectName}{' '}
+						<ChevronRightOutlinedIcon /> {thisTopicData.formExams.formName}{' '}
+						<ChevronRightOutlinedIcon /> {thisTopicData.name}
 					</div>
 					<div className={Styles.BodyContent}>
 						<div className={Styles.modal}>
-							{thisTopicData.review.map((review: review) => (
+							{thisTopicData.exam.map((type: examType) => (
 								<Modal
-									key={review.id}
-									name={review.name}
-									id={review.id}
-									subject={thisTopicData.subject.subjectName}
-									topic={thisTopicData.topicName}
-									form={thisTopicData.form.formName}
+									key={type.id}
+									name={type.name}
+									id={type.id}
+									subject={thisTopicData.subjectExams.subjectName}
+									topic={thisTopicData.name}
+									form={thisTopicData.formExams.formName}
 								/>
 							))}
 						</div>
