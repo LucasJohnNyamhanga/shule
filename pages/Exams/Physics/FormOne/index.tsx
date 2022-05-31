@@ -17,7 +17,7 @@ import parse from 'html-react-parser';
 import Head from 'next/head';
 import Link from 'next/link';
 import Error from 'next/error';
-import Drawer from '../../../../components/tools/Drawer';
+import Drawer from '../../../../components/tools/DrawerExam';
 import { NavContext } from '../../../../components/context/StateContext';
 import Modal from '../../../../components/tools/modal';
 import Table from '../../../../components/tools/Table';
@@ -30,6 +30,11 @@ const formLocatorLink = 'FormOne';
 export const getStaticProps: GetStaticProps = async () => {
 	const topicsFromServer = await prisma.examType.findMany({
 		where: {
+			exam: {
+				some: {
+					published: true,
+				},
+			},
 			published: true,
 			subjectExams: {
 				subjectName: subjectLocator,
@@ -59,7 +64,12 @@ export const getStaticProps: GetStaticProps = async () => {
 	const noteFromServer = await prisma.examType.findMany({
 		take: 1,
 		where: {
-			published: true,
+			exam: {
+				some: {
+					published: true,
+				},
+			},
+
 			subjectExams: {
 				subjectName: subjectLocator,
 			},
@@ -82,10 +92,14 @@ export const getStaticProps: GetStaticProps = async () => {
 			name: true,
 			definition: true,
 			exam: {
+				where: {
+					published: true,
+				},
 				select: {
 					id: true,
 					description: true,
-					exam: true,
+					year: true,
+					hasAnswers: true,
 				},
 			},
 		},
@@ -153,13 +167,13 @@ const Index = ({
 										href={`/Exams/${subjectLocatorLink}/${formLocatorLink}/${topic.id}`}>
 										<a>
 											<div
-												key={topic.id}
+												key={topic.id + 100}
 												className={
 													topic.id == note[0].id
 														? `${Styles.topicTittle} ${Styles.Active}`
 														: Styles.topicTittle
 												}>
-												{topic.definition}
+												{topic.name}
 											</div>
 										</a>
 									</Link>
@@ -170,12 +184,12 @@ const Index = ({
 				</div>
 				<div className={Styles.rightInnercontainerBody}>
 					<div className={Styles.mobile}>
-						{/* <Drawer
-							textHeader={'LIST OF TOPICS'}
+						<Drawer
+							textHeader={'Exam Category List'}
 							topic={topics}
 							active={note[0].id}
-							link={'Review'}
-						/> */}
+							link={'Exams'}
+						/>
 					</div>
 					<div className={Styles.BodyHeader}>
 						{note[0].subjectExams.subjectName} <ChevronRightOutlinedIcon />{' '}

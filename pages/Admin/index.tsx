@@ -903,11 +903,11 @@ const Index = ({}) => {
 					const topicsFromServer = JSON.parse(JSON.stringify(response.data));
 					// handle success
 					if (topicsFromServer.length != 0) {
-						setExamList(topicsFromServer);
-						setActivateExam(true);
+						setExamTypeList(topicsFromServer);
+						setActivateExamType(true);
 						console.log(topicsFromServer);
 					} else {
-						setActivateExam(false);
+						setActivateExamType(false);
 						notifyError('Ooops, No topics available yet.');
 					}
 				})
@@ -1321,6 +1321,8 @@ const Index = ({}) => {
 		setNavActive('Admin');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [changerNotes, navActive]);
+
+	console.log(examTypeList);
 
 	let truncateLimit = 20;
 	function truncate(str: string) {

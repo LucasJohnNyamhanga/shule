@@ -7,7 +7,7 @@ import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import parse from 'html-react-parser';
 import Head from 'next/head';
 import Link from 'next/link';
-import Drawer from '../../../../components/tools/Drawer';
+import Drawer from '../../../../components/tools/DrawerExam';
 import { NavContext } from '../../../../components/context/StateContext';
 import Modal from '../../../../components/tools/modal';
 import Table from '../../../../components/tools/Table';
@@ -40,6 +40,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
 				},
 			},
 			exam: {
+				where: {
+					published: true,
+				},
 				select: {
 					id: true,
 					description: true,
@@ -54,6 +57,11 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 	const examTypeAllServer = await prisma.examType.findMany({
 		where: {
+			exam: {
+				some: {
+					published: true,
+				},
+			},
 			published: true,
 			subjectExams: {
 				subjectName: subjectLocator,
@@ -77,6 +85,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
 				},
 			},
 			exam: {
+				where: {
+					published: true,
+				},
 				select: {
 					id: true,
 					description: true,
@@ -99,6 +110,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 	const examTypeServer = await prisma.examType.findMany({
 		select: {
 			id: true,
+			published: true,
 		},
 	});
 	const examType = JSON.parse(JSON.stringify(examTypeServer));
@@ -122,9 +134,9 @@ type tableKey = {
 };
 
 const Index = ({
-	examTypeAll,
-	thisexamType,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	examTypeAll,
+    	thisexamType,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	const [keyInTable, setKeyInTable] = useState<tableKey>({
@@ -177,7 +189,7 @@ const Index = ({
 										href={`/Exams/${subjectLocatorLink}/${formLocatorLink}/${topic.id}`}>
 										<a>
 											<div
-												key={topic.id}
+												key={topic.id + 200}
 												className={
 													topic.id == thisexamType.id
 														? `${Styles.topicTittle} ${Styles.Active}`
@@ -194,12 +206,12 @@ const Index = ({
 				</div>
 				<div className={Styles.rightInnercontainerBody}>
 					<div className={Styles.mobile}>
-						{/* <Drawer
-							textHeader={'LIST OF examTypeAll'}
+						<Drawer
+							textHeader={'Exam Category List'}
 							topic={examTypeAll}
 							active={thisexamType.id}
-							link={'Review'}
-						/> */}
+							link={'Exams'}
+						/>
 					</div>
 					<div className={Styles.BodyHeader}>
 						{thisexamType.subjectExams.subjectName} <ChevronRightOutlinedIcon />{' '}
@@ -208,7 +220,6 @@ const Index = ({
 					</div>
 					<div className={Styles.BodyContent}>
 						<div className={Styles.conteinerTable}>
-							{/* {thisexamType.exam.map()} */}
 							<Table
 								form={formLocatorLink}
 								subject={subjectLocatorLink}

@@ -1,16 +1,11 @@
 import { GetStaticProps, GetStaticPaths, InferGetStaticPropsType } from 'next';
 import { prisma } from '../../../../../db/prisma';
-import { exam, examType, review, topic, topicReview } from '@prisma/client';
+import { examType } from '@prisma/client';
 import React, { useContext, useEffect, useState } from 'react';
 import Styles from '../../../../../styles/reviewDisplay.module.scss';
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
-import parse from 'html-react-parser';
 import Head from 'next/head';
-import Link from 'next/link';
-import Drawer from '../../../../../components/tools/Drawer';
 import { NavContext } from '../../../../../components/context/StateContext';
-import Modal from '../../../../../components/tools/modal';
-import Table from '../../../../../components/tools/Table';
 
 const subjectLocator = 'Physics';
 const formLocator = 'Form One';
@@ -96,8 +91,8 @@ type tableKey = {
 };
 
 const Index = ({
-	thisexam,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	thisexam,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	const [keyInTable, setKeyInTable] = useState<tableKey>({
@@ -129,42 +124,10 @@ const Index = ({
 				<meta name='keywords' content={thisexam.description} />
 			</Head>
 			<div className={Styles.innerContainer}>
-				{/* <div className={Styles.leftInnercontainerBody}>
-					<div className={Styles.sticky}>
-						<div className={Styles.topicHeader}>Exam Category List</div>
-
-						<div className={Styles.titleList}>
-							{examTypeAll.map((topic: examType) => (
-								<div key={topic.id}>
-									<Link
-										passHref
-										href={`/Exams/${subjectLocatorLink}/${formLocatorLink}/${topic.id}`}>
-										<a>
-											<div
-												key={topic.id}
-												className={
-													topic.id == thisexam.id
-														? `${Styles.topicTittle} ${Styles.Active}`
-														: Styles.topicTittle
-												}>
-												{topic.name}
-											</div>
-										</a>
-									</Link>
-								</div>
-							))}
-						</div>
-					</div>
-				</div> */}
 				<div className={Styles.rightInnercontainerBody}>
-					<div className={Styles.mobile}>
-						{/* <Drawer
-							textHeader={'LIST OF examTypeAll'}
-							topic={examTypeAll}
-							active={thisexam.id}
-							link={'Review'}
-						/> */}
-					</div>
+					{/* <div className={Styles.mobile}>
+						
+					</div> */}
 					<div className={Styles.BodyHeader}>
 						{thisexam.examType.subjectExams.subjectName}{' '}
 						<ChevronRightOutlinedIcon /> {thisexam.examType.formExams.formName}{' '}
