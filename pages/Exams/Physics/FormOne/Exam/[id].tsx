@@ -30,6 +30,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			description: true,
 			year: true,
 			hasAnswers: true,
+			exam: true,
 			examType: {
 				select: {
 					subjectExams: {
@@ -170,10 +171,10 @@ const Index = ({
 						<ChevronRightOutlinedIcon /> {thisexam.description}
 					</div>
 					<div className={Styles.BodyContent}>
-						<div className={Styles.table}>
-							{/* {thisexam.exam.map()} */}
-							{/* <Table header={keyInTable.keys} body={thisexam.exam} /> */}
-						</div>
+						<div
+							className='ckContent'
+							dangerouslySetInnerHTML={{ __html: thisexam.exam }}
+						/>
 					</div>
 				</div>
 			</div>
