@@ -20,6 +20,7 @@ import Error from 'next/error';
 import Drawer from '../../../../components/tools/Drawer';
 import { NavContext } from '../../../../components/context/StateContext';
 import Modal from '../../../../components/tools/modal';
+import Table from '../../../../components/tools/Table';
 
 const subjectLocator = 'Physics';
 const formLocator = 'Form One';
@@ -99,30 +100,36 @@ export const getStaticProps: GetStaticProps = async () => {
 	};
 };
 
+type tableKey = {
+	keys: string[];
+};
+
 const Index = ({
     	topics,
     	note,
     }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
+	const [keyInTable, setKeyInTable] = useState<tableKey>({
+		keys: [],
+	});
 	useEffect(() => {
 		setNavActive('Exams');
+
+		let listKey: string[] = [];
+
+		for (const exam of note[0].exam) {
+			listKey = Object.keys(exam);
+			break;
+		}
+		setKeyInTable({ keys: listKey });
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [navActive]);
 
 	if (topics.length < 1) {
 		return <Error statusCode={404} />;
 	}
-
-	if (note[0].exam == null || note[0].exam == 'undefined') {
-		return (
-			<div className={Styles.notFound}>
-				Reviews for ${note[0].exam.exam} topic will be available soon.
-			</div>
-		);
-	}
-
-	console.log(note[0]);
 
 	//!mambo yanaanza
 
@@ -176,17 +183,13 @@ const Index = ({
 						{note[0].name}
 					</div>
 					<div className={Styles.BodyContent}>
-						<div className={Styles.modal}>
-							{note[0].exam.map((type: examType) => (
-								<Modal
-									key={type.id}
-									name={type.name}
-									id={type.id}
-									subject={note[0].subjectExams.subjectName}
-									topic={note[0].name}
-									form={note[0].formExams.formName}
-								/>
-							))}
+						<div className={Styles.conteinerTable}>
+							<Table
+								header={keyInTable.keys}
+								body={note[0].exam}
+								form={formLocatorLink}
+								subject={subjectLocatorLink}
+							/>
 						</div>
 					</div>
 				</div>

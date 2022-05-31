@@ -1,7 +1,7 @@
 import { GetStaticProps, GetStaticPaths, InferGetStaticPropsType } from 'next';
 import { prisma } from '../../../../db/prisma';
 import { exam, examType, review, topic, topicReview } from '@prisma/client';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Styles from '../../../../styles/reviewDisplay.module.scss';
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import parse from 'html-react-parser';
@@ -10,6 +10,7 @@ import Link from 'next/link';
 import Drawer from '../../../../components/tools/Drawer';
 import { NavContext } from '../../../../components/context/StateContext';
 import Modal from '../../../../components/tools/modal';
+import Table from '../../../../components/tools/Table';
 
 const subjectLocator = 'Physics';
 const formLocator = 'Form One';
@@ -20,7 +21,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	const id = context.params?.id;
 	let Id = parseInt(String(id));
 	// ...
-	const topicData = await prisma.examType.findUnique({
+	const examTypeServer = await prisma.examType.findUnique({
 		where: {
 			id: Id,
 		},
@@ -42,14 +43,16 @@ export const getStaticProps: GetStaticProps = async (context) => {
 				select: {
 					id: true,
 					description: true,
+					year: true,
+					hasAnswers: true,
 				},
 			},
 		},
 	});
 
-	const thisTopicData = JSON.parse(JSON.stringify(topicData));
+	const thisexamType = JSON.parse(JSON.stringify(examTypeServer));
 
-	const topicsFromServer = await prisma.examType.findMany({
+	const examTypeAllServer = await prisma.examType.findMany({
 		where: {
 			published: true,
 			subjectExams: {
@@ -81,12 +84,12 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			},
 		},
 	});
-	const topics = JSON.parse(JSON.stringify(topicsFromServer));
+	const examTypeAll = JSON.parse(JSON.stringify(examTypeAllServer));
 
 	return {
 		props: {
-			topics,
-			thisTopicData,
+			examTypeAll,
+			thisexamType,
 		},
 	};
 };
@@ -114,21 +117,38 @@ export const getStaticPaths: GetStaticPaths = async () => {
 	};
 };
 
+type tableKey = {
+	keys: string[];
+};
+
 const Index = ({
-	topics,
-	thisTopicData,
+	examTypeAll,
+	thisexamType,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
+	const [keyInTable, setKeyInTable] = useState<tableKey>({
+		keys: [],
+	});
+
 	useEffect(() => {
 		setNavActive('Exams');
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [navActive]);
 
-	if (thisTopicData.exam == null || thisTopicData.exam == 'undefined') {
+		let listKey: string[] = [];
+
+		for (const exam of thisexamType.exam) {
+			listKey = Object.keys(exam);
+			break;
+		}
+		setKeyInTable({ keys: listKey });
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [navActive, thisexamType.exam]);
+
+	if (examTypeAll.length == 0 || thisexamType.exam == 'undefined') {
 		return (
 			<div className={Styles.notFound}>
-				Reviews for ${thisTopicData.topicName} topic will be available soon.
+				Reviews for ${thisexamType.name} topic will be available soon.
 			</div>
 		);
 	}
@@ -138,19 +158,19 @@ const Index = ({
 	return (
 		<div className={Styles.container}>
 			<Head>
-				<title>{thisTopicData.name}</title>
+				<title>{thisexamType.name}</title>
 				<meta name='viewport' content='initial-scale=1.0, width=device-width' />
-				<meta name='description' content={thisTopicData.definition} />
+				<meta name='description' content={thisexamType.definition} />
 				{/* //!add keywords */}
-				<meta name='keywords' content={thisTopicData.name} />
+				<meta name='keywords' content={thisexamType.name} />
 			</Head>
 			<div className={Styles.innerContainer}>
 				<div className={Styles.leftInnercontainerBody}>
 					<div className={Styles.sticky}>
-						<div className={Styles.topicHeader}>Topics list</div>
+						<div className={Styles.topicHeader}>Exam Category List</div>
 
 						<div className={Styles.titleList}>
-							{topics.map((topic: examType) => (
+							{examTypeAll.map((topic: examType) => (
 								<div key={topic.id}>
 									<Link
 										passHref
@@ -159,7 +179,7 @@ const Index = ({
 											<div
 												key={topic.id}
 												className={
-													topic.id == thisTopicData.id
+													topic.id == thisexamType.id
 														? `${Styles.topicTittle} ${Styles.Active}`
 														: Styles.topicTittle
 												}>
@@ -175,29 +195,26 @@ const Index = ({
 				<div className={Styles.rightInnercontainerBody}>
 					<div className={Styles.mobile}>
 						{/* <Drawer
-							textHeader={'LIST OF TOPICS'}
-							topic={topics}
-							active={thisTopicData.id}
+							textHeader={'LIST OF examTypeAll'}
+							topic={examTypeAll}
+							active={thisexamType.id}
 							link={'Review'}
 						/> */}
 					</div>
 					<div className={Styles.BodyHeader}>
-						{thisTopicData.subjectExams.subjectName}{' '}
-						<ChevronRightOutlinedIcon /> {thisTopicData.formExams.formName}{' '}
-						<ChevronRightOutlinedIcon /> {thisTopicData.name}
+						{thisexamType.subjectExams.subjectName} <ChevronRightOutlinedIcon />{' '}
+						{thisexamType.formExams.formName} <ChevronRightOutlinedIcon />{' '}
+						{thisexamType.name}
 					</div>
 					<div className={Styles.BodyContent}>
-						<div className={Styles.modal}>
-							{thisTopicData.exam.map((type: examType) => (
-								<Modal
-									key={type.id}
-									name={type.name}
-									id={type.id}
-									subject={thisTopicData.subjectExams.subjectName}
-									topic={thisTopicData.name}
-									form={thisTopicData.formExams.formName}
-								/>
-							))}
+						<div className={Styles.conteinerTable}>
+							{/* {thisexamType.exam.map()} */}
+							<Table
+								form={formLocatorLink}
+								subject={subjectLocatorLink}
+								header={keyInTable.keys}
+								body={thisexamType.exam}
+							/>
 						</div>
 					</div>
 				</div>

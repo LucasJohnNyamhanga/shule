@@ -2,7 +2,6 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/Exams": "pages/Exams.js",
-  "/Exams/Physics/FormOne/[id]": "pages/Exams/Physics/FormOne/[id].js",
-  "/Exams/Physics/FormOne": "pages/Exams/Physics/FormOne.js"
+  "/Exams/Physics/FormOne/Exam/[id]": "pages/Exams/Physics/FormOne/Exam/[id].js",
+  "/Exams/Physics/FormOne/[id]": "pages/Exams/Physics/FormOne/[id].js"
 }
