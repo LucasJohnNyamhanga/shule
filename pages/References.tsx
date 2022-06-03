@@ -1,6 +1,5 @@
 import type { NextPage, InferGetStaticPropsType } from 'next';
 import Hero from '../components/layout/Hero';
-import { type } from 'os';
 import Study from '../components/layout/Study';
 import { prisma } from '../db/prisma';
 import type { GetStaticProps } from 'next';

@@ -254,7 +254,7 @@ export default function CustomizedDialogs({
 		setQuestionAvailable(false);
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/questions',
+			url: 'http://localhost:3000/api/questionsFinder',
 			data: {
 				reviewId: id,
 			},
@@ -272,6 +272,7 @@ export default function CustomizedDialogs({
 					setloader(false);
 				} else {
 					setQuestionAvailable(false);
+					setloader(false);
 				}
 			})
 			.catch(function (error: any) {
@@ -557,6 +558,8 @@ export default function CustomizedDialogs({
 							}>{`${form} > ${subject} > ${topic}`}</div>
 						{loader ? (
 							<div className={Styles.headerBelow}>Loading questions...</div>
+						) : !questionAvailable ? (
+							<div className={Styles.headerBelow}>question 0 of 0</div>
 						) : !result ? (
 							<div className={Styles.headerBelow}>{`Question ${index + 1} of ${
 								questionList.length

@@ -20,10 +20,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/Admin.js"
     ],
-    "/Exams/Physics/FormOne": [
+    "/References": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/Exams/Physics/FormOne.js"
+      "static/chunks/pages/References.js"
     ],
     "/_app": [
       "static/chunks/webpack.js",

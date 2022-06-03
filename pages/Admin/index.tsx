@@ -1464,6 +1464,32 @@ const Index = ({}) => {
 							<div>
 								<div className={Styles.TopicHeaderNotes}>References</div>
 							</div>
+							<div className={Styles.containerBody}>
+								<div
+									ref={subjectExam}
+									id='SubjectsExam'
+									onClick={(e) => handleNav(e)}
+									className={Styles.topicTittle}>
+									<Books />
+									<div className={Styles.text}>Subjects</div>
+								</div>
+								<div
+									ref={formExam}
+									id='FormsExam'
+									onClick={(e) => handleNav(e)}
+									className={Styles.topicTittle}>
+									<SchoolIcon />
+									<div className={Styles.text}>Forms</div>
+								</div>
+								<div
+									ref={examType}
+									id='ExamType'
+									onClick={(e) => handleNav(e)}
+									className={Styles.topicTittle}>
+									<NotesIcon />
+									<div className={Styles.text}>Reference</div>
+								</div>
+							</div>
 						</div>
 					</div>
 					{/* //!start of default desplay */}
