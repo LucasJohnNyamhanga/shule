@@ -142,6 +142,9 @@ const Index = ({}) => {
 	const formExam = useRef<HTMLDivElement>(null!);
 	const examType = useRef<HTMLDivElement>(null!);
 	const exam = useRef<HTMLDivElement>(null!);
+	const subjectReference = useRef<HTMLDivElement>(null!);
+	const formReference = useRef<HTMLDivElement>(null!);
+	const reference = useRef<HTMLDivElement>(null!);
 	// const user = useRef<HTMLDivElement>(null!);
 
 	let handleNav = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -205,6 +208,15 @@ const Index = ({}) => {
 				exam.current.classList.add(Styles.Active);
 				retriaveSubjectsExam();
 				break;
+			case 'SubjectReference':
+				subjectReference.current.classList.add(Styles.Active);
+				break;
+			case 'FormReference':
+				formReference.current.classList.add(Styles.Active);
+				break;
+			case 'Reference':
+				reference.current.classList.add(Styles.Active);
+				break;
 			default:
 				break;
 		}
@@ -225,6 +237,9 @@ const Index = ({}) => {
 		formExam.current.classList.remove(Styles.Active);
 		examType.current.classList.remove(Styles.Active);
 		exam.current.classList.remove(Styles.Active);
+		subjectReference.current.classList.remove(Styles.Active);
+		formReference.current.classList.remove(Styles.Active);
+		reference.current.classList.remove(Styles.Active);
 	};
 
 	const retriaveSubjectsReview = async () => {
@@ -1466,24 +1481,24 @@ const Index = ({}) => {
 							</div>
 							<div className={Styles.containerBody}>
 								<div
-									ref={subjectExam}
-									id='SubjectsExam'
+									ref={subjectReference}
+									id='SubjectReference'
 									onClick={(e) => handleNav(e)}
 									className={Styles.topicTittle}>
 									<Books />
 									<div className={Styles.text}>Subjects</div>
 								</div>
 								<div
-									ref={formExam}
-									id='FormsExam'
+									ref={formReference}
+									id='FormReference'
 									onClick={(e) => handleNav(e)}
 									className={Styles.topicTittle}>
 									<SchoolIcon />
 									<div className={Styles.text}>Forms</div>
 								</div>
 								<div
-									ref={examType}
-									id='ExamType'
+									ref={reference}
+									id='Reference'
 									onClick={(e) => handleNav(e)}
 									className={Styles.topicTittle}>
 									<NotesIcon />
@@ -2141,6 +2156,68 @@ const Index = ({}) => {
 						</div>
 					)}
 					{/* //! END OF EXAM DISPLAY ONLY */}
+					{/* //!start of subject Reference desplay */}
+					{navValue == 'SubjectReference' && (
+						<div className={Styles.rightInnercontainerBody}>
+							<div className={Styles.subject}>
+								<div className={Styles.subjectHeader}>
+									<div className={Styles.subjectHeaderText}>
+										Subjects In Reference Management
+									</div>
+									<Link passHref href='/Admin/Reference/Create/Subject'>
+										<div className={Styles.subjectHeaderButton}>
+											Create Subject in Reference
+										</div>
+									</Link>
+								</div>
+								<div className={Styles.subjectBody}>
+									{subjectExamList.map(
+										(subject: {
+											subjectName: string;
+											id: number;
+											published: boolean;
+										}) => (
+											<CardBox
+												handleUpdate={handleUpdateSubjectExam}
+												link={'/Admin/Exam/Edit/Subject/' + subject.id}
+												label={subject.subjectName}
+												published={subject.published}
+												id={subject.id}
+												key={subject.id}
+											/>
+										)
+									)}
+								</div>
+							</div>
+						</div>
+					)}
+					{/* //! END OF subject Reference DISPLAY ONLY */}
+					{/* //!start of form reference desplay */}
+					{navValue == 'FormReference' && (
+						<div className={Styles.rightInnercontainerBody}>
+							<div className={Styles.subject}>
+								<div className={Styles.subjectHeader}>
+									<div className={Styles.subjectHeaderText}>
+										Welcome to the form reference Dashboard
+									</div>
+								</div>
+							</div>
+						</div>
+					)}
+					{/* //! END OF form reference DISPLAY ONLY */}
+					{/* //!start of reference desplay */}
+					{navValue == 'Reference' && (
+						<div className={Styles.rightInnercontainerBody}>
+							<div className={Styles.subject}>
+								<div className={Styles.subjectHeader}>
+									<div className={Styles.subjectHeaderText}>
+										Welcome to the reference Dashboard
+									</div>
+								</div>
+							</div>
+						</div>
+					)}
+					{/* //! END OF reference DISPLAY ONLY */}
 				</div>
 			</div>
 		</div>
