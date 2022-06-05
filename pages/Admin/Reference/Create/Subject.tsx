@@ -24,7 +24,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
 	});
 	const forms = JSON.parse(JSON.stringify(formsFromServer));
 
-
 	let deactiveteImage = true;
 	await prisma.$disconnect();
 	return {
