@@ -40,7 +40,7 @@ const Form = () => {
 	let sendToDatabase = () => {
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/addFormExam',
+			url: 'http://localhost:3000/api/addFormReference',
 			data: formData,
 		})
 			.then(function (response) {
@@ -70,7 +70,7 @@ const Form = () => {
 	let verifyForm = () => {
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/formsExamVerify',
+			url: 'http://localhost:3000/api/formsReferenceVerify',
 			data: formData,
 		})
 			.then(function (response) {

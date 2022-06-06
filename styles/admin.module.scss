@@ -1,243 +1,241 @@
-@import "index";
-
-
+@import 'index';
 
 .container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
 
+	.innerContainer {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
 
-  .innerContainer {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+		.containerBody {
+			display: flex;
+			flex-direction: row;
+			height: 100%;
 
-    .containerBody {
-      display: flex;
-      flex-direction: row;
-      height: 100%;
+			.leftInnercontainerBody {
+				width: 320px;
+				font-family: $fontBody;
+				color: $ugoro;
+				font-size: large;
+				background-color: $lightkahawa;
+				display: flex;
+				flex-direction: column;
+				height: auto;
+				padding-bottom: 20px;
 
+				.leftInner {
+					height: fit-content;
+					display: flex;
+					flex-direction: column;
+					align-items: flex-start;
+					justify-content: flex-start;
+				}
 
-      .leftInnercontainerBody {
-        width: 320px;
-        font-family: $fontBody;
-        color: $ugoro;
-        font-size: large;
-        background-color: $lightkahawa;
-        display: flex;
-        flex-direction: column;
-        height: auto;
-        padding-bottom: 20px;
+				.TopicHeaderNotes {
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+					align-items: flex-start;
+					font-family: $fontHeader;
+					color: $gray;
+					padding-left: 10px;
+					font-weight: 400;
+					font-size: 16px;
+					cursor: default;
+					padding-bottom: 5px;
+					padding-top: 20px;
+					padding-left: 10px;
+				}
 
-        .leftInner{
-          height: fit-content;
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          justify-content: flex-start;
-        }
+				.containerHeader {
+					display: flex;
+					flex-direction: column;
+					width: 100%;
+					cursor: default;
 
-        .TopicHeaderNotes{
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: flex-start;
-          font-family: $fontHeader;
-          color: $gray;
-          padding-left: 10px;
-          font-weight: 400;
-          font-size: 16px;
-          cursor: default;
-          padding-bottom: 5px;
-          padding-top: 20px;
-          padding-left: 10px;
-        }
+					.TopicHeader {
+						display: flex;
+						flex-direction: row;
+						justify-content: center;
+						align-items: center;
+						font-family: $fontHeader;
+						font-weight: 600;
+						padding-top: 10px;
+					}
+				}
 
-        .containerHeader{
-          display: flex;
-          flex-direction: column;
-          width: 100%;
-          cursor: default;
-        
+				.containerBody {
+					display: flex;
+					flex-direction: column;
+					width: 100%;
+					font-family: $fontHeader;
+					padding-left: 10px;
 
-          .TopicHeader {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            font-family: $fontHeader;
-            font-weight: 600;
-            padding-top: 10px;
-          }
+					.topicTittle {
+						padding-left: 15px;
+						display: flex;
+						flex-direction: row;
+						align-items: center;
+						height: 45px;
+						font-size: 14px;
+						font-weight: 500;
+						cursor: pointer;
+						color: $black;
+						border-top-left-radius: 5px;
+						border-bottom-left-radius: 5px;
+						margin-top: 1.5px;
+						margin-bottom: 1.5px;
+					}
 
-        
+					.topicTittle:hover {
+						background-color: $white;
+					}
 
-        }
+					.Active {
+						transition: 0.2s linear;
+						border-right: 0px solid $lightblue;
+						border-top: 2px solid $lightblue !important;
+						border-bottom: 2px solid $lightblue;
+						border-left: 10px solid $lightblue;
+						font-weight: 700;
+						color: $ugoro;
+						background-color: $white;
+					}
 
-        .containerBody{
-          display: flex;
-          flex-direction: column;
-          width: 100%;
-          font-family: $fontHeader;
-          padding-left: 10px;
+					.text {
+						display: flex;
+						width: 100%;
+						flex-direction: column;
+						justify-content: center;
+						align-items: flex-start;
+						padding-left: 20px;
+					}
+				}
+			}
 
-          .topicTittle {
-            padding-left: 15px;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            height: 45px;
-           font-size: 14px;
-           font-weight: 500;
-            cursor: pointer;
-            color: $black;
-            border-top-left-radius: 5px;
-            border-bottom-left-radius: 5px;
-            margin-top: 1.5px;
-            margin-bottom: 1.5px;
-          }
-  
-          .topicTittle:hover {
-            background-color: $white;
-          }
-  
-          .Active {
-            transition: 0.2s linear;
-            border-right: 0px solid $lightblue;
-            border-top: 2px solid $lightblue !important;
-            border-bottom: 2px solid $lightblue;
-            border-left: 10px solid $lightblue;
-            font-weight: 700;
-            color: $ugoro;
-            background-color: $white;
-          }
+			.rightInnercontainerBody {
+				width: 100%;
+				padding: 20px;
+				display: flex;
+				flex-direction: column;
+				height: 100%;
+				padding-bottom: 20px;
 
-          .text{
-            display: flex;
-            width: 100%;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            padding-left: 20px;
-          }
-        }
+				.loading {
+					width: 100%;
+					height: 300px;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+				}
 
-       
-      }
+				.subject {
+					width: 100%;
+					display: flex;
+					flex-direction: column;
 
-      .rightInnercontainerBody {
-        width: 100%;
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        padding-bottom: 20px;
+					.subjectHeader {
+						width: 100%;
+						height: 50px;
+						display: flex;
+						flex-direction: row;
+						justify-content: space-between;
+						align-items: center;
 
-        .subject{
-          width: 100%;
-          display: flex;
-          flex-direction: column;
+						&Text {
+							font-family: $fontHeader;
+							font-weight: 500;
+							font-size: 24px;
+							margin-left: 10px;
+						}
 
-          .subjectHeader{
-            width: 100%;
-            height: 50px;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
+						&Button {
+							width: fit-content;
+							height: 40px;
+							background-color: $ugoro;
+							color: $white;
+							border: 2px solid transparent;
+							margin: 15px;
+							margin-left: 0px;
+							display: flex;
+							flex-direction: row;
+							justify-content: center;
+							align-items: center;
+							border-radius: 5px;
+							transition: 0.2s linear;
+							padding-left: 20px;
+							padding-right: 20px;
+							text-align: center;
+						}
 
-            &Text{
-              font-family: $fontHeader;
-              font-weight: 500;
-              font-size: 24px;
-              margin-left: 10px;
-            }
+						&Button:hover {
+							background-color: $lightkahawa;
+							color: $ugoro;
+							border: 2px solid $lightblue;
+							cursor: pointer;
+						}
+					}
 
-            &Button {
-              width: fit-content;
-              height: 40px;
-              background-color: $ugoro;
-              color: $white;
-              border: 2px solid transparent;
-              margin: 15px;
-              margin-left: 0px;
-              display: flex;
-              flex-direction: row;
-              justify-content: center;
-              align-items: center;
-              border-radius: 5px;
-              transition: 0.2s linear;
-              padding-left: 20px;
-              padding-right: 20px;
-              text-align: center;
-            }
-            
-            &Button:hover {
-              background-color: $lightkahawa;
-              color: $ugoro;
-              border: 2px solid $lightblue;
-              cursor: pointer;
-            }
-          }
+					.subjectBody {
+						margin: 10px;
 
-          .subjectBody{
-            margin: 10px;
+						.card {
+							width: 100%;
+							height: 42px;
+							margin-bottom: 15px;
+							display: flex;
+							flex-direction: row;
+							align-items: center;
+							box-shadow: $boxShadowRealBox;
+							font-family: $fontBody;
+							font-weight: 400;
+							font-size: 18px;
+							border-radius: 5px;
+							display: flex;
+							flex-direction: row;
+							justify-content: space-between;
+							padding-left: 15px;
+							padding-right: 15px;
+						}
+					}
 
-            .card{
-              width: 100%;
-              height: 42px;
-              margin-bottom: 15px;
-              display: flex;
-              flex-direction: row;
-              align-items: center;
-              box-shadow: $boxShadowRealBox;
-              font-family: $fontBody;
-              font-weight: 400;
-              font-size: 18px;
-              border-radius: 5px;
-              display: flex;
-              flex-direction: row;
-              justify-content: space-between;
-              padding-left: 15px;
-              padding-right: 15px;
-            }
-          }
+					// .selectDivTopic{
+					//   display: flex;
+					//   flex-direction: row;
+					// }
 
-          // .selectDivTopic{
-          //   display: flex;
-          //   flex-direction: row;
-          // }
+					.selectDivTopic {
+						margin-bottom: 10px;
+						display: grid;
+						grid-gap: 10px;
 
-          .selectDivTopic {
-            margin-bottom: 10px;
-            display: grid;
-            grid-gap: 10px;
-          
-            @media (min-width: 268px) {
-              grid-template-columns: repeat(1, 1fr);
-              align-items: center;
-              justify-content: center;
-            }
-          
-            @media (min-width: 468px) {
-              grid-template-columns: repeat(1, 1fr);
-            }
-          
-            @media (min-width: 768px) {
-              grid-template-columns: repeat(1, 1fr);
-            }
-          
-            @media (min-width: 960px) {
-              grid-template-columns: repeat(2, 1fr, );
-            }
-          
-            @media (min-width: 1200px) {
-              grid-template-columns: repeat(3, 1fr);
-            }
-          }
-        }
-      }
-    }
-  }
+						@media (min-width: 268px) {
+							grid-template-columns: repeat(1, 1fr);
+							align-items: center;
+							justify-content: center;
+						}
+
+						@media (min-width: 468px) {
+							grid-template-columns: repeat(1, 1fr);
+						}
+
+						@media (min-width: 768px) {
+							grid-template-columns: repeat(1, 1fr);
+						}
+
+						@media (min-width: 960px) {
+							grid-template-columns: repeat(2, 1fr);
+						}
+
+						@media (min-width: 1200px) {
+							grid-template-columns: repeat(3, 1fr);
+						}
+					}
+				}
+			}
+		}
+	}
 }

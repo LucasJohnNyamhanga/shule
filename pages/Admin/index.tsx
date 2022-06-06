@@ -1,14 +1,12 @@
 import { useState, useRef, useEffect, useContext } from 'react';
 import Styles from '../../styles/admin.module.scss';
 import { ReactNode } from 'react';
-import GroupIcon from '@mui/icons-material/Group';
 import SummarizeIcon from '@mui/icons-material/Summarize';
 import NotesIcon from '@mui/icons-material/Notes';
 import Books from '@mui/icons-material/ImportContacts';
 import SchoolIcon from '@mui/icons-material/School';
-import { type } from 'os';
 import axios from 'axios';
-import { exam, question, review, topic } from '@prisma/client';
+import { exam, question, review } from '@prisma/client';
 import Link from 'next/link';
 import CardBox from '../../components/tools/cardBoxStyle';
 import toast, { Toaster } from 'react-hot-toast';
@@ -16,13 +14,7 @@ import SelectMiu from '../../components/tools/SelectMui';
 import { NavContext } from '../../components/context/StateContext';
 import AlignVerticalBottomIcon from '@mui/icons-material/AlignVerticalBottom';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
-import { CallSplit } from '@mui/icons-material';
-
-type userData = {
-	id: number;
-	subjectName: string;
-	published: boolean;
-}[];
+import Loader from '../../components/tools/loader';
 
 type dataTypeSelect = {
 	value: string;
@@ -42,7 +34,8 @@ const Index = ({}) => {
 	const [topics, setTopics] = useState([]);
 	const [topicsReview, setTopicsReview] = useState([]);
 	const [examTypeList, setExamTypeList] = useState([]);
-	const [examList, setExamList] = useState([]);
+	const [formsReference, setFormsReference] = useState([]);
+	const [subjectReferenceList, setSubjectReferenceList] = useState([]);
 	const [notesData, setNotesData] = useState([]);
 	const [examData, setExamData] = useState([]);
 	const [reviewData, setReviewData] = useState([]);
@@ -53,7 +46,11 @@ const Index = ({}) => {
 	);
 	const [examListSelect, SetexamListSelect] = useState<dataTypeSelect>([]);
 	const [activateTopics, setActivateTopics] = useState(false);
+	const [loading, setLoading] = useState(false);
+	const [activateSubjectReferenceList, setActivateSubjectReferenceList] =
+		useState(false);
 	const [activateTopicsREview, setActivateTopicsReview] = useState(false);
+	const [activateFormsReference, setActivateFormsReference] = useState(false);
 	const [activateExamType, setActivateExamType] = useState(false);
 	const [activateNotesDisplay, setActivateNotesDisplay] = useState(false);
 	const [activateExamDisplay, setActivateExamDisplay] = useState(false);
@@ -125,7 +122,6 @@ const Index = ({}) => {
 		reviewId: '',
 	});
 
-	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
 
@@ -210,9 +206,11 @@ const Index = ({}) => {
 				break;
 			case 'SubjectReference':
 				subjectReference.current.classList.add(Styles.Active);
+				retriaveSubjectsReference();
 				break;
 			case 'FormReference':
 				formReference.current.classList.add(Styles.Active);
+				retriaveSubjectsReference();
 				break;
 			case 'Reference':
 				reference.current.classList.add(Styles.Active);
@@ -243,6 +241,7 @@ const Index = ({}) => {
 	};
 
 	const retriaveSubjectsReview = async () => {
+		setLoading(true);
 		axios
 			.get('http://localhost:3000/api/subjectsReview')
 			.then(function (response) {
@@ -263,10 +262,13 @@ const Index = ({}) => {
 				}
 
 				setSelectOption(data);
+				setLoading(false);
 			})
 			.catch(function (error) {
 				// handle error
 				console.log(error);
+				setLoading(false);
+				notifyError('Something went wrong.');
 			})
 			.then(function () {
 				// always executed
@@ -292,10 +294,13 @@ const Index = ({}) => {
 				}
 
 				setSelectOptionForms(data);
+				setLoading(false);
 			})
 			.catch(function (error) {
 				// handle error
 				console.log(error);
+				setLoading(false);
+				notifyError('Something went wrong.');
 			})
 			.then(function () {
 				// always executed
@@ -303,6 +308,7 @@ const Index = ({}) => {
 	};
 
 	const retriaveSubjectsExam = async () => {
+		setLoading(true);
 		axios
 			.get('http://localhost:3000/api/subjectsExam')
 			.then(function (response) {
@@ -323,10 +329,13 @@ const Index = ({}) => {
 				}
 
 				setSelectOptionExam(data);
+				setLoading(false);
 			})
 			.catch(function (error) {
 				// handle error
+				setLoading(false);
 				console.log(error);
+				notifyError('Something went wrong.');
 			})
 			.then(function () {
 				// always executed
@@ -350,12 +359,85 @@ const Index = ({}) => {
 					};
 					data.push(template);
 				}
-
+				setLoading(false);
 				setSelectOptionFormsExam(data);
 			})
 			.catch(function (error) {
 				// handle error
+				setLoading(false);
 				console.log(error);
+				notifyError('Something went wrong.');
+			})
+			.then(function () {
+				// always executed
+			});
+	};
+
+	const retriaveSubjectsReference = async () => {
+		setLoading(true);
+		axios
+			.get('http://localhost:3000/api/subjectsReference')
+			.then(function (response) {
+				const subjectsFromServer = JSON.parse(JSON.stringify(response.data));
+				// handle success
+				setSubjectReferenceList(subjectsFromServer);
+				setActivateSubjectReferenceList(true);
+				// let data = [];
+				// let template: templateType = {
+				// 	value: '',
+				// 	label: '',
+				// };
+				// for (const selectSubject of subjectsFromServer) {
+				// 	template = {
+				// 		value: selectSubject.id,
+				// 		label: selectSubject.subjectName,
+				// 	};
+				// 	data.push(template);
+				// }
+
+				// setSelectOptionExam(data);
+				setLoading(false);
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+				setActivateSubjectReferenceList(false);
+				setLoading(false);
+				notifyError('Something went wrong.');
+			})
+			.then(function () {
+				// always executed
+			});
+
+		axios
+			.get('http://localhost:3000/api/formsReference')
+			.then(function (response) {
+				const FormsFromServer = JSON.parse(JSON.stringify(response.data));
+				// handle success
+				setFormsReference(FormsFromServer);
+				setActivateFormsReference(true);
+				// let data = [];
+				// let template: templateType = {
+				// 	value: '',
+				// 	label: '',
+				// };
+				// for (const form of FormsFromServer) {
+				// 	template = {
+				// 		value: form.id,
+				// 		label: form.formName,
+				// 	};
+				// 	data.push(template);
+				// }
+
+				// setSelectOptionFormsExam(data);
+				setLoading(false);
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+				setActivateFormsReference(false);
+				notifyError('Something went wrong.');
+				setLoading(false);
 			})
 			.then(function () {
 				// always executed
@@ -363,6 +445,7 @@ const Index = ({}) => {
 	};
 
 	const retriaveSubjects = async () => {
+		setLoading(true);
 		axios
 			.get('http://localhost:3000/api/subjects')
 			.then(function (response) {
@@ -383,10 +466,13 @@ const Index = ({}) => {
 				}
 
 				setSelectOption(data);
+				setLoading(false);
 			})
 			.catch(function (error) {
 				// handle error
 				console.log(error);
+				setLoading(false);
+				notifyError('Something went wrong.');
 			})
 			.then(function () {
 				// always executed
@@ -412,10 +498,13 @@ const Index = ({}) => {
 				}
 
 				setSelectOptionForms(data);
+				setLoading(false);
 			})
 			.catch(function (error) {
 				// handle error
 				console.log(error);
+				notifyError('Something went wrong.');
+				setLoading(false);
 			})
 			.then(function () {
 				// always executed
@@ -423,6 +512,7 @@ const Index = ({}) => {
 	};
 
 	let handleUpdateSubject = (published: boolean, id: number) => {
+		setLoading(true);
 		axios
 			.post('http://localhost:3000/api/updateDraftOrPublished', {
 				id,
@@ -437,6 +527,7 @@ const Index = ({}) => {
 				// handle error
 				console.log(error);
 				notifyError('Error has occured, try later.');
+				setLoading(false);
 			})
 			.then(function () {
 				// always executed
@@ -444,6 +535,7 @@ const Index = ({}) => {
 	};
 
 	let handleUpdatePublishExam = (published: boolean, id: number) => {
+		setLoading(true);
 		axios
 			.post('http://localhost:3000/api/updateDraftOrPublishedExamination', {
 				id,
@@ -458,6 +550,7 @@ const Index = ({}) => {
 				// handle error
 				console.log(error);
 				notifyError('Error has occured, try later.');
+				setLoading(false);
 			})
 			.then(function () {
 				// always executed
@@ -465,6 +558,7 @@ const Index = ({}) => {
 	};
 
 	let handleUpdateSubjectReview = (published: boolean, id: number) => {
+		setLoading(true);
 		axios
 			.post('http://localhost:3000/api/updateDraftOrPublishedsubjectReview', {
 				id,
@@ -479,6 +573,7 @@ const Index = ({}) => {
 				// handle error
 				console.log(error);
 				notifyError('Error has occured, try later.');
+				setLoading(false);
 			})
 			.then(function () {
 				// always executed
@@ -486,6 +581,7 @@ const Index = ({}) => {
 	};
 
 	let handleUpdateSubjectExam = (published: boolean, id: number) => {
+		setLoading(true);
 		axios
 			.post('http://localhost:3000/api/updateDraftOrPublishedExam', {
 				id,
@@ -500,6 +596,33 @@ const Index = ({}) => {
 				// handle error
 				console.log(error);
 				notifyError('Error has occured, try later.');
+				setLoading(false);
+			})
+			.then(function () {
+				// always executed
+			});
+	};
+
+	let handleUpdateSubjectReference = (published: boolean, id: number) => {
+		setLoading(true);
+		axios
+			.post(
+				'http://localhost:3000/api/updateDraftOrPublishedSubjectReference',
+				{
+					id,
+					published: !published,
+				}
+			)
+			.then(function (response) {
+				retriaveSubjectsReference();
+				let jibu: string = response.data.message;
+				notifySuccess(jibu);
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+				notifyError('Error has occured, try later.');
+				setLoading(false);
 			})
 			.then(function () {
 				// always executed
@@ -507,6 +630,7 @@ const Index = ({}) => {
 	};
 
 	let handleUpdateTopic = (published: boolean, id: number) => {
+		setLoading(true);
 		axios
 			.post('http://localhost:3000/api/updateDraftOrPublishedTopic', {
 				id,
@@ -521,6 +645,7 @@ const Index = ({}) => {
 				// handle error
 				console.log(error);
 				notifyError('Error has occured, try later.');
+				setLoading(false);
 			})
 			.then(function () {
 				// always executed
@@ -528,6 +653,7 @@ const Index = ({}) => {
 	};
 
 	let handleUpdateTopicReview = (published: boolean, id: number) => {
+		setLoading(true);
 		axios
 			.post('http://localhost:3000/api/updateDraftOrPublishedTopicReview', {
 				id,
@@ -542,6 +668,7 @@ const Index = ({}) => {
 				// handle error
 				console.log(error);
 				notifyError('Error has occured, try later.');
+				setLoading(false);
 			})
 			.then(function () {
 				// always executed
@@ -549,6 +676,7 @@ const Index = ({}) => {
 	};
 
 	let handleUpdateExamType = (published: boolean, id: number) => {
+		setLoading(true);
 		axios
 			.post('http://localhost:3000/api/updateDraftOrPublishedExamType', {
 				id,
@@ -563,6 +691,7 @@ const Index = ({}) => {
 				// handle error
 				console.log(error);
 				notifyError('Error has occured, try later.');
+				setLoading(false);
 			})
 			.then(function () {
 				// always executed
@@ -570,6 +699,7 @@ const Index = ({}) => {
 	};
 
 	let handleUpdateQuestion = (published: boolean, id: number) => {
+		setLoading(true);
 		axios
 			.post('http://localhost:3000/api/updateDraftOrPublishedQuestions', {
 				id,
@@ -584,6 +714,7 @@ const Index = ({}) => {
 				// handle error
 				console.log(error);
 				notifyError('Error has occured, try later.');
+				setLoading(false);
 			})
 			.then(function () {
 				// always executed
@@ -591,6 +722,7 @@ const Index = ({}) => {
 	};
 
 	let handleUpdateReviewPublished = (published: boolean, id: number) => {
+		setLoading(true);
 		axios
 			.post('http://localhost:3000/api/updateDraftOrPublishedReview', {
 				id,
@@ -605,6 +737,7 @@ const Index = ({}) => {
 				// handle error
 				console.log(error);
 				notifyError('Error has occured, try later.');
+				setLoading(false);
 			})
 			.then(function () {
 				// always executed
@@ -617,6 +750,7 @@ const Index = ({}) => {
 	};
 
 	let retrivalTopics = () => {
+		setLoading(true);
 		axios
 			.get('http://localhost:3000/api/subjects')
 			.then(function (response) {
@@ -637,10 +771,13 @@ const Index = ({}) => {
 				}
 
 				setSelectOption(data);
+				setLoading(false);
 			})
 			.catch(function (error) {
 				// handle error
 				console.log(error);
+				notifyError('Something went wrong.');
+				setLoading(false);
 			})
 			.then(function () {
 				// always executed
@@ -665,10 +802,13 @@ const Index = ({}) => {
 				}
 
 				setSelectOptionForms(data);
+				setLoading(false);
 			})
 			.catch(function (error) {
 				// handle error
 				console.log(error);
+				notifyError('Something went wrong.');
+				setLoading(false);
 			})
 			.then(function () {
 				// always executed
@@ -678,6 +818,7 @@ const Index = ({}) => {
 	//topicsReview
 
 	let retrivalTopicsReview = () => {
+		setLoading(true);
 		axios
 			.get('http://localhost:3000/api/subjectsReview')
 			.then(function (response) {
@@ -698,10 +839,13 @@ const Index = ({}) => {
 				}
 
 				setSelectOptionReview(data);
+				setLoading(false);
 			})
 			.catch(function (error) {
 				// handle error
 				console.log(error);
+				notifyError('Something went wrong.');
+				setLoading(false);
 			})
 			.then(function () {
 				// always executed
@@ -726,10 +870,13 @@ const Index = ({}) => {
 				}
 
 				setSelectOptionFormsReview(data);
+				setLoading(false);
 			})
 			.catch(function (error) {
 				// handle error
 				console.log(error);
+				notifyError('Something went wrong.');
+				setLoading(false);
 			})
 			.then(function () {
 				// always executed
@@ -775,15 +922,18 @@ const Index = ({}) => {
 	let handleSelectedNotesSubject = (value: string) => {
 		setNotesDetails({ ...notesDetails, subjectId: value });
 		setChangerNotes(changerNotes + 1);
+		setActivateNotesDisplay(false);
 	};
 
 	let handleSelectedNotesForm = (value: string) => {
 		setNotesDetails({ ...notesDetails, formId: value });
 		setChangerNotes(changerNotes + 1);
+		setActivateNotesDisplay(false);
 	};
 
 	let handleSelectedNotes = (value: string) => {
 		setNotesDetails({ ...notesDetails, topicId: value });
+		setActivateNotesDisplay(false);
 	};
 
 	//* exam
@@ -791,15 +941,18 @@ const Index = ({}) => {
 	let handleSelectedExamSubject = (value: string) => {
 		setDetailsExam({ ...DetailsExam, subjectId: value });
 		setChangerNotes(changerNotes + 1);
+		setActivateExamDisplay(false);
 	};
 
 	let handleSelectedExamForm = (value: string) => {
 		setDetailsExam({ ...DetailsExam, formId: value });
 		setChangerNotes(changerNotes + 1);
+		setActivateExamDisplay(false);
 	};
 
 	let handleSelectedExam = (value: string) => {
 		setDetailsExam({ ...DetailsExam, examTypeId: value });
+		setActivateExamDisplay(false);
 	};
 
 	//* review
@@ -807,15 +960,18 @@ const Index = ({}) => {
 	let handleSelectedNotesSubjectReview = (value: string) => {
 		setNotesDetailsReview({ ...notesDetailsReview, subjectId: value });
 		setChangerNotes(changerNotes + 1);
+		setActivateQuestionsDisplay(false);
 	};
 
 	let handleSelectedNotesFormReview = (value: string) => {
 		setNotesDetailsReview({ ...notesDetailsReview, formId: value });
 		setChangerNotes(changerNotes + 1);
+		setActivateQuestionsDisplay(false);
 	};
 
 	let handleSelectedNotesReview = (value: string) => {
 		setNotesDetailsReview({ ...notesDetailsReview, topicId: value });
+		setActivateQuestionsDisplay(false);
 	};
 
 	//* question
@@ -823,11 +979,13 @@ const Index = ({}) => {
 	let handleSelectedSubjectQuestion = (value: string) => {
 		setDetailsQuestions({ ...detailsQuestions, subjectId: value });
 		setChangerNotes(changerNotes + 1);
+		setActivateQuestionsDisplay(false);
 	};
 
 	let handleSelectedFormQuestion = (value: string) => {
 		setDetailsQuestions({ ...detailsQuestions, formId: value });
 		setChangerNotes(changerNotes + 1);
+		setActivateQuestionsDisplay(false);
 	};
 
 	let handleSelectedTopicQuestion = (value: string) => {
@@ -845,6 +1003,7 @@ const Index = ({}) => {
 
 	let retriaveTopicsData = () => {
 		if (topicDetails.formId != '' && topicDetails.subjectId != '') {
+			setLoading(true);
 			axios({
 				method: 'post',
 				url: 'http://localhost:3000/api/topics',
@@ -853,19 +1012,20 @@ const Index = ({}) => {
 				.then(function (response) {
 					const topicsFromServer = JSON.parse(JSON.stringify(response.data));
 					// handle success
-					if (topicsFromServer.length != 0) {
+					if (topicsFromServer.length > 0) {
 						setTopics(topicsFromServer);
 						setActivateTopics(true);
-						console.log(topicsFromServer);
 					} else {
 						setActivateTopics(false);
 						notifyError('Ooops, No topics available yet.');
 					}
+					setLoading(false);
 				})
 				.catch(function (error) {
 					// handle error
 					console.log(error);
 					notifyError('Something went wrong.');
+					setLoading(false);
 				})
 				.then(function () {
 					// always executed
@@ -877,6 +1037,7 @@ const Index = ({}) => {
 
 	let retriaveTopicsDataReview = () => {
 		if (topicDetailsReview.formId != '' && topicDetailsReview.subjectId != '') {
+			setLoading(true);
 			axios({
 				method: 'post',
 				url: 'http://localhost:3000/api/topicsReview',
@@ -885,19 +1046,20 @@ const Index = ({}) => {
 				.then(function (response) {
 					const topicsFromServer = JSON.parse(JSON.stringify(response.data));
 					// handle success
-					if (topicsFromServer.length != 0) {
+					if (topicsFromServer.length > 0) {
 						setTopicsReview(topicsFromServer);
 						setActivateTopicsReview(true);
-						console.log(topicsFromServer);
 					} else {
 						setActivateTopics(false);
 						notifyError('Ooops, No topics available yet.');
 					}
+					setLoading(false);
 				})
 				.catch(function (error) {
 					// handle error
 					console.log(error);
 					notifyError('Something went wrong.');
+					setLoading(false);
 				})
 				.then(function () {
 					// always executed
@@ -909,6 +1071,7 @@ const Index = ({}) => {
 
 	let retriaveTopicsDataExamType = () => {
 		if (topicDetailsExam.formId != '' && topicDetailsExam.subjectId != '') {
+			setLoading(true);
 			axios({
 				method: 'post',
 				url: 'http://localhost:3000/api/examType',
@@ -917,19 +1080,20 @@ const Index = ({}) => {
 				.then(function (response) {
 					const topicsFromServer = JSON.parse(JSON.stringify(response.data));
 					// handle success
-					if (topicsFromServer.length != 0) {
+					if (topicsFromServer.length > 0) {
 						setExamTypeList(topicsFromServer);
 						setActivateExamType(true);
-						console.log(topicsFromServer);
 					} else {
 						setActivateExamType(false);
 						notifyError('Ooops, No topics available yet.');
 					}
+					setLoading(false);
 				})
 				.catch(function (error) {
 					// handle error
 					console.log(error);
 					notifyError('Something went wrong.');
+					setLoading(false);
 				})
 				.then(function () {
 					// always executed
@@ -941,6 +1105,7 @@ const Index = ({}) => {
 
 	let retriaveTopicsDataForNotes = () => {
 		if (notesDetails.formId != '' && notesDetails.subjectId != '') {
+			setLoading(true);
 			setActivateNotes(false);
 			axios({
 				method: 'post',
@@ -950,7 +1115,7 @@ const Index = ({}) => {
 				.then(function (response) {
 					const topicsFromServer = JSON.parse(JSON.stringify(response.data));
 					// handle success
-					if (topicsFromServer.length != 0) {
+					if (topicsFromServer.length > 0) {
 						let data = [];
 						let template: templateType = {
 							value: '',
@@ -968,11 +1133,13 @@ const Index = ({}) => {
 					} else {
 						notifyError(`Ooops, No topics available for selection.`);
 					}
+					setLoading(false);
 				})
 				.catch(function (error) {
 					// handle error
 					console.log(error);
 					notifyError('Something went wrong.');
+					setLoading(false);
 				})
 				.then(function () {
 					// always executed
@@ -982,6 +1149,7 @@ const Index = ({}) => {
 
 	let retriaveDataForExam = () => {
 		if (DetailsExam.formId != '' && DetailsExam.subjectId != '') {
+			setLoading(true);
 			setActivateExam(false);
 			setActivateExamDisplay(false);
 			axios({
@@ -992,7 +1160,7 @@ const Index = ({}) => {
 				.then(function (response) {
 					const topicsFromServer = JSON.parse(JSON.stringify(response.data));
 					// handle success
-					if (topicsFromServer.length != 0) {
+					if (topicsFromServer.length > 0) {
 						let data = [];
 						let template: templateType = {
 							value: '',
@@ -1010,13 +1178,15 @@ const Index = ({}) => {
 						setActivateExam(true);
 						setActivateExamDisplay(true);
 					} else {
-						notifyError(`Ooops, No topics available for selection.`);
+						notifyError(`Ooops, No Exam Category  available for selection.`);
 					}
+					setLoading(false);
 				})
 				.catch(function (error) {
 					// handle error
 					console.log(error);
 					notifyError('Something went wrong.');
+					setLoading(false);
 				})
 				.then(function () {
 					// always executed
@@ -1026,6 +1196,7 @@ const Index = ({}) => {
 
 	let retriaveTopicsDataForReview = () => {
 		if (notesDetailsReview.formId != '' && notesDetailsReview.subjectId != '') {
+			setLoading(true);
 			setActivateNotesReview(false);
 			axios({
 				method: 'post',
@@ -1035,7 +1206,7 @@ const Index = ({}) => {
 				.then(function (response) {
 					const topicsFromServer = JSON.parse(JSON.stringify(response.data));
 					// handle success
-					if (topicsFromServer.length != 0) {
+					if (topicsFromServer.length > 0) {
 						let data = [];
 						let template: templateType = {
 							value: '',
@@ -1051,13 +1222,15 @@ const Index = ({}) => {
 						setTopicsNotesReview(data);
 						setActivateNotesReview(true);
 					} else {
-						notifyError(`Ooops, No topics available for selection.`);
+						notifyError(`Ooops, No Review topics available for selection.`);
 					}
+					setLoading(false);
 				})
 				.catch(function (error) {
 					// handle error
 					console.log(error);
 					notifyError('Something went wrong.');
+					setLoading(false);
 				})
 				.then(function () {
 					// always executed
@@ -1065,6 +1238,7 @@ const Index = ({}) => {
 		}
 
 		if (detailsQuestions.formId != '' && detailsQuestions.subjectId != '') {
+			setLoading(true);
 			axios({
 				method: 'post',
 				url: 'http://localhost:3000/api/topicsReview',
@@ -1089,16 +1263,18 @@ const Index = ({}) => {
 						setSelectOptionTopicsQuestions(data);
 						setActivateListTopicReview(true);
 					} else {
-						notifyError(`Ooops, No topics available for selection.`);
+						notifyError(`Ooops, No Review topics available for selection.`);
 						setActivateListTopicReview(false);
 						setActivateListReview(false);
 						setActivateQuestionsDisplay(false);
 					}
+					setLoading(false);
 				})
 				.catch(function (error) {
 					// handle error
 					console.log(error);
 					notifyError('Something went wrong.');
+					setLoading(false);
 				})
 				.then(function () {
 					// always executed
@@ -1110,6 +1286,7 @@ const Index = ({}) => {
 			detailsQuestions.subjectId != '' &&
 			detailsQuestions.topicId != ''
 		) {
+			setLoading(true);
 			axios({
 				method: 'post',
 				url: 'http://localhost:3000/api/review',
@@ -1118,7 +1295,7 @@ const Index = ({}) => {
 				.then(function (response) {
 					const reviewFromServer = JSON.parse(JSON.stringify(response.data));
 					// handle success
-					if (reviewFromServer.length != 0) {
+					if (reviewFromServer.length > 0) {
 						let data = [];
 						let template: templateType = {
 							value: '',
@@ -1134,15 +1311,17 @@ const Index = ({}) => {
 						setSelectOptionReviewQuestions(data);
 						setActivateListReview(true);
 					} else {
-						notifyError(`Ooops, No topics available for selection.`);
+						notifyError(`Ooops, No Review available for selection.`);
 						setActivateQuestionsDisplay(false);
 						setActivateListReview(false);
 					}
+					setLoading(false);
 				})
 				.catch(function (error) {
 					// handle error
 					console.log(error);
 					notifyError('Something went wrong.');
+					setLoading(false);
 				})
 				.then(function () {
 					// always executed
@@ -1156,6 +1335,7 @@ const Index = ({}) => {
 			notesDetails.subjectId != '' &&
 			notesDetails.topicId != ''
 		) {
+			setLoading(true);
 			axios({
 				method: 'post',
 				url: 'http://localhost:3000/api/notes',
@@ -1171,11 +1351,13 @@ const Index = ({}) => {
 						setActivateNotesDisplay(false);
 						notifyError('Ooops, No notes found');
 					}
+					setLoading(false);
 				})
 				.catch(function (error) {
 					// handle error
 					console.log(error);
 					notifyError('Something went wrong.');
+					setLoading(false);
 				})
 				.then(function () {
 					// always executed
@@ -1191,6 +1373,7 @@ const Index = ({}) => {
 			DetailsExam.subjectId != '' &&
 			DetailsExam.examTypeId != ''
 		) {
+			setLoading(true);
 			axios({
 				method: 'post',
 				url: 'http://localhost:3000/api/exam',
@@ -1206,11 +1389,13 @@ const Index = ({}) => {
 						setActivateExamDisplay(false);
 						notifyError('Ooops, No exam found');
 					}
+					setLoading(false);
 				})
 				.catch(function (error) {
 					// handle error
 					console.log(error);
 					notifyError('Something went wrong.');
+					setLoading(false);
 				})
 				.then(function () {
 					// always executed
@@ -1226,6 +1411,7 @@ const Index = ({}) => {
 			notesDetailsReview.subjectId != '' &&
 			notesDetailsReview.topicId != ''
 		) {
+			setLoading(true);
 			axios({
 				method: 'post',
 				url: 'http://localhost:3000/api/review',
@@ -1241,11 +1427,13 @@ const Index = ({}) => {
 						setActivateNotesDisplay(false);
 						notifyError('Ooops, No notes found');
 					}
+					setLoading(false);
 				})
 				.catch(function (error) {
 					// handle error
 					console.log(error);
 					notifyError('Something went wrong.');
+					setLoading(false);
 				})
 				.then(function () {
 					// always executed
@@ -1262,6 +1450,7 @@ const Index = ({}) => {
 			detailsQuestions.topicId != '' &&
 			detailsQuestions.reviewId != ''
 		) {
+			setLoading(true);
 			axios({
 				method: 'post',
 				url: 'http://localhost:3000/api/questions',
@@ -1277,11 +1466,13 @@ const Index = ({}) => {
 						setActivateQuestionsDisplay(false);
 						notifyError('Ooops, No Questions Found');
 					}
+					setLoading(false);
 				})
 				.catch(function (error) {
 					// handle error
 					console.log(error);
 					notifyError('Something went wrong.');
+					setLoading(false);
 				})
 				.then(function () {
 					// always executed
@@ -1329,15 +1520,12 @@ const Index = ({}) => {
 	};
 
 	useEffect(() => {
-		setActivateNotesDisplay(false);
 		retriaveTopicsDataForNotes();
 		retriaveTopicsDataForReview();
 		retriaveDataForExam();
 		setNavActive('Admin');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [changerNotes, navActive]);
-
-	console.log(examTypeList);
 
 	let truncateLimit = 20;
 	function truncate(str: string) {
@@ -1508,716 +1696,756 @@ const Index = ({}) => {
 						</div>
 					</div>
 					{/* //!start of default desplay */}
-					{navValue == '' && (
-						<div className={Styles.rightInnercontainerBody}>
-							<div className={Styles.subject}>
-								<div className={Styles.subjectHeader}>
-									<div className={Styles.subjectHeaderText}>
-										Welcome to the Admin Dashboard
-									</div>
-								</div>
+					<div className={Styles.rightInnercontainerBody}>
+						{loading && (
+							<div className={Styles.loading}>
+								<Loader />
 							</div>
-						</div>
-					)}
-					{/* //! END OF default DISPLAY ONLY */}
-
-					{/* //* START OF NOTES DISPLAY ONLY */}
-					{navValue == 'Notes' && (
-						<div className={Styles.rightInnercontainerBody}>
-							<div className={Styles.subject}>
-								<div className={Styles.subjectHeader}>
-									<div className={Styles.subjectHeaderText}>
-										Notes Management
-									</div>
-									<Link passHref href='/Admin/Notes/Create/Notes'>
-										<div className={Styles.subjectHeaderButton}>
-											Create Notes
-										</div>
-									</Link>
-								</div>
-								<div className={Styles.selectDivTopic}>
-									<SelectMiu
-										displayLabel='Select Subject'
-										show={true}
-										forms={selectOption}
-										handlechange={handleSelectedNotesSubject}
-										value={notesDetails.subjectId}
-									/>
-									<SelectMiu
-										displayLabel='Select Form'
-										show={true}
-										forms={selectOptionForms}
-										handlechange={handleSelectedNotesForm}
-										value={notesDetails.formId}
-									/>
-									{activateNotes && (
-										<SelectMiu
-											displayLabel='Select Topic'
-											show={true}
-											forms={topicsNotes}
-											handlechange={handleSelectedNotes}
-											value={notesDetails.topicId}
-										/>
-									)}
-								</div>
-								<div
-									onClick={retriaveNotesDataNow}
-									className={Styles.subjectHeaderButton}>
-									Retrieve Notes
-								</div>
-								<div className={Styles.subjectBody}>
-									{activateNotesDisplay &&
-										notesData.map((note: notesData) => (
-											<CardBox
-												handleUpdate={handleUpdateNotes}
-												link={`/Admin/Notes/Edit/Note/${note.id}`}
-												label={note.topic.topicName}
-												published={''}
-												id={note.id}
-												key={note.id}
-											/>
-										))}
-								</div>
-							</div>
-						</div>
-					)}
-					{/* //! END OF NOTES DISPLAY ONLY */}
-
-					{/* //* START OF ADD SUBJECT DISPLAY ONLY */}
-					{navValue == 'Subjects' && (
-						<div className={Styles.rightInnercontainerBody}>
-							<div className={Styles.subject}>
-								<div className={Styles.subjectHeader}>
-									<div className={Styles.subjectHeaderText}>
-										Subjects In Notes Management
-									</div>
-									<Link passHref href='/Admin/Notes/Create/Subject'>
-										<div className={Styles.subjectHeaderButton}>
-											Create Subject
-										</div>
-									</Link>
-								</div>
-								<div className={Styles.subjectBody}>
-									{subjects.map(
-										(subject: {
-											subjectName: string;
-											id: number;
-											published: boolean;
-										}) => (
-											<CardBox
-												handleUpdate={handleUpdateSubject}
-												link={'/Admin/Notes/Edit/Subject/' + subject.id}
-												label={subject.subjectName}
-												published={subject.published}
-												id={subject.id}
-												key={subject.id}
-											/>
-										)
-									)}
-								</div>
-							</div>
-						</div>
-					)}
-					{/* //! END OF ADD SUBJECT DISPLAY ONLY */}
-
-					{/* //* START OF ADD TOPIC DISPLAY ONLY */}
-					{navValue == 'Topics' && (
-						<div className={Styles.rightInnercontainerBody}>
-							<div className={Styles.subject}>
-								<div className={Styles.subjectHeader}>
-									<div className={Styles.subjectHeaderText}>
-										Topics In Notes Management
-									</div>
-									<Link passHref href='/Admin/Notes/Create/Topic'>
-										<div className={Styles.subjectHeaderButton}>
-											Create Topic
-										</div>
-									</Link>
-								</div>
-								<div className={Styles.selectDivTopic}>
-									<SelectMiu
-										displayLabel='Select Subject'
-										show={true}
-										forms={selectOption}
-										handlechange={handleSelectedTopicSubject}
-										value={topicDetails.subjectId}
-									/>
-									<SelectMiu
-										displayLabel='Select Form'
-										show={true}
-										forms={selectOptionForms}
-										handlechange={handleSelectedTopicForm}
-										value={topicDetails.formId}
-									/>
-								</div>
-								<div
-									onClick={retriaveTopicsData}
-									className={Styles.subjectHeaderButton}>
-									Retrieve Topics
-								</div>
-								<div className={Styles.subjectBody}>
-									{activateTopics &&
-										topics.map(
-											(topic: {
-												topicName: string;
-												id: number;
-												published: boolean;
-											}) => (
-												<CardBox
-													handleUpdate={handleUpdateTopic}
-													link={'/Admin/Notes/Edit/Topic/' + topic.id}
-													label={topic.topicName}
-													published={topic.published}
-													id={topic.id}
-													key={topic.id}
-												/>
-											)
-										)}
-								</div>
-							</div>
-						</div>
-					)}
-					{/* //! END OF ADD TOPIC DISPLAY ONLY */}
-
-					{/* //* START OF FORM DISPLAY ONLY */}
-					{navValue == 'Forms' && (
-						<div className={Styles.rightInnercontainerBody}>
-							<div className={Styles.subject}>
-								<div className={Styles.subjectHeader}>
-									<div className={Styles.subjectHeaderText}>
-										Forms In Notes Management
-									</div>
-									<Link passHref href='/Admin/Notes/Create/Form'>
-										<div className={Styles.subjectHeaderButton}>
-											Create Form
-										</div>
-									</Link>
-								</div>
-								<div className={Styles.subjectBody}>
-									{forms.map((form: { id: number; formName: string }) => (
-										<CardBox
-											handleUpdate={handleUpdateSubject}
-											link={'/Admin/Notes/Edit/Form/' + form.id}
-											label={form.formName}
-											id={form.id}
-											key={form.id}
-											published={''}
-										/>
-									))}
-								</div>
-							</div>
-						</div>
-					)}
-					{/* //! END OF FORM DISPLAY ONLY */}
-
-					{/* //* START OF SubjectsReview DISPLAY ONLY */}
-					{navValue == 'SubjectsReview' && (
-						<div className={Styles.rightInnercontainerBody}>
-							<div className={Styles.subject}>
-								<div className={Styles.subjectHeader}>
-									<div className={Styles.subjectHeaderText}>
-										Subjects In Review Management
-									</div>
-									<Link passHref href='/Admin/Review/Create/Subject'>
-										<div className={Styles.subjectHeaderButton}>
-											Create Subject in Review
-										</div>
-									</Link>
-								</div>
-								<div className={Styles.subjectBody}>
-									{subjectsReview.map(
-										(subject: {
-											subjectName: string;
-											id: number;
-											published: boolean;
-										}) => (
-											<CardBox
-												handleUpdate={handleUpdateSubjectReview}
-												link={'/Admin/Review/Edit/Subject/' + subject.id}
-												label={subject.subjectName}
-												published={subject.published}
-												id={subject.id}
-												key={subject.id}
-											/>
-										)
-									)}
-								</div>
-							</div>
-						</div>
-					)}
-					{/* //! END OF SubjectsReview DISPLAY ONLY */}
-
-					{/* //* START OF TopicsReview DISPLAY ONLY */}
-					{navValue == 'TopicsReview' && (
-						<div className={Styles.rightInnercontainerBody}>
-							<div className={Styles.subject}>
-								<div className={Styles.subjectHeader}>
-									<div className={Styles.subjectHeaderText}>
-										Topics In Review Management
-									</div>
-									<Link passHref href='/Admin/Review/Create/Topic'>
-										<div className={Styles.subjectHeaderButton}>
-											Create Topic in Review
-										</div>
-									</Link>
-								</div>
-								<div className={Styles.selectDivTopic}>
-									<SelectMiu
-										displayLabel='Select Subject'
-										show={true}
-										forms={selectOptionReview}
-										handlechange={handleSelectedTopicSubjectReview}
-										value={topicDetailsReview.subjectId}
-									/>
-									<SelectMiu
-										displayLabel='Select Form'
-										show={true}
-										forms={selectOptionFormsReview}
-										handlechange={handleSelectedTopicFormReview}
-										value={topicDetailsReview.formId}
-									/>
-								</div>
-								<div
-									onClick={retriaveTopicsDataReview}
-									className={Styles.subjectHeaderButton}>
-									Retrieve Topics
-								</div>
-								<div className={Styles.subjectBody}>
-									{activateTopicsREview &&
-										topicsReview.map(
-											(topic: {
-												topicName: string;
-												id: number;
-												published: boolean;
-											}) => (
-												<CardBox
-													handleUpdate={handleUpdateTopicReview}
-													link={'/Admin/Review/Edit/Topic/' + topic.id}
-													label={topic.topicName}
-													published={topic.published}
-													id={topic.id}
-													key={topic.id}
-												/>
-											)
-										)}
-								</div>
-							</div>
-						</div>
-					)}
-					{/* //! END OF TopicsReview DISPLAY ONLY */}
-
-					{/* //* START OF FormsReview DISPLAY ONLY */}
-					{navValue == 'FormsReview' && (
-						<div className={Styles.rightInnercontainerBody}>
-							<div className={Styles.subject}>
-								<div className={Styles.subjectHeader}>
-									<div className={Styles.subjectHeaderText}>
-										Forms In Review Management
-									</div>
-									<Link passHref href='/Admin/Review/Create/Form'>
-										<div className={Styles.subjectHeaderButton}>
-											Create Form in Review
-										</div>
-									</Link>
-								</div>
-								<div className={Styles.subjectBody}>
-									{formsReview.map((form: { id: number; formName: string }) => (
-										<CardBox
-											handleUpdate={handleUpdateSubject}
-											link={'/Admin/Review/Edit/Form/' + form.id}
-											label={form.formName}
-											id={form.id}
-											key={form.id}
-											published={''}
-										/>
-									))}
-								</div>
-							</div>
-						</div>
-					)}
-					{/* //! END OF FormsReview DISPLAY ONLY */}
-
-					{/* //* START OF REVIEW DISPLAY ONLY */}
-					{navValue == 'Review' && (
-						<div className={Styles.rightInnercontainerBody}>
-							<div className={Styles.subject}>
-								<div className={Styles.subjectHeader}>
-									<div className={Styles.subjectHeaderText}>
-										Review Management
-									</div>
-									<Link passHref href='/Admin/Review/Create/Review'>
-										<div className={Styles.subjectHeaderButton}>
-											Create Review
-										</div>
-									</Link>
-								</div>
-								<div className={Styles.selectDivTopic}>
-									<SelectMiu
-										displayLabel='Select Subject'
-										show={true}
-										forms={selectOptionReview}
-										handlechange={handleSelectedNotesSubjectReview}
-										value={notesDetailsReview.subjectId}
-									/>
-									<SelectMiu
-										displayLabel='Select Form'
-										show={true}
-										forms={selectOptionFormsReview}
-										handlechange={handleSelectedNotesFormReview}
-										value={notesDetailsReview.formId}
-									/>
-									{activateNotesReview && (
-										<SelectMiu
-											displayLabel='Select Topic'
-											show={true}
-											forms={topicsNotesReview}
-											handlechange={handleSelectedNotesReview}
-											value={notesDetailsReview.topicId}
-										/>
-									)}
-								</div>
-								<div
-									onClick={retriaveReviewDataNow}
-									className={Styles.subjectHeaderButton}>
-									Retrieve Notes
-								</div>
-								<div className={Styles.subjectBody}>
-									{activateNotesDisplay &&
-										reviewData.map((review: review) => (
-											<CardBox
-												handleUpdate={handleUpdateReviewPublished}
-												link={`/Admin/Review/Edit/Review/${review.id}`}
-												label={review.name}
-												published={review.published}
-												id={review.id}
-												key={review.id}
-											/>
-										))}
-								</div>
-							</div>
-						</div>
-					)}
-					{/* //! END OF REVIEW DISPLAY ONLY */}
-
-					{/* //* START OF QUESTIONS DISPLAY ONLY */}
-					{navValue == 'Questions' && (
-						<div className={Styles.rightInnercontainerBody}>
-							<div className={Styles.subject}>
-								<div className={Styles.subjectHeader}>
-									<div className={Styles.subjectHeaderText}>
-										Questions Management
-									</div>
-									<Link passHref href='/Admin/Review/Create/Question'>
-										<a>
-											<div className={Styles.subjectHeaderButton}>
-												Create Question
+						)}
+						{!loading && (
+							<>
+								{navValue == '' && (
+									<div className={Styles.rightInnercontainerBody}>
+										<div className={Styles.subject}>
+											<div className={Styles.subjectHeader}>
+												<div className={Styles.subjectHeaderText}>
+													Welcome to the Admin Dashboard
+												</div>
 											</div>
-										</a>
-									</Link>
-								</div>
-								<div className={Styles.selectDivTopic}>
-									<SelectMiu
-										displayLabel='Select Subject'
-										show={true}
-										forms={selectOptionReview}
-										handlechange={handleSelectedSubjectQuestion}
-										value={detailsQuestions.subjectId}
-									/>
-									<SelectMiu
-										displayLabel='Select Form'
-										show={true}
-										forms={selectOptionFormsReview}
-										handlechange={handleSelectedFormQuestion}
-										value={detailsQuestions.formId}
-									/>
-									{activateListTopicReview && (
-										<SelectMiu
-											displayLabel='Select Topic'
-											show={true}
-											forms={selectOptionTopicsQuestions}
-											handlechange={handleSelectedTopicQuestion}
-											value={detailsQuestions.topicId}
-										/>
-									)}
-									{activateListReview && (
-										<SelectMiu
-											displayLabel='Select Review'
-											show={true}
-											forms={selectOptionReviewQuestions}
-											handlechange={handleSelectedReviewQuestion}
-											value={detailsQuestions.reviewId}
-										/>
-									)}
-								</div>
-								<div
-									onClick={retriaveReviewDataNowForQuestions}
-									className={Styles.subjectHeaderButton}>
-									Retrieve Questions
-								</div>
+										</div>
+									</div>
+								)}
+								{/* //! END OF default DISPLAY ONLY */}
 
-								<div className={Styles.subjectBody}>
-									{activateQuestionsDisplay &&
-										questionData.map((question: question, index) => (
-											<CardBox
-												handleUpdate={handleUpdateQuestion}
-												link={`/Admin/Review/Edit/Question/${question.id}`}
-												label={(index + 1).toString()}
-												published={question.published}
-												id={question.id}
-												key={question.id}
-											/>
-										))}
-								</div>
-							</div>
-						</div>
-					)}
-					{/* //! END OF QUESTIONS DISPLAY ONLY */}
-					{/* //!start of SUBJECT EXAM desplay */}
-					{navValue == 'SubjectsExam' && (
-						<div className={Styles.rightInnercontainerBody}>
-							<div className={Styles.subject}>
-								<div className={Styles.subjectHeader}>
-									<div className={Styles.subjectHeaderText}>
-										Subjects In Exam Management
-									</div>
-									<Link passHref href='/Admin/Exam/Create/Subject'>
-										<div className={Styles.subjectHeaderButton}>
-											Create Subject in Exam
-										</div>
-									</Link>
-								</div>
-								<div className={Styles.subjectBody}>
-									{subjectExamList.map(
-										(subject: {
-											subjectName: string;
-											id: number;
-											published: boolean;
-										}) => (
-											<CardBox
-												handleUpdate={handleUpdateSubjectExam}
-												link={'/Admin/Exam/Edit/Subject/' + subject.id}
-												label={subject.subjectName}
-												published={subject.published}
-												id={subject.id}
-												key={subject.id}
-											/>
-										)
-									)}
-								</div>
-							</div>
-						</div>
-					)}
-					{/* //! END OF SUBJECT EXAM DISPLAY ONLY */}
-					{navValue == 'FormsExam' && (
-						<div className={Styles.rightInnercontainerBody}>
-							<div className={Styles.subject}>
-								<div className={Styles.subjectHeader}>
-									<div className={Styles.subjectHeaderText}>
-										Forms In Exam Management
-									</div>
-									<Link passHref href='/Admin/Exam/Create/Form'>
-										<div className={Styles.subjectHeaderButton}>
-											Create Form in Exam
-										</div>
-									</Link>
-								</div>
-								<div className={Styles.subjectBody}>
-									{formsExam.map((form: { id: number; formName: string }) => (
-										<CardBox
-											handleUpdate={handleUpdateSubjectExam}
-											link={'/Admin/Exam/Edit/Form/' + form.id}
-											label={form.formName}
-											id={form.id}
-											key={form.id}
-											published={''}
-										/>
-									))}
-								</div>
-							</div>
-						</div>
-					)}
-					{/* //! END OF FORM EXAM DISPLAY ONLY */}
-					{navValue == 'ExamType' && (
-						<div className={Styles.rightInnercontainerBody}>
-							<div className={Styles.subject}>
-								<div className={Styles.subjectHeader}>
-									<div className={Styles.subjectHeaderText}>
-										Exam Types In Exam Management
-									</div>
-									<Link passHref href='/Admin/Exam/Create/ExamType'>
-										<div className={Styles.subjectHeaderButton}>
-											Create Exam Type
-										</div>
-									</Link>
-								</div>
-								<div className={Styles.selectDivTopic}>
-									<SelectMiu
-										displayLabel='Select Subject'
-										show={true}
-										forms={selectOptionExam}
-										handlechange={handleSelectedTopicSubjectExam}
-										value={topicDetailsExam.subjectId}
-									/>
-									<SelectMiu
-										displayLabel='Select Form'
-										show={true}
-										forms={selectOptionFormsExam}
-										handlechange={handleSelectedTopicFormExam}
-										value={topicDetailsExam.formId}
-									/>
-								</div>
-								<div
-									onClick={retriaveTopicsDataExamType}
-									className={Styles.subjectHeaderButton}>
-									Retrieve Exam Type
-								</div>
-								<div className={Styles.subjectBody}>
-									{activateExamType &&
-										examTypeList.map(
-											(examType: {
-												name: string;
-												id: number;
-												published: boolean;
-											}) => (
-												<CardBox
-													handleUpdate={handleUpdateExamType}
-													link={'/Admin/Exam/Edit/examType/' + examType.id}
-													label={examType.name}
-													published={examType.published}
-													id={examType.id}
-													key={examType.id}
+								{/* //* START OF NOTES DISPLAY ONLY */}
+								{navValue == 'Notes' && (
+									<div className={Styles.rightInnercontainerBody}>
+										<div className={Styles.subject}>
+											<div className={Styles.subjectHeader}>
+												<div className={Styles.subjectHeaderText}>
+													Notes Management
+												</div>
+												<Link passHref href='/Admin/Notes/Create/Notes'>
+													<div className={Styles.subjectHeaderButton}>
+														Create Notes
+													</div>
+												</Link>
+											</div>
+											<div className={Styles.selectDivTopic}>
+												<SelectMiu
+													displayLabel='Select Subject'
+													show={true}
+													forms={selectOption}
+													handlechange={handleSelectedNotesSubject}
+													value={notesDetails.subjectId}
 												/>
-											)
-										)}
-								</div>
-							</div>
-						</div>
-					)}
-					{/* //! END OF EXAM TYPE  DISPLAY ONLY */}
-					{navValue == 'Exam' && (
-						<div className={Styles.rightInnercontainerBody}>
-							<div className={Styles.subject}>
-								<div className={Styles.subjectHeader}>
-									<div className={Styles.subjectHeaderText}>
-										Exam Management
-									</div>
-									<Link passHref href='/Admin/Exam/Create/Exam'>
-										<div className={Styles.subjectHeaderButton}>
-											Create Exam
+												<SelectMiu
+													displayLabel='Select Form'
+													show={true}
+													forms={selectOptionForms}
+													handlechange={handleSelectedNotesForm}
+													value={notesDetails.formId}
+												/>
+												{activateNotes && (
+													<SelectMiu
+														displayLabel='Select Topic'
+														show={true}
+														forms={topicsNotes}
+														handlechange={handleSelectedNotes}
+														value={notesDetails.topicId}
+													/>
+												)}
+											</div>
+											<div
+												onClick={retriaveNotesDataNow}
+												className={Styles.subjectHeaderButton}>
+												Retrieve Notes
+											</div>
+											<div className={Styles.subjectBody}>
+												{activateNotesDisplay &&
+													notesData.map((note: notesData) => (
+														<CardBox
+															handleUpdate={handleUpdateNotes}
+															link={`/Admin/Notes/Edit/Note/${note.id}`}
+															label={note.topic.topicName}
+															published={''}
+															id={note.id}
+															key={note.id}
+														/>
+													))}
+											</div>
 										</div>
-									</Link>
-								</div>
-								<div className={Styles.selectDivTopic}>
-									<SelectMiu
-										displayLabel='Select Subject'
-										show={true}
-										forms={selectOptionExam}
-										handlechange={handleSelectedExamSubject}
-										value={DetailsExam.subjectId}
-									/>
-									<SelectMiu
-										displayLabel='Select Form'
-										show={true}
-										forms={selectOptionFormsExam}
-										handlechange={handleSelectedExamForm}
-										value={DetailsExam.formId}
-									/>
-									{activateExam && (
-										<SelectMiu
-											displayLabel='Select Exam Category'
-											show={true}
-											forms={examListSelect}
-											handlechange={handleSelectedExam}
-											value={DetailsExam.examTypeId}
-										/>
-									)}
-								</div>
-								<div
-									onClick={retriaveExamDataNow}
-									className={Styles.subjectHeaderButton}>
-									Retrieve Exams
-								</div>
-								<div className={Styles.subjectBody}>
-									{activateExamDisplay &&
-										examData.map((exam: exam) => (
-											<CardBox
-												handleUpdate={handleUpdatePublishExam}
-												link={`/Admin/Exam/Edit/Exam/${exam.id}`}
-												label={`${truncate(exam.description)}  ${exam.year}${
-													exam.hasAnswers ? `  [SOLVED]` : ''
-												}`}
-												published={exam.published}
-												id={exam.id}
-												key={exam.id}
-											/>
-										))}
-								</div>
-							</div>
-						</div>
-					)}
-					{/* //! END OF EXAM DISPLAY ONLY */}
-					{/* //!start of subject Reference desplay */}
-					{navValue == 'SubjectReference' && (
-						<div className={Styles.rightInnercontainerBody}>
-							<div className={Styles.subject}>
-								<div className={Styles.subjectHeader}>
-									<div className={Styles.subjectHeaderText}>
-										Subjects In Reference Management
 									</div>
-									<Link passHref href='/Admin/Reference/Create/Subject'>
-										<div className={Styles.subjectHeaderButton}>
-											Create Subject in Reference
+								)}
+								{/* //! END OF NOTES DISPLAY ONLY */}
+
+								{/* //* START OF ADD SUBJECT DISPLAY ONLY */}
+								{navValue == 'Subjects' && (
+									<div className={Styles.rightInnercontainerBody}>
+										<div className={Styles.subject}>
+											<div className={Styles.subjectHeader}>
+												<div className={Styles.subjectHeaderText}>
+													Subjects In Notes Management
+												</div>
+												<Link passHref href='/Admin/Notes/Create/Subject'>
+													<div className={Styles.subjectHeaderButton}>
+														Create Subject
+													</div>
+												</Link>
+											</div>
+											<div className={Styles.subjectBody}>
+												{subjects.map(
+													(subject: {
+														subjectName: string;
+														id: number;
+														published: boolean;
+													}) => (
+														<CardBox
+															handleUpdate={handleUpdateSubject}
+															link={'/Admin/Notes/Edit/Subject/' + subject.id}
+															label={subject.subjectName}
+															published={subject.published}
+															id={subject.id}
+															key={subject.id}
+														/>
+													)
+												)}
+											</div>
 										</div>
-									</Link>
-								</div>
-								<div className={Styles.subjectBody}>
-									{subjectExamList.map(
-										(subject: {
-											subjectName: string;
-											id: number;
-											published: boolean;
-										}) => (
-											<CardBox
-												handleUpdate={handleUpdateSubjectExam}
-												link={'/Admin/Exam/Edit/Subject/' + subject.id}
-												label={subject.subjectName}
-												published={subject.published}
-												id={subject.id}
-												key={subject.id}
-											/>
-										)
-									)}
-								</div>
-							</div>
-						</div>
-					)}
-					{/* //! END OF subject Reference DISPLAY ONLY */}
-					{/* //!start of form reference desplay */}
-					{navValue == 'FormReference' && (
-						<div className={Styles.rightInnercontainerBody}>
-							<div className={Styles.subject}>
-								<div className={Styles.subjectHeader}>
-									<div className={Styles.subjectHeaderText}>
-										Welcome to the form reference Dashboard
 									</div>
-								</div>
-							</div>
-						</div>
-					)}
-					{/* //! END OF form reference DISPLAY ONLY */}
-					{/* //!start of reference desplay */}
-					{navValue == 'Reference' && (
-						<div className={Styles.rightInnercontainerBody}>
-							<div className={Styles.subject}>
-								<div className={Styles.subjectHeader}>
-									<div className={Styles.subjectHeaderText}>
-										Welcome to the reference Dashboard
+								)}
+								{/* //! END OF ADD SUBJECT DISPLAY ONLY */}
+
+								{/* //* START OF ADD TOPIC DISPLAY ONLY */}
+								{navValue == 'Topics' && (
+									<div className={Styles.rightInnercontainerBody}>
+										<div className={Styles.subject}>
+											<div className={Styles.subjectHeader}>
+												<div className={Styles.subjectHeaderText}>
+													Topics In Notes Management
+												</div>
+												<Link passHref href='/Admin/Notes/Create/Topic'>
+													<div className={Styles.subjectHeaderButton}>
+														Create Topic
+													</div>
+												</Link>
+											</div>
+											<div className={Styles.selectDivTopic}>
+												<SelectMiu
+													displayLabel='Select Subject'
+													show={true}
+													forms={selectOption}
+													handlechange={handleSelectedTopicSubject}
+													value={topicDetails.subjectId}
+												/>
+												<SelectMiu
+													displayLabel='Select Form'
+													show={true}
+													forms={selectOptionForms}
+													handlechange={handleSelectedTopicForm}
+													value={topicDetails.formId}
+												/>
+											</div>
+											<div
+												onClick={retriaveTopicsData}
+												className={Styles.subjectHeaderButton}>
+												Retrieve Topics
+											</div>
+											<div className={Styles.subjectBody}>
+												{activateTopics &&
+													topics.map(
+														(topic: {
+															topicName: string;
+															id: number;
+															published: boolean;
+														}) => (
+															<CardBox
+																handleUpdate={handleUpdateTopic}
+																link={'/Admin/Notes/Edit/Topic/' + topic.id}
+																label={topic.topicName}
+																published={topic.published}
+																id={topic.id}
+																key={topic.id}
+															/>
+														)
+													)}
+											</div>
+										</div>
 									</div>
-								</div>
-							</div>
-						</div>
-					)}
-					{/* //! END OF reference DISPLAY ONLY */}
+								)}
+								{/* //! END OF ADD TOPIC DISPLAY ONLY */}
+
+								{/* //* START OF FORM DISPLAY ONLY */}
+								{navValue == 'Forms' && (
+									<div className={Styles.rightInnercontainerBody}>
+										<div className={Styles.subject}>
+											<div className={Styles.subjectHeader}>
+												<div className={Styles.subjectHeaderText}>
+													Forms In Notes Management
+												</div>
+												<Link passHref href='/Admin/Notes/Create/Form'>
+													<div className={Styles.subjectHeaderButton}>
+														Create Form
+													</div>
+												</Link>
+											</div>
+											<div className={Styles.subjectBody}>
+												{forms.map((form: { id: number; formName: string }) => (
+													<CardBox
+														handleUpdate={handleUpdateSubject}
+														link={'/Admin/Notes/Edit/Form/' + form.id}
+														label={form.formName}
+														id={form.id}
+														key={form.id}
+														published={''}
+													/>
+												))}
+											</div>
+										</div>
+									</div>
+								)}
+								{/* //! END OF FORM DISPLAY ONLY */}
+
+								{/* //* START OF SubjectsReview DISPLAY ONLY */}
+								{navValue == 'SubjectsReview' && (
+									<div className={Styles.rightInnercontainerBody}>
+										<div className={Styles.subject}>
+											<div className={Styles.subjectHeader}>
+												<div className={Styles.subjectHeaderText}>
+													Subjects In Review Management
+												</div>
+												<Link passHref href='/Admin/Review/Create/Subject'>
+													<div className={Styles.subjectHeaderButton}>
+														Create Subject in Review
+													</div>
+												</Link>
+											</div>
+											<div className={Styles.subjectBody}>
+												{subjectsReview.map(
+													(subject: {
+														subjectName: string;
+														id: number;
+														published: boolean;
+													}) => (
+														<CardBox
+															handleUpdate={handleUpdateSubjectReview}
+															link={'/Admin/Review/Edit/Subject/' + subject.id}
+															label={subject.subjectName}
+															published={subject.published}
+															id={subject.id}
+															key={subject.id}
+														/>
+													)
+												)}
+											</div>
+										</div>
+									</div>
+								)}
+								{/* //! END OF SubjectsReview DISPLAY ONLY */}
+
+								{/* //* START OF TopicsReview DISPLAY ONLY */}
+								{navValue == 'TopicsReview' && (
+									<div className={Styles.rightInnercontainerBody}>
+										<div className={Styles.subject}>
+											<div className={Styles.subjectHeader}>
+												<div className={Styles.subjectHeaderText}>
+													Topics In Review Management
+												</div>
+												<Link passHref href='/Admin/Review/Create/Topic'>
+													<div className={Styles.subjectHeaderButton}>
+														Create Topic in Review
+													</div>
+												</Link>
+											</div>
+											<div className={Styles.selectDivTopic}>
+												<SelectMiu
+													displayLabel='Select Subject'
+													show={true}
+													forms={selectOptionReview}
+													handlechange={handleSelectedTopicSubjectReview}
+													value={topicDetailsReview.subjectId}
+												/>
+												<SelectMiu
+													displayLabel='Select Form'
+													show={true}
+													forms={selectOptionFormsReview}
+													handlechange={handleSelectedTopicFormReview}
+													value={topicDetailsReview.formId}
+												/>
+											</div>
+											<div
+												onClick={retriaveTopicsDataReview}
+												className={Styles.subjectHeaderButton}>
+												Retrieve Topics
+											</div>
+											<div className={Styles.subjectBody}>
+												{activateTopicsREview &&
+													topicsReview.map(
+														(topic: {
+															topicName: string;
+															id: number;
+															published: boolean;
+														}) => (
+															<CardBox
+																handleUpdate={handleUpdateTopicReview}
+																link={'/Admin/Review/Edit/Topic/' + topic.id}
+																label={topic.topicName}
+																published={topic.published}
+																id={topic.id}
+																key={topic.id}
+															/>
+														)
+													)}
+											</div>
+										</div>
+									</div>
+								)}
+								{/* //! END OF TopicsReview DISPLAY ONLY */}
+
+								{/* //* START OF FormsReview DISPLAY ONLY */}
+								{navValue == 'FormsReview' && (
+									<div className={Styles.rightInnercontainerBody}>
+										<div className={Styles.subject}>
+											<div className={Styles.subjectHeader}>
+												<div className={Styles.subjectHeaderText}>
+													Forms In Review Management
+												</div>
+												<Link passHref href='/Admin/Review/Create/Form'>
+													<div className={Styles.subjectHeaderButton}>
+														Create Form in Review
+													</div>
+												</Link>
+											</div>
+											<div className={Styles.subjectBody}>
+												{formsReview.map(
+													(form: { id: number; formName: string }) => (
+														<CardBox
+															handleUpdate={handleUpdateSubject}
+															link={'/Admin/Review/Edit/Form/' + form.id}
+															label={form.formName}
+															id={form.id}
+															key={form.id}
+															published={''}
+														/>
+													)
+												)}
+											</div>
+										</div>
+									</div>
+								)}
+								{/* //! END OF FormsReview DISPLAY ONLY */}
+
+								{/* //* START OF REVIEW DISPLAY ONLY */}
+								{navValue == 'Review' && (
+									<div className={Styles.rightInnercontainerBody}>
+										<div className={Styles.subject}>
+											<div className={Styles.subjectHeader}>
+												<div className={Styles.subjectHeaderText}>
+													Review Management
+												</div>
+												<Link passHref href='/Admin/Review/Create/Review'>
+													<div className={Styles.subjectHeaderButton}>
+														Create Review
+													</div>
+												</Link>
+											</div>
+											<div className={Styles.selectDivTopic}>
+												<SelectMiu
+													displayLabel='Select Subject'
+													show={true}
+													forms={selectOptionReview}
+													handlechange={handleSelectedNotesSubjectReview}
+													value={notesDetailsReview.subjectId}
+												/>
+												<SelectMiu
+													displayLabel='Select Form'
+													show={true}
+													forms={selectOptionFormsReview}
+													handlechange={handleSelectedNotesFormReview}
+													value={notesDetailsReview.formId}
+												/>
+												{activateNotesReview && (
+													<SelectMiu
+														displayLabel='Select Topic'
+														show={true}
+														forms={topicsNotesReview}
+														handlechange={handleSelectedNotesReview}
+														value={notesDetailsReview.topicId}
+													/>
+												)}
+											</div>
+											<div
+												onClick={retriaveReviewDataNow}
+												className={Styles.subjectHeaderButton}>
+												Retrieve Notes
+											</div>
+											<div className={Styles.subjectBody}>
+												{activateNotesDisplay &&
+													reviewData.map((review: review) => (
+														<CardBox
+															handleUpdate={handleUpdateReviewPublished}
+															link={`/Admin/Review/Edit/Review/${review.id}`}
+															label={review.name}
+															published={review.published}
+															id={review.id}
+															key={review.id}
+														/>
+													))}
+											</div>
+										</div>
+									</div>
+								)}
+								{/* //! END OF REVIEW DISPLAY ONLY */}
+
+								{/* //* START OF QUESTIONS DISPLAY ONLY */}
+								{navValue == 'Questions' && (
+									<div className={Styles.rightInnercontainerBody}>
+										<div className={Styles.subject}>
+											<div className={Styles.subjectHeader}>
+												<div className={Styles.subjectHeaderText}>
+													Questions Management
+												</div>
+												<Link passHref href='/Admin/Review/Create/Question'>
+													<a>
+														<div className={Styles.subjectHeaderButton}>
+															Create Question
+														</div>
+													</a>
+												</Link>
+											</div>
+											<div className={Styles.selectDivTopic}>
+												<SelectMiu
+													displayLabel='Select Subject'
+													show={true}
+													forms={selectOptionReview}
+													handlechange={handleSelectedSubjectQuestion}
+													value={detailsQuestions.subjectId}
+												/>
+												<SelectMiu
+													displayLabel='Select Form'
+													show={true}
+													forms={selectOptionFormsReview}
+													handlechange={handleSelectedFormQuestion}
+													value={detailsQuestions.formId}
+												/>
+												{activateListTopicReview && (
+													<SelectMiu
+														displayLabel='Select Topic'
+														show={true}
+														forms={selectOptionTopicsQuestions}
+														handlechange={handleSelectedTopicQuestion}
+														value={detailsQuestions.topicId}
+													/>
+												)}
+												{activateListReview && (
+													<SelectMiu
+														displayLabel='Select Review'
+														show={true}
+														forms={selectOptionReviewQuestions}
+														handlechange={handleSelectedReviewQuestion}
+														value={detailsQuestions.reviewId}
+													/>
+												)}
+											</div>
+											<div
+												onClick={retriaveReviewDataNowForQuestions}
+												className={Styles.subjectHeaderButton}>
+												Retrieve Questions
+											</div>
+
+											<div className={Styles.subjectBody}>
+												{activateQuestionsDisplay &&
+													questionData.map((question: question, index) => (
+														<CardBox
+															handleUpdate={handleUpdateQuestion}
+															link={`/Admin/Review/Edit/Question/${question.id}`}
+															label={(index + 1).toString()}
+															published={question.published}
+															id={question.id}
+															key={question.id}
+														/>
+													))}
+											</div>
+										</div>
+									</div>
+								)}
+								{/* //! END OF QUESTIONS DISPLAY ONLY */}
+								{/* //!start of SUBJECT EXAM desplay */}
+								{navValue == 'SubjectsExam' && (
+									<div className={Styles.rightInnercontainerBody}>
+										<div className={Styles.subject}>
+											<div className={Styles.subjectHeader}>
+												<div className={Styles.subjectHeaderText}>
+													Subjects In Exam Management
+												</div>
+												<Link passHref href='/Admin/Exam/Create/Subject'>
+													<div className={Styles.subjectHeaderButton}>
+														Create Subject in Exam
+													</div>
+												</Link>
+											</div>
+											<div className={Styles.subjectBody}>
+												{subjectExamList.map(
+													(subject: {
+														subjectName: string;
+														id: number;
+														published: boolean;
+													}) => (
+														<CardBox
+															handleUpdate={handleUpdateSubjectExam}
+															link={'/Admin/Exam/Edit/Subject/' + subject.id}
+															label={subject.subjectName}
+															published={subject.published}
+															id={subject.id}
+															key={subject.id}
+														/>
+													)
+												)}
+											</div>
+										</div>
+									</div>
+								)}
+								{/* //! END OF SUBJECT EXAM DISPLAY ONLY */}
+								{navValue == 'FormsExam' && (
+									<div className={Styles.rightInnercontainerBody}>
+										<div className={Styles.subject}>
+											<div className={Styles.subjectHeader}>
+												<div className={Styles.subjectHeaderText}>
+													Forms In Exam Management
+												</div>
+												<Link passHref href='/Admin/Exam/Create/Form'>
+													<div className={Styles.subjectHeaderButton}>
+														Create Form in Exam
+													</div>
+												</Link>
+											</div>
+											<div className={Styles.subjectBody}>
+												{formsExam.map(
+													(form: { id: number; formName: string }) => (
+														<CardBox
+															handleUpdate={handleUpdateSubjectExam}
+															link={'/Admin/Exam/Edit/Form/' + form.id}
+															label={form.formName}
+															id={form.id}
+															key={form.id}
+															published={''}
+														/>
+													)
+												)}
+											</div>
+										</div>
+									</div>
+								)}
+								{/* //! END OF FORM EXAM DISPLAY ONLY */}
+								{navValue == 'ExamType' && (
+									<div className={Styles.rightInnercontainerBody}>
+										<div className={Styles.subject}>
+											<div className={Styles.subjectHeader}>
+												<div className={Styles.subjectHeaderText}>
+													Exam Types In Exam Management
+												</div>
+												<Link passHref href='/Admin/Exam/Create/ExamType'>
+													<div className={Styles.subjectHeaderButton}>
+														Create Exam Type
+													</div>
+												</Link>
+											</div>
+											<div className={Styles.selectDivTopic}>
+												<SelectMiu
+													displayLabel='Select Subject'
+													show={true}
+													forms={selectOptionExam}
+													handlechange={handleSelectedTopicSubjectExam}
+													value={topicDetailsExam.subjectId}
+												/>
+												<SelectMiu
+													displayLabel='Select Form'
+													show={true}
+													forms={selectOptionFormsExam}
+													handlechange={handleSelectedTopicFormExam}
+													value={topicDetailsExam.formId}
+												/>
+											</div>
+											<div
+												onClick={retriaveTopicsDataExamType}
+												className={Styles.subjectHeaderButton}>
+												Retrieve Exam Type
+											</div>
+											<div className={Styles.subjectBody}>
+												{activateExamType &&
+													examTypeList.map(
+														(examType: {
+															name: string;
+															id: number;
+															published: boolean;
+														}) => (
+															<CardBox
+																handleUpdate={handleUpdateExamType}
+																link={
+																	'/Admin/Exam/Edit/examType/' + examType.id
+																}
+																label={examType.name}
+																published={examType.published}
+																id={examType.id}
+																key={examType.id}
+															/>
+														)
+													)}
+											</div>
+										</div>
+									</div>
+								)}
+								{/* //! END OF EXAM TYPE  DISPLAY ONLY */}
+								{navValue == 'Exam' && (
+									<div className={Styles.rightInnercontainerBody}>
+										<div className={Styles.subject}>
+											<div className={Styles.subjectHeader}>
+												<div className={Styles.subjectHeaderText}>
+													Exam Management
+												</div>
+												<Link passHref href='/Admin/Exam/Create/Exam'>
+													<div className={Styles.subjectHeaderButton}>
+														Create Exam
+													</div>
+												</Link>
+											</div>
+											<div className={Styles.selectDivTopic}>
+												<SelectMiu
+													displayLabel='Select Subject'
+													show={true}
+													forms={selectOptionExam}
+													handlechange={handleSelectedExamSubject}
+													value={DetailsExam.subjectId}
+												/>
+												<SelectMiu
+													displayLabel='Select Form'
+													show={true}
+													forms={selectOptionFormsExam}
+													handlechange={handleSelectedExamForm}
+													value={DetailsExam.formId}
+												/>
+												{activateExam && (
+													<SelectMiu
+														displayLabel='Select Exam Category'
+														show={true}
+														forms={examListSelect}
+														handlechange={handleSelectedExam}
+														value={DetailsExam.examTypeId}
+													/>
+												)}
+											</div>
+											<div
+												onClick={retriaveExamDataNow}
+												className={Styles.subjectHeaderButton}>
+												Retrieve Exams
+											</div>
+											<div className={Styles.subjectBody}>
+												{activateExamDisplay &&
+													examData.map((exam: exam) => (
+														<CardBox
+															handleUpdate={handleUpdatePublishExam}
+															link={`/Admin/Exam/Edit/Exam/${exam.id}`}
+															label={`${truncate(exam.description)}  ${
+																exam.year
+															}${exam.hasAnswers ? `  [SOLVED]` : ''}`}
+															published={exam.published}
+															id={exam.id}
+															key={exam.id}
+														/>
+													))}
+											</div>
+										</div>
+									</div>
+								)}
+								{/* //! END OF EXAM DISPLAY ONLY */}
+								{/* //!start of subject Reference desplay */}
+								{navValue == 'SubjectReference' && (
+									<div className={Styles.rightInnercontainerBody}>
+										<div className={Styles.subject}>
+											<div className={Styles.subjectHeader}>
+												<div className={Styles.subjectHeaderText}>
+													Subjects In Reference Management
+												</div>
+												<Link passHref href='/Admin/Reference/Create/Subject'>
+													<div className={Styles.subjectHeaderButton}>
+														Create Subject in Reference
+													</div>
+												</Link>
+											</div>
+											<div className={Styles.subjectBody}>
+												{activateSubjectReferenceList &&
+													subjectReferenceList.map(
+														(subject: {
+															subjectName: string;
+															id: number;
+															published: boolean;
+														}) => (
+															<CardBox
+																handleUpdate={handleUpdateSubjectReference}
+																link={
+																	'/Admin/Reference/Edit/Subject/' + subject.id
+																}
+																label={subject.subjectName}
+																published={subject.published}
+																id={subject.id}
+																key={subject.id}
+															/>
+														)
+													)}
+											</div>
+										</div>
+									</div>
+								)}
+								{/* //! END OF subject Reference DISPLAY ONLY */}
+								{/* //!start of form reference desplay */}
+								{navValue == 'FormReference' && (
+									<div className={Styles.rightInnercontainerBody}>
+										<div className={Styles.subject}>
+											<div className={Styles.subjectHeader}>
+												<div className={Styles.subjectHeaderText}>
+													Forms In Exam Management
+												</div>
+												<Link passHref href='/Admin/Reference/Create/Form'>
+													<div className={Styles.subjectHeaderButton}>
+														Create Form in Reference
+													</div>
+												</Link>
+											</div>
+											<div className={Styles.subjectBody}>
+												{activateFormsReference &&
+													formsReference.map(
+														(form: { id: number; formName: string }) => (
+															<CardBox
+																handleUpdate={handleUpdateSubjectExam}
+																link={'/Admin/Reference/Edit/Form/' + form.id}
+																label={form.formName}
+																id={form.id}
+																key={form.id}
+																published={''}
+															/>
+														)
+													)}
+											</div>
+										</div>
+									</div>
+								)}
+								{/* //! END OF form reference DISPLAY ONLY */}
+								{/* //!start of reference desplay */}
+								{navValue == 'Reference' && (
+									<div className={Styles.rightInnercontainerBody}>
+										<div className={Styles.subject}>
+											<div className={Styles.subjectHeader}>
+												<div className={Styles.subjectHeaderText}>
+													Welcome to the reference Dashboard
+												</div>
+											</div>
+										</div>
+									</div>
+								)}
+								{/* //! END OF reference DISPLAY ONLY */}
+							</>
+						)}
+					</div>
 				</div>
 			</div>
 		</div>

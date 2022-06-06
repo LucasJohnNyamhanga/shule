@@ -3,7 +3,6 @@ import InputTextMui from '../../../../components/tools/InputTextMui';
 import { type } from 'os';
 import DisplayChip from '../../../../components/tools/displayChip';
 import { PrismaClient } from '@prisma/client';
-import { InferGetStaticPropsType } from 'next';
 import SelectMiu from '../../../../components/tools/SelectMui';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
@@ -16,7 +15,7 @@ import { NavContext } from '../../../../components/context/StateContext';
 
 export const getServerSideProps: GetServerSideProps = async () => {
 	const prisma = new PrismaClient();
-	const formsFromServer = await prisma.formExams.findMany({
+	const formsFromServer = await prisma.formReference.findMany({
 		select: {
 			id: true,
 			formName: true,
@@ -40,9 +39,9 @@ type dataTypeSelect = {
 }[];
 
 const CreateNotes = ({
-	forms,
-	deactiveteImage,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	forms,
+    	deactiveteImage,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -169,7 +168,7 @@ const CreateNotes = ({
 
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/addSubjectExam',
+			url: 'http://localhost:3000/api/addSubjectReference',
 			data: databaseData,
 		})
 			.then(function (response) {
@@ -228,7 +227,7 @@ const CreateNotes = ({
 		};
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/subjectsExamVerify',
+			url: 'http://localhost:3000/api/subjectsReferenceVerify',
 			data: dataSubject,
 		})
 			.then(function (response) {
