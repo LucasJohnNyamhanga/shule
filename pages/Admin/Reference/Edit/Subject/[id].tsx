@@ -1,6 +1,6 @@
 import React, { ReactNode, useContext, useEffect } from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { prisma } from '../../../../../db/prisma';
+import { PrismaClient } from '@prisma/client';
 import ImageUpload from '../../../../../components/tools/ImageUpload';
 import InputTextMui from '../../../../../components/tools/InputTextMui';
 import { type } from 'os';
@@ -19,7 +19,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	let id = context.params?.id as string;
 	let Id = parseInt(id);
 
-	const subjectServer = await prisma.subjectExams.findUnique({
+	const prisma = new PrismaClient();
+	const subjectServer = await prisma.subjectReference.findUnique({
 		where: {
 			id: Id,
 		},
@@ -40,7 +41,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 	const subject = JSON.parse(JSON.stringify(subjectServer));
 
-	const formsFromServer = await prisma.formExams.findMany({
+	const formsFromServer = await prisma.formReference.findMany({
 		select: {
 			id: true,
 			formName: true,
@@ -213,7 +214,7 @@ const EditSubject = ({
 
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/updateSubjectExam',
+			url: 'http://localhost:3000/api/updateSubjectReference',
 			data: databaseData,
 		})
 			.then(function (response) {

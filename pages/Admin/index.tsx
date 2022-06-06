@@ -2427,8 +2427,55 @@ const Index = ({}) => {
 										<div className={Styles.subject}>
 											<div className={Styles.subjectHeader}>
 												<div className={Styles.subjectHeaderText}>
-													Welcome to the reference Dashboard
+													Reference Management
 												</div>
+												<Link passHref href='/Admin/Reference/Create/Reference'>
+													<div className={Styles.subjectHeaderButton}>
+														Create Reference
+													</div>
+												</Link>
+											</div>
+											<div className={Styles.selectDivTopic}>
+												<SelectMiu
+													displayLabel='Select Subject'
+													show={true}
+													forms={selectOptionExam}
+													handlechange={handleSelectedTopicSubjectExam}
+													value={topicDetailsExam.subjectId}
+												/>
+												<SelectMiu
+													displayLabel='Select Form'
+													show={true}
+													forms={selectOptionFormsExam}
+													handlechange={handleSelectedTopicFormExam}
+													value={topicDetailsExam.formId}
+												/>
+											</div>
+											<div
+												onClick={retriaveTopicsDataExamType}
+												className={Styles.subjectHeaderButton}>
+												Retrieve Exam Type
+											</div>
+											<div className={Styles.subjectBody}>
+												{activateExamType &&
+													examTypeList.map(
+														(examType: {
+															name: string;
+															id: number;
+															published: boolean;
+														}) => (
+															<CardBox
+																handleUpdate={handleUpdateExamType}
+																link={
+																	'/Admin/Exam/Edit/examType/' + examType.id
+																}
+																label={examType.name}
+																published={examType.published}
+																id={examType.id}
+																key={examType.id}
+															/>
+														)
+													)}
 											</div>
 										</div>
 									</div>

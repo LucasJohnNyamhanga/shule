@@ -14,7 +14,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	let id = context.params?.id as string;
 	let Id = parseInt(id);
 
-	const formServer = await prisma.formExams.findUnique({
+	const formServer = await prisma.formReference.findUnique({
 		where: {
 			id: Id,
 		},
@@ -45,8 +45,8 @@ type formData = {
 }[];
 
 const EditForm = ({
-	form,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	form,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const [formData, setFormData] = useState({
 		formName: '',
 		id: '',
@@ -86,7 +86,7 @@ const EditForm = ({
 	let sendToDatabase = () => {
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/updateFormExam',
+			url: 'http://localhost:3000/api/updateFormReference',
 			data: formData,
 		})
 			.then(function (response) {

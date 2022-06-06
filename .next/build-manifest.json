@@ -15,15 +15,15 @@
     "static/development/_middlewareManifest.js"
   ],
   "pages": {
-    "/": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/index.js"
-    ],
     "/Admin": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/Admin.js"
+    ],
+    "/Admin/Reference/Create/Reference": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/Admin/Reference/Create/Reference.js"
     ],
     "/_app": [
       "static/chunks/webpack.js",
