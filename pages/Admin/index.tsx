@@ -1716,7 +1716,6 @@ const Index = ({}) => {
 									</div>
 								)}
 								{/* //! END OF default DISPLAY ONLY */}
-
 								{/* //* START OF NOTES DISPLAY ONLY */}
 								{navValue == 'Notes' && (
 									<div className={Styles.rightInnercontainerBody}>
@@ -1778,7 +1777,6 @@ const Index = ({}) => {
 									</div>
 								)}
 								{/* //! END OF NOTES DISPLAY ONLY */}
-
 								{/* //* START OF ADD SUBJECT DISPLAY ONLY */}
 								{navValue == 'Subjects' && (
 									<div className={Styles.rightInnercontainerBody}>
@@ -1815,7 +1813,6 @@ const Index = ({}) => {
 									</div>
 								)}
 								{/* //! END OF ADD SUBJECT DISPLAY ONLY */}
-
 								{/* //* START OF ADD TOPIC DISPLAY ONLY */}
 								{navValue == 'Topics' && (
 									<div className={Styles.rightInnercontainerBody}>
@@ -1874,7 +1871,6 @@ const Index = ({}) => {
 									</div>
 								)}
 								{/* //! END OF ADD TOPIC DISPLAY ONLY */}
-
 								{/* //* START OF FORM DISPLAY ONLY */}
 								{navValue == 'Forms' && (
 									<div className={Styles.rightInnercontainerBody}>
@@ -1905,7 +1901,6 @@ const Index = ({}) => {
 									</div>
 								)}
 								{/* //! END OF FORM DISPLAY ONLY */}
-
 								{/* //* START OF SubjectsReview DISPLAY ONLY */}
 								{navValue == 'SubjectsReview' && (
 									<div className={Styles.rightInnercontainerBody}>
@@ -1942,7 +1937,6 @@ const Index = ({}) => {
 									</div>
 								)}
 								{/* //! END OF SubjectsReview DISPLAY ONLY */}
-
 								{/* //* START OF TopicsReview DISPLAY ONLY */}
 								{navValue == 'TopicsReview' && (
 									<div className={Styles.rightInnercontainerBody}>
@@ -2001,7 +1995,6 @@ const Index = ({}) => {
 									</div>
 								)}
 								{/* //! END OF TopicsReview DISPLAY ONLY */}
-
 								{/* //* START OF FormsReview DISPLAY ONLY */}
 								{navValue == 'FormsReview' && (
 									<div className={Styles.rightInnercontainerBody}>
@@ -2034,7 +2027,6 @@ const Index = ({}) => {
 									</div>
 								)}
 								{/* //! END OF FormsReview DISPLAY ONLY */}
-
 								{/* //* START OF REVIEW DISPLAY ONLY */}
 								{navValue == 'Review' && (
 									<div className={Styles.rightInnercontainerBody}>
@@ -2096,7 +2088,6 @@ const Index = ({}) => {
 									</div>
 								)}
 								{/* //! END OF REVIEW DISPLAY ONLY */}
-
 								{/* //* START OF QUESTIONS DISPLAY ONLY */}
 								{navValue == 'Questions' && (
 									<div className={Styles.rightInnercontainerBody}>
@@ -2443,6 +2434,7 @@ const Index = ({}) => {
 									</div>
 								)}
 								{/* //! END OF reference DISPLAY ONLY */}
+								{/* //* this below is a fragment to loading.. */}
 							</>
 						)}
 					</div>

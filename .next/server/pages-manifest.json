@@ -2,7 +2,6 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/Admin": "pages/Admin.js",
-  "/api/subjectsReference": "pages/api/subjectsReference.js",
-  "/api/formsReference": "pages/api/formsReference.js"
+  "/api/subjects": "pages/api/subjects.js",
+  "/api/forms": "pages/api/forms.js"
 }
