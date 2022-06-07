@@ -31,6 +31,7 @@ model users {
   exam             exam[]
   subjectReference subjectReference[]
   formReference    formReference[]
+  reference        reference[]
 }
 
 model subject {
@@ -244,4 +245,6 @@ model reference {
   subjectId        Int
   subjectReference subjectReference @relation(fields: [subjectId], references: [id])
   formReference    formReference[]
+  usersId          Int              @default(1)
+  users            users            @relation(fields: [usersId], references: [id])
 }

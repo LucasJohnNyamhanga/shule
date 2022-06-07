@@ -1,8 +1,8 @@
-import ImageUpload from '../../../../components/tools/ImageUpload';
+import FileUpload from '../../../../components/tools/FileUpload';
 import InputTextMui from '../../../../components/tools/InputTextMui';
 import { type } from 'os';
 import DisplayChip from '../../../../components/tools/displayChip';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, subjectReference } from '@prisma/client';
 import SelectMiu from '../../../../components/tools/SelectMui';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
@@ -12,6 +12,11 @@ import SnackBar from '../../../../components/tools/SnackBar';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Progress from '../../../../components/tools/progressFileUpload';
 import { NavContext } from '../../../../components/context/StateContext';
+import dynamic from 'next/dynamic';
+//load when browser kicks in, on page load
+const CkEditor = dynamic(() => import('../../../../components/tools/Ck'), {
+	ssr: false,
+});
 
 export const getServerSideProps: GetServerSideProps = async () => {
 	const prisma = new PrismaClient();
@@ -23,12 +28,21 @@ export const getServerSideProps: GetServerSideProps = async () => {
 	});
 	const forms = JSON.parse(JSON.stringify(formsFromServer));
 
+	const subjectsFromServer = await prisma.subjectReference.findMany({
+		select: {
+			id: true,
+			subjectName: true,
+		},
+	});
+	const subjects = JSON.parse(JSON.stringify(subjectsFromServer));
+
 	let deactiveteImage = true;
 	await prisma.$disconnect();
 	return {
 		props: {
 			forms,
 			deactiveteImage,
+			subjects,
 		},
 	};
 };
@@ -38,36 +52,69 @@ type dataTypeSelect = {
 	label: string;
 }[];
 
+type formData = {
+	label: string;
+	value: string;
+}[];
+
 const CreateNotes = ({
-    	forms,
-    	deactiveteImage,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	forms,
+	deactiveteImage,
+	subjects,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
+		let subjectFromServer: formData = [];
+		subjects.map((subject: subjectReference) => {
+			subjectFromServer.push({
+				label: subject.subjectName,
+				value: subject.id as unknown as string,
+			});
+		});
+		setSubjectOptions(subjectFromServer);
 		setNavActive('Admin');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [navActive]);
 
 	const [selectOption, setSelectOption] = useState<dataTypeSelect>([]);
+	const [subjectOptions, setSubjectOptions] = useState<formData>([]);
 	const [open, setOpen] = useState(false);
 	const [ToastMessage, setToastMessage] = useState('');
 	const [image, setImage] = useState<string | Blob>('');
 	const [clearData, setclearData] = useState(false);
 	const [uploadData, setUploadData] = useState(0);
 	const [showUpload, setShowUpload] = useState(false);
-
-	const [subjectDetails, setsubjectDetails] = useState({
-		subjectName: '',
-		subjectDefinition: '',
+	const [referenceDetails, setReferenceDetails] = useState({
+		name: '',
+		description: '',
+		data: '',
+		isPdf: '',
+		subjectId: '',
+		formReference: '',
 	});
+
+	const [trueAndFalse, setTrueAndFalse] = useState([
+		{
+			label: `Yes, it's PDF.`,
+			value: 'True',
+		},
+		{
+			label: `No, it's not a PDF.`,
+			value: 'False',
+		},
+	]);
 
 	let handleTextInput = (
 		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
 		name: string
 	) => {
 		let value = event.currentTarget.value;
-		setsubjectDetails({ ...subjectDetails, [name]: value });
+		setReferenceDetails({ ...referenceDetails, [name]: value });
+	};
+
+	let handleSelectSubject = (value: string) => {
+		setReferenceDetails({ ...referenceDetails, subjectId: value });
 	};
 
 	type templateType = {
@@ -108,6 +155,10 @@ const CreateNotes = ({
 			setSelectOption([...selectOption, tamplate]);
 		}
 	}
+
+	let handleIsPdf = (value: string) => {
+		setReferenceDetails({ ...referenceDetails, isPdf: value });
+	};
 
 	let handleDeleteFormDisplay = (label: string) => {
 		let filtered = selectOption.filter((data) => {
@@ -160,15 +211,17 @@ const CreateNotes = ({
 		}
 
 		let databaseData = {
-			subjectName: subjectDetails.subjectName,
-			subjectDefinition: subjectDetails.subjectDefinition,
-			imageLocation: location,
-			forms,
+			name: referenceDetails.name,
+			description: referenceDetails.description,
+			data: referenceDetails.isPdf == 'True' ? location : referenceDetails.data,
+			formReference: forms,
+			subjectId: referenceDetails.subjectId,
+			isPdf: referenceDetails.isPdf,
 		};
 
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/addSubjectReference',
+			url: 'http://localhost:3000/api/addReference',
 			data: databaseData,
 		})
 			.then(function (response) {
@@ -177,9 +230,13 @@ const CreateNotes = ({
 				setOpen(true);
 
 				setSelectOption([]);
-				setsubjectDetails({
-					subjectName: '',
-					subjectDefinition: '',
+				setReferenceDetails({
+					name: '',
+					description: '',
+					subjectId: '',
+					data: '',
+					isPdf: '',
+					formReference: '',
 				});
 				setImage('');
 				setShowUpload(false);
@@ -200,12 +257,27 @@ const CreateNotes = ({
 
 	let handleCreateSubject = () => {
 		if (
-			subjectDetails.subjectDefinition != '' &&
-			subjectDetails.subjectName != '' &&
-			image != '' &&
+			referenceDetails.name != '' &&
+			referenceDetails.description != '' &&
+			referenceDetails.subjectId != '' &&
+			//  &&
 			selectOption.length > 0
 		) {
-			verifySubject();
+			if (referenceDetails.isPdf == 'True') {
+				if (image != '') {
+					uploadToServer();
+				} else {
+					setToastMessage('No file detected, select pdf file!.');
+					setOpen(true);
+				}
+			} else {
+				if (referenceDetails.data != '') {
+					sendToDatabase('');
+				} else {
+					setToastMessage('No data, Please write data!.');
+					setOpen(true);
+				}
+			}
 		} else {
 			setToastMessage(
 				'Fill in all fields including image and forms selection.'
@@ -218,36 +290,15 @@ const CreateNotes = ({
 		setOpen(false);
 	};
 
-	let verifySubject = () => {
-		let dataSubject = {
-			subjectName: subjectDetails.subjectName,
-			subjectDefinition: subjectDetails.subjectDefinition,
-			imageLocation: location,
-			forms,
-		};
-		axios({
-			method: 'post',
-			url: 'http://localhost:3000/api/subjectsReferenceVerify',
-			data: dataSubject,
-		})
-			.then(function (response) {
-				const FormsFromServer = JSON.parse(JSON.stringify(response.data));
-				// handle success
-				if (FormsFromServer.length > 0) {
-					setToastMessage('Database contain another copy of this subject.');
-					setOpen(true);
-				} else {
-					uploadToServer();
-				}
-			})
-			.catch(function (error) {
-				// handle error
-				console.log(error);
-			})
-			.then(function () {
-				// always executed
-			});
+	let handleContent = (data: string) => {
+		let convertedData = data.replaceAll(
+			`img`,
+			`Image layout="fill" objectFit="cover"`
+		);
+		setReferenceDetails({ ...referenceDetails, data: convertedData });
 	};
+
+	let handleOnReady = () => {};
 
 	return (
 		<div className={Styles.container}>
@@ -256,27 +307,52 @@ const CreateNotes = ({
 					<div className={Styles.mainMain}>
 						<div className={Styles.formHeader}>Reference Details.</div>
 						<InputTextMui
-							label='Subject Name'
-							content={subjectDetails.subjectName}
-							name='subjectName'
+							label='Reference Name'
+							content={referenceDetails.name}
+							name='name'
 							handleChange={handleTextInput}
 						/>
 						<InputTextMui
-							label='Subject Definition'
-							content={subjectDetails.subjectDefinition}
-							name='subjectDefinition'
+							label='Reference Definition'
+							content={referenceDetails.description}
+							name='description'
 							handleChange={handleTextInput}
 						/>
 
-						<ImageUpload
-							deactiveteImage={deactiveteImage}
-							clear={clearData}
-							clearData={clearDataProcess}
-							uploadToServer={uploadForServer}
-						/>
+						{referenceDetails.isPdf == 'True' && (
+							<FileUpload
+								deactiveteImage={deactiveteImage}
+								clear={clearData}
+								clearData={clearDataProcess}
+								uploadToServer={uploadForServer}
+							/>
+						)}
+						{referenceDetails.isPdf == 'False' && (
+							<CkEditor
+								content={handleContent}
+								dataCk={''}
+								onReadyToStart={handleOnReady}
+							/>
+						)}
 					</div>
 					<div className={Styles.mainLeft}>
-						<div className={Styles.formHeader}>Forms For This Reference.</div>
+						<div className={Styles.formHeader}>
+							Relations For This Reference.
+						</div>
+						<SelectMiu
+							show={true}
+							displayLabel='Select Subject'
+							forms={subjectOptions}
+							handlechange={handleSelectSubject}
+							value={referenceDetails.subjectId}
+						/>
+						<SelectMiu
+							displayLabel='Is Reference PDF?'
+							show={true}
+							forms={trueAndFalse}
+							handlechange={handleIsPdf}
+							value={referenceDetails.isPdf}
+						/>
 						<SelectMiu
 							displayLabel='Select Form'
 							forms={options}
