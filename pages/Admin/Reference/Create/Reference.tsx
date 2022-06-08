@@ -32,6 +32,12 @@ export const getServerSideProps: GetServerSideProps = async () => {
 		select: {
 			id: true,
 			subjectName: true,
+			forms: {
+				select: {
+					formName: true,
+					id: true,
+				},
+			},
 		},
 	});
 	const subjects = JSON.parse(JSON.stringify(subjectsFromServer));
@@ -57,25 +63,22 @@ type formData = {
 	value: string;
 }[];
 
+type templateType = {
+	id: string;
+	label: string;
+};
+
+type selectFormType = {
+	value: string;
+	label: string;
+}[];
+
 const CreateNotes = ({
 	forms,
 	deactiveteImage,
 	subjects,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
-
-	useEffect(() => {
-		let subjectFromServer: formData = [];
-		subjects.map((subject: subjectReference) => {
-			subjectFromServer.push({
-				label: subject.subjectName,
-				value: subject.id as unknown as string,
-			});
-		});
-		setSubjectOptions(subjectFromServer);
-		setNavActive('Admin');
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [navActive]);
 
 	const [selectOption, setSelectOption] = useState<dataTypeSelect>([]);
 	const [subjectOptions, setSubjectOptions] = useState<formData>([]);
@@ -85,6 +88,7 @@ const CreateNotes = ({
 	const [clearData, setclearData] = useState(false);
 	const [uploadData, setUploadData] = useState(0);
 	const [showUpload, setShowUpload] = useState(false);
+	const [activateForm, setActivateForm] = useState(false);
 	const [referenceDetails, setReferenceDetails] = useState({
 		name: '',
 		description: '',
@@ -115,28 +119,52 @@ const CreateNotes = ({
 
 	let handleSelectSubject = (value: string) => {
 		setReferenceDetails({ ...referenceDetails, subjectId: value });
+
+		let options: selectFormType = [];
+		for (const subject of subjects) {
+			if (subject.id == value) {
+				for (const form of subject.forms) {
+					options.push({
+						label: form.formName,
+						value: form.id,
+					});
+				}
+				break;
+			}
+		}
+		setFormOption(options);
+		if (options.length > 0) {
+			setActivateForm(true);
+		} else {
+			setActivateForm(false);
+			setToastMessage(`${value} has no forms option`);
+			setOpen(true);
+		}
 	};
 
-	type templateType = {
-		id: string;
-		label: string;
-	};
+	const [formOption, setFormOption] = useState<selectFormType>([]);
 
-	let options: { label: string; value: string }[] = [];
-
-	for (const form of forms) {
-		options.push({
-			label: form.formName,
-			value: form.id,
+	useEffect(() => {
+		let subjectFromServer: formData = [];
+		subjects.map((subject: subjectReference) => {
+			subjectFromServer.push({
+				label: subject.subjectName,
+				value: subject.id as unknown as string,
+			});
 		});
-	}
+		setSubjectOptions(subjectFromServer);
+
+		setNavActive('Admin');
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [navActive]);
 
 	let handleSelect = (value: string) => {
+		console.log(value);
 		let template: templateType = {
 			id: '',
 			label: '',
 		};
-		for (const form of options) {
+		for (const form of formOption) {
 			if (form.value == value) {
 				template = {
 					id: value,
@@ -267,7 +295,7 @@ const CreateNotes = ({
 				if (image != '') {
 					uploadToServer();
 				} else {
-					setToastMessage('No file detected, select pdf file!.');
+					setToastMessage('No file detected. Select a PDF file!.');
 					setOpen(true);
 				}
 			} else {
@@ -353,12 +381,14 @@ const CreateNotes = ({
 							handlechange={handleIsPdf}
 							value={referenceDetails.isPdf}
 						/>
-						<SelectMiu
-							displayLabel='Select Form'
-							forms={options}
-							handlechange={handleSelect}
-							value={''}
-						/>
+						{activateForm && (
+							<SelectMiu
+								displayLabel='Select Form'
+								forms={formOption}
+								handlechange={handleSelect}
+								value={''}
+							/>
+						)}
 						<div className={Styles.chipDisplay}>
 							{selectOption.map((option, index) => (
 								<DisplayChip

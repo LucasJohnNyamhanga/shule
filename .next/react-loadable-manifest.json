@@ -1,14 +1,1 @@
-{
-  "Admin/Exam/Create/Exam.tsx -> ../../../../components/tools/Ck": {
-    "id": "Admin/Exam/Create/Exam.tsx -> ../../../../components/tools/Ck",
-    "files": [
-      "static/chunks/components_tools_Ck_tsx.js"
-    ]
-  },
-  "Admin/Reference/Create/Reference.tsx -> ../../../../components/tools/Ck": {
-    "id": "Admin/Reference/Create/Reference.tsx -> ../../../../components/tools/Ck",
-    "files": [
-      "static/chunks/components_tools_Ck_tsx.js"
-    ]
-  }
-}
+{}
