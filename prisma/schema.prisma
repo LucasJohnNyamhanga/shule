@@ -242,6 +242,7 @@ model reference {
   description      String           @db.LongText
   data             String           @db.LongText
   isPdf            Boolean
+  published        Boolean          @default(false)
   subjectId        Int
   subjectReference subjectReference @relation(fields: [subjectId], references: [id])
   formReference    formReference[]

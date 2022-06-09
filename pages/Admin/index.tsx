@@ -6,7 +6,7 @@ import NotesIcon from '@mui/icons-material/Notes';
 import Books from '@mui/icons-material/ImportContacts';
 import SchoolIcon from '@mui/icons-material/School';
 import axios from 'axios';
-import { exam, question, review } from '@prisma/client';
+import { exam, question, reference, review } from '@prisma/client';
 import Link from 'next/link';
 import CardBox from '../../components/tools/cardBoxStyle';
 import toast, { Toaster } from 'react-hot-toast';
@@ -34,6 +34,7 @@ const Index = ({}) => {
 	const [topics, setTopics] = useState([]);
 	const [topicsReview, setTopicsReview] = useState([]);
 	const [examTypeList, setExamTypeList] = useState([]);
+	const [referenceList, setReferenceList] = useState([]);
 	const [formsReference, setFormsReference] = useState([]);
 	const [subjectReferenceList, setSubjectReferenceList] = useState([]);
 	const [notesData, setNotesData] = useState([]);
@@ -52,6 +53,7 @@ const Index = ({}) => {
 	const [activateTopicsREview, setActivateTopicsReview] = useState(false);
 	const [activateFormsReference, setActivateFormsReference] = useState(false);
 	const [activateExamType, setActivateExamType] = useState(false);
+	const [activateReference, setActivateReference] = useState(false);
 	const [activateNotesDisplay, setActivateNotesDisplay] = useState(false);
 	const [activateExamDisplay, setActivateExamDisplay] = useState(false);
 	const [activateQuestionsDisplay, setActivateQuestionsDisplay] =
@@ -66,6 +68,10 @@ const Index = ({}) => {
 	);
 	const [selectOptionExam, setSelectOptionExam] = useState<dataTypeSelect>([]);
 	const [selectOptionFormsExam, setSelectOptionFormsExam] =
+		useState<dataTypeSelect>([]);
+	const [selectOptionReference, setSelectOptionReference] =
+		useState<dataTypeSelect>([]);
+	const [selectOptionFormsReference, setSelectOptionFormsReference] =
 		useState<dataTypeSelect>([]);
 	const [selectOptionReview, setSelectOptionReview] = useState<dataTypeSelect>(
 		[]
@@ -93,6 +99,11 @@ const Index = ({}) => {
 	});
 
 	const [topicDetailsExam, setTopicDetailsExam] = useState({
+		formId: '',
+		subjectId: '',
+	});
+
+	const [detailsReference, setDetailsReference] = useState({
 		formId: '',
 		subjectId: '',
 	});
@@ -214,6 +225,7 @@ const Index = ({}) => {
 				break;
 			case 'Reference':
 				reference.current.classList.add(Styles.Active);
+				retriaveSubjectsReference();
 				break;
 			default:
 				break;
@@ -382,20 +394,20 @@ const Index = ({}) => {
 				// handle success
 				setSubjectReferenceList(subjectsFromServer);
 				setActivateSubjectReferenceList(true);
-				// let data = [];
-				// let template: templateType = {
-				// 	value: '',
-				// 	label: '',
-				// };
-				// for (const selectSubject of subjectsFromServer) {
-				// 	template = {
-				// 		value: selectSubject.id,
-				// 		label: selectSubject.subjectName,
-				// 	};
-				// 	data.push(template);
-				// }
+				let data = [];
+				let template: templateType = {
+					value: '',
+					label: '',
+				};
+				for (const selectSubject of subjectsFromServer) {
+					template = {
+						value: selectSubject.id,
+						label: selectSubject.subjectName,
+					};
+					data.push(template);
+				}
 
-				// setSelectOptionExam(data);
+				setSelectOptionReference(data);
 				setLoading(false);
 			})
 			.catch(function (error) {
@@ -416,20 +428,20 @@ const Index = ({}) => {
 				// handle success
 				setFormsReference(FormsFromServer);
 				setActivateFormsReference(true);
-				// let data = [];
-				// let template: templateType = {
-				// 	value: '',
-				// 	label: '',
-				// };
-				// for (const form of FormsFromServer) {
-				// 	template = {
-				// 		value: form.id,
-				// 		label: form.formName,
-				// 	};
-				// 	data.push(template);
-				// }
+				let data = [];
+				let template: templateType = {
+					value: '',
+					label: '',
+				};
+				for (const form of FormsFromServer) {
+					template = {
+						value: form.id,
+						label: form.formName,
+					};
+					data.push(template);
+				}
 
-				// setSelectOptionFormsExam(data);
+				setSelectOptionFormsReference(data);
 				setLoading(false);
 			})
 			.catch(function (error) {
@@ -698,6 +710,29 @@ const Index = ({}) => {
 			});
 	};
 
+	let handleUpdateReference = (published: boolean, id: number) => {
+		setLoading(true);
+		axios
+			.post('http://localhost:3000/api/updateDraftOrPublishedReference', {
+				id,
+				published: !published,
+			})
+			.then(function (response) {
+				let jibu: string = response.data.message;
+				notifySuccess(jibu);
+				retriaveTopicsDataReference();
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+				notifyError('Error has occured, try later.');
+				setLoading(false);
+			})
+			.then(function () {
+				// always executed
+			});
+	};
+
 	let handleUpdateQuestion = (published: boolean, id: number) => {
 		setLoading(true);
 		axios
@@ -917,6 +952,17 @@ const Index = ({}) => {
 		setActivateExamType(false);
 	};
 
+	//*Reference
+	let handleSelectedSubjectReference = (value: string) => {
+		setDetailsReference({ ...detailsReference, subjectId: value });
+		setActivateReference(false);
+	};
+
+	let handleSelectedTopicFormReference = (value: string) => {
+		setDetailsReference({ ...detailsReference, formId: value });
+		setActivateReference(false);
+	};
+
 	//* notes
 
 	let handleSelectedNotesSubject = (value: string) => {
@@ -1085,6 +1131,40 @@ const Index = ({}) => {
 						setActivateExamType(true);
 					} else {
 						setActivateExamType(false);
+						notifyError('Ooops, No topics available yet.');
+					}
+					setLoading(false);
+				})
+				.catch(function (error) {
+					// handle error
+					console.log(error);
+					notifyError('Something went wrong.');
+					setLoading(false);
+				})
+				.then(function () {
+					// always executed
+				});
+		} else {
+			notifyError('All fields should be filled.');
+		}
+	};
+
+	let retriaveTopicsDataReference = () => {
+		if (detailsReference.formId != '' && detailsReference.subjectId != '') {
+			setLoading(true);
+			axios({
+				method: 'post',
+				url: 'http://localhost:3000/api/reference',
+				data: detailsReference,
+			})
+				.then(function (response) {
+					const topicsFromServer = JSON.parse(JSON.stringify(response.data));
+					// handle success
+					if (topicsFromServer.length > 0) {
+						setReferenceList(topicsFromServer);
+						setActivateReference(true);
+					} else {
+						setActivateReference(false);
 						notifyError('Ooops, No topics available yet.');
 					}
 					setLoading(false);
@@ -2439,43 +2519,37 @@ const Index = ({}) => {
 												<SelectMiu
 													displayLabel='Select Subject'
 													show={true}
-													forms={selectOptionExam}
-													handlechange={handleSelectedTopicSubjectExam}
-													value={topicDetailsExam.subjectId}
+													forms={selectOptionReference}
+													handlechange={handleSelectedSubjectReference}
+													value={detailsReference.subjectId}
 												/>
 												<SelectMiu
 													displayLabel='Select Form'
 													show={true}
-													forms={selectOptionFormsExam}
-													handlechange={handleSelectedTopicFormExam}
-													value={topicDetailsExam.formId}
+													forms={selectOptionFormsReference}
+													handlechange={handleSelectedTopicFormReference}
+													value={detailsReference.formId}
 												/>
 											</div>
 											<div
-												onClick={retriaveTopicsDataExamType}
+												onClick={retriaveTopicsDataReference}
 												className={Styles.subjectHeaderButton}>
-												Retrieve Exam Type
+												Retrieve Reference
 											</div>
 											<div className={Styles.subjectBody}>
-												{activateExamType &&
-													examTypeList.map(
-														(examType: {
-															name: string;
-															id: number;
-															published: boolean;
-														}) => (
-															<CardBox
-																handleUpdate={handleUpdateExamType}
-																link={
-																	'/Admin/Exam/Edit/examType/' + examType.id
-																}
-																label={examType.name}
-																published={examType.published}
-																id={examType.id}
-																key={examType.id}
-															/>
-														)
-													)}
+												{activateReference &&
+													referenceList.map((ref: reference) => (
+														<CardBox
+															handleUpdate={handleUpdateReference}
+															link={'/Admin/Reference/Edit/Reference/' + ref.id}
+															label={`${truncate(ref.name)}  ${
+																ref.isPdf ? `  [PDF]` : ''
+															}`}
+															published={ref.published}
+															id={ref.id}
+															key={ref.id}
+														/>
+													))}
 											</div>
 										</div>
 									</div>

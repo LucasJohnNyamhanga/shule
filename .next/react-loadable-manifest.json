@@ -1,1 +1,8 @@
-{}
+{
+  "Admin/Reference/Edit/Reference/[id].tsx -> ../../../../../components/tools/Ck": {
+    "id": "Admin/Reference/Edit/Reference/[id].tsx -> ../../../../../components/tools/Ck",
+    "files": [
+      "static/chunks/components_tools_Ck_tsx.js"
+    ]
+  }
+}

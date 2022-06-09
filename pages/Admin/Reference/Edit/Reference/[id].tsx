@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { ReactNode, useContext, useEffect, useState } from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { examType, form, PrismaClient, subject, topic } from '@prisma/client';
+import { subjectReference } from '@prisma/client';
 import Styles from '../../../../../styles/notesMaker.module.scss';
 import SelectMiu from '../../../../../components/tools/SelectMui';
 import toast, { Toaster } from 'react-hot-toast';
@@ -10,41 +10,43 @@ import axios from 'axios';
 import { NavContext } from '../../../../../components/context/StateContext';
 import { prisma } from '../../../../../db/prisma';
 import InputTextMui from '../../../../../components/tools/InputTextMui';
-
+import Progress from '../../../../../components/tools/progressFileUpload';
 //load when browser kicks in, on page load
 const CkEditor = dynamic(() => import('../../../../../components/tools/Ck'), {
 	ssr: false,
 });
 
+import FileUpload from '../../../../../components/tools/FileUpload';
+import { type } from 'os';
+import DisplayChip from '../../../../../components/tools/displayChip';
+import SnackBar from '../../../../../components/tools/SnackBar';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	let id = context.params?.id as string;
 	let Id = parseInt(id);
 
-	const examServer = await prisma.exam.findUnique({
+	const referenceServer = await prisma.reference.findUnique({
 		where: {
 			id: Id,
 		},
 		select: {
 			id: true,
 			description: true,
-			year: true,
-			exam: true,
-			hasAnswers: true,
-			examTypeId: true,
-			examType: {
+			isPdf: true,
+			subjectId: true,
+			data: true,
+			formReference: {
 				select: {
+					formName: true,
 					id: true,
-					name: true,
-					subjectId: true,
-					formId: true,
 				},
 			},
+			name: true,
 		},
 	});
 
-	const exam = JSON.parse(JSON.stringify(examServer));
+	const reference = JSON.parse(JSON.stringify(referenceServer));
 
-	const formsFromServer = await prisma.formExams.findMany({
+	const formsFromServer = await prisma.formReference.findMany({
 		select: {
 			id: true,
 			formName: true,
@@ -52,7 +54,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	});
 	const forms = JSON.parse(JSON.stringify(formsFromServer));
 
-	const subjectsFromServer = await prisma.subjectExams.findMany({
+	const subjectsFromServer = await prisma.subjectReference.findMany({
 		select: {
 			id: true,
 			subjectName: true,
@@ -60,84 +62,112 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	});
 	const subjects = JSON.parse(JSON.stringify(subjectsFromServer));
 	await prisma.$disconnect();
+	let deactiveteImage = true;
 	return {
 		props: {
-			exam,
+			reference,
 			forms,
 			subjects,
+			deactiveteImage,
 		},
 	};
 };
+
+type dataTypeSelect = {
+	id: string;
+	label: string;
+}[];
 
 type formData = {
 	label: string;
 	value: string;
 }[];
 
-const EditExam = ({
-	exam,
-	forms,
-	subjects,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+type templateType = {
+	id: string;
+	label: string;
+};
+
+type selectFormType = {
+	value: string;
+	label: string;
+}[];
+
+const Reference = ({
+    	reference,
+    	forms,
+    	subjects,
+    	deactiveteImage,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
-	useEffect(() => {
-		setNavActive('Admin');
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [navActive]);
-	const router = useRouter();
-	//!delay redirect
-	function delay(ms: number) {
-		return new Promise((resolve) => setTimeout(resolve, ms));
-	}
-
-	let delayRedirect = async () => {
-		await new Promise((f) =>
-			setTimeout(() => {
-				router.back();
-			}, 1000)
-		);
-	};
-	const [formOptions, setFormOptions] = useState<formData>([]);
+	const [selectOption, setSelectOption] = useState<dataTypeSelect>([]);
 	const [subjectOptions, setSubjectOptions] = useState<formData>([]);
-	const [topicOptions, setTopicOptions] = useState<formData>([]);
-	const [change, setChange] = useState(0);
-	const [hideShow, setHideShow] = useState(false);
-	const [examDetails, setExamDetails] = useState({
-		formId: exam.examType.formId,
-		subjectId: exam.examType.subjectId,
+	const [open, setOpen] = useState(false);
+	const [ToastMessage, setToastMessage] = useState('');
+	const [image, setImage] = useState<string | Blob>('');
+	const [clearData, setclearData] = useState(false);
+	const [uploadData, setUploadData] = useState(0);
+	const [showUpload, setShowUpload] = useState(false);
+	const [activateForm, setActivateForm] = useState(false);
+	const [referenceDetails, setReferenceDetails] = useState({
+		name: '',
+		description: '',
+		data: '',
+		isPdf: '',
+		subjectId: '',
+		formReference: '',
 	});
 
-	const [examSelectValue, setExamSelectValue] = useState({
-		examTypeId: exam.examTypeId,
-		exam: exam.exam,
-		description: exam.description,
-		year: exam.year,
-		id: exam.id,
-		hasAnswers: exam.hasAnswers,
-	});
+	const [trueAndFalse, setTrueAndFalse] = useState([
+		{
+			label: `Yes, it's PDF.`,
+			value: 'True',
+		},
+		{
+			label: `No, it's not a PDF.`,
+			value: 'False',
+		},
+	]);
 
-	const notify = (message: string) => toast(message);
-	const notifySuccess = (message: string) => toast.success(message);
-	const notifyError = (message: string) => toast.error(message);
+	let handleTextInput = (
+		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+		name: string
+	) => {
+		let value = event.currentTarget.value;
+		setReferenceDetails({ ...referenceDetails, [name]: value });
+	};
+
+	let handleSelectSubject = (value: string) => {
+		setReferenceDetails({ ...referenceDetails, subjectId: value });
+
+		let options: selectFormType = [];
+		for (const subject of subjects) {
+			if (subject.id == value) {
+				for (const form of subject.forms) {
+					options.push({
+						label: form.formName,
+						value: form.id,
+					});
+				}
+				break;
+			}
+		}
+		setFormOption(options);
+		if (options.length > 0) {
+			setActivateForm(true);
+		} else {
+			setActivateForm(false);
+			setToastMessage(`${value} has no forms option`);
+			setOpen(true);
+		}
+	};
+
+	const [formOption, setFormOption] = useState<selectFormType>([]);
 
 	useEffect(() => {
-		setExamDetails({
-			formId: exam.examType.formId,
-			subjectId: exam.examType.subjectId,
-		});
-
-		setExamSelectValue({
-			examTypeId: exam.examTypeId,
-			exam: exam.exam,
-			description: exam.description,
-			year: exam.year,
-			id: exam.id,
-			hasAnswers: exam.hasAnswers,
-		});
-
 		let subjectFromServer: formData = [];
-		subjects.map((subject: subject) => {
+		subjects.map((subject: subjectReference) => {
 			subjectFromServer.push({
 				label: subject.subjectName,
 				value: subject.id as unknown as string,
@@ -145,55 +175,177 @@ const EditExam = ({
 		});
 		setSubjectOptions(subjectFromServer);
 
-		let formFromServer: formData = [];
-		forms.map((form: form) => {
-			formFromServer.push({
-				label: form.formName,
-				value: form.id as unknown as string,
-			});
+		setReferenceDetails({
+			name: reference.name,
+			description: reference.description,
+			data: reference.data,
+			isPdf: reference.isPdf,
+			subjectId: reference.subjectId,
+			formReference: reference.formReference,
 		});
-		setFormOptions(formFromServer);
 
-		if (examDetails.formId != '' && examDetails.subjectId != '') {
-			retriaveExamTypeData();
+		setNavActive('Admin');
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [navActive]);
+
+	let handleSelect = (value: string) => {
+		console.log(value);
+		let template: templateType = {
+			id: '',
+			label: '',
+		};
+		for (const form of formOption) {
+			if (form.value == value) {
+				template = {
+					id: value,
+					label: form.label,
+				};
+			}
+		}
+		add(selectOption, template);
+	};
+
+	function add(arrName: dataTypeSelect, tamplate: templateType) {
+		const { length } = arrName;
+		const id = length + 1;
+		const found = arrName.some((item) => item.id === tamplate.id);
+		if (!found) {
+			setSelectOption([...selectOption, tamplate]);
+		}
+	}
+
+	let handleIsPdf = (value: string) => {
+		setReferenceDetails({ ...referenceDetails, isPdf: value });
+	};
+
+	let handleDeleteFormDisplay = (label: string) => {
+		let filtered = selectOption.filter((data) => {
+			return data.label != label;
+		});
+
+		setSelectOption(filtered);
+	};
+
+	let uploadForServer = (image: string | Blob) => {
+		setImage(image);
+		//!TO BE CALLED FOR UPLOAD
+		// uploadToServer();
+	};
+
+	//! for uploading
+	const uploadToServer = async () => {
+		setShowUpload(true);
+		const body = new FormData();
+		body.append('file', image);
+		axios
+			.post('/api/upload', body, {
+				onUploadProgress: (progressEvent) => {
+					// console.log('Upload Progress: ' + Math.round(progressEvent.loaded / progressEvent.total * 100) + "%");
+					setUploadData(
+						Math.round((progressEvent.loaded / progressEvent.total) * 100)
+					);
+				},
+			})
+			.then(
+				(res) => {
+					let location = res.data.file;
+					setclearData(true);
+					clearDataProcess();
+					sendToDatabase(location);
+				},
+				(err) => {
+					//some error
+				}
+			);
+	};
+
+	let sendToDatabase = (location: string) => {
+		let forms = [];
+		for (const formData of selectOption) {
+			let Id = parseInt(formData.id);
+			forms.push({
+				id: Id,
+			});
 		}
 
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [change]);
+		let databaseData = {
+			name: referenceDetails.name,
+			description: referenceDetails.description,
+			data: referenceDetails.isPdf == 'True' ? location : referenceDetails.data,
+			formReference: forms,
+			subjectId: referenceDetails.subjectId,
+			isPdf: referenceDetails.isPdf,
+		};
 
-	let retriaveExamTypeData = () => {
-		setHideShow(false);
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/examType',
-			data: examDetails,
+			url: 'http://localhost:3000/api/addReference',
+			data: databaseData,
 		})
 			.then(function (response) {
-				const exams: [] = JSON.parse(JSON.stringify(response.data));
 				// handle success
-				if (exams.length > 0) {
-					let examFromServer: formData = [];
-					exams.map((exam: examType) => {
-						examFromServer.push({
-							label: exam.name,
-							value: exam.id as unknown as string,
-						});
-					});
-					setTopicOptions(examFromServer);
-					setHideShow(true);
-					notifySuccess('Select topic to proceed..');
-				} else {
-					notifyError('No topics available for your selection.');
-				}
+				setToastMessage(response.data.message);
+				setOpen(true);
+
+				setSelectOption([]);
+				setReferenceDetails({
+					name: '',
+					description: '',
+					subjectId: '',
+					data: '',
+					isPdf: '',
+					formReference: '',
+				});
+				setImage('');
+				setShowUpload(false);
+				setUploadData(0);
 			})
 			.catch(function (error) {
 				// handle error
 				console.log(error);
-				notifyError('Something went wrong.');
 			})
 			.then(function () {
 				// always executed
 			});
+	};
+
+	let clearDataProcess = () => {
+		setclearData(false);
+	};
+
+	let handleCreateSubject = () => {
+		if (
+			referenceDetails.name != '' &&
+			referenceDetails.description != '' &&
+			referenceDetails.subjectId != '' &&
+			//  &&
+			selectOption.length > 0
+		) {
+			if (referenceDetails.isPdf == 'True') {
+				if (image != '') {
+					uploadToServer();
+				} else {
+					setToastMessage('No file detected. Select a PDF file!.');
+					setOpen(true);
+				}
+			} else {
+				if (referenceDetails.data != '') {
+					sendToDatabase('');
+				} else {
+					setToastMessage('No data, Please write data!.');
+					setOpen(true);
+				}
+			}
+		} else {
+			setToastMessage(
+				'Fill in all fields including image and forms selection.'
+			);
+			setOpen(true);
+		}
+	};
+
+	let handleClearToast = () => {
+		setOpen(false);
 	};
 
 	let handleContent = (data: string) => {
@@ -201,190 +353,104 @@ const EditExam = ({
 			`img`,
 			`Image layout="fill" objectFit="cover"`
 		);
-		setExamSelectValue({ ...examSelectValue, exam: convertedData });
+		setReferenceDetails({ ...referenceDetails, data: convertedData });
 	};
 
-	let handleSelectSubject = (value: string) => {
-		setExamDetails({ ...examDetails, subjectId: value });
-		setChange(change + 1);
-	};
-
-	let handleSelectForm = (value: string) => {
-		setExamDetails({ ...examDetails, formId: value });
-		setChange(change + 1);
-	};
-
-	let handleSelectTopic = (value: string) => {
-		setExamSelectValue({ ...examSelectValue, examTypeId: value });
-	};
-
-	let handleCreateNotes = () => {
-		if (examSelectValue.examTypeId != '' && examSelectValue.exam.length > 200) {
-			sendToDatabase();
-		} else {
-			if (examSelectValue.exam.length < 200) {
-				notifyError('Notes content should exceed 200 characters..');
-			} else {
-				notifyError('Fill in all fields including selections.');
-			}
-		}
-	};
-
-	function allnumeric(inputtxt: string) {
-		let value = inputtxt.toString();
-		var numbers = /^[0-9]+$/;
-		if (value.match(numbers)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	let today = new Date().getFullYear();
-	let sendToDatabase = () => {
-		//!CHANGE TO DATE PICKER..
-
-		let year = examSelectValue.year;
-		let yearInNumber = parseInt(examSelectValue.year);
-		if (allnumeric(year) && 1999 < yearInNumber && yearInNumber < today + 1) {
-			axios({
-				method: 'post',
-				url: 'http://localhost:3000/api/updateExam',
-				data: examSelectValue,
-			})
-				.then(function (response) {
-					// handle success
-					setExamSelectValue({
-						examTypeId: '',
-						exam: '',
-						description: '',
-						year: '',
-						id: '',
-						hasAnswers: false,
-					});
-					setExamDetails({
-						formId: '',
-						subjectId: '',
-					});
-					let jibu: string = response.data.message;
-					let type: string = response.data.type;
-
-					if (type == 'success') {
-						notifySuccess(jibu);
-					} else {
-						notifyError(jibu);
-					}
-					delayRedirect();
-				})
-				.catch(function (error) {
-					// handle error
-					console.log(error);
-					notifyError('Error has occured, try later.');
-				})
-				.then(function () {
-					// always executed
-				});
-		} else {
-			notifyError(`Wrong date. Should be a number between 2000 and ${today}`);
-		}
-	};
-
-	let handleOnReady = () => {
-		console.log('Editor is ready');
-	};
-
-	let handleTextInput = (
-		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-		name: string
-	) => {
-		let value = event.currentTarget.value;
-		setExamSelectValue({ ...examSelectValue, [name]: value });
-	};
-
-	const [trueAndFalse, setTrueAndFalse] = useState([
-		{
-			label: 'True',
-			value: 'true',
-		},
-		{
-			label: 'False',
-			value: 'false',
-		},
-	]);
-
-	let handleAnswerValid = (value: string) => {
-		setExamSelectValue({ ...examSelectValue, hasAnswers: value });
-	};
+	let handleOnReady = () => {};
 
 	return (
 		<div className={Styles.container}>
-			<Toaster position='bottom-left' />
 			<div className={Styles.innerContainer}>
-				<div className={Styles.content}>
-					<div className={Styles.mainContent}>
+				<div className={Styles.rightInnercontainerBody}>
+					<div className={Styles.mainMain}>
+						<div className={Styles.formHeader}>Reference Details.</div>
 						<InputTextMui
-							label={`Year Between 2000 - ${today}`}
-							content={examSelectValue.year}
-							name='year'
+							label='Reference Name'
+							content={referenceDetails.name}
+							name='name'
 							handleChange={handleTextInput}
 						/>
 						<InputTextMui
-							label='Exam Description'
-							content={examSelectValue.description}
+							label='Reference Definition'
+							content={referenceDetails.description}
 							name='description'
 							handleChange={handleTextInput}
 						/>
-						<SelectMiu
-							displayLabel='Exam has Answers'
-							show={true}
-							forms={trueAndFalse}
-							handlechange={handleAnswerValid}
-							value={examSelectValue.hasAnswers}
-						/>
-						<CkEditor
-							content={handleContent}
-							dataCk={examSelectValue.exam}
-							onReadyToStart={handleOnReady}
-						/>
+
+						{referenceDetails.isPdf == 'True' && (
+							<FileUpload
+								deactiveteImage={deactiveteImage}
+								clear={clearData}
+								clearData={clearDataProcess}
+								uploadToServer={uploadForServer}
+							/>
+						)}
+						{referenceDetails.isPdf == 'False' && (
+							<CkEditor
+								content={handleContent}
+								dataCk={''}
+								onReadyToStart={handleOnReady}
+							/>
+						)}
 					</div>
-					<div className={Styles.controlContent}>
+					<div className={Styles.mainLeft}>
+						<div className={Styles.formHeader}>
+							Relations For This Reference.
+						</div>
 						<SelectMiu
 							show={true}
 							displayLabel='Select Subject'
 							forms={subjectOptions}
 							handlechange={handleSelectSubject}
-							value={examDetails.subjectId}
+							value={referenceDetails.subjectId}
 						/>
 						<SelectMiu
+							displayLabel='Is Reference PDF?'
 							show={true}
-							displayLabel='Select Form'
-							forms={formOptions}
-							handlechange={handleSelectForm}
-							value={examDetails.formId}
+							forms={trueAndFalse}
+							handlechange={handleIsPdf}
+							value={referenceDetails.isPdf}
 						/>
-						{hideShow && (
+						{activateForm && (
 							<SelectMiu
-								show={true}
-								displayLabel='Select Exam Type'
-								forms={topicOptions}
-								handlechange={handleSelectTopic}
-								value={examSelectValue.examTypeId}
+								displayLabel='Select Form'
+								forms={formOption}
+								handlechange={handleSelect}
+								value={''}
 							/>
 						)}
+						<div className={Styles.chipDisplay}>
+							{selectOption.map((option, index) => (
+								<DisplayChip
+									handleDelete={handleDeleteFormDisplay}
+									label={option.label}
+									key={index}
+								/>
+							))}
+						</div>
 					</div>
 				</div>
-				<div>
-					<div onClick={handleCreateNotes} className={Styles.imageSelect}>
-						Update Exam
+				{showUpload && <Progress data={uploadData} />}
+				{showUpload ? (
+					<div className={Styles.imageSelect}>Please wait...</div>
+				) : (
+					<div onClick={handleCreateSubject} className={Styles.imageSelect}>
+						Create Subject
 					</div>
-				</div>
+				)}
+				<SnackBar
+					textMessage={ToastMessage}
+					opener={open}
+					handleClearToast={handleClearToast}
+				/>
 			</div>
 		</div>
 	);
 };
 
-export default EditExam;
+export default Reference;
 
 //*Removing default search bar :)
-EditExam.getLayout = function PageLayout(page: ReactNode) {
+Reference.getLayout = function PageLayout(page: ReactNode) {
 	return <>{page}</>;
 };
