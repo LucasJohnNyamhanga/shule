@@ -1,205 +1,237 @@
-
-import { GetStaticProps, GetStaticPaths } from 'next'
-import { InferGetStaticPropsType } from 'next'
-import { PrismaClient } from '@prisma/client'
-import React, { useContext, useEffect } from 'react';
-import Styles from '../../../../styles/notesDisplay.module.scss';
+import { GetStaticProps, GetStaticPaths, InferGetStaticPropsType } from 'next';
+import { prisma } from '../../../../db/prisma';
+import { exam, examType, review, topic, topicReview } from '@prisma/client';
+import React, { useContext, useEffect, useState } from 'react';
+import Styles from '../../../../styles/reviewDisplay.module.scss';
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import parse from 'html-react-parser';
-import Head from 'next/head'
+import Head from 'next/head';
 import Link from 'next/link';
-import Drawer from '../../../../components/tools/Drawer'
+import Drawer from '../../../../components/tools/DrawerExam';
 import { NavContext } from '../../../../components/context/StateContext';
+import Modal from '../../../../components/tools/modal';
+import Table from '../../../../components/tools/Table';
 
-const subjectLocator = "Physics";
-const formLocator = "Form One";
-const subjectLocatorLink = "Physics";
-const formLocatorLink = "FormOne";
+const subjectLocator = 'Physics';
+const formLocator = 'Form One';
+const subjectLocatorLink = 'Physics';
+const formLocatorLink = 'FormOne';
 
 export const getStaticProps: GetStaticProps = async (context) => {
-    
-    
-    const  id = context.params?.id;
-    let Id = parseInt(String(id));
-    // ...
-    const prisma = new PrismaClient();
-    const topicData = await prisma.topic.findUnique({
-        where: {
-            id: Id,
-        },
-        select: {
-            id: true,
-            topicName: true,
-            topicDefinition: true,
-            subject: {
-                select: {
-                    subjectName:true,
-                }
-            },
-            form: {
-                select: {
-                    formName:true,
-                }
-            },
-            note: {
-                select: {
-                    content: true,
-                }
-            }
-            
-        }
-    })
+	const id = context.params?.id;
+	let Id = parseInt(String(id));
+	// ...
+	const examTypeServer = await prisma.examType.findUnique({
+		where: {
+			id: Id,
+		},
+		select: {
+			id: true,
+			name: true,
+			definition: true,
+			subjectExams: {
+				select: {
+					subjectName: true,
+				},
+			},
+			formExams: {
+				select: {
+					formName: true,
+				},
+			},
+			exam: {
+				where: {
+					published: true,
+				},
+				select: {
+					id: true,
+					description: true,
+					year: true,
+					hasAnswers: true,
+				},
+			},
+		},
+	});
 
-    const thisTopicData = JSON.parse(JSON.stringify(topicData));
-    
-    const topicsFromServer = await prisma.topic.findMany({
-        where: {
-          published: true,
-          subject: {
-            subjectName: subjectLocator,
-          },
-          form: {
-            formName:formLocator,
-          }
-        },
-        select: {
-            id:true,
-            topicName:true,
-            topicDefinition: true,
-            subject: {
-                select: {
-                    subjectName:true,
-                }
-            },
-            form: {
-                select: {
-                    formName:true,
-                }
-            }
-        }
-      })
-      const topics = JSON.parse(JSON.stringify(topicsFromServer));
-    
-  return {
-      props: {
-        topics,
-        thisTopicData
-    }
-}
-}
+	const thisexamType = JSON.parse(JSON.stringify(examTypeServer));
+
+	const examTypeAllServer = await prisma.examType.findMany({
+		where: {
+			exam: {
+				some: {
+					published: true,
+				},
+			},
+			published: true,
+			subjectExams: {
+				subjectName: subjectLocator,
+			},
+			formExams: {
+				formName: formLocator,
+			},
+		},
+		select: {
+			id: true,
+			name: true,
+			definition: true,
+			subjectExams: {
+				select: {
+					subjectName: true,
+				},
+			},
+			formExams: {
+				select: {
+					formName: true,
+				},
+			},
+			exam: {
+				where: {
+					published: true,
+				},
+				select: {
+					id: true,
+					description: true,
+				},
+			},
+		},
+	});
+	const examTypeAll = JSON.parse(JSON.stringify(examTypeAllServer));
+
+	return {
+		props: {
+			examTypeAll,
+			thisexamType,
+		},
+	};
+};
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  // ...
-    const prisma = new PrismaClient();
-    const notesServer = await prisma.topic.findMany({
-        select: {
-            id: true,
-        }
-    });
+	// ...
+	const examTypeServer = await prisma.examType.findMany({
+		select: {
+			id: true,
+			published: true,
+		},
+	});
+	const examType = JSON.parse(JSON.stringify(examTypeServer));
 
-    type dataNote = {
-        id:number
-    }
-    const notesData = JSON.parse(JSON.stringify(notesServer));
-    const paths = notesData.map((note: dataNote) => {
-        let id = String(note.id);
-        return {
-            params: {
-                id: `${id}`
-            }
-        }
-    });
-    return {
-        paths,
-        fallback: false,
-    }
-}
+	const paths = examType.map((type: examType) => {
+		let id = String(type.id);
+		return {
+			params: {
+				id: `${id}`,
+			},
+		};
+	});
+	return {
+		paths,
+		fallback: false,
+	};
+};
 
+type tableKey = {
+	keys: string[];
+};
 
+const Index = ({
+	examTypeAll,
+	thisexamType,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
+	const { navActive, setNavActive } = useContext(NavContext);
 
-const Index = ({ topics, thisTopicData }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  
-  const { navActive, setNavActive } = useContext(NavContext);
+	const [keyInTable, setKeyInTable] = useState<tableKey>({
+		keys: [],
+	});
 
-  useEffect(() => {
-    setNavActive("Notes");
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navActive])
-  
-    let htmlServer;
+	useEffect(() => {
+		setNavActive('References');
 
-    if (thisTopicData.note ==  null) {
-        htmlServer =  `<div className={Styles.notFound} >Notes for ${thisTopicData.topicName} topic will be available soon.</div>`;
-    } else {
-      let result = thisTopicData.note.content.replaceAll(`img`, `Image layout="fill" objectfit="cover"`);
-      htmlServer = result;
-  }
+		let listKey: string[] = [];
 
-  type dataTopic = {
-    id:number,
-    topicName:string,
-    topicDefinition: string,
-    subject: {
-            subjectName:string,
-    },
-    form: {
-            formName:string,
-    }
-}
-    
-      //!mambo yanaanza
-    
-      return (
-        <div className={Styles.container}>
-          <Head>
-            <title>
-              {thisTopicData.topicName}
-            </title>
-            <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-            <meta name="description" content={thisTopicData.topicDefinition} />
-            {/* //!add keywords */}
-            <meta name="keywords" content={thisTopicData.topicName}/>
-          </Head>
-          <div className={Styles.innerContainer}>
-            <div className={Styles.leftInnercontainerBody}>
-              <div className={Styles.sticky}>
-                <div  className={Styles.topicHeader}>
-                  Topics list
-                </div>
-              
-                <div className={Styles.titleList}>
-                  {
-                    topics.map((topic: dataTopic) => (
-                        <div key={topic.id}>
-                            <Link passHref href={`/Notes/${subjectLocatorLink}/${formLocatorLink}/${topic.id}`}>
-                                <a>
-                                    <div key={topic.id}  className={topic.id == thisTopicData.id ?`${ Styles.topicTittle} ${Styles.Active}` : Styles.topicTittle}>
-                                    {topic.topicName}
-                                    </div>
-                                </a>
-                            </Link>
-                        </div>
-                    ))
-                  }
-                </div>
-              </div>
-            </div>
-            <div className={Styles.rightInnercontainerBody}>
-            <div className={Styles.mobile}>
-              <Drawer textHeader={'LIST OF TOPICS'} topic={topics} active={thisTopicData.id} />
-            </div>
-              <div className={Styles.BodyHeader}>
-                {thisTopicData.subject.subjectName} <ChevronRightOutlinedIcon/>  {thisTopicData.form.formName}  <ChevronRightOutlinedIcon/> {thisTopicData.topicName}
-              </div>
-              <div className={Styles.BodyContent}>
-                <div className="ckContent">
-                  {parse(htmlServer)}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )
-    }
+		for (const exam of thisexamType.exam) {
+			listKey = Object.keys(exam);
+			break;
+		}
+		setKeyInTable({ keys: listKey });
 
-export default Index
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [navActive, thisexamType.exam]);
+
+	if (examTypeAll.length == 0 || thisexamType.exam == 'undefined') {
+		return (
+			<div className={Styles.notFound}>
+				Reviews for ${thisexamType.name} topic will be available soon.
+			</div>
+		);
+	}
+
+	//!mambo yanaanza
+
+	return (
+		<div className={Styles.container}>
+			<Head>
+				<title>{thisexamType.name}</title>
+				<meta name='viewport' content='initial-scale=1.0, width=device-width' />
+				<meta name='description' content={thisexamType.definition} />
+				{/* //!add keywords */}
+				<meta name='keywords' content={thisexamType.name} />
+			</Head>
+			<div className={Styles.innerContainer}>
+				<div className={Styles.leftInnercontainerBody}>
+					<div className={Styles.sticky}>
+						<div className={Styles.topicHeader}>Exam Category List</div>
+
+						<div className={Styles.titleList}>
+							{examTypeAll.map((topic: examType) => (
+								<div key={topic.id}>
+									<Link
+										passHref
+										href={`/Exams/${subjectLocatorLink}/${formLocatorLink}/${topic.id}`}>
+										<a>
+											<div
+												key={topic.id + 200}
+												className={
+													topic.id == thisexamType.id
+														? `${Styles.topicTittle} ${Styles.Active}`
+														: Styles.topicTittle
+												}>
+												{topic.name}
+											</div>
+										</a>
+									</Link>
+								</div>
+							))}
+						</div>
+					</div>
+				</div>
+				<div className={Styles.rightInnercontainerBody}>
+					<div className={Styles.mobile}>
+						<Drawer
+							textHeader={'References Category List'}
+							topic={examTypeAll}
+							active={thisexamType.id}
+							link={'References'}
+						/>
+					</div>
+					<div className={Styles.BodyHeader}>
+						{thisexamType.subjectExams.subjectName} <ChevronRightOutlinedIcon />{' '}
+						{thisexamType.formExams.formName} <ChevronRightOutlinedIcon />{' '}
+						{thisexamType.name}
+					</div>
+					<div className={Styles.BodyContent}>
+						<div className={Styles.conteinerTable}>
+							<Table
+								form={formLocatorLink}
+								subject={subjectLocatorLink}
+								header={keyInTable.keys}
+								body={thisexamType.exam}
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+};
+
+export default Index;

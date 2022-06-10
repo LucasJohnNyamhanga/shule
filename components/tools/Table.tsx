@@ -41,7 +41,9 @@ const Table = ({ header, body, form, subject }: tableData) => {
 								<td key={index + 200}>{index + 1}</td>
 								<td key={index + 300}>{data.description}</td>
 								<td key={index + 400}>{data.year}</td>
-								<td key={index + 500}>{data.hasAnswers ? `Yes` : `No`}</td>
+								<td key={index + 500}>
+									{data.hasAnswers ? `With Answers` : `No`}
+								</td>
 							</tr>
 						</Link>
 					))}

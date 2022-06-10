@@ -5,6 +5,7 @@ import { prisma } from '../db/prisma';
 import type { GetStaticProps } from 'next';
 import { useContext, useEffect } from 'react';
 import { NavContext } from '../components/context/StateContext';
+import Book from '../components/tools/Book';
 
 type userData = {
 	id: number;
@@ -82,6 +83,7 @@ const References: NextPage = ({
 				focus={`Let's use References`}
 				link={'References'}
 			/>
+			<Book />
 		</>
 	);
 };
