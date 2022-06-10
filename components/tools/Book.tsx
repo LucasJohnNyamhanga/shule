@@ -1,7 +1,24 @@
+import { reference } from '@prisma/client';
 import React from 'react';
 import Styles from '../../styles/book.module.scss';
 
-const Book = () => {
+type dataReference = {
+	reference: {
+		id: number;
+		name: string;
+		description: string;
+		data: string;
+		isPdf: boolean;
+		published: boolean;
+		subjectId: number;
+		usersId: number;
+		formReference: {
+			formName: string;
+		}[];
+	}[];
+};
+
+const Book = ({ reference }: dataReference) => {
 	function shuffleArray(array: string[]) {
 		for (let i = array.length - 1; i > 0; i--) {
 			const j = Math.floor(Math.random() * (i + 1));
@@ -9,21 +26,45 @@ const Book = () => {
 		}
 	}
 
-	let colors = [
-		'yanga',
-		'yangaBright',
-		'green',
-		'grey',
-		'orange',
-		'blue',
-		'zambarau',
-		'black',
-		'yellow',
-		'brown',
-	];
+	enum rangi {
+		yanga,
+		yangaBright,
+		green,
+		grey,
+		orange,
+		blue,
+		zambarau,
+		black,
+		yellow,
+		brown,
+	}
 
-	shuffleArray(colors);
-	console.log(colors);
+	console.log(rangi);
+
+	let rangiTamu = (index: number) => {
+		switch (index) {
+			case 0:
+				return Styles.yanga;
+				break;
+			case 1:
+				return Styles.yangaBright;
+				break;
+			case 2:
+				return Styles.green;
+				break;
+			case 3:
+				return Styles.grey;
+				break;
+			case 4:
+				return Styles.orange;
+				break;
+
+			default:
+				break;
+		}
+	};
+
+	// shuffleArray(colors);
 	return (
 		<div>
 			<div className={Styles.container}>
@@ -31,6 +72,90 @@ const Book = () => {
 				<div className={Styles.component}>
 					<ul className={Styles.align}>
 						{/* <!-- Book 1 --> */}
+						{reference.map((ref, index) => (
+							<li>
+								<figure className={Styles.book}>
+									{/* <!-- Front --> */}
+									<ul className={Styles.hardcoverfront}>
+										<li>
+											<div
+												className={`${Styles.coverDesign}  ${rangiTamu(
+													index
+												)}`}>
+												<span className={Styles.ribbon}>NEW</span>
+												<h2>{ref.name}</h2>
+												<p></p>
+											</div>
+										</li>
+
+										<li></li>
+									</ul>
+									{/* <!--/ Front --> <!-- Pages --> */}
+									<ul className={Styles.page}>
+										<li></li>
+										<li>
+											<a href='#' className={Styles.btn}>
+												Preview
+											</a>
+										</li>
+										<li></li>
+										<li></li>
+										<li></li>
+									</ul>
+									{/* <!--/ Pages --> <!-- Back --> */}
+									<ul className={Styles.hardcoverback}>
+										<li></li>
+										<li></li>
+									</ul>
+									{/* <!--/ Back --> */}
+
+									<ul className={Styles.bookspine}>
+										<li></li>
+										<li></li>
+									</ul>
+
+									<figcaption>
+										<h1>{ref.name}</h1>
+										<span>
+											{ref.formReference.map(
+												(
+													form: {
+														formName:
+															| string
+															| number
+															| boolean
+															| React.ReactElement<
+																	any,
+																	string | React.JSXElementConstructor<any>
+															  >
+															| React.ReactFragment
+															| React.ReactPortal
+															| null
+															| undefined;
+													},
+													index,
+													array
+												) => (
+													<>{`${index == 0 ? 'For ' : ''}${form.formName}${
+														index + 1 != array.length
+															? index + 1 == array.length - 1
+																? ' and '
+																: ', '
+															: '.'
+													}`}</>
+												)
+											)}
+										</span>
+										<p>{ref.description}</p>
+										<span>
+											<div className={Styles.linksButtons}>
+												<div className={Styles.button}>Preview</div>
+											</div>
+										</span>
+									</figcaption>
+								</figure>
+							</li>
+						))}
 						<li>
 							<figure className={Styles.book}>
 								{/* <!-- Front --> */}
@@ -45,9 +170,7 @@ const Book = () => {
 
 									<li></li>
 								</ul>
-								{/* <!--/ Front -->
-            
-            <!-- Pages --> */}
+								{/* <!--/ Front --> <!-- Pages --> */}
 								<ul className={Styles.page}>
 									<li></li>
 									<li>
@@ -59,9 +182,7 @@ const Book = () => {
 									<li></li>
 									<li></li>
 								</ul>
-								{/* <!--/ Pages -->
-            
-            <!-- Back --> */}
+								{/* <!--/ Pages --> <!-- Back --> */}
 								<ul className={Styles.hardcoverback}>
 									<li></li>
 									<li></li>

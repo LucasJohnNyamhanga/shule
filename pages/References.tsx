@@ -59,8 +59,8 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const References: NextPage = ({
-    	subjects,
-    }: InferGetStaticPropsType<typeof getStaticProps>) => {
+	subjects,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -83,7 +83,6 @@ const References: NextPage = ({
 				focus={`Let's use References`}
 				link={'References'}
 			/>
-			<Book />
 		</>
 	);
 };
