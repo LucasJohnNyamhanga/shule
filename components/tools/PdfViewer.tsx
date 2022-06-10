@@ -4,8 +4,13 @@ import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
+import { type } from 'os';
 
-export default function pdf({ url }: any) {
+type dataType = {
+	url: string;
+};
+
+export default function pdf({ url }: dataType) {
 	const [pageNumber, setPageNumber] = useState(1);
 	const defaultLayoutPluginInstance = defaultLayoutPlugin();
 	function onItemClick({ pageNumber: itemPageNumber }: any) {
@@ -15,7 +20,7 @@ export default function pdf({ url }: any) {
 	return (
 		<Worker workerUrl='https://unpkg.com/pdfjs-dist@2.14.305/build/pdf.worker.min.js'>
 			<div style={{ height: '750px' }}>
-				<Viewer fileUrl={'book.pdf'} plugins={[defaultLayoutPluginInstance]} />
+				<Viewer fileUrl={url} plugins={[defaultLayoutPluginInstance]} />
 			</div>
 		</Worker>
 	);

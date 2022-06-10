@@ -1,13 +1,14 @@
 import { useState, useRef, useEffect } from 'react';
 import Styles from '../../styles/imageUpload.module.scss';
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import { BsFillFileEarmarkBreakFill } from 'react-icons/bs';
 import { type } from 'os';
+import PdfViewer from './PdfViewer';
 
 type dataType = {
 	uploadToServer: (image: string | Blob, action: boolean) => void;
 	clear?: boolean;
 	clearData?: () => void;
-	image?: string;
+	image: string;
 	deactiveteImage?: boolean;
 };
 
@@ -18,10 +19,8 @@ export default function PrivatePage({
 	clear,
 	clearData,
 }: dataType) {
+	const [url, setUrl] = useState('');
 	const [display, setDisplay] = useState(false);
-	const [createObjectURL, setCreateObjectURL] = useState<
-		string | null | undefined
-	>(null);
 	const fileSelector = useRef<HTMLInputElement>(null!);
 
 	interface HTMLInputEvent extends Event {
@@ -31,20 +30,20 @@ export default function PrivatePage({
 	const uploadToClient = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.files && event.target.files[0]) {
 			const i = event.target.files[0];
-			setCreateObjectURL(event.target.files[0].name);
-			setDisplay(true);
+			setUrl(URL.createObjectURL(i));
 			uploadToServer(i, true);
+			setDisplay(true);
+			console.log(i.name);
 		}
 	};
 
 	let format = () => {
-		setCreateObjectURL(null);
-		if (deactiveteImage) {
+		if (image == '') {
 			setDisplay(false);
 		} else {
+			setUrl(image);
 			setDisplay(true);
 		}
-		if (clearData != undefined) clearData();
 	};
 
 	useEffect(() => {
@@ -55,9 +54,7 @@ export default function PrivatePage({
 	return (
 		<div className={Styles.container}>
 			<div>
-				<div>
-					{createObjectURL == null ? '' : `File name: ${createObjectURL}`}
-				</div>
+				<div>{display && <PdfViewer url={url} />}</div>
 				<input
 					ref={fileSelector}
 					type='file'
@@ -70,7 +67,7 @@ export default function PrivatePage({
 				<div
 					onClick={() => fileSelector.current.click()}
 					className={Styles.imageSelect}>
-					<AddPhotoAlternateIcon />
+					<BsFillFileEarmarkBreakFill />
 					<div className={Styles.imageSelectText}>Select File</div>
 				</div>
 			</div>

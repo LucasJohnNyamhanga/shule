@@ -63,9 +63,9 @@ type dataTypeSelect = {
 }[];
 
 const EditSubject = ({
-	subject,
-	formsList,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	subject,
+    	formsList,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {

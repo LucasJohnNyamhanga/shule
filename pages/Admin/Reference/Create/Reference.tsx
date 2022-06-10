@@ -353,6 +353,7 @@ const CreateNotes = ({
 								clear={clearData}
 								clearData={clearDataProcess}
 								uploadToServer={uploadForServer}
+								image={''}
 							/>
 						)}
 						{referenceDetails.isPdf == 'False' && (

@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React, { ReactNode, useContext, useEffect, useState } from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { subjectReference } from '@prisma/client';
-import Styles from '../../../../../styles/notesMaker.module.scss';
+import Styles from '../../../../../styles/createNotes.module.scss';
 import SelectMiu from '../../../../../components/tools/SelectMui';
 import toast, { Toaster } from 'react-hot-toast';
 import dynamic from 'next/dynamic';
@@ -33,6 +33,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			description: true,
 			isPdf: true,
 			subjectId: true,
+			subjectReference: {
+				select: {
+					forms: true,
+				},
+			},
 			data: true,
 			formReference: {
 				select: {
@@ -46,14 +51,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 	const reference = JSON.parse(JSON.stringify(referenceServer));
 
-	const formsFromServer = await prisma.formReference.findMany({
-		select: {
-			id: true,
-			formName: true,
-		},
-	});
-	const forms = JSON.parse(JSON.stringify(formsFromServer));
-
 	const subjectsFromServer = await prisma.subjectReference.findMany({
 		select: {
 			id: true,
@@ -62,13 +59,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	});
 	const subjects = JSON.parse(JSON.stringify(subjectsFromServer));
 	await prisma.$disconnect();
-	let deactiveteImage = true;
 	return {
 		props: {
 			reference,
-			forms,
 			subjects,
-			deactiveteImage,
 		},
 	};
 };
@@ -94,11 +88,9 @@ type selectFormType = {
 }[];
 
 const Reference = ({
-    	reference,
-    	forms,
-    	subjects,
-    	deactiveteImage,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	reference,
+	subjects,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	const [selectOption, setSelectOption] = useState<dataTypeSelect>([]);
@@ -110,6 +102,7 @@ const Reference = ({
 	const [uploadData, setUploadData] = useState(0);
 	const [showUpload, setShowUpload] = useState(false);
 	const [activateForm, setActivateForm] = useState(false);
+	const [isPDF, setIsPDF] = useState(false);
 	const [referenceDetails, setReferenceDetails] = useState({
 		name: '',
 		description: '',
@@ -117,6 +110,7 @@ const Reference = ({
 		isPdf: '',
 		subjectId: '',
 		formReference: '',
+		id: '',
 	});
 
 	const [trueAndFalse, setTrueAndFalse] = useState([
@@ -154,6 +148,7 @@ const Reference = ({
 			}
 		}
 		setFormOption(options);
+
 		if (options.length > 0) {
 			setActivateForm(true);
 		} else {
@@ -164,6 +159,20 @@ const Reference = ({
 	};
 
 	const [formOption, setFormOption] = useState<selectFormType>([]);
+	const router = useRouter();
+
+	//!delay redirect
+	function delay(ms: number) {
+		return new Promise((resolve) => setTimeout(resolve, ms));
+	}
+
+	let delayRedirect = async () => {
+		await new Promise((f) =>
+			setTimeout(() => {
+				router.back();
+			}, 1000)
+		);
+	};
 
 	useEffect(() => {
 		let subjectFromServer: formData = [];
@@ -175,14 +184,37 @@ const Reference = ({
 		});
 		setSubjectOptions(subjectFromServer);
 
+		let options: selectFormType = [];
+		let value = reference.subjectId;
+		for (const form of reference.subjectReference.forms) {
+			options.push({
+				label: form.formName,
+				value: form.id,
+			});
+		}
+		setFormOption(options);
+
+		let templateData = [];
+		for (const form of reference.formReference) {
+			let template = {
+				id: form.id,
+				label: form.formName,
+			};
+			templateData.push(template);
+		}
+		setSelectOption(templateData);
+
 		setReferenceDetails({
 			name: reference.name,
 			description: reference.description,
 			data: reference.data,
-			isPdf: reference.isPdf,
+			isPdf: reference.isPdf ? 'True' : 'False',
 			subjectId: reference.subjectId,
 			formReference: reference.formReference,
+			id: reference.id,
 		});
+		setIsPDF(reference.isPdf);
+		setActivateForm(true);
 
 		setNavActive('Admin');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -216,6 +248,7 @@ const Reference = ({
 
 	let handleIsPdf = (value: string) => {
 		setReferenceDetails({ ...referenceDetails, isPdf: value });
+		setIsPDF(value == 'True' ? true : false);
 	};
 
 	let handleDeleteFormDisplay = (label: string) => {
@@ -249,6 +282,8 @@ const Reference = ({
 			.then(
 				(res) => {
 					let location = res.data.file;
+					console.log(location);
+					setReferenceDetails({ ...referenceDetails, data: location });
 					setclearData(true);
 					clearDataProcess();
 					sendToDatabase(location);
@@ -271,15 +306,17 @@ const Reference = ({
 		let databaseData = {
 			name: referenceDetails.name,
 			description: referenceDetails.description,
-			data: referenceDetails.isPdf == 'True' ? location : referenceDetails.data,
+			data: location.length > 0 ? location : referenceDetails.data,
 			formReference: forms,
 			subjectId: referenceDetails.subjectId,
 			isPdf: referenceDetails.isPdf,
+			id: reference.id,
 		};
+		console.log(databaseData);
 
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/addReference',
+			url: 'http://localhost:3000/api/updateReference',
 			data: databaseData,
 		})
 			.then(function (response) {
@@ -295,10 +332,12 @@ const Reference = ({
 					data: '',
 					isPdf: '',
 					formReference: '',
+					id: '',
 				});
 				setImage('');
 				setShowUpload(false);
 				setUploadData(0);
+				delayRedirect();
 			})
 			.catch(function (error) {
 				// handle error
@@ -325,8 +364,11 @@ const Reference = ({
 				if (image != '') {
 					uploadToServer();
 				} else {
-					setToastMessage('No file detected. Select a PDF file!.');
+					setToastMessage(
+						'No file change detected. Sytem PDF file will be used!.'
+					);
 					setOpen(true);
+					sendToDatabase('');
 				}
 			} else {
 				if (referenceDetails.data != '') {
@@ -377,18 +419,16 @@ const Reference = ({
 							handleChange={handleTextInput}
 						/>
 
-						{referenceDetails.isPdf == 'True' && (
+						{isPDF && (
 							<FileUpload
-								deactiveteImage={deactiveteImage}
-								clear={clearData}
-								clearData={clearDataProcess}
+								image={referenceDetails.data}
 								uploadToServer={uploadForServer}
 							/>
 						)}
-						{referenceDetails.isPdf == 'False' && (
+						{!isPDF && (
 							<CkEditor
 								content={handleContent}
-								dataCk={''}
+								dataCk={referenceDetails.data}
 								onReadyToStart={handleOnReady}
 							/>
 						)}
@@ -409,7 +449,10 @@ const Reference = ({
 							show={true}
 							forms={trueAndFalse}
 							handlechange={handleIsPdf}
-							value={referenceDetails.isPdf}
+							value={
+								referenceDetails.isPdf.toString().charAt(0).toUpperCase() +
+								referenceDetails.isPdf.toString().slice(1)
+							}
 						/>
 						{activateForm && (
 							<SelectMiu
@@ -435,7 +478,7 @@ const Reference = ({
 					<div className={Styles.imageSelect}>Please wait...</div>
 				) : (
 					<div onClick={handleCreateSubject} className={Styles.imageSelect}>
-						Create Subject
+						Update Reference
 					</div>
 				)}
 				<SnackBar

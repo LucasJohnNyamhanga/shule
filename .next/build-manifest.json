@@ -15,15 +15,20 @@
     "static/development/_middlewareManifest.js"
   ],
   "pages": {
-    "/Admin": [
+    "/": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/Admin.js"
+      "static/chunks/pages/index.js"
     ],
     "/Admin/Reference/Edit/Reference/[id]": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/Admin/Reference/Edit/Reference/[id].js"
+    ],
+    "/Notes/Physics/FormOne": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/Notes/Physics/FormOne.js"
     ],
     "/_app": [
       "static/chunks/webpack.js",
