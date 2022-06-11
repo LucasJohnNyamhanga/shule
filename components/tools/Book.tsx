@@ -1,4 +1,4 @@
-import { reference } from '@prisma/client';
+import Link from 'next/link';
 import React from 'react';
 import Styles from '../../styles/book.module.scss';
 
@@ -16,33 +16,24 @@ type dataReference = {
 			formName: string;
 		}[];
 	}[];
+	link: string;
 };
 
-const Book = ({ reference }: dataReference) => {
-	function shuffleArray(array: string[]) {
+const Book = ({ reference, link }: dataReference) => {
+	function shuffleArray(array: number[]) {
 		for (let i = array.length - 1; i > 0; i--) {
 			const j = Math.floor(Math.random() * (i + 1));
 			[array[i], array[j]] = [array[j], array[i]];
 		}
 	}
 
-	enum rangi {
-		yanga,
-		yangaBright,
-		green,
-		grey,
-		orange,
-		blue,
-		zambarau,
-		black,
-		yellow,
-		brown,
-	}
-
-	console.log(rangi);
+	let numberIndex = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+	shuffleArray(numberIndex);
 
 	let rangiTamu = (index: number) => {
-		switch (index) {
+		const value = String(index).slice(-1);
+		let incommingIndex = numberIndex[Number(value)];
+		switch (incommingIndex) {
 			case 0:
 				return Styles.yanga;
 				break;
@@ -58,13 +49,34 @@ const Book = ({ reference }: dataReference) => {
 			case 4:
 				return Styles.orange;
 				break;
-
+			case 5:
+				return Styles.blue;
+				break;
+			case 6:
+				return Styles.zambarau;
+				break;
+			case 7:
+				return Styles.black;
+				break;
+			case 8:
+				return Styles.yellow;
+				break;
+			case 9:
+				return Styles.brown;
+				break;
 			default:
+				return Styles.zambarau;
 				break;
 		}
 	};
 
-	// shuffleArray(colors);
+	let truncateLimit = 100;
+	function truncate(str: string) {
+		return str.length > truncateLimit
+			? str.slice(0, truncateLimit) + '...'
+			: str;
+	}
+
 	return (
 		<div>
 			<div className={Styles.container}>
@@ -73,7 +85,7 @@ const Book = ({ reference }: dataReference) => {
 					<ul className={Styles.align}>
 						{/* <!-- Book 1 --> */}
 						{reference.map((ref, index) => (
-							<li>
+							<li key={ref.id}>
 								<figure className={Styles.book}>
 									{/* <!-- Front --> */}
 									<ul className={Styles.hardcoverfront}>
@@ -82,10 +94,20 @@ const Book = ({ reference }: dataReference) => {
 												className={`${Styles.coverDesign}  ${rangiTamu(
 													index
 												)}`}>
-												<span className={Styles.ribbon}>NEW</span>
+												{/* //*Activate to add a rebon with text. */}
+												{ref.isPdf && (
+													<span className={Styles.ribbon}>BOOK</span>
+												)}
 												<h2>{ref.name}</h2>
 												<p></p>
 											</div>
+											{/* //activate altenative for image on cover of book */}
+											{/* <img
+												src='https://assets.codepen.io/3922063/cover-AnimatedBooksCodrops.jpg'
+												alt="The book's hardcover image is a picture of a little boy with goose hair, big forehead and big ears, small dark eyes, leaning on the wall and watching you, looking sad and worried."
+												width='160px'
+												height='250px'
+											/> */}
 										</li>
 
 										<li></li>
@@ -94,9 +116,9 @@ const Book = ({ reference }: dataReference) => {
 									<ul className={Styles.page}>
 										<li></li>
 										<li>
-											<a href='#' className={Styles.btn}>
-												Preview
-											</a>
+											<Link href={`${link}/${ref.id}`}>
+												<a className={Styles.btn}>Preview</a>
+											</Link>
 										</li>
 										<li></li>
 										<li></li>
@@ -136,311 +158,39 @@ const Book = ({ reference }: dataReference) => {
 													index,
 													array
 												) => (
-													<>{`${index == 0 ? 'For ' : ''}${form.formName}${
+													<React.Fragment key={index + 111}>{`${
+														index == 0 ? 'For ' : ''
+													}${
+														index == 0
+															? form.formName
+															: typeof form.formName == 'string'
+															? form.formName.replace('Form ', '')
+															: ''
+													}${
 														index + 1 != array.length
 															? index + 1 == array.length - 1
 																? ' and '
 																: ', '
 															: '.'
-													}`}</>
+													}`}</React.Fragment>
 												)
 											)}
 										</span>
-										<p>{ref.description}</p>
+										<p>{truncate(ref.description)}</p>
 										<span>
 											<div className={Styles.linksButtons}>
-												<div className={Styles.button}>Preview</div>
+												<Link href={`${link}/${ref.id}`}>
+													<a>
+														<div className={Styles.buttonPreview}>Preview</div>
+													</a>
+												</Link>
 											</div>
 										</span>
 									</figcaption>
 								</figure>
 							</li>
 						))}
-						<li>
-							<figure className={Styles.book}>
-								{/* <!-- Front --> */}
-								<ul className={Styles.hardcoverfront}>
-									<li>
-										<div className={`${Styles.coverDesign} ${Styles.yellow}`}>
-											<span className={Styles.ribbon}>NEW</span>
-											<h2>THE BOYS</h2>
-											<p>DAWN OF THE SEVEN COMMANDOS</p>
-										</div>
-									</li>
-
-									<li></li>
-								</ul>
-								{/* <!--/ Front --> <!-- Pages --> */}
-								<ul className={Styles.page}>
-									<li></li>
-									<li>
-										<a href='#' className={Styles.btn}>
-											Preview
-										</a>
-									</li>
-									<li></li>
-									<li></li>
-									<li></li>
-								</ul>
-								{/* <!--/ Pages --> <!-- Back --> */}
-								<ul className={Styles.hardcoverback}>
-									<li></li>
-									<li></li>
-								</ul>
-								{/* <!--/ Back --> */}
-
-								<ul className={Styles.bookspine}>
-									<li></li>
-									<li></li>
-								</ul>
-
-								<figcaption>
-									<h1>CSS Ninja</h1>
-									<span>Form One, Form Three.</span>
-									<p>
-										Tomatillo water chestnut mustard cabbage yarrow sierra leone
-										bologi. Watercress green bean groundnut earthnut pea
-										dandelion radicchio.
-									</p>
-									<span>
-										<div className={Styles.linksButtons}>
-											<div className={Styles.button}>Preview</div>
-										</div>
-									</span>
-								</figcaption>
-							</figure>
-						</li>
-						{/* <!--/ Book 1 -->
-        
-        <!-- Book 2 --> */}
-						<li>
-							<figure className={Styles.book}>
-								{/* <!-- Front --> */}
-								<ul className={Styles.hardcoverfront}>
-									<li>
-										<div className={`${Styles.coverDesign} ${Styles.blue}`}>
-											<h1>JS</h1>
-											<p>FUNCTION</p>
-										</div>
-									</li>
-
-									<li></li>
-								</ul>
-								{/* <!--/ Front -->
-            
-            <!-- Pages --> */}
-								<ul className={Styles.page}>
-									<li></li>
-									<li>
-										<a href='#' className={Styles.btn}>
-											Download
-										</a>
-									</li>
-									<li></li>
-									<li></li>
-									<li></li>
-								</ul>
-								{/* <!--/ Pages -->
-            
-            <!-- Back --> */}
-								<ul className={Styles.hardcoverback}>
-									<li></li>
-									<li></li>
-								</ul>
-								{/* <!--/ Back --> */}
-
-								<ul className={Styles.bookspine}>
-									<li></li>
-									<li></li>
-								</ul>
-
-								<figcaption>
-									<h1>Storm JS</h1>
-									<span>By Marco Barría for Codrops</span>
-									<p>
-										Leek winter purslane sierra leone bologi caulie tomatillo
-										soko turnip greens bunya nuts silver beet melon green bean
-										celery. Gram kakadu plum wakame.
-									</p>
-								</figcaption>
-							</figure>
-						</li>
-						{/* <!--/ Book 2 -->
-                        // *kitabu kinaanzia hapa
-                        <!-- Book 2 --> */}
-						<li>
-							<figure className={Styles.book}>
-								{/* <!-- Front --> */}
-								<ul className={Styles.hardcoverfront}>
-									<li>
-										<div className={`${Styles.coverDesign} ${Styles.green}`}>
-											<h1>JS</h1>
-											<p>FUNCTION</p>
-										</div>
-									</li>
-
-									<li></li>
-								</ul>
-								{/* <!--/ Front -->
-            
-            <!-- Pages --> */}
-								<ul className={Styles.page}>
-									<li></li>
-									<li>
-										<a href='#' className={Styles.btn}>
-											Download
-										</a>
-									</li>
-									<li></li>
-									<li></li>
-									<li></li>
-								</ul>
-								{/* <!--/ Pages -->
-            
-            <!-- Back --> */}
-								<ul className={Styles.hardcoverback}>
-									<li></li>
-									<li></li>
-								</ul>
-								{/* <!--/ Back --> */}
-
-								<ul className={Styles.bookspine}>
-									<li></li>
-									<li></li>
-								</ul>
-
-								<figcaption>
-									<h1>Storm JS</h1>
-									<span>By Marco Barría for Codrops</span>
-									<p>
-										Leek winter purslane sierra leone bologi caulie tomatillo
-										soko turnip greens bunya nuts silver beet melon green bean
-										celery. Gram kakadu plum wakame.
-									</p>
-								</figcaption>
-							</figure>
-						</li>
-						{/* <!--/ Book 2 -->
-        // !kinaishia hapa
-        <!-- Book 3 --> */}
-						<li>
-							<figure className={Styles.book}>
-								{/* <!-- Front --> */}
-								<ul className={Styles.hardcoverfront}>
-									<li>
-										<div className={`${Styles.coverDesign} ${Styles.grey}`}>
-											<span className={Styles.ribbon}>#BEST</span>
-											<h1>HTML5</h1>
-											<p>CANVAS</p>
-										</div>
-									</li>
-
-									<li></li>
-								</ul>
-								{/* <!--/ Front -->
-            
-            <!-- Pages --> */}
-								<ul className={Styles.page}>
-									<li></li>
-									<li>
-										<a href='#' className={Styles.btn}>
-											Download
-										</a>
-									</li>
-									<li></li>
-									<li></li>
-									<li></li>
-								</ul>
-								{/* <!--/ Pages --> */}
-
-								{/* <!-- Back --> */}
-								<ul className={Styles.hardcoverback}>
-									<li></li>
-									<li></li>
-								</ul>
-								{/* <!--/ Back --> */}
-
-								<ul className={Styles.bookspine}>
-									<li></li>
-									<li></li>
-								</ul>
-
-								<figcaption>
-									<h1>Zen HTML5</h1>
-									<span>By Marco Barría for Codrops</span>
-									<p>
-										Salsify horseradish winter purslane yarrow zucchini bush
-										tomato aubergine cauliflower broccoli. Kohlrabi azuki bean
-										chickpea quandong dandelion seakale.
-									</p>
-								</figcaption>
-							</figure>
-						</li>
-						{/* <!--/ Book 3 -->
-        
-        <!-- Book 4 --> */}
-						<li>
-							<figure className={Styles.book}>
-								{/* <!-- Front --> */}
-								<ul className={Styles.hardcoverfront}>
-									<li>
-										<img
-											src='https://assets.codepen.io/3922063/cover-AnimatedBooksCodrops.jpg'
-											alt="The book's hardcover image is a picture of a little boy with goose hair, big forehead and big ears, small dark eyes, leaning on the wall and watching you, looking sad and worried."
-											width='160px'
-											height='250px'
-										/>
-									</li>
-
-									<li></li>
-								</ul>
-								{/* <!--/ Front -->
-            
-            <!-- Pages --> */}
-								<ul className={Styles.page}>
-									<li></li>
-									<li>
-										<a href='#' className={Styles.btn}>
-											Download
-										</a>
-									</li>
-									<li></li>
-									<li></li>
-									<li></li>
-								</ul>
-								{/* <!--/ Pages -->
-            
-            <!-- Back --> */}
-								<ul className={Styles.hardcoverback}>
-									<li></li>
-									<li></li>
-								</ul>
-								{/* <!--/ Back --> */}
-
-								<ul className={Styles.bookspine}>
-									<li></li>
-									<li></li>
-								</ul>
-
-								<figcaption>
-									<h1>CSS Ninja</h1>
-									<span>By Marco Barría for Codrops</span>
-									<p>
-										Tomatillo water chestnut mustard cabbage yarrow sierra leone
-										bologi. Watercress green bean groundnut earthnut pea
-										dandelion radicchio.
-									</p>
-								</figcaption>
-							</figure>
-						</li>
-						{/* <!--/ Book 4 --> */}
 					</ul>
-
-					<p className={Styles.note}>
-						Please note that this only works in browsers that support CSS 3D
-						Transforms. Also note that IE10 <strong>does not</strong> support{' '}
-						<em>preserve-3d</em> which is needed for this demo.
-					</p>
 				</div>
 				{/* <!--/ Books --> */}
 			</div>

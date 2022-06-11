@@ -29,39 +29,6 @@ const subjectLocatorLink = 'Physics';
 const formLocatorLink = 'FormOne';
 
 export const getStaticProps: GetStaticProps = async () => {
-	const topicsFromServer = await prisma.examType.findMany({
-		where: {
-			exam: {
-				some: {
-					published: true,
-				},
-			},
-			published: true,
-			subjectExams: {
-				subjectName: subjectLocator,
-			},
-			formExams: {
-				formName: formLocator,
-			},
-		},
-		select: {
-			id: true,
-			name: true,
-			definition: true,
-			formExams: {
-				select: {
-					formName: true,
-				},
-			},
-			subjectExams: {
-				select: {
-					subjectName: true,
-				},
-			},
-		},
-	});
-	const topics = JSON.parse(JSON.stringify(topicsFromServer));
-
 	const referenceFromServer = await prisma.reference.findMany({
 		where: {
 			published: true,
@@ -95,7 +62,6 @@ export const getStaticProps: GetStaticProps = async () => {
 
 	return {
 		props: {
-			topics,
 			reference,
 		},
 	};
@@ -106,9 +72,8 @@ type tableKey = {
 };
 
 const Index = ({
-	topics,
-	reference,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	reference,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -117,7 +82,7 @@ const Index = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [navActive]);
 
-	if (topics.length < 1) {
+	if (reference.length < 1) {
 		return <Error statusCode={404} />;
 	}
 
@@ -138,7 +103,10 @@ const Index = ({
 					</div>
 					<div className={Styles.BodyContent}>
 						<div className={Styles.conteinerTable}>
-							<Book reference={reference} />
+							<Book
+								reference={reference}
+								link={`/References/${subjectLocatorLink}/${formLocatorLink}`}
+							/>
 						</div>
 					</div>
 				</div>

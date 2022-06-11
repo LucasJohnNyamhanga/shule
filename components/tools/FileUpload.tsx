@@ -63,6 +63,7 @@ export default function PrivatePage({
 					onChange={(e) => {
 						uploadToClient(e);
 					}}
+					accept='application/pdf'
 				/>
 				<div
 					onClick={() => fileSelector.current.click()}

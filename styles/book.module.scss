@@ -371,14 +371,12 @@ Table of Contents
 		align-items: center;
 	}
 
-	.linksButtons > div {
-		padding: 10px 15px;
-		border: 1px solid $gray;
+	.buttonPreview {
+		margin-top: 5px;
+		padding: 5px 15px;
+		border: 2px solid $gray;
 		font-weight: 400;
-	}
-
-	.linksButtons > div:first-child {
-		margin-right: 10px;
+		cursor: pointer;
 	}
 
 	/*********************************
@@ -888,12 +886,12 @@ Table of Contents
 		background: #304352; /* fallback for old browsers */
 		background: -webkit-linear-gradient(
 			to bottom,
-			#d7d2cc,
+			#6b0494,
 			#304352
 		); /* Chrome 10-25, Safari 5.1-6 */
 		background: linear-gradient(
 			to bottom,
-			#d7d2cc,
+			#6b0494,
 			#304352
 		); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 	}
@@ -930,12 +928,12 @@ Table of Contents
 		background: #0077cf; /* fallback for old browsers */
 		background: -webkit-linear-gradient(
 			to bottom,
-			#ffd942,
+			#c70566,
 			#0077cf
 		); /* Chrome 10-25, Safari 5.1-6 */
 		background: linear-gradient(
 			to bottom,
-			#ffd942,
+			#c70566,
 			#0077cf
 		); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 	}
