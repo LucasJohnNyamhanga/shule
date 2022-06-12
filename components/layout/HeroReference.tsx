@@ -50,7 +50,7 @@ function hero({
 
 											.pauseFor(1000)
 											.typeString(
-												`<span>&ldquo;</span>The more that <span style="color: #a35f2e ;"><strong>you read,</strong></span> the more things you <span style="color: #d35400 ;"><strong>will know,</strong></span> `
+												`<span>&ldquo;</span>Education is the passport to the future, `
 											)
 											.typeString(`<span>&#128079;</span>`)
 											.callFunction(() => {
@@ -59,11 +59,11 @@ function hero({
 											.typeString('...,')
 											.deleteChars(6)
 											.typeString(
-												`the more that <span style="color: #007aff ;"><strong>you learn,</strong></span> <span style="color: #800000 ;"><strong>the more places you’ll go.</strong></span><span>&rdquo;</span>`
+												`  for tomorrow belongs to those who  <span style="color: #d35400 ;"><strong>prepare for it today.</strong></span><span>&rdquo;</span>`
 											)
 											.pauseFor(2000)
 											.typeString(
-												'<br/><strong>&#9997;&#127998; Dr. </strong><span style="color: #a35f2e ;"><strong>Seuss</strong></span>.'
+												'<br/><strong>&#9997;&#127998; Malcom</strong><span style="color: #a35f2e ;"><strong> X</strong></span>.'
 											)
 											.pauseFor(3000)
 											.deleteAll()
@@ -84,15 +84,20 @@ function hero({
 											.pauseFor(1500)
 											.deleteChars(2)
 											.callFunction(() => {
-												details.current.style.fontSize = '55px';
+												details.current.style.fontSize = '48px';
 											})
 											.typeString(
-												' <strong> to </strong> the <span style="color: #d35400 ;"><strong>examination collection,</strong></span>'
+												' <span style="color: #d35400 ;"><strong>to thousands of references...</strong></span>'
 											)
-											.deleteChars(1)
+
 											.pauseFor(1500)
+											.deleteChars(3)
 											.typeString(
-												'<strong>. And </strong><span style="color: #d35400 ;"><strong>nothing will be impossible.</strong></span>'
+												'<strong> containing new ideas, concepts and knowledge, </strong>'
+											)
+											.pauseFor(1000)
+											.typeString(
+												'<span style="color: #d35400 ;"><strong> to shape the future.</strong></span>'
 											)
 											.start();
 									}}
@@ -108,34 +113,23 @@ function hero({
 											.callFunction(() => {
 												details.current.style.fontSize = '35px';
 											})
+
 											.pauseFor(1000)
-											.typeString(`<span>&ldquo;</span>Nothing is impossible, `)
-											.typeString(`<span>&#127947;</span>`)
+											.typeString(
+												`<span>&ldquo;</span>Education is the passport to the future, `
+											)
+											.typeString(`<span>&#128079;</span>`)
 											.callFunction(() => {
 												details.current.style.fontSize = '23px';
 											})
 											.typeString('...,')
 											.deleteChars(6)
 											.typeString(
-												`  the word itself says <span style="color: #d35400 ;"><strong>'Impossible!'</strong></span><span>&rdquo;</span>`
-											)
-											.pauseFor(300)
-											.deleteChars(12)
-											.typeString(
-												`<span style="color: #d35400 ;"><strong>'m...'!</strong></span>`
-											)
-											.deleteChars(3)
-											.pauseFor(500)
-											.typeString(
-												` <span style="color: #d35400 ;"><strong> possible!'</strong></span><span>&rdquo;</span>`
-											)
-											.deleteChars(16)
-											.typeString(
-												` <span style="color: #d35400 ;"><strong> possible!'</strong></span><span>&rdquo;</span>`
+												`  for tomorrow belongs to those who  <span style="color: #d35400 ;"><strong>prepare for it today.</strong></span><span>&rdquo;</span>`
 											)
 											.pauseFor(2000)
 											.typeString(
-												'<br/><strong>&#9997; Audrey</strong><span style="color: #a35f2e ;"><strong> Hepburn</strong></span>.'
+												'<br/><strong>&#9997;&#127998; Malcom</strong><span style="color: #a35f2e ;"><strong> X</strong></span>.'
 											)
 											.pauseFor(3000)
 											.deleteAll()
@@ -144,8 +138,8 @@ function hero({
 											})
 											.typeString('Read...')
 											.pauseFor(1500)
-											.deleteChars(7)
-											.typeString('Search...')
+											.deleteChars(3)
+											.typeString(', Search...')
 											.deleteChars(3)
 											.typeString(
 												'<span style="color: #27ae60;">&#128270;</span>'
@@ -156,15 +150,20 @@ function hero({
 											.pauseFor(1500)
 											.deleteChars(2)
 											.callFunction(() => {
-												details.current.style.fontSize = '25px';
+												details.current.style.fontSize = '23px';
 											})
 											.typeString(
-												' <strong> to </strong> the <span style="color: #d35400 ;"><strong>examination collection,</strong></span>'
+												' <span style="color: #d35400 ;"><strong>to thousands of references...</strong></span>'
 											)
-											.deleteChars(1)
+
 											.pauseFor(1500)
+											.deleteChars(3)
 											.typeString(
-												'<strong>. And </strong><span style="color: #d35400 ;"><strong>nothing is impossible.</strong></span>'
+												'<strong> containing new ideas, concepts and knowledge, </strong>'
+											)
+											.pauseFor(1000)
+											.typeString(
+												'<span style="color: #d35400 ;"><strong> to shape the future.</strong></span>'
 											)
 											.start();
 									}}

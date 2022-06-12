@@ -50,20 +50,22 @@ function hero({
 
 											.pauseFor(1000)
 											.typeString(
-												`<span>&ldquo;</span>Education is the passport to the future, `
+												`<span>&ldquo;</span>Learning is best done through <span style="color: #a35f2e ;"><strong>questions</strong> and </span> <strong>answers.</strong><span style="color: #d35400 ;">`
 											)
-											.typeString(`<span>&#128079;</span>`)
+											.typeString(`<span>&#128079;</span><br/>`)
 											.callFunction(() => {
-												details.current.style.fontSize = '55px';
+												details.current.style.fontSize = '47px';
 											})
+											.typeString('And the only way to get it right')
 											.typeString('...,')
-											.deleteChars(6)
+											.deleteChars(4)
+											.pauseFor(1500)
 											.typeString(
-												`  for tomorrow belongs to those who  <span style="color: #d35400 ;"><strong>prepare for it today.</strong></span><span>&rdquo;</span>`
+												`, <span style="color: #800000 ;"><strong>is by knowing the right answer</strong></span>.<span>&rdquo;</span>`
 											)
 											.pauseFor(2000)
 											.typeString(
-												'<br/><strong>&#9997;&#127998; Malcom</strong><span style="color: #a35f2e ;"><strong> X</strong></span>.'
+												'<br/><span style="color: #d35400 ;"><strong>&#9997;&#127998; shule.co.tz</strong></span>'
 											)
 											.pauseFor(3000)
 											.deleteAll()
@@ -84,15 +86,19 @@ function hero({
 											.pauseFor(1500)
 											.deleteChars(2)
 											.callFunction(() => {
-												details.current.style.fontSize = '55px';
+												details.current.style.fontSize = '50px';
 											})
 											.typeString(
-												' <strong> to </strong> the <span style="color: #d35400 ;"><strong>examination collection,</strong></span>'
+												' <strong> to </strong><span style="color: #d35400 ;"><strong>the collection of infinite questions and answers...</strong></span>'
 											)
-											.deleteChars(1)
+											.deleteChars(2)
 											.pauseFor(1500)
 											.typeString(
-												'<strong>. And </strong><span style="color: #d35400 ;"><strong>nothing will be impossible.</strong></span>'
+												'<strong> Lets know <span>&ldquo;</span>WHAT<span>&rdquo;</span> is the answer </strong>'
+											)
+											.pauseFor(1500)
+											.typeString(
+												'<span style="color: #27ae60 ;"><strong>and <span>&ldquo;</span>WHY<span>&rdquo;</span> is the answer.</strong></span>'
 											)
 											.start();
 									}}
@@ -106,46 +112,39 @@ function hero({
 									onInit={(typewriter) => {
 										typewriter
 											.callFunction(() => {
-												details.current.style.fontSize = '35px';
+												details.current.style.fontSize = '33px';
+											})
+
+											.pauseFor(1000)
+											.typeString(
+												`<span>&ldquo;</span>Learning is best done through <span style="color: #a35f2e ;"><strong>questions</strong> and </span> <strong>answers.</strong><span style="color: #d35400 ;">`
+											)
+											.callFunction(() => {
+												details.current.style.fontSize = '21px';
 											})
 											.pauseFor(1000)
-											.typeString(`<span>&ldquo;</span>Nothing is impossible, `)
-											.typeString(`<span>&#127947;</span>`)
-											.callFunction(() => {
-												details.current.style.fontSize = '23px';
-											})
+											.typeString(`<span>&#127941;</span><br/>`)
+
+											.typeString('And the only way to get it right')
 											.typeString('...,')
-											.deleteChars(6)
+											.deleteChars(4)
+											.pauseFor(1500)
 											.typeString(
-												`  the word itself says <span style="color: #d35400 ;"><strong>'Impossible!'</strong></span><span>&rdquo;</span>`
-											)
-											.pauseFor(300)
-											.deleteChars(12)
-											.typeString(
-												`<span style="color: #d35400 ;"><strong>'m...'!</strong></span>`
-											)
-											.deleteChars(3)
-											.pauseFor(500)
-											.typeString(
-												` <span style="color: #d35400 ;"><strong> possible!'</strong></span><span>&rdquo;</span>`
-											)
-											.deleteChars(16)
-											.typeString(
-												` <span style="color: #d35400 ;"><strong> possible!'</strong></span><span>&rdquo;</span>`
+												`, <span style="color: #800000 ;"><strong>is by knowing the right answer</strong></span>.<span>&rdquo;</span>`
 											)
 											.pauseFor(2000)
 											.typeString(
-												'<br/><strong>&#9997; Audrey</strong><span style="color: #a35f2e ;"><strong> Hepburn</strong></span>.'
+												'<br/><span style="color: #d35400 ;"><strong>&#9997;&#127998; shule.co.tz</strong></span>'
 											)
 											.pauseFor(3000)
 											.deleteAll()
 											.callFunction(() => {
-												details.current.style.fontSize = '33px';
+												details.current.style.fontSize = '31px';
 											})
 											.typeString('Read...')
 											.pauseFor(1500)
-											.deleteChars(7)
-											.typeString('Search...')
+											.deleteChars(3)
+											.typeString(', Search...')
 											.deleteChars(3)
 											.typeString(
 												'<span style="color: #27ae60;">&#128270;</span>'
@@ -156,15 +155,19 @@ function hero({
 											.pauseFor(1500)
 											.deleteChars(2)
 											.callFunction(() => {
-												details.current.style.fontSize = '25px';
+												details.current.style.fontSize = '23px';
 											})
 											.typeString(
-												' <strong> to </strong> the <span style="color: #d35400 ;"><strong>examination collection,</strong></span>'
+												' <strong> to </strong><span style="color: #d35400 ;"><strong>the collection of infinite questions and answers...</strong></span>'
 											)
-											.deleteChars(1)
+											.deleteChars(2)
 											.pauseFor(1500)
 											.typeString(
-												'<strong>. And </strong><span style="color: #d35400 ;"><strong>nothing is impossible.</strong></span>'
+												'<strong> Lets know <span>&ldquo;</span>WHAT<span>&rdquo;</span> is the answer </strong>'
+											)
+											.pauseFor(1500)
+											.typeString(
+												'<span style="color: #27ae60 ;"><strong>and <span>&ldquo;</span>WHY<span>&rdquo;</span> is the answer.</strong></span>'
 											)
 											.start();
 									}}

@@ -116,7 +116,7 @@ function hero({
 											)
 											.typeString(`<span>&#128299;</span>`)
 											.callFunction(() => {
-												details.current.style.fontSize = '23px';
+												details.current.style.fontSize = '25px';
 											})
 											.typeString('...,')
 											.deleteChars(6)
@@ -132,7 +132,7 @@ function hero({
 											.pauseFor(2000)
 											.deleteAll()
 											.callFunction(() => {
-												details.current.style.fontSize = '33px';
+												details.current.style.fontSize = '35px';
 											})
 											.typeString('Read...')
 											.pauseFor(1500)
@@ -148,7 +148,7 @@ function hero({
 											.deleteChars(3)
 											.pauseFor(1500)
 											.callFunction(() => {
-												details.current.style.fontSize = '25px';
+												details.current.style.fontSize = '27px';
 											})
 											.typeString(
 												', to <strong>CHANGE</strong> the <span style="color: #d35400 ;"><strong>WORLD,</strong></span><br/>'
