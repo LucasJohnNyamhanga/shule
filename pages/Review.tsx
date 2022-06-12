@@ -1,5 +1,5 @@
 import type { NextPage, InferGetStaticPropsType } from 'next';
-import Hero from '../components/layout/Hero';
+import Hero from '../components/layout/HeroReview';
 import { type } from 'os';
 import Study from '../components/layout/Study';
 import { prisma } from '../db/prisma';
@@ -59,8 +59,8 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Review: NextPage = ({
-	subjects,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	subjects,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {

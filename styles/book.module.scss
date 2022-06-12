@@ -801,13 +801,13 @@ Table of Contents
 		background: #ffe000; /* fallback for old browsers */
 		background: -webkit-linear-gradient(
 			to bottom,
-			#aa7942,
-			#d36300
+			#aa6a21,
+			#035f8a
 		); /* Chrome 10-25, Safari 5.1-6 */
 		background: linear-gradient(
 			to bottom,
 			#aa7942,
-			#d36300
+			#035f8a
 		); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 	}
 
@@ -872,12 +872,12 @@ Table of Contents
 		background: #544a7d; /* fallback for old browsers */
 		background: -webkit-linear-gradient(
 			to bottom,
-			#ffd452,
+			#533f01,
 			#544a7d
 		); /* Chrome 10-25, Safari 5.1-6 */
 		background: linear-gradient(
 			to bottom,
-			#ffd452,
+			#533f01,
 			#544a7d
 		); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 	}
@@ -886,12 +886,12 @@ Table of Contents
 		background: #304352; /* fallback for old browsers */
 		background: -webkit-linear-gradient(
 			to bottom,
-			#6b0494,
+			#2f0141,
 			#304352
 		); /* Chrome 10-25, Safari 5.1-6 */
 		background: linear-gradient(
 			to bottom,
-			#6b0494,
+			#2f0141,
 			#304352
 		); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 	}
@@ -940,7 +940,7 @@ Table of Contents
 
 	/* Basic ribbon */
 	.ribbon {
-		background: #c0392b;
+		background: $ugoro;
 		color: #fff;
 		display: block;
 		font-size: 0.7em;
@@ -967,7 +967,7 @@ Table of Contents
 		top: -20px;
 		width: 0;
 		height: 0;
-		border-bottom: 20px solid #c0392b;
+		border-bottom: 20px solid $ugoro;
 		border-top: 20px solid transparent;
 	}
 

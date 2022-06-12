@@ -4,6 +4,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import Navigator from '../components/layout/Nav';
 import NavMobile from '../components/layout/NavMobile';
 import Search from '../components/layout/Search';
+import Footer from '../components/layout/Footer';
 import { NextPage } from 'next';
 import { ComponentType, ReactElement, ReactNode, useState } from 'react';
 import '../styles/ckEditorStyles.scss';
@@ -76,6 +77,7 @@ function MyApp({ Component, pageProps }: any) {
 					}}>
 					{matches ? <Navigator /> : <NavMobile />}
 					<Component {...pageProps} />
+					<Footer />
 				</NavContext.Provider>
 			</div>
 		);
@@ -92,6 +94,7 @@ function MyApp({ Component, pageProps }: any) {
 				{matches ? <Navigator /> : <NavMobile />}
 				<Search />
 				<Component {...pageProps} />
+				<Footer />
 			</NavContext.Provider>
 			{/* <style global jsx>{`
       html,

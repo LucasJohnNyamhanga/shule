@@ -40,6 +40,14 @@
 		align-items: center;
 		padding-right: 20px;
 		flex: 1 1 100%;
+
+		.details {
+			width: 90%;
+			font-size: 35px;
+			font-weight: 400;
+			min-height: 80%;
+			padding: 15px 15px;
+		}
 	}
 
 	.image {
@@ -47,7 +55,7 @@
 		flex: 1 1 500px;
 		aspect-ratio: 1/1;
 		flex-direction: column;
-		justify-content: flex-start;
+		justify-content: center;
 		align-items: center;
 
 		img {
@@ -148,7 +156,8 @@
 			flex: 1 1 100%;
 
 			.details {
-				width: 90%;
+				min-width: 90%;
+				min-height: 150px;
 			}
 		}
 

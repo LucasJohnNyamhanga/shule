@@ -47,6 +47,7 @@
     "sass": "^1.49.9",
     "string-similarity": "^4.0.4",
     "styled-components": "^5.3.5",
+    "typewriter-effect": "^2.18.2",
     "zustand": "^4.0.0-rc.0"
   },
   "devDependencies": {
