@@ -45,6 +45,8 @@ model subject {
   note              note[]
   usersId           Int     @default(1)
   users             users   @relation(fields: [usersId], references: [id])
+
+  @@fulltext([subjectName, subjectDefinition])
 }
 
 model form {
@@ -69,6 +71,8 @@ model topic {
   note            note?
   usersId         Int     @default(1)
   users           users   @relation(fields: [usersId], references: [id])
+
+  @@fulltext([topicName, topicDefinition])
 }
 
 model note {
@@ -85,6 +89,8 @@ model note {
   form      form     @relation(fields: [formId], references: [id])
   topic     topic    @relation(fields: [topicId], references: [id])
   users     users    @relation(fields: [usersId], references: [id])
+
+  @@fulltext([content])
 }
 
 model subjectReview {
@@ -98,6 +104,8 @@ model subjectReview {
   review            review[]
   usersId           Int           @default(1)
   users             users         @relation(fields: [usersId], references: [id])
+
+  @@fulltext([subjectName, subjectDefinition])
 }
 
 model formReview {
@@ -122,6 +130,8 @@ model topicReview {
   usersId         Int           @default(1)
   users           users         @relation(fields: [usersId], references: [id])
   review          review[]
+
+  @@fulltext([topicName, topicDefinition])
 }
 
 model review {
@@ -135,6 +145,8 @@ model review {
   formId    Int
   form      formReview    @relation(fields: [formId], references: [id])
   question  question[]
+
+  @@fulltext([name])
 }
 
 model question {
@@ -149,6 +161,8 @@ model question {
   review           review         @relation(fields: [reviewId], references: [id])
   usersId          Int            @default(1)
   users            users          @relation(fields: [usersId], references: [id])
+
+  @@fulltext([question])
 }
 
 model questionFormat {
@@ -163,6 +177,8 @@ model answer {
   valid      Boolean  @default(false)
   questionId Int
   question   question @relation(fields: [questionId], references: [id])
+
+  @@fulltext([answer])
 }
 
 //Exams
@@ -177,6 +193,8 @@ model subjectExams {
   examType          examType[]
   usersId           Int         @default(1)
   users             users       @relation(fields: [usersId], references: [id])
+
+  @@fulltext([subjectName, subjectDefinition])
 }
 
 model formExams {
@@ -198,6 +216,8 @@ model examType {
   formId       Int
   formExams    formExams    @relation(fields: [formId], references: [id])
   exam         exam[]
+
+  @@fulltext([name, definition])
 }
 
 model exam {
@@ -211,6 +231,8 @@ model exam {
   exam        String   @db.LongText
   usersId     Int      @default(1)
   users       users    @relation(fields: [usersId], references: [id])
+
+  @@fulltext([description, exam])
 }
 
 //references
@@ -225,6 +247,8 @@ model subjectReference {
   reference         reference[]
   usersId           Int             @default(1)
   users             users           @relation(fields: [usersId], references: [id])
+
+  @@fulltext([subjectDefinition, subjectName])
 }
 
 model formReference {
@@ -248,4 +272,6 @@ model reference {
   formReference    formReference[]
   usersId          Int              @default(1)
   users            users            @relation(fields: [usersId], references: [id])
+
+  @@fulltext([name, description, data])
 }
