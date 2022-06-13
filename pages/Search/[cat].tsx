@@ -11,6 +11,8 @@ import { unified } from 'unified';
 import rehypeParse from 'rehype-parse';
 import rehypeStringify from 'rehype-stringify';
 import { visit } from 'unist-util-visit';
+import { Root } from 'hast';
+import { stringify } from 'querystring';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const category = context.params!.cat;
@@ -40,13 +42,10 @@ const Reference = ({
 	const content = unified()
 		.use(rehypeParse, { fragment: true })
 		.use(() => {
-			return (tree) => {
+			return (tree: Root) => {
 				visit(tree, 'element', (node) => {
 					if (node.tagName == 'p') {
-						// node.children.map((paragraph) => {
-						// 	console.log(paragraph.value);
-						// });
-						if (node.children[0].value);
+						console.log(node);
 					}
 				});
 			};
