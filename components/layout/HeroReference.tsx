@@ -23,7 +23,8 @@ function hero({
 	linker,
 }: dataHero) {
 	const details = useRef<HTMLDivElement>(null!);
-	const matches = useMediaQuery('(min-width:888px)');
+	const matches = useMediaQuery('(min-width:1100px)');
+	const matchesTab = useMediaQuery('(min-width:880px)');
 	return (
 		<div className={styles.container}>
 			<div className={styles.section}>
@@ -45,21 +46,21 @@ function hero({
 									onInit={(typewriter) => {
 										typewriter
 											.callFunction(() => {
-												details.current.style.fontSize = '65px';
+												details.current.style.fontSize = '62px';
 											})
 
 											.pauseFor(1000)
 											.typeString(
-												`<span>&ldquo;</span>Education is the passport to the future, `
+												`<span>&ldquo;</span>Education is the <strong>passport</strong> to the <strong>future</strong>, `
 											)
 											.typeString(`<span>&#128079;</span>`)
 											.callFunction(() => {
-												details.current.style.fontSize = '55px';
+												details.current.style.fontSize = '50px';
 											})
 											.typeString('...,')
 											.deleteChars(6)
 											.typeString(
-												`  for tomorrow belongs to those who  <span style="color: #d35400 ;"><strong>prepare for it today.</strong></span><span>&rdquo;</span>`
+												`  for <span style="color: #d35400 ;"><strong>tomorrow</strong></span> belongs to those who  <span style="color: #d35400 ;"><strong>prepare for it today.</strong></span><span>&rdquo;</span>`
 											)
 											.pauseFor(2000)
 											.typeString(
@@ -68,7 +69,7 @@ function hero({
 											.pauseFor(3000)
 											.deleteAll()
 											.callFunction(() => {
-												details.current.style.fontSize = '65px';
+												details.current.style.fontSize = '62px';
 											})
 											.typeString('Read...')
 											.pauseFor(1500)
@@ -84,7 +85,73 @@ function hero({
 											.pauseFor(1500)
 											.deleteChars(2)
 											.callFunction(() => {
+												details.current.style.fontSize = '46px';
+											})
+											.typeString(
+												' <span style="color: #d35400 ;"><strong>to thousands of references...</strong></span>'
+											)
+
+											.pauseFor(1500)
+											.deleteChars(3)
+											.typeString(
+												'<strong> containing new ideas, concepts and knowledge, </strong>'
+											)
+											.pauseFor(1000)
+											.typeString(
+												'<span style="color: #d35400 ;"><strong> to shape the future.</strong></span>'
+											)
+											.start();
+									}}
+									options={{
+										autoStart: true,
+										loop: false,
+									}}
+								/>
+							) : matchesTab ? (
+								<Typewriter
+									onInit={(typewriter) => {
+										typewriter
+											.callFunction(() => {
 												details.current.style.fontSize = '48px';
+											})
+
+											.pauseFor(1000)
+											.typeString(
+												`<span>&ldquo;</span>Education is the <strong>passport</strong> to the <strong>future</strong>, `
+											)
+											.typeString(`<span>&#128079;</span>`)
+											.callFunction(() => {
+												details.current.style.fontSize = '37px';
+											})
+											.typeString('...,')
+											.deleteChars(6)
+											.typeString(
+												`  for <span style="color: #d35400 ;"><strong>tomorrow</strong></span> belongs to those who  <span style="color: #d35400 ;"><strong>prepare for it today.</strong></span><span>&rdquo;</span>`
+											)
+											.pauseFor(2000)
+											.typeString(
+												'<br/><strong>&#9997;&#127998; Malcom</strong><span style="color: #a35f2e ;"><strong> X</strong></span>.'
+											)
+											.pauseFor(3000)
+											.deleteAll()
+											.callFunction(() => {
+												details.current.style.fontSize = '48px';
+											})
+											.typeString('Read...')
+											.pauseFor(1500)
+											.deleteChars(3)
+											.typeString(', Search...')
+											.deleteChars(3)
+											.typeString(
+												'<span style="color: #27ae60;">&#128270;</span>'
+											)
+											.typeString(
+												' and <span style="color: #27ae60;">Explore!.<br></span>'
+											)
+											.pauseFor(1500)
+											.deleteChars(2)
+											.callFunction(() => {
+												details.current.style.fontSize = '37px';
 											})
 											.typeString(
 												' <span style="color: #d35400 ;"><strong>to thousands of references...</strong></span>'
@@ -116,7 +183,7 @@ function hero({
 
 											.pauseFor(1000)
 											.typeString(
-												`<span>&ldquo;</span>Education is the passport to the future, `
+												`<span>&ldquo;</span>Education is the <strong>passport</strong> to the <strong>future</strong>, `
 											)
 											.typeString(`<span>&#128079;</span>`)
 											.callFunction(() => {
@@ -125,7 +192,7 @@ function hero({
 											.typeString('...,')
 											.deleteChars(6)
 											.typeString(
-												`  for tomorrow belongs to those who  <span style="color: #d35400 ;"><strong>prepare for it today.</strong></span><span>&rdquo;</span>`
+												`  for <span style="color: #d35400 ;"><strong>tomorrow</strong></span> belongs to those who  <span style="color: #d35400 ;"><strong>prepare for it today.</strong></span><span>&rdquo;</span>`
 											)
 											.pauseFor(2000)
 											.typeString(

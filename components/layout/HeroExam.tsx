@@ -23,7 +23,8 @@ function hero({
 	linker,
 }: dataHero) {
 	const details = useRef<HTMLDivElement>(null!);
-	const matches = useMediaQuery('(min-width:888px)');
+	const matches = useMediaQuery('(min-width:1180px)');
+	const matchesTab = useMediaQuery('(min-width:880px)');
 	return (
 		<div className={styles.container}>
 			<div className={styles.section}>
@@ -96,6 +97,78 @@ function hero({
 											.deleteChars(2)
 											.callFunction(() => {
 												details.current.style.fontSize = '55px';
+											})
+											.typeString(
+												' <strong> to </strong> the <span style="color: #d35400 ;"><strong>collection of answered and unanswered exams,</strong></span>'
+											)
+											.deleteChars(1)
+											.pauseFor(1500)
+											.typeString(
+												'<strong>. And </strong><span style="color: #800000 ;"><strong>nothing will be impossible to achive.</strong></span>'
+											)
+											.start();
+									}}
+									options={{
+										autoStart: true,
+										loop: false,
+									}}
+								/>
+							) : matchesTab ? (
+								<Typewriter
+									onInit={(typewriter) => {
+										typewriter
+											.callFunction(() => {
+												details.current.style.fontSize = '50px';
+											})
+											.pauseFor(1000)
+											.typeString(`<span>&ldquo;</span>Nothing is impossible, `)
+											.typeString(`<span>&#127947;</span>`)
+											.callFunction(() => {
+												details.current.style.fontSize = '40px';
+											})
+											.typeString('...,')
+											.deleteChars(4)
+											.typeString(
+												`  the word itself says <span style="color: #d35400 ;"><strong>'Impossible!'</strong></span><span>&rdquo;</span>`
+											)
+											.pauseFor(300)
+											.deleteChars(12)
+											.typeString(
+												`<span style="color: #d35400 ;"><strong>'m...'!</strong></span>`
+											)
+											.deleteChars(3)
+											.pauseFor(500)
+											.typeString(
+												` <span style="color: #d35400 ;"><strong> possible!'</strong></span><span>&rdquo;</span>`
+											)
+											.deleteChars(16)
+											.typeString(
+												` <span style="color: #d35400 ;"><strong> possible!'</strong></span><span>&rdquo;</span>`
+											)
+											.pauseFor(2000)
+											.typeString(
+												'<br/><strong>&#9997; Audrey</strong><span style="color: #a35f2e ;"><strong> Hepburn</strong></span>.'
+											)
+											.pauseFor(3000)
+											.deleteAll()
+											.callFunction(() => {
+												details.current.style.fontSize = '50px';
+											})
+											.typeString('Read...')
+											.pauseFor(1500)
+											.deleteChars(3)
+											.typeString(', Search...')
+											.deleteChars(3)
+											.typeString(
+												'<span style="color: #27ae60;">&#128270;</span>'
+											)
+											.typeString(
+												' and <span style="color: #27ae60;">Explore!.<br></span>'
+											)
+											.pauseFor(1500)
+											.deleteChars(2)
+											.callFunction(() => {
+												details.current.style.fontSize = '40px';
 											})
 											.typeString(
 												' <strong> to </strong> the <span style="color: #d35400 ;"><strong>collection of answered and unanswered exams,</strong></span>'
