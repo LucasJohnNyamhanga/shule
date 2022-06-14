@@ -57,9 +57,9 @@ type note = {
 };
 
 const Reference = ({
-    	searchResults,
-    	searchText,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	searchResults,
+	searchText,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 	const [searchResultsStatus, setSearchResultsStatus] = useState(false);
 
@@ -67,9 +67,6 @@ const Reference = ({
 		let startIndex = text
 			.toLowerCase()
 			.search(`${searchText.toLowerCase().replaceAll(' ', '|')}`);
-		if (text) {
-			console.log(searchText.toLowerCase().replaceAll(' ', '|'));
-		}
 
 		if (startIndex > 70) {
 			startIndex -= 70;
@@ -181,18 +178,30 @@ const Reference = ({
 	return (
 		<div className={Styles.container}>
 			<div className={Styles.innerContainer}>
-				<div className={Styles.resultsHeader}>{`About ${searchResults.length} ${
-					searchResults.length > 1 ? 'Results' : 'Result'
-				} Found`}</div>
+				{searchResults.length > 1 ? (
+					<div className={Styles.resultsHeader}>{`About ${
+						searchResults.length
+					} Search ${
+						searchResults.length > 1 ? 'Results' : 'Result'
+					} Found For "${searchText}"`}</div>
+				) : (
+					<div
+						className={
+							Styles.resultsHeader
+						}>{`No Search Result Found For "${searchText}"`}</div>
+				)}
 				{searchResultsStatus &&
 					searchResults.map(
-						(result: {
-							form: any;
-							topic: any;
-							id: React.Key | null | undefined;
-							subject: note;
-							content: string;
-						}) => (
+						(
+							result: {
+								form: any;
+								topic: any;
+								id: React.Key | null | undefined;
+								subject: note;
+								content: string;
+							},
+							index: number
+						) => (
 							<div key={result.id}>
 								<>
 									<div
@@ -210,6 +219,9 @@ const Reference = ({
 													__html: truncateHTML(result.content, 700),
 												}}
 											/>
+											{searchResults.length != index + 1 && (
+												<hr className={Styles.horizontalLine} />
+											)}
 										</a>
 									</Link>
 								</>

@@ -6,6 +6,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { NavContext } from '../../components/context/StateContext';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import Exams from '../../pages/Exams';
 
 const Search = () => {
 	const router = useRouter();
@@ -49,6 +50,18 @@ const Search = () => {
 						query: { find: formData.searchText },
 					});
 					break;
+				case 'Exams':
+					router.push({
+						pathname: `/Exams/Search/`,
+						query: { find: formData.searchText },
+					});
+					break;
+				case 'References':
+					router.push({
+						pathname: `/References/Search/`,
+						query: { find: formData.searchText },
+					});
+					break;
 
 				default:
 					break;
@@ -84,6 +97,16 @@ const Search = () => {
 								: navActive == 'Review'
 								? {
 										pathname: `/Review/Search/`,
+										query: { find: formData.searchText },
+								  }
+								: navActive == 'Exams'
+								? {
+										pathname: `/Exams/Search/`,
+										query: { find: formData.searchText },
+								  }
+								: navActive == 'References'
+								? {
+										pathname: `/References/Search/`,
 										query: { find: formData.searchText },
 								  }
 								: ''

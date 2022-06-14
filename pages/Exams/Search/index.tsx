@@ -1,22 +1,12 @@
-import { useRouter } from 'next/router';
-import React, { ReactNode, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import Styles from '../../styles/search.module.scss';
-import toast, { Toaster } from 'react-hot-toast';
-import axios from 'axios';
+import Styles from '../../../styles/search.module.scss';
 import { NavContext } from '../../../components/context/StateContext';
 import { prisma } from '../../../db/prisma';
-import { unified } from 'unified';
-import rehypeParse from 'rehype-parse';
-import rehypeStringify from 'rehype-stringify';
-import { visit } from 'unist-util-visit';
-import { Root } from 'hast';
-import { stringify } from 'querystring';
 import Link from 'next/link';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-	const category = context.params!.cat;
-	const searchText = context.query.search!.toString();
+	const searchText = context.query.find!.toString();
 
 	const result = await prisma.note.findMany({
 		where: {
@@ -77,9 +67,6 @@ const Reference = ({
 		let startIndex = text
 			.toLowerCase()
 			.search(`${searchText.toLowerCase().replaceAll(' ', '|')}`);
-		if (text) {
-			console.log(searchText.toLowerCase().replaceAll(' ', '|'));
-		}
 
 		if (startIndex > 70) {
 			startIndex -= 70;
@@ -191,18 +178,30 @@ const Reference = ({
 	return (
 		<div className={Styles.container}>
 			<div className={Styles.innerContainer}>
-				<div className={Styles.resultsHeader}>{`About ${searchResults.length} ${
-					searchResults.length > 1 ? 'Results' : 'Result'
-				} Found`}</div>
+				{searchResults.length > 1 ? (
+					<div className={Styles.resultsHeader}>{`About ${
+						searchResults.length
+					} Search ${
+						searchResults.length > 1 ? 'Results' : 'Result'
+					} Found For "${searchText}"`}</div>
+				) : (
+					<div
+						className={
+							Styles.resultsHeader
+						}>{`No Search Result Found For "${searchText}"`}</div>
+				)}
 				{searchResultsStatus &&
 					searchResults.map(
-						(result: {
-							form: any;
-							topic: any;
-							id: React.Key | null | undefined;
-							subject: note;
-							content: string;
-						}) => (
+						(
+							result: {
+								form: any;
+								topic: any;
+								id: React.Key | null | undefined;
+								subject: note;
+								content: string;
+							},
+							index: number
+						) => (
 							<div key={result.id}>
 								<>
 									<div
@@ -220,6 +219,9 @@ const Reference = ({
 													__html: truncateHTML(result.content, 700),
 												}}
 											/>
+											{searchResults.length != index + 1 && (
+												<hr className={Styles.horizontalLine} />
+											)}
 										</a>
 									</Link>
 								</>

@@ -107,6 +107,11 @@
 		input {
 			font-size: 15px;
 		}
+
+		.resultsHeader {
+			font-weight: 500;
+			font-size: 16px;
+		}
 	}
 }
 
@@ -130,13 +135,15 @@
 		.resultsHeader {
 			font-family: $fontHeader;
 			color: $ugoro;
-			font-weight: 400;
+			font-weight: 500;
+			font-size: 20px;
 		}
 
 		.resultDetails {
 			margin-top: 10px;
 			font-family: $fontBody;
-			font-size: 12px;
+			font-size: 14px;
+			font-weight: 400;
 			color: $ugoro;
 		}
 
