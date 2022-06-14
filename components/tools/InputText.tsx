@@ -7,9 +7,16 @@ type textInput = {
 	handletext: (event: React.ChangeEvent<HTMLInputElement>) => void;
 	value?: string;
 	textHolder: string;
+	handleEnter: () => void;
 };
 
-const InputText = ({ name, handletext, value, textHolder }: textInput) => {
+const InputText = ({
+	name,
+	handletext,
+	value,
+	textHolder,
+	handleEnter,
+}: textInput) => {
 	return (
 		<div className={Styles.container}>
 			<input
@@ -21,6 +28,7 @@ const InputText = ({ name, handletext, value, textHolder }: textInput) => {
 				onChange={(event) => {
 					handletext(event);
 				}}
+				onKeyDownCapture={handleEnter}
 			/>
 		</div>
 	);

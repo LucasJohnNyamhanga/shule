@@ -5,8 +5,10 @@ import Styles from '../../styles/search.module.scss';
 import ClearIcon from '@mui/icons-material/Clear';
 import { NavContext } from '../../components/context/StateContext';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const Search = () => {
+	const router = useRouter();
 	type dataInForm = {
 		searchText: string;
 	};
@@ -38,6 +40,15 @@ const Search = () => {
 		}
 	};
 
+	let handleEnter = () => {
+		if (formData.searchText != '') {
+			router.push({
+				pathname: `/Search/${navActive}`,
+				query: { search: formData.searchText },
+			});
+		}
+	};
+
 	return (
 		<div className={Styles.searchContainerMain}>
 			<div className={Styles.searchContainer}>
@@ -47,6 +58,7 @@ const Search = () => {
 					value={formData.searchText}
 					textHolder={`Search in ${navActive}`}
 					handletext={handletext}
+					handleEnter={handleEnter}
 				/>
 				<div className={Styles.clearContainer}>
 					{formData.searchText != '' && (
@@ -60,7 +72,7 @@ const Search = () => {
 						href={
 							navActive == 'Notes'
 								? {
-										pathname: `/Search/${navActive}`,
+										pathname: `Notes/Search/${navActive}`,
 										query: { search: formData.searchText },
 								  }
 								: ''
