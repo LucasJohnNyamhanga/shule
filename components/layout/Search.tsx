@@ -36,16 +36,23 @@ const Search = () => {
 
 	let handleSearch = () => {
 		if (formData.searchText != '') {
-			// console.log(formData.searchText);
-		}
-	};
+			switch (navActive) {
+				case 'Notes':
+					router.push({
+						pathname: `/Notes/Search/`,
+						query: { find: formData.searchText },
+					});
+					break;
+				case 'Review':
+					router.push({
+						pathname: `/Review/Search/`,
+						query: { find: formData.searchText },
+					});
+					break;
 
-	let handleEnter = () => {
-		if (formData.searchText != '') {
-			router.push({
-				pathname: `/Search/${navActive}`,
-				query: { search: formData.searchText },
-			});
+				default:
+					break;
+			}
 		}
 	};
 
@@ -58,7 +65,6 @@ const Search = () => {
 					value={formData.searchText}
 					textHolder={`Search in ${navActive}`}
 					handletext={handletext}
-					handleEnter={handleEnter}
 				/>
 				<div className={Styles.clearContainer}>
 					{formData.searchText != '' && (
@@ -72,15 +78,25 @@ const Search = () => {
 						href={
 							navActive == 'Notes'
 								? {
-										pathname: `Notes/Search/${navActive}`,
-										query: { search: formData.searchText },
+										pathname: `/Notes/Search/`,
+										query: { find: formData.searchText },
+								  }
+								: navActive == 'Review'
+								? {
+										pathname: `/Review/Search/`,
+										query: { find: formData.searchText },
 								  }
 								: ''
 						}>
 						<a>
-							<div onClick={handleSearch} className={Styles.searchButton}>
+							<button
+								onSubmit={(e) => {
+									e.preventDefault();
+									handleSearch();
+								}}
+								className={Styles.searchButton}>
 								Search
-							</div>
+							</button>
 						</a>
 					</Link>
 				)}
