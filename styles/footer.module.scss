@@ -1,2 +1,14 @@
+@import 'index';
 .container {
+	background-color: $ugoro;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+
+	.innerContainer {
+		width: 100%;
+		max-width: 1400px;
+	}
 }

@@ -21,11 +21,11 @@ type Page<P = {}> = NextPage<P> & {
 	layout?: ComponentType;
 };
 
-type Props = AppProps & {
+type dataProps = AppProps & {
 	Component: Page;
 };
 
-function MyApp({ Component, pageProps }: any) {
+function MyApp({ Component, pageProps }: dataProps) {
 	const matches = useMediaQuery('(min-width:958px)');
 
 	const [navActive, setNavActive] = useState('Notes');
@@ -84,7 +84,7 @@ function MyApp({ Component, pageProps }: any) {
 	}
 
 	return (
-		<div>
+		<div className='container'>
 			<Progress isAnimating={isAnimating} />
 			<NavContext.Provider
 				value={{

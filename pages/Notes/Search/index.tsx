@@ -57,9 +57,9 @@ type note = {
 };
 
 const Reference = ({
-    	searchResults,
-    	searchText,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	searchResults,
+	searchText,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 	const [searchResultsStatus, setSearchResultsStatus] = useState(false);
 
