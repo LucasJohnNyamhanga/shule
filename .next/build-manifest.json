@@ -20,10 +20,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/index.js"
     ],
-    "/Notes/Search": [
+    "/Admin": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/Notes/Search.js"
+      "static/chunks/pages/Admin.js"
     ],
     "/_app": [
       "static/chunks/webpack.js",
