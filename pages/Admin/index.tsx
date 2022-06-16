@@ -15,6 +15,7 @@ import { NavContext } from '../../components/context/StateContext';
 import AlignVerticalBottomIcon from '@mui/icons-material/AlignVerticalBottom';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import Loader from '../../components/tools/loader';
+import Drawer from '../../components/tools/DrawerMobileAdmin';
 
 type dataTypeSelect = {
 	value: string;
@@ -1777,6 +1778,15 @@ const Index = ({}) => {
 					</div>
 					{/* //!start of default desplay */}
 					<div className={Styles.rightInnercontainerBody}>
+						<div className={Styles.mobile}>
+							<Drawer
+								textHeader={'Admin Dashboard'}
+								active={0}
+								topic={[]}
+								link={''}
+							/>
+						</div>
+
 						{loading && (
 							<div className={Styles.loading}>
 								<Loader />
@@ -1991,7 +2001,7 @@ const Index = ({}) => {
 												</div>
 												<Link passHref href='/Admin/Review/Create/Subject'>
 													<div className={Styles.subjectHeaderButton}>
-														Create Subject in Review
+														Create Subject
 													</div>
 												</Link>
 											</div>
@@ -2027,7 +2037,7 @@ const Index = ({}) => {
 												</div>
 												<Link passHref href='/Admin/Review/Create/Topic'>
 													<div className={Styles.subjectHeaderButton}>
-														Create Topic in Review
+														Create Topic
 													</div>
 												</Link>
 											</div>
@@ -2085,7 +2095,7 @@ const Index = ({}) => {
 												</div>
 												<Link passHref href='/Admin/Review/Create/Form'>
 													<div className={Styles.subjectHeaderButton}>
-														Create Form in Review
+														Create Form
 													</div>
 												</Link>
 											</div>
@@ -2177,11 +2187,9 @@ const Index = ({}) => {
 													Questions Management
 												</div>
 												<Link passHref href='/Admin/Review/Create/Question'>
-													<a>
-														<div className={Styles.subjectHeaderButton}>
-															Create Question
-														</div>
-													</a>
+													<div className={Styles.subjectHeaderButton}>
+														Create Question
+													</div>
 												</Link>
 											</div>
 											<div className={Styles.selectDivTopic}>
@@ -2251,7 +2259,7 @@ const Index = ({}) => {
 												</div>
 												<Link passHref href='/Admin/Exam/Create/Subject'>
 													<div className={Styles.subjectHeaderButton}>
-														Create Subject in Exam
+														Create Subject
 													</div>
 												</Link>
 											</div>
@@ -2286,7 +2294,7 @@ const Index = ({}) => {
 												</div>
 												<Link passHref href='/Admin/Exam/Create/Form'>
 													<div className={Styles.subjectHeaderButton}>
-														Create Form in Exam
+														Create Form
 													</div>
 												</Link>
 											</div>
@@ -2313,7 +2321,7 @@ const Index = ({}) => {
 										<div className={Styles.subject}>
 											<div className={Styles.subjectHeader}>
 												<div className={Styles.subjectHeaderText}>
-													Exam Types In Exam Management
+													Exam Types Management
 												</div>
 												<Link passHref href='/Admin/Exam/Create/ExamType'>
 													<div className={Styles.subjectHeaderButton}>
@@ -2439,7 +2447,7 @@ const Index = ({}) => {
 												</div>
 												<Link passHref href='/Admin/Reference/Create/Subject'>
 													<div className={Styles.subjectHeaderButton}>
-														Create Subject in Reference
+														Create Subject
 													</div>
 												</Link>
 											</div>
@@ -2478,7 +2486,7 @@ const Index = ({}) => {
 												</div>
 												<Link passHref href='/Admin/Reference/Create/Form'>
 													<div className={Styles.subjectHeaderButton}>
-														Create Form in Reference
+														Create Form
 													</div>
 												</Link>
 											</div>
