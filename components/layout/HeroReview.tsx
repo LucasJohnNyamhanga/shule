@@ -51,29 +51,21 @@ function hero({
 
 											.pauseFor(1000)
 											.typeString(
-												`<span>&ldquo;</span>Learning is best done through <span style="color: #a35f2e ;"><strong>questions</strong> and </span> <strong>answers.</strong><span style="color: #d35400 ;">`
+												`<span>&ldquo;</span>To be the best, <span style="color: #a35f2e ;"><strong>you must </strong></span> <span style="color: #d35400 ;"><strong>first, become THE BEST.</strong>`
 											)
 											.typeString(`<span>&#128079;</span><br/>`)
 											.callFunction(() => {
-												details.current.style.fontSize = '47px';
+												details.current.style.fontSize = '50px';
 											})
-											.typeString('And the only way to get it right')
-											.typeString('...,')
-											.deleteChars(4)
-											.pauseFor(1500)
-											.typeString(
-												`, <span style="color: #800000 ;"><strong>is by knowing the right answer</strong></span>.<span>&rdquo;</span>`
-											)
 											.pauseFor(2000)
 											.typeString(
-												'<br/><span style="color: #d35400 ;"><strong>&#9997;&#127998; shule.co.tz</strong></span>'
+												'<span style="color: #d35400 ;"><strong>&#9997;&#127998; shule.co.tz</strong></span>'
 											)
-											.pauseFor(3000)
-											.deleteAll()
+											.pauseFor(2000)
 											.callFunction(() => {
-												details.current.style.fontSize = '65px';
+												details.current.style.fontSize = '45px';
 											})
-											.typeString('Read...')
+											.typeString('<br/><br/>Read...')
 											.pauseFor(1500)
 											.deleteChars(3)
 											.typeString(', Search...')
@@ -87,19 +79,17 @@ function hero({
 											.pauseFor(1500)
 											.deleteChars(2)
 											.callFunction(() => {
-												details.current.style.fontSize = '50px';
+												details.current.style.fontSize = '35px';
 											})
 											.typeString(
 												' <strong> to </strong><span style="color: #d35400 ;"><strong>the collection of infinite questions and answers...</strong></span>'
 											)
 											.deleteChars(2)
 											.pauseFor(1500)
-											.typeString(
-												'<strong> Lets know <span>&ldquo;</span>WHAT<span>&rdquo;</span> is the answer </strong>'
-											)
+											.typeString('<strong> To shape your way </strong>')
 											.pauseFor(1500)
 											.typeString(
-												'<span style="color: #27ae60 ;"><strong>and <span>&ldquo;</span>WHY<span>&rdquo;</span> is the answer.</strong></span>'
+												'<span style="color: #27ae60 ;"><strong>to become <span>&ldquo;</span>THE BEST<span>&rdquo;</span>.</strong></span>'
 											)
 											.start();
 									}}

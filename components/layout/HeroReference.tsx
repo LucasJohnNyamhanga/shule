@@ -44,34 +44,33 @@ function hero({
 							{matches ? (
 								<Typewriter
 									onInit={(typewriter) => {
+										typewriter;
 										typewriter
 											.callFunction(() => {
-												details.current.style.fontSize = '62px';
+												details.current.style.fontSize = '65px';
 											})
 
 											.pauseFor(1000)
 											.typeString(
-												`<span>&ldquo;</span>Education is the <strong>passport</strong> to the <strong>future</strong>, `
+												`<span>&ldquo;</span>Books and references <strong>contains</strong> `
 											)
-											.typeString(`<span>&#128079;</span>`)
 											.callFunction(() => {
-												details.current.style.fontSize = '50px';
+												details.current.style.fontSize = '55px';
 											})
 											.typeString('...,')
-											.deleteChars(6)
+											.deleteChars(4)
 											.typeString(
-												`  for <span style="color: #d35400 ;"><strong>tomorrow</strong></span> belongs to those who  <span style="color: #d35400 ;"><strong>prepare for it today.</strong></span><span>&rdquo;</span>`
+												`  <span style="color: #d35400 ;"><strong> all </strong></span>  <span style="color: #d35400 ;"><strong>the answers to all the questions.</strong></span><span>&rdquo;</span>`
 											)
 											.pauseFor(2000)
 											.typeString(
-												'<br/><strong>&#9997;&#127998; Malcom</strong><span style="color: #a35f2e ;"><strong> X</strong></span>.'
+												'<br/><strong>&#9997;&#127998; shule</strong><span style="color: #a35f2e ;"><strong>.co.tz</strong></span>'
 											)
 											.pauseFor(3000)
-											.deleteAll()
 											.callFunction(() => {
-												details.current.style.fontSize = '62px';
+												details.current.style.fontSize = '45px';
 											})
-											.typeString('Read...')
+											.typeString('<br/><br/>Read...')
 											.pauseFor(1500)
 											.deleteChars(3)
 											.typeString(', Search...')
@@ -82,23 +81,21 @@ function hero({
 											.typeString(
 												' and <span style="color: #27ae60;">Explore!.<br></span>'
 											)
+											.callFunction(() => {
+												details.current.style.fontSize = '35px';
+											})
 											.pauseFor(1500)
 											.deleteChars(2)
-											.callFunction(() => {
-												details.current.style.fontSize = '46px';
-											})
+
 											.typeString(
-												' <span style="color: #d35400 ;"><strong>to thousands of references...</strong></span>'
+												' <span style="color: #d35400 ;"><strong>thousands of references...</strong></span>'
 											)
 
 											.pauseFor(1500)
 											.deleteChars(3)
-											.typeString(
-												'<strong> containing new ideas, concepts and knowledge, </strong>'
-											)
 											.pauseFor(1000)
 											.typeString(
-												'<span style="color: #d35400 ;"><strong> to shape the future.</strong></span>'
+												'<span style="color: #d35400 ;"><strong> containing new ideas, concepts and knowledge.</strong></span>'
 											)
 											.start();
 									}}
@@ -117,27 +114,26 @@ function hero({
 
 											.pauseFor(1000)
 											.typeString(
-												`<span>&ldquo;</span>Education is the <strong>passport</strong> to the <strong>future</strong>, `
+												`<span>&ldquo;</span>Books and references <strong>contains</strong>, `
 											)
 											.typeString(`<span>&#128079;</span>`)
 											.callFunction(() => {
-												details.current.style.fontSize = '37px';
+												details.current.style.fontSize = '45px';
 											})
 											.typeString('...,')
 											.deleteChars(6)
 											.typeString(
-												`  for <span style="color: #d35400 ;"><strong>tomorrow</strong></span> belongs to those who  <span style="color: #d35400 ;"><strong>prepare for it today.</strong></span><span>&rdquo;</span>`
+												`  <span style="color: #d35400 ;"><strong> all </strong></span> the information  <span style="color: #d35400 ;"><strong>prepare you need to shape the future.</strong></span><span>&rdquo;</span>`
 											)
 											.pauseFor(2000)
 											.typeString(
-												'<br/><strong>&#9997;&#127998; Malcom</strong><span style="color: #a35f2e ;"><strong> X</strong></span>.'
+												'<br/><strong>&#9997;&#127998; shule</strong><span style="color: #a35f2e ;"><strong>.co.tz</strong></span>.'
 											)
 											.pauseFor(3000)
-											.deleteAll()
 											.callFunction(() => {
-												details.current.style.fontSize = '48px';
+												details.current.style.fontSize = '40px';
 											})
-											.typeString('Read...')
+											.typeString('<br/><br/>Read...')
 											.pauseFor(1500)
 											.deleteChars(3)
 											.typeString(', Search...')

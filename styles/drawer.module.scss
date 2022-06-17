@@ -12,7 +12,7 @@
 	color: $ugoro;
 	cursor: pointer;
 	margin-top: 5px;
-	background-color: $captionBackground;
+	background-color: $lightkahawa;
 	border: 2px solid $ugoro;
 }
 
@@ -27,4 +27,13 @@
 .active:hover {
 	border: 2px solid $lightkahawa;
 	background-color: $lightblue;
+}
+
+.headerDash {
+	display: flex;
+	width: 100%;
+	color: $gray;
+	align-items: center;
+	justify-content: flex-start;
+	padding: 15px 0px 10px 0px;
 }

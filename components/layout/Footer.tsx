@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import Styles from '../../styles/footer.module.scss';
 
 const Footer = () => {
@@ -13,10 +14,29 @@ const Footer = () => {
 				</div>
 				<div className={Styles.footerDetails}>
 					<div className={Styles.header}>INTERNAL LINKS</div>
-					<div className={Styles.body}>Notes</div>
-					<div className={Styles.body}>Review</div>
-					<div className={Styles.body}>Exams</div>
-					<div className={Styles.body}>References</div>
+					<Link href='/'>
+						<a>
+							<div className={Styles.body}>Notes</div>
+						</a>
+					</Link>
+
+					<Link href='/Review'>
+						<a>
+							<div className={Styles.body}>Review</div>
+						</a>
+					</Link>
+
+					<Link href='/Exams'>
+						<a>
+							<div className={Styles.body}>Exams</div>
+						</a>
+					</Link>
+
+					<Link href='/References'>
+						<a>
+							<div className={Styles.body}>References</div>
+						</a>
+					</Link>
 				</div>
 				<div className={Styles.footerDetails}>
 					<div className={Styles.header}>Guide lines</div>

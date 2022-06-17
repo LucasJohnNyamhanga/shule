@@ -54,12 +54,12 @@ function hero({
 											)
 											.typeString(`<span>&#128299;</span>`)
 											.callFunction(() => {
-												details.current.style.fontSize = '55px';
+												details.current.style.fontSize = '50px';
 											})
 											.typeString('...,')
 											.deleteChars(6)
 											.typeString(
-												` weapon you can use to change the world.<span>&rdquo;</span>`
+												` weapon you can use to change the world<span>&#127757;</span>.<span>&rdquo;</span>`
 											)
 
 											.pauseFor(300)
@@ -68,33 +68,35 @@ function hero({
 												'<br/><strong>&#9997;&#127998; Nelson</strong><span style="color: #d35400 ;"><strong> Mandela</strong></span>.'
 											)
 											.pauseFor(2000)
-											.deleteAll()
 											.callFunction(() => {
-												details.current.style.fontSize = '65px';
+												details.current.style.fontSize = '45px';
 											})
-											.typeString('Read...')
+											.typeString('<br/><br/>Read...')
 											.pauseFor(1500)
 											.deleteChars(3)
 											.typeString(', Search...')
 											.deleteChars(3)
+											.callFunction(() => {
+												details.current.style.fontSize = '40px';
+											})
 											.typeString(
 												'<span style="color: #27ae60;">&#128270;</span>'
 											)
 											.typeString(
-												' and <span style="color: #27ae60;">Explore!.<br></span>'
+												' and <span style="color: #27ae60;">Explore!.</span>'
 											)
 											.pauseFor(1500)
 											.callFunction(() => {
-												details.current.style.fontSize = '55px';
+												details.current.style.fontSize = '40px';
 											})
+											// .typeString(
+											// 	'To <strong>CHANGE</strong> the <span style="color: #d35400 ;"><strong>WORLD,</strong></span>'
+											// )
+											// .deleteChars(1)
+											// .typeString('<span>&#127757;</span>')
+											// .pauseFor(1500)
 											.typeString(
-												'To <strong>CHANGE</strong> the <span style="color: #d35400 ;"><strong>WORLD,</strong></span>'
-											)
-											.deleteChars(1)
-											.typeString('<span>&#127757;</span>')
-											.pauseFor(1500)
-											.typeString(
-												'<strong> with well </strong><span style="color: #d35400 ;"><strong>prepared Notes.</strong></span>'
+												'<strong> To amaizingly well </strong><span style="color: #d35400 ;"><strong>prepared Notes.</strong></span>'
 											)
 											.start();
 									}}

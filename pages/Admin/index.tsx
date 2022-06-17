@@ -62,6 +62,8 @@ const Index = ({}) => {
 	const [activateNotes, setActivateNotes] = useState(false);
 	const [activateExam, setActivateExam] = useState(false);
 	const [activateNotesReview, setActivateNotesReview] = useState(false);
+	const [active, setActive] = useState('');
+
 	const [changerNotes, setChangerNotes] = useState(0);
 	const [selectOption, setSelectOption] = useState<dataTypeSelect>([]);
 	const [selectOptionForms, setSelectOptionForms] = useState<dataTypeSelect>(
@@ -155,8 +157,7 @@ const Index = ({}) => {
 	const reference = useRef<HTMLDivElement>(null!);
 	// const user = useRef<HTMLDivElement>(null!);
 
-	let handleNav = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-		let value = e.currentTarget.id;
+	let handleNav = (value: string) => {
 		setNavValue(value);
 		createActive(value);
 	};
@@ -167,66 +168,82 @@ const Index = ({}) => {
 			case 'Notes':
 				notes.current.classList.add(Styles.Active);
 				retrivalTopics();
+				setActive('Notes');
 				break;
 			case 'Subjects':
 				subject.current.classList.add(Styles.Active);
 				retriaveSubjects();
+				setActive('Subjects');
 				break;
 			case 'Topics':
 				topic.current.classList.add(Styles.Active);
 				retrivalTopics();
+				setActive('Topics');
 				break;
 			case 'Forms':
 				form.current.classList.add(Styles.Active);
 				retriaveSubjects();
+				setActive('Forms');
 				break;
 			case 'Review':
 				review.current.classList.add(Styles.Active);
 				retrivalTopicsReview();
+				setActive('Review');
 				break;
 			case 'Questions':
 				questions.current.classList.add(Styles.Active);
 				retrivalTopicsReview();
+				setActive('Questions');
 				break;
 			case 'SubjectsReview':
 				subjectReview.current.classList.add(Styles.Active);
 				retriaveSubjectsReview();
+				setActive('SubjectsReview');
 				break;
 			case 'TopicsReview':
 				topicReview.current.classList.add(Styles.Active);
 				retrivalTopicsReview();
+				setActive('TopicsReview');
 				break;
 			case 'FormsReview':
 				formReview.current.classList.add(Styles.Active);
 				retriaveSubjectsReview();
+				setActive('FormsReview');
 				break;
 			case 'SubjectsExam':
 				subjectExam.current.classList.add(Styles.Active);
 				retriaveSubjectsExam();
+				setActive('SubjectsExam');
 				break;
 			case 'FormsExam':
 				formExam.current.classList.add(Styles.Active);
 				retriaveSubjectsExam();
+				setActive('FormsExam');
 				break;
 			case 'ExamType':
 				examType.current.classList.add(Styles.Active);
 				retriaveSubjectsExam();
+				setActive('ExamType');
 				break;
 			case 'Exam':
 				exam.current.classList.add(Styles.Active);
 				retriaveSubjectsExam();
+				setActive('Exam');
 				break;
 			case 'SubjectReference':
 				subjectReference.current.classList.add(Styles.Active);
 				retriaveSubjectsReference();
+				setActive('SubjectReference');
 				break;
 			case 'FormReference':
 				formReference.current.classList.add(Styles.Active);
 				retriaveSubjectsReference();
+				setActive('FormReference');
 				break;
 			case 'Reference':
 				reference.current.classList.add(Styles.Active);
 				retriaveSubjectsReference();
+				setActive('Reference');
 				break;
 			default:
 				break;
@@ -1633,7 +1650,7 @@ const Index = ({}) => {
 								<div
 									ref={subject}
 									id='Subjects'
-									onClick={(e) => handleNav(e)}
+									onClick={(e) => handleNav(e.currentTarget.id)}
 									className={Styles.topicTittle}>
 									<Books />
 									<div className={Styles.text}>Subjects</div>
@@ -1641,7 +1658,7 @@ const Index = ({}) => {
 								<div
 									ref={form}
 									id='Forms'
-									onClick={(e) => handleNav(e)}
+									onClick={(e) => handleNav(e.currentTarget.id)}
 									className={Styles.topicTittle}>
 									<SchoolIcon />
 									<div className={Styles.text}>Forms</div>
@@ -1649,7 +1666,7 @@ const Index = ({}) => {
 								<div
 									ref={topic}
 									id='Topics'
-									onClick={(e) => handleNav(e)}
+									onClick={(e) => handleNav(e.currentTarget.id)}
 									className={Styles.topicTittle}>
 									<NotesIcon />
 									<div className={Styles.text}>Topics</div>
@@ -1657,7 +1674,7 @@ const Index = ({}) => {
 								<div
 									ref={notes}
 									id='Notes'
-									onClick={(e) => handleNav(e)}
+									onClick={(e) => handleNav(e.currentTarget.id)}
 									className={Styles.topicTittle}>
 									<SummarizeIcon />
 									<div className={Styles.text}>Notes</div>
@@ -1670,7 +1687,7 @@ const Index = ({}) => {
 								<div
 									ref={subjectReview}
 									id='SubjectsReview'
-									onClick={(e) => handleNav(e)}
+									onClick={(e) => handleNav(e.currentTarget.id)}
 									className={Styles.topicTittle}>
 									<Books />
 									<div className={Styles.text}>Subjects</div>
@@ -1678,7 +1695,7 @@ const Index = ({}) => {
 								<div
 									ref={formReview}
 									id='FormsReview'
-									onClick={(e) => handleNav(e)}
+									onClick={(e) => handleNav(e.currentTarget.id)}
 									className={Styles.topicTittle}>
 									<SchoolIcon />
 									<div className={Styles.text}>Forms</div>
@@ -1686,7 +1703,7 @@ const Index = ({}) => {
 								<div
 									ref={topicReview}
 									id='TopicsReview'
-									onClick={(e) => handleNav(e)}
+									onClick={(e) => handleNav(e.currentTarget.id)}
 									className={Styles.topicTittle}>
 									<NotesIcon />
 									<div className={Styles.text}>Topics</div>
@@ -1694,7 +1711,7 @@ const Index = ({}) => {
 								<div
 									ref={review}
 									id='Review'
-									onClick={(e) => handleNav(e)}
+									onClick={(e) => handleNav(e.currentTarget.id)}
 									className={Styles.topicTittle}>
 									<AlignVerticalBottomIcon />
 									<div className={Styles.text}>Review</div>
@@ -1702,7 +1719,7 @@ const Index = ({}) => {
 								<div
 									ref={questions}
 									id='Questions'
-									onClick={(e) => handleNav(e)}
+									onClick={(e) => handleNav(e.currentTarget.id)}
 									className={Styles.topicTittle}>
 									<QuestionMarkIcon />
 									<div className={Styles.text}>Questions</div>
@@ -1715,7 +1732,7 @@ const Index = ({}) => {
 								<div
 									ref={subjectExam}
 									id='SubjectsExam'
-									onClick={(e) => handleNav(e)}
+									onClick={(e) => handleNav(e.currentTarget.id)}
 									className={Styles.topicTittle}>
 									<Books />
 									<div className={Styles.text}>Subjects</div>
@@ -1723,7 +1740,7 @@ const Index = ({}) => {
 								<div
 									ref={formExam}
 									id='FormsExam'
-									onClick={(e) => handleNav(e)}
+									onClick={(e) => handleNav(e.currentTarget.id)}
 									className={Styles.topicTittle}>
 									<SchoolIcon />
 									<div className={Styles.text}>Forms</div>
@@ -1731,7 +1748,7 @@ const Index = ({}) => {
 								<div
 									ref={examType}
 									id='ExamType'
-									onClick={(e) => handleNav(e)}
+									onClick={(e) => handleNav(e.currentTarget.id)}
 									className={Styles.topicTittle}>
 									<NotesIcon />
 									<div className={Styles.text}>Exam Types</div>
@@ -1739,7 +1756,7 @@ const Index = ({}) => {
 								<div
 									ref={exam}
 									id='Exam'
-									onClick={(e) => handleNav(e)}
+									onClick={(e) => handleNav(e.currentTarget.id)}
 									className={Styles.topicTittle}>
 									<SummarizeIcon />
 									<div className={Styles.text}>Exams</div>
@@ -1752,7 +1769,7 @@ const Index = ({}) => {
 								<div
 									ref={subjectReference}
 									id='SubjectReference'
-									onClick={(e) => handleNav(e)}
+									onClick={(e) => handleNav(e.currentTarget.id)}
 									className={Styles.topicTittle}>
 									<Books />
 									<div className={Styles.text}>Subjects</div>
@@ -1760,7 +1777,7 @@ const Index = ({}) => {
 								<div
 									ref={formReference}
 									id='FormReference'
-									onClick={(e) => handleNav(e)}
+									onClick={(e) => handleNav(e.currentTarget.id)}
 									className={Styles.topicTittle}>
 									<SchoolIcon />
 									<div className={Styles.text}>Forms</div>
@@ -1768,7 +1785,7 @@ const Index = ({}) => {
 								<div
 									ref={reference}
 									id='Reference'
-									onClick={(e) => handleNav(e)}
+									onClick={(e) => handleNav(e.currentTarget.id)}
 									className={Styles.topicTittle}>
 									<NotesIcon />
 									<div className={Styles.text}>Reference</div>
@@ -1781,9 +1798,8 @@ const Index = ({}) => {
 						<div className={Styles.mobile}>
 							<Drawer
 								textHeader={'Admin Dashboard'}
-								active={0}
-								topic={[]}
-								link={''}
+								active={active}
+								handleClick={handleNav}
 							/>
 						</div>
 
@@ -2482,7 +2498,7 @@ const Index = ({}) => {
 										<div className={Styles.subject}>
 											<div className={Styles.subjectHeader}>
 												<div className={Styles.subjectHeaderText}>
-													Forms In Exam Management
+													Forms In Reference Management
 												</div>
 												<Link passHref href='/Admin/Reference/Create/Form'>
 													<div className={Styles.subjectHeaderButton}>

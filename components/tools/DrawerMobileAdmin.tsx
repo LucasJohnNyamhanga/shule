@@ -1,70 +1,330 @@
-import { Drawer, Box, List, ListItem, ListItemText, Divider } from "@mui/material";
-import Link from "next/link";
-import { type } from "os";
-import { useState } from "react";
-import Styles from '../../styles/drawer.module.scss'
+import {
+	Drawer,
+	Box,
+	List,
+	ListItem,
+	ListItemText,
+	Divider,
+} from '@mui/material';
+import Link from 'next/link';
+import { type } from 'os';
+import { useEffect, useState } from 'react';
+import Styles from '../../styles/drawer.module.scss';
 
 type dataType = {
-    textHeader: string,
-    active:number,
-    topic: {
-        id:number,
-        topicName:string,
-        topicDefinition: string,
-        form: {
-            formName:string,
-        },
-        subject: {
-            subjectName:string,
-        }
-    }[],
-    link:string,
-}
+	textHeader: string;
+	active: string;
+	handleClick: (value: string) => void;
+};
 
-export const MuiDrawer = ({textHeader, topic, active, link}:dataType) => {
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+export const MuiDrawer = ({ textHeader, active, handleClick }: dataType) => {
+	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-    return (
-        <>
-            <div  onClick={() => {
-                setIsDrawerOpen(true);
-            }}
-            className={Styles.setCenter}
-            >
-                {textHeader}
-            </div>
-            <Drawer
-                anchor="left"
-                open={isDrawerOpen}
-                onClose={() => setIsDrawerOpen(false)}
-            >
-                <Box p={2}
-                    width='250px'
-                    textAlign='center'
-                    role='presentation'
-                >
-                    <ListItemText primary={textHeader} />
-                    <Divider />
-                    <List>
-                        {topic.map((topic) => (
-                            <div key={topic.id} onClick={() => {
-                                setIsDrawerOpen(false);
-                            }}>
-                                 <Link passHref href={`/${link}/${topic.subject.subjectName}/${topic.form.formName.replace(/ +/g, "")}/${topic.id}`} >
-                                <a>
-                                    <ListItem button className={topic.id == active ? `${Styles.active}` : ""}>
-                                        <ListItemText primary={topic.topicName} />
-                                    </ListItem>
-                                </a>
-                            </Link>
-                           </div>
-                        ))}
-                    </List>
-                   
-                </Box>
-            </Drawer>
-        </>
-    )
-}
+	useEffect(() => {}, [active]);
 
-export default MuiDrawer
+	return (
+		<>
+			<div
+				onClick={() => {
+					setIsDrawerOpen(true);
+				}}
+				className={Styles.setCenter}>
+				{textHeader}
+			</div>
+			<Drawer
+				anchor='left'
+				open={isDrawerOpen}
+				onClose={() => setIsDrawerOpen(false)}>
+				<Box p={2} width='250px' textAlign='center' role='presentation'>
+					<ListItemText primary={textHeader} />
+					<div className={Styles.headerDash}>Notes</div>
+					<List>
+						<Divider />
+						<div
+							onClick={() => {
+								setIsDrawerOpen(false);
+								handleClick('Subjects');
+							}}>
+							<Link passHref href={``}>
+								<a>
+									<ListItem
+										button
+										className={active == 'Subjects' ? `${Styles.active}` : ''}>
+										<ListItemText primary={'Subject'} />
+									</ListItem>
+								</a>
+							</Link>
+						</div>
+						<Divider />
+						<div
+							onClick={() => {
+								setIsDrawerOpen(false);
+								handleClick('Forms');
+							}}>
+							<Link passHref href={``}>
+								<a>
+									<ListItem
+										button
+										className={active == 'Forms' ? `${Styles.active}` : ''}>
+										<ListItemText primary={'Forms'} />
+									</ListItem>
+								</a>
+							</Link>
+						</div>
+						<Divider />
+						<div
+							onClick={() => {
+								setIsDrawerOpen(false);
+								handleClick('Topics');
+							}}>
+							<Link passHref href={``}>
+								<a>
+									<ListItem
+										button
+										className={active == 'Topics' ? `${Styles.active}` : ''}>
+										<ListItemText primary={'Topic'} />
+									</ListItem>
+								</a>
+							</Link>
+						</div>
+						<Divider />
+						<div
+							onClick={() => {
+								setIsDrawerOpen(false);
+								handleClick('Notes');
+							}}>
+							<Link passHref href={``}>
+								<a>
+									<ListItem
+										button
+										className={active == 'Notes' ? `${Styles.active}` : ''}>
+										<ListItemText primary={'Notes'} />
+									</ListItem>
+								</a>
+							</Link>
+						</div>
+						<Divider />
+					</List>
+					<div className={Styles.headerDash}>Review</div>
+					<List>
+						<Divider />
+						<div
+							onClick={() => {
+								setIsDrawerOpen(false);
+								handleClick('SubjectsReview');
+							}}>
+							<Link passHref href={``}>
+								<a>
+									<ListItem
+										button
+										className={
+											active == 'SubjectsReview' ? `${Styles.active}` : ''
+										}>
+										<ListItemText primary={'Subject'} />
+									</ListItem>
+								</a>
+							</Link>
+						</div>
+						<Divider />
+						<div
+							onClick={() => {
+								setIsDrawerOpen(false);
+								handleClick('FormsReview');
+							}}>
+							<Link passHref href={``}>
+								<a>
+									<ListItem
+										button
+										className={
+											active == 'FormsReview' ? `${Styles.active}` : ''
+										}>
+										<ListItemText primary={'Forms'} />
+									</ListItem>
+								</a>
+							</Link>
+						</div>
+						<Divider />
+						<div
+							onClick={() => {
+								setIsDrawerOpen(false);
+								handleClick('TopicsReview');
+							}}>
+							<Link passHref href={``}>
+								<a>
+									<ListItem
+										button
+										className={
+											active == 'TopicsReview' ? `${Styles.active}` : ''
+										}>
+										<ListItemText primary={'Topics'} />
+									</ListItem>
+								</a>
+							</Link>
+						</div>
+						<Divider />
+						<div
+							onClick={() => {
+								setIsDrawerOpen(false);
+								handleClick('Review');
+							}}>
+							<Link passHref href={``}>
+								<a>
+									<ListItem
+										button
+										className={active == 'Review' ? `${Styles.active}` : ''}>
+										<ListItemText primary={'Review'} />
+									</ListItem>
+								</a>
+							</Link>
+						</div>
+						<Divider />
+						<div
+							onClick={() => {
+								setIsDrawerOpen(false);
+								handleClick('Questions');
+							}}>
+							<Link passHref href={``}>
+								<a>
+									<ListItem
+										button
+										className={active == 'Questions' ? `${Styles.active}` : ''}>
+										<ListItemText primary={'Questions'} />
+									</ListItem>
+								</a>
+							</Link>
+						</div>
+						<Divider />
+					</List>
+					<div className={Styles.headerDash}>Exam</div>
+					<List>
+						<Divider />
+						<div
+							onClick={() => {
+								setIsDrawerOpen(false);
+								handleClick('SubjectsExam');
+							}}>
+							<Link passHref href={``}>
+								<a>
+									<ListItem
+										button
+										className={
+											active == 'SubjectsExam' ? `${Styles.active}` : ''
+										}>
+										<ListItemText primary={'Subject'} />
+									</ListItem>
+								</a>
+							</Link>
+						</div>
+						<Divider />
+						<div
+							onClick={() => {
+								setIsDrawerOpen(false);
+								handleClick('FormsExam');
+							}}>
+							<Link passHref href={``}>
+								<a>
+									<ListItem
+										button
+										className={active == 'FormsExam' ? `${Styles.active}` : ''}>
+										<ListItemText primary={'Forms'} />
+									</ListItem>
+								</a>
+							</Link>
+						</div>
+						<Divider />
+						<div
+							onClick={() => {
+								setIsDrawerOpen(false);
+								handleClick('ExamType');
+							}}>
+							<Link passHref href={``}>
+								<a>
+									<ListItem
+										button
+										className={active == 'ExamType' ? `${Styles.active}` : ''}>
+										<ListItemText primary={'Exam Type'} />
+									</ListItem>
+								</a>
+							</Link>
+						</div>
+						<Divider />
+						<div
+							onClick={() => {
+								setIsDrawerOpen(false);
+								handleClick('Exam');
+							}}>
+							<Link passHref href={``}>
+								<a>
+									<ListItem
+										button
+										className={active == 'Exam' ? `${Styles.active}` : ''}>
+										<ListItemText primary={'Exams'} />
+									</ListItem>
+								</a>
+							</Link>
+						</div>
+						<Divider />
+					</List>
+					<div className={Styles.headerDash}>Reference</div>
+					<List>
+						<Divider />
+						<div
+							onClick={() => {
+								setIsDrawerOpen(false);
+								handleClick('SubjectReference');
+							}}>
+							<Link passHref href={``}>
+								<a>
+									<ListItem
+										button
+										className={
+											active == 'SubjectReference' ? `${Styles.active}` : ''
+										}>
+										<ListItemText primary={'Subject'} />
+									</ListItem>
+								</a>
+							</Link>
+						</div>
+						<Divider />
+						<div
+							onClick={() => {
+								setIsDrawerOpen(false);
+								handleClick('FormReference');
+							}}>
+							<Link passHref href={``}>
+								<a>
+									<ListItem
+										button
+										className={
+											active == 'FormReference' ? `${Styles.active}` : ''
+										}>
+										<ListItemText primary={'Forms'} />
+									</ListItem>
+								</a>
+							</Link>
+						</div>
+						<Divider />
+						<div
+							onClick={() => {
+								setIsDrawerOpen(false);
+								handleClick('Reference');
+							}}>
+							<Link passHref href={``}>
+								<a>
+									<ListItem
+										button
+										className={active == 'Reference' ? `${Styles.active}` : ''}>
+										<ListItemText primary={'Reference'} />
+									</ListItem>
+								</a>
+							</Link>
+						</div>
+						<Divider />
+					</List>
+				</Box>
+			</Drawer>
+		</>
+	);
+};
+
+export default MuiDrawer;
