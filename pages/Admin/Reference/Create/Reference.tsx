@@ -74,10 +74,10 @@ type selectFormType = {
 }[];
 
 const CreateNotes = ({
-	forms,
-	deactiveteImage,
-	subjects,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	forms,
+    	deactiveteImage,
+    	subjects,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	const [selectOption, setSelectOption] = useState<dataTypeSelect>([]);
@@ -156,7 +156,7 @@ const CreateNotes = ({
 
 		setNavActive('Admin');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [navActive]);
+	}, [navActive, referenceDetails.isPdf]);
 
 	let handleSelect = (value: string) => {
 		console.log(value);

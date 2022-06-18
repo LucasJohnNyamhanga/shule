@@ -2,7 +2,5 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/api/subjects": "pages/api/subjects.js",
-  "/api/forms": "pages/api/forms.js",
-  "/Admin/Notes/Edit/Subject/[id]": "pages/Admin/Notes/Edit/Subject/[id].js"
+  "/": "pages/index.js"
 }

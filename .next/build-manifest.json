@@ -15,20 +15,20 @@
     "static/development/_middlewareManifest.js"
   ],
   "pages": {
+    "/": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/index.js"
+    ],
     "/Admin": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/Admin.js"
     ],
-    "/Admin/Notes/Edit/Subject/[id]": [
+    "/Admin/Reference/Edit/Reference/[id]": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/Admin/Notes/Edit/Subject/[id].js"
-    ],
-    "/Admin/Review/Create/Question": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/Admin/Review/Create/Question.js"
+      "static/chunks/pages/Admin/Reference/Edit/Reference/[id].js"
     ],
     "/_app": [
       "static/chunks/webpack.js",

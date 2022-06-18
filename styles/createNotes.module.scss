@@ -11,6 +11,7 @@
 	.innerContainer {
 		width: 100%;
 		max-width: 1200px;
+		min-height: 60vh;
 		margin-top: 20px;
 		display: flex;
 		flex-direction: column;
@@ -52,18 +53,9 @@
 			}
 		}
 
-		@media only screen and (max-width: 948px) {
-			.rightInnercontainerBody {
-				flex-direction: column-reverse;
-
-				.mainLeft {
-					max-width: 100%;
-				}
-			}
-		}
-
 		.imageSelect {
-			width: 180px;
+			width: 100%;
+			max-width: 180px;
 			height: 40px;
 			background-color: $ugoro;
 			color: $white;
@@ -87,6 +79,16 @@
 
 		.imageSelectText {
 			margin-left: 10px;
+		}
+
+		@media only screen and (max-width: 948px) {
+			.rightInnercontainerBody {
+				flex-direction: column-reverse;
+
+				.mainLeft {
+					max-width: 100%;
+				}
+			}
 		}
 	}
 }
