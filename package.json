@@ -36,6 +36,7 @@
     "multiparty": "^4.2.3",
     "mv": "^2.1.1",
     "next": "^12.1.6",
+    "next-auth": "^4.5.0",
     "next-connect": "^0.12.2",
     "node": "^17.7.2",
     "pdfjs-dist": "^2.14.305",

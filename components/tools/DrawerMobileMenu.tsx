@@ -8,38 +8,32 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import { type } from 'os';
-import { useContext, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import Styles from '../../styles/drawerMobile.module.scss';
-import { NavContext } from '../context/StateContext';
 
 type dataType = {
-	textHeader: string;
-	active: number;
-	topic: {
-		id: number;
-		topicName: string;
-		topicDefinition: string;
-		form: {
-			formName: string;
-		};
-		subject: {
-			subjectName: string;
-		};
-	}[];
-	link: string;
+	handleMenu: (linkValue: string) => void;
+	navActive: string;
 };
 
-export const MuiDrawer = ({ textHeader, topic, active, link }: dataType) => {
+export const MuiDrawer = ({ handleMenu, navActive }: dataType) => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const humberger = useRef<HTMLDivElement>(null!);
-	const { navActive, setNavActive } = useContext(NavContext);
+
+	useEffect(() => {}, [navActive]);
 
 	let handleMenuClick = (linkValue: string) => {
 		humberger.current.classList.toggle(Styles.isActive);
+
 		setIsDrawerOpen(!isDrawerOpen);
 		if (linkValue != '') {
-			setNavActive(linkValue);
+			handleMenu(linkValue);
 		}
+	};
+
+	let handleClose = () => {
+		setIsDrawerOpen(!isDrawerOpen);
+		humberger.current.classList.toggle(Styles.isActive);
 	};
 
 	const notes = useRef<HTMLDivElement>(null!);
@@ -60,7 +54,7 @@ export const MuiDrawer = ({ textHeader, topic, active, link }: dataType) => {
 				<span></span>
 				<span></span>
 			</div>
-			<Drawer anchor='left' open={isDrawerOpen} onClose={handleMenuClick}>
+			<Drawer anchor='left' open={isDrawerOpen} onClose={handleClose}>
 				<Box p={2} width='250px' textAlign='center' role='presentation'>
 					<ListItemText primary={`SHULE MENU`} />
 

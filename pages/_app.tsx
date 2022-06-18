@@ -14,6 +14,7 @@ import { Progress } from '../components/tools/progress';
 import { useProgressStore } from '../Store';
 import { type } from 'os';
 import { NavContext } from '../components/context/StateContext';
+import { SessionProvider } from 'next-auth/react';
 
 type Page<P = {}> = NextPage<P> & {
 	// You can disable whichever you don't need
@@ -70,15 +71,17 @@ function MyApp({ Component, pageProps }: dataProps) {
     `}</style> */}
 
 				<Progress isAnimating={isAnimating} />
-				<NavContext.Provider
-					value={{
-						setNavActive,
-						navActive,
-					}}>
-					{matches ? <Navigator /> : <NavMobile />}
-					<Component {...pageProps} />
-					<Footer />
-				</NavContext.Provider>
+				<SessionProvider session={pageProps.session} refetchInterval={0}>
+					<NavContext.Provider
+						value={{
+							setNavActive,
+							navActive,
+						}}>
+						{matches ? <Navigator /> : <NavMobile />}
+						<Component {...pageProps} />
+						<Footer />
+					</NavContext.Provider>
+				</SessionProvider>
 			</div>
 		);
 	}
@@ -86,16 +89,18 @@ function MyApp({ Component, pageProps }: dataProps) {
 	return (
 		<div className='container'>
 			<Progress isAnimating={isAnimating} />
-			<NavContext.Provider
-				value={{
-					setNavActive,
-					navActive,
-				}}>
-				{matches ? <Navigator /> : <NavMobile />}
-				<Search />
-				<Component {...pageProps} />
-				<Footer />
-			</NavContext.Provider>
+			<SessionProvider session={pageProps.session} refetchInterval={0}>
+				<NavContext.Provider
+					value={{
+						setNavActive,
+						navActive,
+					}}>
+					{matches ? <Navigator /> : <NavMobile />}
+					<Search />
+					<Component {...pageProps} />
+					<Footer />
+				</NavContext.Provider>
+			</SessionProvider>
 			{/* <style global jsx>{`
       html,
       body,

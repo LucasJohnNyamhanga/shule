@@ -1,17 +1,19 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from 'next'
+// This is an example of to protect an API route
+import { getSession } from 'next-auth/react';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
-type Data = {
-  name: string
-}
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+	const session = await getSession({ req });
 
-export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) {
-    
-  if (req.method == 'PUT') {
-    res.status(200).json({ name:"Inapokea"});
-}
-  res.status(200).json({ name: 'John Doe' })
-}
+	if (session) {
+		res.send({
+			content:
+				'This is protected content. You can access this content because you are signed in.',
+		});
+	} else {
+		res.send({
+			error:
+				'You must be signed in to view the protected content on this page.',
+		});
+	}
+};

@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Styles from '../../styles/NavMobile.module.scss';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import { useRef } from 'react';
 import Link from 'next/link';
 import DrawerMobile from '../tools/DrawerMobileMenu';
+import { NavContext } from '../context/StateContext';
 
 export const NavMobile = () => {
-	const humberger = useRef<HTMLDivElement>(null!);
+	const { navActive, setNavActive } = useContext(NavContext);
 
-	let handleMenuClick = () => {
-		humberger.current.classList.toggle(Styles.isActive);
+	let handleMobileMenu = (linkValue: string) => {
+		setNavActive(linkValue);
 	};
 
 	return (
@@ -31,7 +32,7 @@ export const NavMobile = () => {
 							</div>
 						</Link>
 						<div className={Styles.links}></div>
-						<DrawerMobile textHeader={''} active={0} topic={[]} link={''} />
+						<DrawerMobile handleMenu={handleMobileMenu} navActive={navActive} />
 					</nav>
 				</div>
 			</div>

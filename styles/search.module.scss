@@ -54,6 +54,18 @@
 		font-family: $fontBody;
 	}
 
+	input:focus {
+		background-color: $white;
+	}
+
+	input:-webkit-autofill,
+	input:-webkit-autofill:hover,
+	input:-webkit-autofill:focus,
+	input:-webkit-autofill:active {
+		-webkit-box-shadow: 0 0 0 30px white inset !important;
+		font-style: $fontBody;
+	}
+
 	.searchButton {
 		display: flex;
 		font-size: 18px;
@@ -98,6 +110,9 @@
 	@media (max-width: 768px) {
 		.searchButton {
 			font-size: 15px;
+			width: fit-content;
+			padding-left: 10px;
+			padding-right: 10px;
 		}
 
 		.category {

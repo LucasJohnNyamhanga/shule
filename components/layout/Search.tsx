@@ -71,7 +71,12 @@ const Search = () => {
 
 	return (
 		<div className={Styles.searchContainerMain}>
-			<div className={Styles.searchContainer}>
+			<form
+				className={Styles.searchContainer}
+				onSubmit={(e) => {
+					e.preventDefault();
+					handleSearch();
+				}}>
 				<div className={Styles.category}>{navActive}</div>
 				<InputText
 					name='firstName'
@@ -113,6 +118,7 @@ const Search = () => {
 						}>
 						<a>
 							<button
+								type='submit'
 								onSubmit={(e) => {
 									e.preventDefault();
 									handleSearch();
@@ -123,7 +129,7 @@ const Search = () => {
 						</a>
 					</Link>
 				)}
-			</div>
+			</form>
 		</div>
 	);
 };
