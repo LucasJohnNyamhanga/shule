@@ -72,13 +72,15 @@ const Review: NextPage = ({
 		<>
 			<Hero
 				image={'/darasaplus.gif'}
-				text1={`<span style="color: #27ae60 ;"><strong>Read</strong></span><span>&#128195;</span>`}
-				text2={`<span style="color: #800080 ;"><strong>Explore</strong></span><span>&#127757;</span>`}
-				text3={`<span style="color: #d35400 ;"><strong>Search</strong></span><span>&#128269;</span>`}
-				text4={''}
-				text5={''}
-				explanation1={`To amaizingly`}
-				explanation2={` well prepared Notes.`}
+				text1={`<span style="color: #ff216c ;"><strong>Level up</strong></span><span>&#128640;</span>`}
+				text2={`<span style="color: #ce0900 ;"><strong>Train</strong></span><span>&#129351;</span>`}
+				text3={`<span style="color: #d35400 ;"><strong>Review</strong></span><span>&#128220;</span>`}
+				text4={`<span style="color: #9F0733 ;"><strong>Shapen</strong></span><span>&#129338;</span>`}
+				text5={`<span style="color: #05507C ;"><strong>Revise</strong></span><span>&#128221;</span>`}
+				explanation1={`With well prepared`}
+				explanation2={` questions and answers.`}
+				color1={'#419f32'}
+				color2={'#a6504d'}
 			/>
 			<Study subjects={subjects} focus={`Let's Review`} link={'Review'} />
 		</>

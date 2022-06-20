@@ -12,6 +12,8 @@ type dataHero = {
 	explanation1: string;
 	explanation2: string;
 	image: string;
+	color1: string;
+	color2: string;
 };
 
 function hero({
@@ -23,6 +25,8 @@ function hero({
 	explanation1,
 	explanation2,
 	image,
+	color1,
+	color2,
 }: dataHero) {
 	return (
 		<div className={styles.container}>
@@ -66,10 +70,10 @@ function hero({
 								}}
 							/>
 							<div className={styles.permanentLetters}>
-								<span style={{ color: '#800000' }}>
+								<span style={{ color: `${color1}` }}>
 									<strong>{explanation1}</strong>
 								</span>
-								<span style={{ color: '#008080' }}>
+								<span style={{ color: `${color2}` }}>
 									<strong>{explanation2}</strong>
 								</span>
 							</div>

@@ -79,6 +79,8 @@ const References: NextPage = ({
 				text5={''}
 				explanation1={`To amaizingly`}
 				explanation2={` well prepared Notes.`}
+				color1={''}
+				color2={'#008080'}
 			/>
 			<Study
 				subjects={subjects}

@@ -61,8 +61,8 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Exams: NextPage = ({
-	subjects,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	subjects,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -81,6 +81,8 @@ const Exams: NextPage = ({
 				text5={''}
 				explanation1={`To amaizingly`}
 				explanation2={` well prepared Notes.`}
+				color1={''}
+				color2={'#008080'}
 			/>
 			<Study subjects={subjects} link={`Exams`} focus={`Let's Examinate`} />
 		</>
