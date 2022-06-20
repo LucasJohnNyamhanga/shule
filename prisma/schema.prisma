@@ -9,29 +9,30 @@ datasource db {
 }
 
 model users {
-  id               Int                @id @default(autoincrement())
-  firstName        String
-  lastName         String
-  image            String?
-  username         String?
-  password         String?
-  isAdmin          Boolean            @default(false)
-  isSuperUser      Boolean            @default(false)
-  dateJoined       DateTime           @default(now())
-  subject          subject[]
-  form             form[]
-  topic            topic[]
-  note             note[]
-  subjectReview    subjectReview[]
-  formReview       formReview[]
-  topicReview      topicReview[]
-  question         question[]
-  subjectExams     subjectExams[]
-  formExams        formExams[]
-  exam             exam[]
-  subjectReference subjectReference[]
-  formReference    formReference[]
-  reference        reference[]
+  id                Int                 @id @default(autoincrement())
+  firstName         String
+  lastName          String
+  image             String?
+  username          String?
+  password          String?
+  isAdmin           Boolean             @default(false)
+  isSuperUser       Boolean             @default(false)
+  dateJoined        DateTime            @default(now())
+  subject           subject[]
+  form              form[]
+  topic             topic[]
+  note              note[]
+  subjectReview     subjectReview[]
+  formReview        formReview[]
+  topicReview       topicReview[]
+  question          question[]
+  subjectExams      subjectExams[]
+  formExams         formExams[]
+  exam              exam[]
+  subjectReference  subjectReference[]
+  formReference     formReference[]
+  reference         reference[]
+  notesDownloadable notesDownloadable[]
 }
 
 model subject {
@@ -46,17 +47,19 @@ model subject {
   usersId           Int     @default(1)
   users             users   @relation(fields: [usersId], references: [id])
 
+  notesDownloadable notesDownloadable[]
   @@fulltext([subjectName, subjectDefinition])
 }
 
 model form {
-  id       Int       @id @default(autoincrement())
-  formName String
-  subjects subject[]
-  topic    topic[]
-  note     note[]
-  usersId  Int       @default(1)
-  users    users     @relation(fields: [usersId], references: [id])
+  id                Int                 @id @default(autoincrement())
+  formName          String
+  subjects          subject[]
+  topic             topic[]
+  note              note[]
+  usersId           Int                 @default(1)
+  users             users               @relation(fields: [usersId], references: [id])
+  notesDownloadable notesDownloadable[]
 }
 
 model topic {
@@ -91,6 +94,19 @@ model note {
   users     users    @relation(fields: [usersId], references: [id])
 
   @@fulltext([content])
+}
+
+model notesDownloadable {
+  id        Int     @id @default(autoincrement())
+  content   String
+  isPdf     Boolean
+  published Boolean @default(false)
+  formId    Int     @unique
+  form      form    @relation(fields: [formId], references: [id])
+  subjectId Int
+  subject   subject @relation(fields: [subjectId], references: [id])
+  usersId   Int     @default(1)
+  users     users   @relation(fields: [usersId], references: [id])
 }
 
 model subjectReview {

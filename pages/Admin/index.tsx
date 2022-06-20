@@ -16,6 +16,7 @@ import AlignVerticalBottomIcon from '@mui/icons-material/AlignVerticalBottom';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import Loader from '../../components/tools/loader';
 import Drawer from '../../components/tools/DrawerMobileAdmin';
+import { BsDownload as Downloads } from 'react-icons/bs';
 
 type dataTypeSelect = {
 	value: string;
@@ -155,6 +156,7 @@ const Index = ({}) => {
 	const subjectReference = useRef<HTMLDivElement>(null!);
 	const formReference = useRef<HTMLDivElement>(null!);
 	const reference = useRef<HTMLDivElement>(null!);
+	const downloads = useRef<HTMLDivElement>(null!);
 	// const user = useRef<HTMLDivElement>(null!);
 
 	let handleNav = (value: string) => {
@@ -169,6 +171,10 @@ const Index = ({}) => {
 				notes.current.classList.add(Styles.Active);
 				retrivalTopics();
 				setActive('Notes');
+				break;
+			case 'Downloads':
+				downloads.current.classList.add(Styles.Active);
+				setActive('Downloads');
 				break;
 			case 'Subjects':
 				subject.current.classList.add(Styles.Active);
@@ -268,6 +274,7 @@ const Index = ({}) => {
 		subjectReference.current.classList.remove(Styles.Active);
 		formReference.current.classList.remove(Styles.Active);
 		reference.current.classList.remove(Styles.Active);
+		downloads.current.classList.remove(Styles.Active);
 	};
 
 	const retriaveSubjectsReview = async () => {
@@ -1679,6 +1686,14 @@ const Index = ({}) => {
 									<SummarizeIcon />
 									<div className={Styles.text}>Notes</div>
 								</div>
+								<div
+									ref={downloads}
+									id='Downloads'
+									onClick={(e) => handleNav(e.currentTarget.id)}
+									className={Styles.topicTittle}>
+									<Downloads size={25} />
+									<div className={Styles.text}>Downloadables</div>
+								</div>
 							</div>
 							<div>
 								<div className={Styles.TopicHeaderNotes}>Review</div>
@@ -2042,6 +2057,42 @@ const Index = ({}) => {
 										</div>
 									</div>
 								)}
+								{/* //! start of downloads */}
+								{navValue == 'Downloads' && (
+									<div className={Styles.rightInnercontainerBody}>
+										<div className={Styles.subject}>
+											<div className={Styles.subjectHeader}>
+												<div className={Styles.subjectHeaderText}>
+													Downloadables In Notes Management
+												</div>
+												<Link passHref href='/Admin/Notes/Create/Subject'>
+													<div className={Styles.subjectHeaderButton}>
+														Create Downloadable
+													</div>
+												</Link>
+											</div>
+											<div className={Styles.subjectBody}>
+												{subjects.map(
+													(subject: {
+														subjectName: string;
+														id: number;
+														published: boolean;
+													}) => (
+														<CardBox
+															handleUpdate={handleUpdateSubject}
+															link={'/Admin/Notes/Edit/Subject/' + subject.id}
+															label={subject.subjectName}
+															published={subject.published}
+															id={subject.id}
+															key={subject.id}
+														/>
+													)
+												)}
+											</div>
+										</div>
+									</div>
+								)}
+								{/* //! end of downloads */}
 								{/* //! END OF SubjectsReview DISPLAY ONLY */}
 								{/* //* START OF TopicsReview DISPLAY ONLY */}
 								{navValue == 'TopicsReview' && (
