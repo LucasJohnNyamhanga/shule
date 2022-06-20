@@ -83,8 +83,9 @@
 
 			.BodyHeader {
 				display: flex;
+				flex-direction: row;
 				align-items: center;
-				justify-content: flex-end;
+				justify-content: space-between;
 				height: 40px;
 				width: 100%;
 				font-family: $fontHeader;
@@ -92,6 +93,39 @@
 				color: $ugoro;
 				margin-bottom: 10px;
 				font-size: 16px;
+				margin-top: 10px;
+
+				.statusBar {
+					width: fit-content;
+					display: flex;
+					flex-direction: row;
+					justify-content: center;
+					align-items: center;
+				}
+
+				.download {
+					width: fit-content;
+					height: 40px;
+					background-color: $ugoro;
+					color: $white;
+					border: 2px solid transparent;
+					margin: 10px 15px;
+					padding: 0px 15px;
+					display: flex;
+					flex-direction: row;
+					justify-content: center;
+					align-items: center;
+					border-radius: 5px;
+					transition: 0.2s linear;
+					font-weight: 500;
+				}
+
+				.download:hover {
+					background-color: $lightkahawa;
+					color: $ugoro;
+					border: 2px solid $lightblue;
+					cursor: pointer;
+				}
 			}
 
 			.BodyContent {
@@ -101,9 +135,27 @@
 				font-weight: 400;
 				font-size: 17px;
 				line-height: 24px;
-				margin-left: 10px;
-				margin-right: 10px;
 				margin-bottom: 40px;
+			}
+
+			@media only screen and (max-width: 908px) {
+				.BodyHeader {
+					display: flex;
+					flex-direction: column;
+					width: 100%;
+					height: fit-content;
+
+					.statusBar {
+						width: 100%;
+						display: flex;
+						flex-direction: row;
+						font-size: 12px;
+					}
+
+					.download {
+						width: 100%;
+					}
+				}
 			}
 		}
 	}

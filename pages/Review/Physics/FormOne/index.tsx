@@ -94,9 +94,9 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Index = ({
-	topics,
-	note,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	topics,
+    	note,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -114,6 +114,12 @@ const Index = ({
 				Reviews for ${note[0].topicName} topic will be available soon.
 			</div>
 		);
+	}
+	let truncateLimit = 12;
+	function truncate(str: string) {
+		return str.length > truncateLimit
+			? str.slice(0, truncateLimit) + '...'
+			: str;
 	}
 
 	//!mambo yanaanza
@@ -163,9 +169,11 @@ const Index = ({
 						/>
 					</div>
 					<div className={Styles.BodyHeader}>
-						{note[0].subject.subjectName} <ChevronRightOutlinedIcon />{' '}
-						{note[0].form.formName} <ChevronRightOutlinedIcon />{' '}
-						{note[0].topicName}
+						<div className={Styles.statusBar}>
+							{note[0].subject.subjectName} <ChevronRightOutlinedIcon />{' '}
+							{note[0].form.formName} <ChevronRightOutlinedIcon />{' '}
+							{truncate(note[0].topicName)}
+						</div>
 					</div>
 					<div className={Styles.BodyContent}>
 						<div className={Styles.modal}>

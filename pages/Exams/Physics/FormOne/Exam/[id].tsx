@@ -114,6 +114,13 @@ const Index = ({
 
 	//!mambo yanaanza
 
+	let truncateLimit = 12;
+	function truncate(str: string) {
+		return str.length > truncateLimit
+			? str.slice(0, truncateLimit) + '...'
+			: str;
+	}
+
 	return (
 		<div className={Styles.container}>
 			<Head>
@@ -129,9 +136,13 @@ const Index = ({
 						
 					</div> */}
 					<div className={Styles.BodyHeader}>
-						{thisexam.examType.subjectExams.subjectName}{' '}
-						<ChevronRightOutlinedIcon /> {thisexam.examType.formExams.formName}{' '}
-						<ChevronRightOutlinedIcon /> {thisexam.description}
+						<div className={Styles.statusBar}>
+							{thisexam.examType.subjectExams.subjectName}{' '}
+							<ChevronRightOutlinedIcon />{' '}
+							{thisexam.examType.formExams.formName}{' '}
+							<ChevronRightOutlinedIcon /> {truncate(thisexam.description)}
+						</div>
+						<div className={Styles.download}>Download</div>
 					</div>
 					<div className={Styles.BodyContent}>
 						<div

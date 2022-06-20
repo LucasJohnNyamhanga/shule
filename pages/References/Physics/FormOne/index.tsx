@@ -99,7 +99,9 @@ const Index = ({
 			<div className={Styles.innerContainer}>
 				<div className={Styles.rightInnercontainerBody}>
 					<div className={Styles.BodyHeader}>
-						{subjectLocator} <ChevronRightOutlinedIcon /> {formLocator}
+						<div className={Styles.statusBar}>
+							{subjectLocator} <ChevronRightOutlinedIcon /> {formLocator}
+						</div>
 					</div>
 					<div className={Styles.BodyContent}>
 						<div className={Styles.conteinerTable}>

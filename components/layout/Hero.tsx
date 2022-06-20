@@ -45,64 +45,29 @@ function hero({
 								<Typewriter
 									onInit={(typewriter) => {
 										typewriter
-											.callFunction(() => {
-												details.current.style.fontSize = '65px';
-											})
-											.pauseFor(1000)
 											.typeString(
-												`<span>&ldquo;</span>Education is the most powerful `
+												'<span style="color: #27ae60 ;"><strong>Read</strong></span>'
 											)
-											.typeString(`<span>&#128299;</span>`)
-											.callFunction(() => {
-												details.current.style.fontSize = '50px';
-											})
-											.typeString('...,')
-											.deleteChars(6)
-											.typeString(
-												` weapon you can use to change the world<span>&#127757;</span>.<span>&rdquo;</span>`
-											)
-
-											.pauseFor(300)
-
-											.typeString(
-												'<br/><strong>&#9997;&#127998; Nelson</strong><span style="color: #d35400 ;"><strong> Mandela</strong></span>.'
-											)
-											.pauseFor(2000)
-											.callFunction(() => {
-												details.current.style.fontSize = '45px';
-											})
-											.typeString('<br/><br/>Read...')
+											.typeString(`<span>&#128195;</span>`)
 											.pauseFor(1500)
-											.deleteChars(3)
-											.typeString(', Search...')
-											.deleteChars(3)
-											.callFunction(() => {
-												details.current.style.fontSize = '40px';
-											})
+											.deleteAll()
 											.typeString(
-												'<span style="color: #27ae60;">&#128270;</span>'
+												'<span style="color: #800080 ;"><strong>Explore</strong></span>'
 											)
-											.typeString(
-												' and <span style="color: #27ae60;">Explore!.</span>'
-											)
+											.typeString(`<span>&#127757;</span>`)
 											.pauseFor(1500)
-											.callFunction(() => {
-												details.current.style.fontSize = '40px';
-											})
-											// .typeString(
-											// 	'To <strong>CHANGE</strong> the <span style="color: #d35400 ;"><strong>WORLD,</strong></span>'
-											// )
-											// .deleteChars(1)
-											// .typeString('<span>&#127757;</span>')
-											// .pauseFor(1500)
+											.deleteAll()
 											.typeString(
-												'<strong> To amaizingly well </strong><span style="color: #d35400 ;"><strong>prepared Notes.</strong></span>'
+												'<span style="color: #d35400 ;"><strong>Search</strong></span>'
 											)
+											.typeString(`<span>&#128269;</span>`)
+											.pauseFor(1500)
+											.deleteAll()
 											.start();
 									}}
 									options={{
 										autoStart: true,
-										loop: false,
+										loop: true,
 									}}
 								/>
 							) : matchesTab ? (
@@ -166,7 +131,7 @@ function hero({
 									}}
 									options={{
 										autoStart: true,
-										loop: false,
+										loop: true,
 									}}
 								/>
 							) : (
@@ -223,17 +188,23 @@ function hero({
 											.deleteChars(1)
 											.typeString('<span>&#127757;</span>')
 											.pauseFor(1500)
-											.typeString(
-												'<strong> with well </strong><span style="color: #d35400 ;"><strong>prepared Notes.</strong></span>'
-											)
+											.typeString('')
 											.start();
 									}}
 									options={{
 										autoStart: true,
-										loop: false,
+										loop: true,
 									}}
 								/>
 							)}
+							<div className={styles.permanentLetters}>
+								<span style={{ color: '#800000' }}>
+									<strong>To amaizingly</strong>
+								</span>
+								<span style={{ color: '#008080' }}>
+									<strong> well prepared Notes.</strong>
+								</span>
+							</div>
 						</div>
 					</div>
 

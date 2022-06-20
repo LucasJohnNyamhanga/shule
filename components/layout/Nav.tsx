@@ -108,8 +108,8 @@ const Nav = () => {
 							</ul>
 						</div>
 						<div className={Styles.buttonsNav}>
-							<div className={Styles.Sign}>Sign In</div>
-							<div className={Styles.Register}>Register</div>
+							{/* <div className={Styles.Sign}></div> */}
+							<div className={Styles.Register}>Sign In</div>
 						</div>
 					</nav>
 				</div>

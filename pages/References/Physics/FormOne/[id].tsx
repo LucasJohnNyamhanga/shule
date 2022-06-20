@@ -108,8 +108,11 @@ const Index = ({
 			<div className={Styles.innerContainer}>
 				<div className={Styles.rightInnercontainerBody}>
 					<div className={Styles.BodyHeader}>
-						{reference.subjectReference.subjectName}{' '}
-						<ChevronRightOutlinedIcon /> {reference.name}
+						<div className={Styles.statusBar}>
+							{reference.subjectReference.subjectName}{' '}
+							<ChevronRightOutlinedIcon /> {reference.name}
+						</div>
+						<div className={Styles.download}>Download</div>
 					</div>
 					<div className={Styles.BodyContent}>
 						{reference.isPdf ? (

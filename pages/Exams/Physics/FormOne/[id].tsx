@@ -165,6 +165,13 @@ const Index = ({
 		);
 	}
 
+	let truncateLimit = 12;
+	function truncate(str: string) {
+		return str.length > truncateLimit
+			? str.slice(0, truncateLimit) + '...'
+			: str;
+	}
+
 	//!mambo yanaanza
 
 	return (
@@ -214,10 +221,13 @@ const Index = ({
 						/>
 					</div>
 					<div className={Styles.BodyHeader}>
-						{thisexamType.subjectExams.subjectName} <ChevronRightOutlinedIcon />{' '}
-						{thisexamType.formExams.formName} <ChevronRightOutlinedIcon />{' '}
-						{thisexamType.name}
+						<div className={Styles.statusBar}>
+							{thisexamType.subjectExams.subjectName}{' '}
+							<ChevronRightOutlinedIcon /> {thisexamType.formExams.formName}{' '}
+							<ChevronRightOutlinedIcon /> {truncate(thisexamType.name)}
+						</div>
 					</div>
+
 					<div className={Styles.BodyContent}>
 						<div className={Styles.conteinerTable}>
 							<Table

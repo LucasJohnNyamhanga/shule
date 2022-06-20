@@ -41,10 +41,17 @@
 
 		.details {
 			width: 90%;
-			font-size: 35px;
+			font-size: 100px;
 			font-weight: 400;
 			min-height: 80%;
 			padding: 15px 15px;
+
+			.permanentLetters {
+				font-size: 65px;
+
+				span {
+				}
+			}
 		}
 	}
 

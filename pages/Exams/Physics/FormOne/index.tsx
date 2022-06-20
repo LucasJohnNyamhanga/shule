@@ -145,6 +145,13 @@ const Index = ({
 		return <Error statusCode={404} />;
 	}
 
+	let truncateLimit = 12;
+	function truncate(str: string) {
+		return str.length > truncateLimit
+			? str.slice(0, truncateLimit) + '...'
+			: str;
+	}
+
 	//!mambo yanaanza
 
 	return (
@@ -192,9 +199,11 @@ const Index = ({
 						/>
 					</div>
 					<div className={Styles.BodyHeader}>
-						{note[0].subjectExams.subjectName} <ChevronRightOutlinedIcon />{' '}
-						{note[0].formExams.formName} <ChevronRightOutlinedIcon />{' '}
-						{note[0].name}
+						<div className={Styles.statusBar}>
+							{note[0].subjectExams.subjectName} <ChevronRightOutlinedIcon />{' '}
+							{note[0].formExams.formName} <ChevronRightOutlinedIcon />{' '}
+							{truncate(note[0].name)}
+						</div>
 					</div>
 					<div className={Styles.BodyContent}>
 						<div className={Styles.conteinerTable}>
