@@ -1,36 +1,35 @@
-import React, { useRef } from 'react';
 import styles from '../../styles/hero.module.scss';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import Image from 'next/image';
 import Link from 'next/link';
 import Typewriter from 'typewriter-effect';
 
 type dataHero = {
-	textStart: string;
-	textFinish: string;
+	text1: string;
+	text2: string;
+	text3: string;
+	text4: string;
+	text5: string;
+	explanation1: string;
+	explanation2: string;
 	image: string;
-	explanation: string;
-	buttonText: string;
-	linker: string;
 };
 
 function hero({
-	textStart,
-	textFinish,
-	explanation,
+	text1,
+	text2,
+	text3,
+	text4,
+	text5,
+	explanation1,
+	explanation2,
 	image,
-	buttonText,
-	linker,
 }: dataHero) {
-	const details = useRef<HTMLDivElement>(null!);
-	const matches = useMediaQuery('(min-width:1100px)');
-	const matchesTab = useMediaQuery('(min-width:880px)');
 	return (
 		<div className={styles.container}>
 			<div className={styles.section}>
 				<div className={styles.hero}>
 					<div className={styles.info}>
-						<div ref={details} className={styles.details}>
+						<div className={styles.details}>
 							{/* <h1>
 								&ldquo;{`${textStart}`}
 								<br /> <span>{`${textFinish}`}&rdquo;</span>
@@ -41,168 +40,37 @@ function hero({
 									{buttonText}
 								</Button>
 							</Link> */}
-							{matches ? (
-								<Typewriter
-									onInit={(typewriter) => {
-										typewriter
-											.typeString(
-												'<span style="color: #27ae60 ;"><strong>Read</strong></span>'
-											)
-											.typeString(`<span>&#128195;</span>`)
-											.pauseFor(1500)
-											.deleteAll()
-											.typeString(
-												'<span style="color: #800080 ;"><strong>Explore</strong></span>'
-											)
-											.typeString(`<span>&#127757;</span>`)
-											.pauseFor(1500)
-											.deleteAll()
-											.typeString(
-												'<span style="color: #d35400 ;"><strong>Search</strong></span>'
-											)
-											.typeString(`<span>&#128269;</span>`)
-											.pauseFor(1500)
-											.deleteAll()
-											.start();
-									}}
-									options={{
-										autoStart: true,
-										loop: true,
-									}}
-								/>
-							) : matchesTab ? (
-								<Typewriter
-									onInit={(typewriter) => {
-										typewriter
-
-											.callFunction(() => {
-												details.current.style.fontSize = '50px';
-											})
-											.pauseFor(1000)
-											.typeString(
-												`<span>&ldquo;</span>Education is the most powerful `
-											)
-											.typeString(`<span>&#128299;</span>`)
-											.callFunction(() => {
-												details.current.style.fontSize = '40px';
-											})
-											.typeString('...,')
-											.deleteChars(6)
-											.typeString(
-												` weapon you can use to change the world.<span>&rdquo;</span>`
-											)
-
-											.pauseFor(300)
-
-											.typeString(
-												'<br/><strong>&#9997;&#127998; Nelson</strong><span style="color: #d35400 ;"><strong> Mandela</strong></span>.'
-											)
-											.pauseFor(2000)
-											.deleteAll()
-											.callFunction(() => {
-												details.current.style.fontSize = '50px';
-											})
-											.typeString('Read...')
-											.pauseFor(1500)
-											.deleteChars(3)
-											.typeString(', Search...')
-											.deleteChars(3)
-											.typeString(
-												'<span style="color: #27ae60;">&#128270;</span>'
-											)
-											.typeString(
-												' and <span style="color: #27ae60;">Explore!. <br/></span>'
-											)
-											.deleteChars(3)
-											.pauseFor(1500)
-											.callFunction(() => {
-												details.current.style.fontSize = '40px';
-											})
-											.typeString(
-												', to <strong>CHANGE</strong> the <span style="color: #d35400 ;"><strong>WORLD,</strong></span><br/>'
-											)
-											.deleteChars(1)
-											.typeString('<span>&#127757;</span>')
-											.pauseFor(1500)
-											.typeString(
-												'<strong> with well </strong><span style="color: #d35400 ;"><strong>prepared Notes.</strong></span>'
-											)
-											.start();
-									}}
-									options={{
-										autoStart: true,
-										loop: true,
-									}}
-								/>
-							) : (
-								<Typewriter
-									onInit={(typewriter) => {
-										typewriter
-
-											.callFunction(() => {
-												details.current.style.fontSize = '35px';
-											})
-											.pauseFor(1000)
-											.typeString(
-												`<span>&ldquo;</span>Education is the most powerful `
-											)
-											.typeString(`<span>&#128299;</span>`)
-											.callFunction(() => {
-												details.current.style.fontSize = '25px';
-											})
-											.typeString('...,')
-											.deleteChars(6)
-											.typeString(
-												` weapon you can use to change the world.<span>&rdquo;</span>`
-											)
-
-											.pauseFor(300)
-
-											.typeString(
-												'<br/><strong>&#9997;&#127998; Nelson</strong><span style="color: #d35400 ;"><strong> Mandela</strong></span>.'
-											)
-											.pauseFor(2000)
-											.deleteAll()
-											.callFunction(() => {
-												details.current.style.fontSize = '35px';
-											})
-											.typeString('Read...')
-											.pauseFor(1500)
-											.deleteChars(3)
-											.typeString(', Search...')
-											.deleteChars(3)
-											.typeString(
-												'<span style="color: #27ae60;">&#128270;</span>'
-											)
-											.typeString(
-												' and <span style="color: #27ae60;">Explore!. <br/></span>'
-											)
-											.deleteChars(3)
-											.pauseFor(1500)
-											.callFunction(() => {
-												details.current.style.fontSize = '27px';
-											})
-											.typeString(
-												', to <strong>CHANGE</strong> the <span style="color: #d35400 ;"><strong>WORLD,</strong></span><br/>'
-											)
-											.deleteChars(1)
-											.typeString('<span>&#127757;</span>')
-											.pauseFor(1500)
-											.typeString('')
-											.start();
-									}}
-									options={{
-										autoStart: true,
-										loop: true,
-									}}
-								/>
-							)}
+							<Typewriter
+								onInit={(typewriter) => {
+									typewriter
+										.typeString(text1)
+										.pauseFor(1500)
+										.deleteAll()
+										.typeString(text2)
+										.pauseFor(1500)
+										.deleteAll()
+										.typeString(text3)
+										.pauseFor(1500)
+										.deleteAll()
+										.typeString(text4)
+										.pauseFor(1500)
+										.deleteAll()
+										.typeString(text5)
+										.pauseFor(1500)
+										.deleteAll()
+										.start();
+								}}
+								options={{
+									autoStart: true,
+									loop: true,
+								}}
+							/>
 							<div className={styles.permanentLetters}>
 								<span style={{ color: '#800000' }}>
-									<strong>To amaizingly</strong>
+									<strong>{explanation1}</strong>
 								</span>
 								<span style={{ color: '#008080' }}>
-									<strong> well prepared Notes.</strong>
+									<strong>{explanation2}</strong>
 								</span>
 							</div>
 						</div>

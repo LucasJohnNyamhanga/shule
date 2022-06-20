@@ -109,23 +109,20 @@
 
 	@media (max-width: 768px) {
 		.searchButton {
-			font-size: 15px;
+			font-size: 12px;
 			width: fit-content;
 			padding-left: 10px;
 			padding-right: 10px;
 		}
 
 		.category {
-			font-size: 15px;
+			font-size: 12px;
+			padding-left: 5px;
+			padding-right: 5px;
 		}
 
 		input {
-			font-size: 15px;
-		}
-
-		.resultsHeader {
-			font-weight: 500;
-			font-size: 16px;
+			font-size: 12px;
 		}
 	}
 }
@@ -182,6 +179,13 @@
 
 		.resultNotFound {
 			min-height: 76vh;
+		}
+
+		@media (max-width: 768px) {
+			.resultsHeader {
+				font-weight: 500;
+				font-size: 15px;
+			}
 		}
 	}
 }

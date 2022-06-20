@@ -178,7 +178,7 @@ const Reference = ({
 	return (
 		<div className={Styles.container}>
 			<div className={Styles.innerContainer}>
-				{searchResults.length > 1 ? (
+				{searchResults.length > 0 ? (
 					<div className={Styles.resultsHeader}>{`About ${
 						searchResults.length
 					} Search ${

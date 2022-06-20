@@ -71,14 +71,14 @@ const Home: NextPage = ({
 	return (
 		<>
 			<Hero
-				textStart={'Notes you need,'}
-				textFinish={'With the best examples and pictures.'}
 				image={'/darasaplus.gif'}
-				explanation={
-					'We have everything to get you an A+, and all you have to give is dedication.'
-				}
-				buttonText={'Register Now.'}
-				linker={`/`}
+				text1={`<span style="color: #27ae60 ;"><strong>Read</strong></span><span>&#128195;</span>`}
+				text2={`<span style="color: #800080 ;"><strong>Explore</strong></span><span>&#127757;</span>`}
+				text3={`<span style="color: #d35400 ;"><strong>Search</strong></span><span>&#128269;</span>`}
+				text4={''}
+				text5={''}
+				explanation1={`To amaizingly`}
+				explanation2={` well prepared Notes.`}
 			/>
 			<Study subjects={subjects} focus={`Let's study Notes`} link={'Notes'} />
 		</>

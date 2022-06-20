@@ -48,9 +48,6 @@
 
 			.permanentLetters {
 				font-size: 65px;
-
-				span {
-				}
 			}
 		}
 	}
@@ -107,7 +104,7 @@
 	border: 2px solid $lightblue;
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 1150px) {
 	.hero {
 		.image {
 			flex: 1 1 400px;
@@ -121,10 +118,20 @@
 				max-height: 400px;
 			}
 		}
+
+		.info {
+			.details {
+				font-size: 65px;
+
+				.permanentLetters {
+					font-size: 45px;
+				}
+			}
+		}
 	}
 }
 
-@media only screen and (max-width: 878px) {
+@media only screen and (max-width: 848px) {
 	.hero {
 		width: 100%;
 		margin: 0px 5px 0px 5px;
@@ -161,8 +168,13 @@
 			flex: 1 1 100%;
 
 			.details {
-				min-width: 90%;
+				min-width: 95%;
 				min-height: 200px;
+				font-size: 65px;
+
+				.permanentLetters {
+					font-size: 45px;
+				}
 			}
 		}
 
@@ -175,6 +187,34 @@
 				min-width: 0rem;
 				height: auto;
 				max-height: 400px;
+			}
+		}
+	}
+}
+
+@media only screen and (max-width: 608px) {
+	.hero {
+		.info {
+			.details {
+				min-width: 95%;
+				min-height: 180px;
+				font-size: 45px;
+				.permanentLetters {
+					font-size: 25px;
+				}
+			}
+		}
+	}
+}
+
+@media only screen and (max-width: 458px) {
+	.hero {
+		.info {
+			.details {
+				font-size: 35px;
+				.permanentLetters {
+					font-size: 25px;
+				}
 			}
 		}
 	}

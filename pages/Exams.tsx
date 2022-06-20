@@ -1,5 +1,5 @@
 import type { NextPage, InferGetStaticPropsType } from 'next';
-import Hero from '../components/layout/HeroExam';
+import Hero from '../components/layout/Hero';
 import { type } from 'os';
 import Study from '../components/layout/Study';
 import { prisma } from '../db/prisma';
@@ -61,8 +61,8 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Exams: NextPage = ({
-    	subjects,
-    }: InferGetStaticPropsType<typeof getStaticProps>) => {
+	subjects,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -73,14 +73,14 @@ const Exams: NextPage = ({
 	return (
 		<>
 			<Hero
-				textStart={'Exams, ooh scary..'}
-				textFinish={'Not any more, we have all the tools.'}
-				image={'/shule1.jpg'}
-				explanation={
-					'A whole library just for exams to get you ready, and the confidence is A+.'
-				}
-				buttonText={'Register Now.'}
-				linker={`/`}
+				image={'/darasaplus.gif'}
+				text1={`<span style="color: #27ae60 ;"><strong>Read</strong></span><span>&#128195;</span>`}
+				text2={`<span style="color: #800080 ;"><strong>Explore</strong></span><span>&#127757;</span>`}
+				text3={`<span style="color: #d35400 ;"><strong>Search</strong></span><span>&#128269;</span>`}
+				text4={''}
+				text5={''}
+				explanation1={`To amaizingly`}
+				explanation2={` well prepared Notes.`}
 			/>
 			<Study subjects={subjects} link={`Exams`} focus={`Let's Examinate`} />
 		</>

@@ -1,5 +1,5 @@
 import type { NextPage, InferGetStaticPropsType } from 'next';
-import Hero from '../components/layout/HeroReview';
+import Hero from '../components/layout/Hero';
 import { type } from 'os';
 import Study from '../components/layout/Study';
 import { prisma } from '../db/prisma';
@@ -71,14 +71,14 @@ const Review: NextPage = ({
 	return (
 		<>
 			<Hero
-				textStart={'Got questions?'}
-				textFinish={'Well,  we have got answers.'}
 				image={'/darasaplus.gif'}
-				explanation={
-					'There is no better way to make a review than with questions and answers.'
-				}
-				buttonText={'Register Now.'}
-				linker={`/`}
+				text1={`<span style="color: #27ae60 ;"><strong>Read</strong></span><span>&#128195;</span>`}
+				text2={`<span style="color: #800080 ;"><strong>Explore</strong></span><span>&#127757;</span>`}
+				text3={`<span style="color: #d35400 ;"><strong>Search</strong></span><span>&#128269;</span>`}
+				text4={''}
+				text5={''}
+				explanation1={`To amaizingly`}
+				explanation2={` well prepared Notes.`}
 			/>
 			<Study subjects={subjects} focus={`Let's Review`} link={'Review'} />
 		</>
