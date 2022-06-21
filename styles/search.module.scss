@@ -164,7 +164,17 @@
 			margin: 10px;
 			margin-bottom: 15px;
 			margin-top: 5px;
+			padding: 10px;
+			border-radius: 5px;
+			border: 2px solid transparent;
+		}
+
+		.result:hover {
 			cursor: pointer;
+			background-color: $captionBackground;
+			padding: 10px;
+			border-radius: 5px;
+			border: 2px solid rgba($color: $ugoro, $alpha: 0.4);
 		}
 
 		.horizontalLine {

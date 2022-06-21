@@ -142,7 +142,7 @@ const Index = ({
 							{thisexam.examType.formExams.formName}{' '}
 							<ChevronRightOutlinedIcon /> {truncate(thisexam.description)}
 						</div>
-						<div className={Styles.download}>Download</div>
+						<div className={Styles.download}>Download Exam</div>
 					</div>
 					<div className={Styles.BodyContent}>
 						<div

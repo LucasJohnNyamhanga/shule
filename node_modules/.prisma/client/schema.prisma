@@ -33,6 +33,7 @@ model users {
   formReference     formReference[]
   reference         reference[]
   notesDownloadable notesDownloadable[]
+  examDownloadable  examDownloadable[]
 }
 
 model subject {
@@ -97,16 +98,16 @@ model note {
 }
 
 model notesDownloadable {
-  id        Int     @id @default(autoincrement())
-  content   String
-  isPdf     Boolean
-  published Boolean @default(false)
-  formId    Int     @unique
-  form      form    @relation(fields: [formId], references: [id])
-  subjectId Int
-  subject   subject @relation(fields: [subjectId], references: [id])
-  usersId   Int     @default(1)
-  users     users   @relation(fields: [usersId], references: [id])
+  id            Int     @id @default(autoincrement())
+  link          String
+  fileExtension String
+  published     Boolean @default(false)
+  formId        Int
+  form          form    @relation(fields: [formId], references: [id])
+  subjectId     Int
+  subject       subject @relation(fields: [subjectId], references: [id])
+  usersId       Int     @default(1)
+  users         users   @relation(fields: [usersId], references: [id])
 }
 
 model subjectReview {
@@ -210,16 +211,18 @@ model subjectExams {
   usersId           Int         @default(1)
   users             users       @relation(fields: [usersId], references: [id])
 
+  examDownloadable examDownloadable[]
   @@fulltext([subjectName, subjectDefinition])
 }
 
 model formExams {
-  id       Int            @id @default(autoincrement())
-  formName String
-  subjects subjectExams[]
-  examType examType[]
-  usersId  Int            @default(1)
-  users    users          @relation(fields: [usersId], references: [id])
+  id               Int                @id @default(autoincrement())
+  formName         String
+  subjects         subjectExams[]
+  examType         examType[]
+  usersId          Int                @default(1)
+  users            users              @relation(fields: [usersId], references: [id])
+  examDownloadable examDownloadable[]
 }
 
 model examType {
@@ -237,18 +240,34 @@ model examType {
 }
 
 model exam {
-  id          Int      @id @default(autoincrement())
-  description String   @db.LongText
-  year        Int
-  hasAnswers  Boolean  @default(false)
-  published   Boolean  @default(false)
-  examTypeId  Int
-  examType    examType @relation(fields: [examTypeId], references: [id])
-  exam        String   @db.LongText
-  usersId     Int      @default(1)
-  users       users    @relation(fields: [usersId], references: [id])
+  id               Int                @id @default(autoincrement())
+  description      String             @db.LongText
+  year             Int
+  hasAnswers       Boolean            @default(false)
+  published        Boolean            @default(false)
+  examTypeId       Int
+  examType         examType           @relation(fields: [examTypeId], references: [id])
+  exam             String             @db.LongText
+  usersId          Int                @default(1)
+  users            users              @relation(fields: [usersId], references: [id])
+  examDownloadable examDownloadable[]
 
   @@fulltext([description, exam])
+}
+
+model examDownloadable {
+  id            Int          @id @default(autoincrement())
+  link          String
+  fileExtension String
+  published     Boolean      @default(false)
+  formId        Int
+  form          formExams    @relation(fields: [formId], references: [id])
+  subjectId     Int
+  subject       subjectExams @relation(fields: [subjectId], references: [id])
+  examId        Int
+  exam          exam         @relation(fields: [examId], references: [id])
+  usersId       Int          @default(1)
+  users         users        @relation(fields: [usersId], references: [id])
 }
 
 //references
