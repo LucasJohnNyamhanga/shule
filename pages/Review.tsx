@@ -59,8 +59,8 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Review: NextPage = ({
-    	subjects,
-    }: InferGetStaticPropsType<typeof getStaticProps>) => {
+	subjects,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {

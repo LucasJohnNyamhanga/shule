@@ -99,6 +99,7 @@ model note {
 
 model notesDownloadable {
   id            Int     @id @default(autoincrement())
+  name          String
   link          String
   fileExtension String
   published     Boolean @default(false)
@@ -211,18 +212,16 @@ model subjectExams {
   usersId           Int         @default(1)
   users             users       @relation(fields: [usersId], references: [id])
 
-  examDownloadable examDownloadable[]
   @@fulltext([subjectName, subjectDefinition])
 }
 
 model formExams {
-  id               Int                @id @default(autoincrement())
-  formName         String
-  subjects         subjectExams[]
-  examType         examType[]
-  usersId          Int                @default(1)
-  users            users              @relation(fields: [usersId], references: [id])
-  examDownloadable examDownloadable[]
+  id       Int            @id @default(autoincrement())
+  formName String
+  subjects subjectExams[]
+  examType examType[]
+  usersId  Int            @default(1)
+  users    users          @relation(fields: [usersId], references: [id])
 }
 
 model examType {
@@ -256,18 +255,15 @@ model exam {
 }
 
 model examDownloadable {
-  id            Int          @id @default(autoincrement())
+  id            Int     @id @default(autoincrement())
+  name          String
   link          String
   fileExtension String
-  published     Boolean      @default(false)
-  formId        Int
-  form          formExams    @relation(fields: [formId], references: [id])
-  subjectId     Int
-  subject       subjectExams @relation(fields: [subjectId], references: [id])
+  published     Boolean @default(false)
   examId        Int
-  exam          exam         @relation(fields: [examId], references: [id])
-  usersId       Int          @default(1)
-  users         users        @relation(fields: [usersId], references: [id])
+  exam          exam    @relation(fields: [examId], references: [id])
+  usersId       Int     @default(1)
+  users         users   @relation(fields: [usersId], references: [id])
 }
 
 //references

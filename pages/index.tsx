@@ -72,7 +72,7 @@ const Home: NextPage = ({
 		<>
 			<Hero
 				image={'/darasaplus.gif'}
-				text1={`<span style="color: #27ae60 ;"><strong>Read</strong></span><span>&#128195;</span>`}
+				text1={`<span style="color: #27ae60 ;"><strong>Read</strong></span><span>&#128187;</span>`}
 				text2={`<span style="color: #800080 ;"><strong>Explore</strong></span><span>&#128300;</span>`}
 				text3={`<span style="color: #d35400 ;"><strong>Search</strong></span><span>&#128269;</span>`}
 				text4={`<span style="color: #9F0733 ;"><strong>Study</strong></span><span>&#128210;</span>`}

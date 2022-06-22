@@ -43,7 +43,6 @@
 			width: 90%;
 			font-size: 100px;
 			font-weight: 400;
-			min-height: 80%;
 			padding: 15px 15px;
 
 			.permanentLetters {
@@ -169,8 +168,9 @@
 
 			.details {
 				min-width: 95%;
-				min-height: 200px;
+				min-height: fit-content;
 				font-size: 65px;
+				padding: 15px 10px;
 
 				.permanentLetters {
 					font-size: 45px;
@@ -197,8 +197,9 @@
 		.info {
 			.details {
 				min-width: 95%;
-				min-height: 200px;
+				min-height: fit-content;
 				font-size: 45px;
+				padding: 15px 10px;
 				.permanentLetters {
 					font-size: 25px;
 				}
@@ -212,6 +213,7 @@
 		.info {
 			.details {
 				font-size: 35px;
+				padding: 15px 10px;
 				.permanentLetters {
 					font-size: 22px;
 				}

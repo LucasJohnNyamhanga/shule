@@ -157,7 +157,7 @@ const Index = ({}) => {
 	const formReference = useRef<HTMLDivElement>(null!);
 	const reference = useRef<HTMLDivElement>(null!);
 	const downloads = useRef<HTMLDivElement>(null!);
-	// const user = useRef<HTMLDivElement>(null!);
+	const examDownloads = useRef<HTMLDivElement>(null!);
 
 	let handleNav = (value: string) => {
 		setNavValue(value);
@@ -236,6 +236,10 @@ const Index = ({}) => {
 				retriaveSubjectsExam();
 				setActive('Exam');
 				break;
+			case 'ExamDownloads':
+				examDownloads.current.classList.add(Styles.Active);
+				setActive('ExamDownloads');
+				break;
 			case 'SubjectReference':
 				subjectReference.current.classList.add(Styles.Active);
 				retriaveSubjectsReference();
@@ -275,6 +279,7 @@ const Index = ({}) => {
 		formReference.current.classList.remove(Styles.Active);
 		reference.current.classList.remove(Styles.Active);
 		downloads.current.classList.remove(Styles.Active);
+		examDownloads.current.classList.remove(Styles.Active);
 	};
 
 	const retriaveSubjectsReview = async () => {
@@ -1776,6 +1781,14 @@ const Index = ({}) => {
 									<SummarizeIcon />
 									<div className={Styles.text}>Exams</div>
 								</div>
+								<div
+									ref={examDownloads}
+									id='ExamDownloads'
+									onClick={(e) => handleNav(e.currentTarget.id)}
+									className={Styles.topicTittle}>
+									<Downloads size={25} />
+									<div className={Styles.text}>Downloadables</div>
+								</div>
 							</div>
 							<div>
 								<div className={Styles.TopicHeaderNotes}>References</div>
@@ -2065,7 +2078,7 @@ const Index = ({}) => {
 												<div className={Styles.subjectHeaderText}>
 													Downloadables In Notes Management
 												</div>
-												<Link passHref href='/Admin/Notes/Create/Subject'>
+												<Link passHref href='/Admin/Notes/Create/Downloadable'>
 													<div className={Styles.subjectHeaderButton}>
 														Create Downloadable
 													</div>
@@ -2504,6 +2517,42 @@ const Index = ({}) => {
 									</div>
 								)}
 								{/* //! END OF EXAM DISPLAY ONLY */}
+								{/* //! start of downloads */}
+								{navValue == 'ExamDownloads' && (
+									<div className={Styles.rightInnercontainerBody}>
+										<div className={Styles.subject}>
+											<div className={Styles.subjectHeader}>
+												<div className={Styles.subjectHeaderText}>
+													Downloadables In Exam Management
+												</div>
+												<Link passHref href='/Admin/Exam/Create/Downloadable'>
+													<div className={Styles.subjectHeaderButton}>
+														Create Downloadable
+													</div>
+												</Link>
+											</div>
+											<div className={Styles.subjectBody}>
+												{subjects.map(
+													(subject: {
+														subjectName: string;
+														id: number;
+														published: boolean;
+													}) => (
+														<CardBox
+															handleUpdate={handleUpdateSubject}
+															link={'/Admin/Notes/Edit/Subject/' + subject.id}
+															label={subject.subjectName}
+															published={subject.published}
+															id={subject.id}
+															key={subject.id}
+														/>
+													)
+												)}
+											</div>
+										</div>
+									</div>
+								)}
+								{/* //! end of downloads */}
 								{/* //!start of subject Reference desplay */}
 								{navValue == 'SubjectReference' && (
 									<div className={Styles.rightInnercontainerBody}>
