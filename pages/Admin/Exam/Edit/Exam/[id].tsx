@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { ReactNode, useContext, useEffect, useState } from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { examType, form, PrismaClient, subject, topic } from '@prisma/client';
+import { examType, form, subject, topic } from '@prisma/client';
 import Styles from '../../../../../styles/notesMaker.module.scss';
 import SelectMiu from '../../../../../components/tools/SelectMui';
 import toast, { Toaster } from 'react-hot-toast';
@@ -75,10 +75,10 @@ type formData = {
 }[];
 
 const EditExam = ({
-	exam,
-	forms,
-	subjects,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	exam,
+    	forms,
+    	subjects,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {

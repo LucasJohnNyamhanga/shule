@@ -2,7 +2,8 @@ import FileUpload from '../../../../components/tools/FileUpload';
 import InputTextMui from '../../../../components/tools/InputTextMui';
 import { type } from 'os';
 import DisplayChip from '../../../../components/tools/displayChip';
-import { PrismaClient, subjectReference } from '@prisma/client';
+import { subjectReference } from '@prisma/client';
+import { prisma } from '../../../../db/prisma';
 import SelectMiu from '../../../../components/tools/SelectMui';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
@@ -19,7 +20,6 @@ const CkEditor = dynamic(() => import('../../../../components/tools/Ck'), {
 });
 
 export const getServerSideProps: GetServerSideProps = async () => {
-	const prisma = new PrismaClient();
 	const formsFromServer = await prisma.formReference.findMany({
 		select: {
 			id: true,

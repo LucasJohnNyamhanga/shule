@@ -1,7 +1,8 @@
 import { useRouter } from 'next/router';
 import React, { ReactNode, useContext, useEffect, useState } from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { form, PrismaClient, subject, topic } from '@prisma/client';
+import { form, subject, topic } from '@prisma/client';
+import { prisma } from '../../../../../db/prisma';
 import Styles from '../../../../../styles/notesMaker.module.scss';
 import SelectMiu from '../../../../../components/tools/SelectMui';
 import toast, { Toaster } from 'react-hot-toast';
@@ -18,7 +19,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	let id = context.params?.id as string;
 	let Id = parseInt(id);
 
-	const prisma = new PrismaClient();
 	const notesServer = await prisma.note.findUnique({
 		where: {
 			id: Id,

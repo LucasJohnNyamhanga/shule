@@ -1,6 +1,7 @@
 import InputTextMui from '../../../../components/tools/InputTextMui';
 import { type } from 'os';
-import { form, PrismaClient, subject } from '@prisma/client';
+import { form, subject } from '@prisma/client';
+import { prisma } from '../../../../db/prisma';
 import SelectMiu from '../../../../components/tools/SelectMui';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
@@ -13,7 +14,6 @@ import toast, { Toaster } from 'react-hot-toast';
 import { NavContext } from '../../../../components/context/StateContext';
 
 export const getServerSideProps: GetServerSideProps = async () => {
-	const prisma = new PrismaClient();
 	const formsFromServer: userData = await prisma.formExams.findMany({
 		select: {
 			id: true,
@@ -48,9 +48,9 @@ type formData = {
 }[];
 
 const Create = ({
-	forms,
-	subjects,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	forms,
+    	subjects,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {

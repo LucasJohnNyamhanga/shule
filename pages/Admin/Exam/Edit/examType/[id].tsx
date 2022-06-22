@@ -1,6 +1,6 @@
 import React, { ReactNode, useContext, useEffect } from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../../../../../db/prisma';
 import InputTextMui from '../../../../../components/tools/InputTextMui';
 import SelectMiu from '../../../../../components/tools/SelectMui';
 import axios from 'axios';
@@ -14,7 +14,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	let id = context.params?.id as string;
 	let Id = parseInt(id);
 
-	const prisma = new PrismaClient();
 	const examTypeServer = await prisma.examType.findUnique({
 		where: {
 			id: Id,
@@ -66,10 +65,10 @@ type formData = {
 }[];
 
 const EditSubject = ({
-	examType,
-	formsList,
-	subjects,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	examType,
+    	formsList,
+    	subjects,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {

@@ -2,8 +2,7 @@ import ImageUpload from '../../../../components/tools/ImageUpload';
 import InputTextMui from '../../../../components/tools/InputTextMui';
 import { type } from 'os';
 import DisplayChip from '../../../../components/tools/displayChip';
-import { PrismaClient } from '@prisma/client';
-import { InferGetStaticPropsType } from 'next';
+import { prisma } from '../../../../db/prisma';
 import SelectMiu from '../../../../components/tools/SelectMui';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
@@ -15,7 +14,6 @@ import Progress from '../../../../components/tools/progressFileUpload';
 import { NavContext } from '../../../../components/context/StateContext';
 
 export const getServerSideProps: GetServerSideProps = async () => {
-	const prisma = new PrismaClient();
 	const formsFromServer = await prisma.formExams.findMany({
 		select: {
 			id: true,
@@ -55,9 +53,9 @@ type dataTypeSelect = {
 }[];
 
 const CreateNotes = ({
-	forms,
-	deactiveteImage,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	forms,
+    	deactiveteImage,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {

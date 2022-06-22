@@ -1,6 +1,6 @@
 import React, { ReactNode, useContext, useEffect } from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../../../../../db/prisma';
 import ImageUpload from '../../../../../components/tools/ImageUpload';
 import InputTextMui from '../../../../../components/tools/InputTextMui';
 import { type } from 'os';
@@ -19,7 +19,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	let id = context.params?.id as string;
 	let Id = parseInt(id);
 
-	const prisma = new PrismaClient();
 	const subjectServer = await prisma.subjectReference.findUnique({
 		where: {
 			id: Id,

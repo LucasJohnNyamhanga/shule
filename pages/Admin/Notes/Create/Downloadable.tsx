@@ -1,6 +1,7 @@
 import InputTextMui from '../../../../components/tools/InputTextMui';
 import { type } from 'os';
-import { form, PrismaClient, subject } from '@prisma/client';
+import { form, subject } from '@prisma/client';
+import { prisma } from '../../../../db/prisma';
 import SelectMiu from '../../../../components/tools/SelectMui';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
@@ -8,12 +9,12 @@ import Styles from '../../../../styles/topic.module.scss';
 import { ReactNode } from 'react';
 import SnackBar from '../../../../components/tools/SnackBar';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { FileUpload, Topic } from '@mui/icons-material';
+import FileUpload from '../../../../components/tools/FileUpload';
 import toast, { Toaster } from 'react-hot-toast';
 import { NavContext } from '../../../../components/context/StateContext';
+import Progress from '../../../../components/tools/progressFileUpload';
 
 export const getServerSideProps: GetServerSideProps = async () => {
-	const prisma = new PrismaClient();
 	const formsFromServer: userData = await prisma.form.findMany({
 		select: {
 			id: true,
@@ -28,6 +29,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 		},
 	});
 	const subjects = JSON.parse(JSON.stringify(subjectsFromServer));
+	let deactiveteImage = true;
 	await prisma.$disconnect();
 	return {
 		props: {
@@ -50,6 +52,7 @@ type formData = {
 const Create = ({
     	forms,
     	subjects,
+    	deactiveteImage,
     }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
@@ -70,6 +73,10 @@ const Create = ({
 	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
+	const [image, setImage] = useState<string | Blob>('');
+	const [clearData, setclearData] = useState(false);
+	const [uploadData, setUploadData] = useState(0);
+	const [showUpload, setShowUpload] = useState(false);
 
 	useEffect(() => {
 		let subjectFromServer: formData = [];
@@ -110,33 +117,24 @@ const Create = ({
 		setsubjectDetails({ ...subjectDetails, formId: value });
 	};
 
-	let sendToDatabase = () => {
+	let sendToDatabase = (location: string) => {
+		let databaseData = {};
+
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/addTopic',
-			data: subjectDetails,
+			url: 'http://localhost:3000/api/addReference',
+			data: databaseData,
 		})
 			.then(function (response) {
 				// handle success
-				setsubjectDetails({
-					topicName: '',
-					topicDefinition: '',
-					subjectId: '',
-					formId: '',
-				});
-				let jibu: string = response.data.message;
-				let type: string = response.data.type;
 
-				if (type == 'success') {
-					notifySuccess(jibu);
-				} else {
-					notifyError(jibu);
-				}
+				setImage('');
+				setShowUpload(false);
+				setUploadData(0);
 			})
 			.catch(function (error) {
 				// handle error
 				console.log(error);
-				notifyError('Error has occured, try later.');
 			})
 			.then(function () {
 				// always executed
@@ -151,36 +149,48 @@ const Create = ({
 			subjectDetails.subjectId != ''
 		) {
 			//!Call save to database
-			validateTopic();
+			uploadToServer();
 		} else {
 			//!return error
 			notifyError('Fill in all fields including topic relations.');
 		}
 	};
 
-	let validateTopic = () => {
-		axios({
-			method: 'post',
-			url: 'http://localhost:3000/api/topicsVerify',
-			data: subjectDetails,
-		})
-			.then(function (response) {
-				const topicsFromServer = JSON.parse(JSON.stringify(response.data));
-				// handle success
-				if (topicsFromServer.length > 0) {
-					notifyError('Database contain another copy of this topic.');
-				} else {
-					sendToDatabase();
+	let clearDataProcess = () => {
+		setclearData(false);
+	};
+
+	let uploadForServer = (image: string | Blob) => {
+		setImage(image);
+		//!TO BE CALLED FOR UPLOAD
+		// uploadToServer();
+	};
+
+	//! for uploading
+	const uploadToServer = async () => {
+		setShowUpload(true);
+		const body = new FormData();
+		body.append('file', image);
+		axios
+			.post('/api/upload', body, {
+				onUploadProgress: (progressEvent) => {
+					// console.log('Upload Progress: ' + Math.round(progressEvent.loaded / progressEvent.total * 100) + "%");
+					setUploadData(
+						Math.round((progressEvent.loaded / progressEvent.total) * 100)
+					);
+				},
+			})
+			.then(
+				(res) => {
+					let location = res.data.file;
+					setclearData(true);
+					clearDataProcess();
+					sendToDatabase(location);
+				},
+				(err) => {
+					//some error
 				}
-			})
-			.catch(function (error) {
-				// handle error
-				console.log(error);
-				notifyError('Something went wrong.');
-			})
-			.then(function () {
-				// always executed
-			});
+			);
 	};
 
 	return (
@@ -191,12 +201,18 @@ const Create = ({
 					<div className={Styles.mainMain}>
 						<div className={Styles.formHeader}>Topic Details.</div>
 						<InputTextMui
-							label='Topic Name'
+							label='File Name'
 							content={subjectDetails.topicName}
-							name='topicName'
+							name='fileName'
 							handleChange={handleTextInput}
 						/>
-						<FileUpload />
+						<FileUpload
+							deactiveteImage={deactiveteImage}
+							clear={clearData}
+							clearData={clearDataProcess}
+							uploadToServer={uploadForServer}
+							image={''}
+						/>
 					</div>
 					<div className={Styles.mainLeft}>
 						<div className={Styles.formHeader}>Topic Relations.</div>
@@ -216,9 +232,14 @@ const Create = ({
 						/>
 					</div>
 				</div>
-				<div onClick={handleCreateTopic} className={Styles.imageSelect}>
-					Create Topic
-				</div>
+				{showUpload && <Progress data={uploadData} />}
+				{showUpload ? (
+					<div className={Styles.imageSelect}>Please wait...</div>
+				) : (
+					<div onClick={handleCreateTopic} className={Styles.imageSelect}>
+						Create Subject
+					</div>
+				)}
 			</div>
 		</div>
 	);

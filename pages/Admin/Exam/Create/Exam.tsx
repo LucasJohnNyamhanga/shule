@@ -6,7 +6,8 @@ import React, {
 	useState,
 } from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { examType, form, PrismaClient, subject, topic } from '@prisma/client';
+import { examType, form, subject, topic } from '@prisma/client';
+import { prisma } from '../../../../db/prisma';
 import Styles from '../../../../styles/notesMaker.module.scss';
 import SelectMiu from '../../../../components/tools/SelectMui';
 import toast, { Toaster } from 'react-hot-toast';
@@ -21,7 +22,6 @@ const CkEditor = dynamic(() => import('../../../../components/tools/Ck'), {
 });
 
 export const getServerSideProps: GetServerSideProps = async () => {
-	const prisma = new PrismaClient();
 	const formsFromServer: userData = await prisma.formExams.findMany({
 		select: {
 			id: true,
