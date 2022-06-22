@@ -9,7 +9,7 @@ import Styles from '../../../../styles/topic.module.scss';
 import { ReactNode } from 'react';
 import SnackBar from '../../../../components/tools/SnackBar';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import FileUpload from '../../../../components/tools/FileUpload';
+import FileUpload from '../../../../components/tools/FileUploadAny';
 import toast, { Toaster } from 'react-hot-toast';
 import { NavContext } from '../../../../components/context/StateContext';
 import Progress from '../../../../components/tools/progressFileUpload';
@@ -50,10 +50,10 @@ type formData = {
 }[];
 
 const Create = ({
-    	forms,
-    	subjects,
-    	deactiveteImage,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	forms,
+	subjects,
+	deactiveteImage,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -61,11 +61,12 @@ const Create = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [navActive]);
 
-	const [subjectDetails, setsubjectDetails] = useState({
-		topicName: '',
-		topicDefinition: '',
-		subjectId: '',
+	const [details, setDetails] = useState({
+		name: '',
+		link: '',
+		fileExtension: '',
 		formId: '',
+		subjectId: '',
 	});
 
 	const [formOptions, setFormOptions] = useState<formData>([]);
@@ -77,6 +78,7 @@ const Create = ({
 	const [clearData, setclearData] = useState(false);
 	const [uploadData, setUploadData] = useState(0);
 	const [showUpload, setShowUpload] = useState(false);
+	const [ext, setExt] = useState('');
 
 	useEffect(() => {
 		let subjectFromServer: formData = [];
@@ -105,32 +107,52 @@ const Create = ({
 		name: string
 	) => {
 		let value = event.currentTarget.value;
-		setsubjectDetails({ ...subjectDetails, [name]: value });
-		console.log(subjectDetails);
+		setDetails({ ...details, name: value });
+		console.log(details);
 	};
 
 	let handleSelectSubject = (value: string) => {
-		setsubjectDetails({ ...subjectDetails, subjectId: value });
+		setDetails({ ...details, subjectId: value });
 	};
 
 	let handleSelectForm = (value: string) => {
-		setsubjectDetails({ ...subjectDetails, formId: value });
+		setDetails({ ...details, formId: value });
 	};
 
 	let sendToDatabase = (location: string) => {
-		let databaseData = {};
+		let databaseData = {
+			name: details.name,
+			link: location,
+			fileExtension: ext,
+			formId: details.formId,
+			subjectId: details.subjectId,
+		};
+
+		console.log(databaseData);
 
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/addReference',
+			url: 'http://localhost:3000/api/addNotesDownloadable',
 			data: databaseData,
 		})
 			.then(function (response) {
 				// handle success
+				setDetails({
+					fileExtension: '',
+					name: '',
+					link: '',
+					formId: '',
+					subjectId: '',
+				});
 
 				setImage('');
 				setShowUpload(false);
 				setUploadData(0);
+				if (response.data.type == 'success') {
+					notifySuccess(response.data.message);
+				} else {
+					notifyError(response.data.message);
+				}
 			})
 			.catch(function (error) {
 				// handle error
@@ -141,15 +163,14 @@ const Create = ({
 			});
 	};
 
-	let handleCreateTopic = () => {
-		if (
-			subjectDetails.topicName != '' &&
-			subjectDetails.topicDefinition != '' &&
-			subjectDetails.formId != '' &&
-			subjectDetails.subjectId != ''
-		) {
+	let handleCreateDownloadable = () => {
+		if (details.name != '' && details.formId != '' && details.subjectId != '') {
 			//!Call save to database
-			uploadToServer();
+			if (image != '') {
+				uploadToServer();
+			} else {
+				notifyError('No file detected. Attach file.');
+			}
 		} else {
 			//!return error
 			notifyError('Fill in all fields including topic relations.');
@@ -168,29 +189,34 @@ const Create = ({
 
 	//! for uploading
 	const uploadToServer = async () => {
-		setShowUpload(true);
-		const body = new FormData();
-		body.append('file', image);
-		axios
-			.post('/api/upload', body, {
-				onUploadProgress: (progressEvent) => {
-					// console.log('Upload Progress: ' + Math.round(progressEvent.loaded / progressEvent.total * 100) + "%");
-					setUploadData(
-						Math.round((progressEvent.loaded / progressEvent.total) * 100)
-					);
-				},
-			})
-			.then(
-				(res) => {
-					let location = res.data.file;
-					setclearData(true);
-					clearDataProcess();
-					sendToDatabase(location);
-				},
-				(err) => {
-					//some error
-				}
-			);
+		console.log(details);
+		if (typeof image != 'string') {
+			setShowUpload(true);
+			const body = new FormData();
+			body.append('file', image);
+			axios
+				.post('/api/upload', body, {
+					onUploadProgress: (progressEvent) => {
+						// console.log('Upload Progress: ' + Math.round(progressEvent.loaded / progressEvent.total * 100) + "%");
+						setUploadData(
+							Math.round((progressEvent.loaded / progressEvent.total) * 100)
+						);
+					},
+				})
+				.then(
+					(res) => {
+						let location = res.data.file;
+						setclearData(true);
+						clearDataProcess();
+						sendToDatabase(location);
+					},
+					(err) => {
+						//some error
+					}
+				);
+		} else {
+			notifyError('No file selected');
+		}
 	};
 
 	return (
@@ -199,11 +225,11 @@ const Create = ({
 			<div className={Styles.innerContainer}>
 				<div className={Styles.rightInnercontainerBody}>
 					<div className={Styles.mainMain}>
-						<div className={Styles.formHeader}>Topic Details.</div>
+						<div className={Styles.formHeader}>Downloadable Details.</div>
 						<InputTextMui
 							label='File Name'
-							content={subjectDetails.topicName}
-							name='fileName'
+							content={details.name}
+							name='name'
 							handleChange={handleTextInput}
 						/>
 						<FileUpload
@@ -212,23 +238,27 @@ const Create = ({
 							clearData={clearDataProcess}
 							uploadToServer={uploadForServer}
 							image={''}
+							extension={(value) => {
+								setExt(value);
+								console.log(value);
+							}}
 						/>
 					</div>
 					<div className={Styles.mainLeft}>
-						<div className={Styles.formHeader}>Topic Relations.</div>
+						<div className={Styles.formHeader}>Downloadable Relations.</div>
 						<SelectMiu
 							displayLabel='Select Subject'
 							show={true}
 							forms={subjectOptions}
 							handlechange={handleSelectSubject}
-							value={subjectDetails.subjectId}
+							value={details.subjectId}
 						/>
 						<SelectMiu
 							displayLabel='Select Form'
 							show={true}
 							forms={formOptions}
 							handlechange={handleSelectForm}
-							value={subjectDetails.formId}
+							value={details.formId}
 						/>
 					</div>
 				</div>
@@ -236,7 +266,9 @@ const Create = ({
 				{showUpload ? (
 					<div className={Styles.imageSelect}>Please wait...</div>
 				) : (
-					<div onClick={handleCreateTopic} className={Styles.imageSelect}>
+					<div
+						onClick={handleCreateDownloadable}
+						className={Styles.imageSelect}>
 						Create Subject
 					</div>
 				)}

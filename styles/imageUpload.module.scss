@@ -50,3 +50,16 @@
 .imageSelectText {
 	margin-left: 10px;
 }
+
+.displayFile {
+	padding: 10px 25px;
+	width: fit-content;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 5px;
+	background-color: rgba($kahawa, 0.2);
+	font-family: $fontHeader;
+	color: $ugoro;
+	border: 2px solid $kahawa;
+}
