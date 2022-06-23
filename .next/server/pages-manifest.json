@@ -2,7 +2,7 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/Admin/Exam/Edit/Exam/[id]": "pages/Admin/Exam/Edit/Exam/[id].js",
-  "/api/examType": "pages/api/examType.js",
-  "/api/updateExam": "pages/api/updateExam.js"
+  "/Exams": "pages/Exams.js",
+  "/Exams/Physics/FormOne": "pages/Exams/Physics/FormOne.js",
+  "/Exams/Physics/FormOne/Exam/[id]": "pages/Exams/Physics/FormOne/Exam/[id].js"
 }

@@ -38,6 +38,15 @@ export const getStaticProps: GetStaticProps = async (context) => {
 							formName: true,
 						},
 					},
+					exam: {
+						select: {
+							examDownloadable: {
+								select: {
+									id: true,
+								},
+							},
+						},
+					},
 				},
 			},
 		},
@@ -91,8 +100,8 @@ type tableKey = {
 };
 
 const Index = ({
-    	thisexam,
-    }: InferGetStaticPropsType<typeof getStaticProps>) => {
+	thisexam,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	const [keyInTable, setKeyInTable] = useState<tableKey>({
@@ -146,7 +155,11 @@ const Index = ({
 							{thisexam.examType.formExams.formName}{' '}
 							<ChevronRightOutlinedIcon /> {truncate(thisexam.description)}
 						</div>
-						<div className={Styles.download}>Download Exam</div>
+						{typeof thisexam.examType.examType != 'undefined' ? (
+							<div className={Styles.download}>Download Exam</div>
+						) : (
+							''
+						)}
 					</div>
 					<div className={Styles.BodyContent}>
 						<div

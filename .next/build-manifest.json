@@ -20,10 +20,25 @@
       "static/chunks/main.js",
       "static/chunks/pages/Admin.js"
     ],
-    "/Admin/Exam/Edit/Exam/[id]": [
+    "/Exams": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/Admin/Exam/Edit/Exam/[id].js"
+      "static/chunks/pages/Exams.js"
+    ],
+    "/Exams/Physics/FormOne": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/Exams/Physics/FormOne.js"
+    ],
+    "/Exams/Physics/FormOne/Exam/[id]": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/Exams/Physics/FormOne/Exam/[id].js"
+    ],
+    "/Notes/Physics/FormOne": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/Notes/Physics/FormOne.js"
     ],
     "/_app": [
       "static/chunks/webpack.js",

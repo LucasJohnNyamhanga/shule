@@ -44,6 +44,22 @@ export const getStaticProps: GetStaticProps = async () => {
 	});
 	const topics = JSON.parse(JSON.stringify(topicsFromServer));
 
+	const downloadFromServer = await prisma.notesDownloadable.findMany({
+		where: {
+			published: true,
+			subject: {
+				subjectName: subjectLocator,
+			},
+			form: {
+				formName: formLocator,
+			},
+		},
+		select: {
+			id: true,
+		},
+	});
+	const download = JSON.parse(JSON.stringify(downloadFromServer));
+
 	const noteFromServer = await prisma.topic.findMany({
 		take: 1,
 		where: {
@@ -82,15 +98,19 @@ export const getStaticProps: GetStaticProps = async () => {
 		props: {
 			topics,
 			note,
+			download,
 		},
 	};
 };
 
 const Index = ({
-    	topics,
-    	note,
-    }: InferGetStaticPropsType<typeof getStaticProps>) => {
+	topics,
+	note,
+	download,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
+
+	console.log(download);
 
 	useEffect(() => {
 		setNavActive('Notes');
@@ -172,7 +192,11 @@ const Index = ({
 							{note[0].form.formName} <ChevronRightOutlinedIcon />{' '}
 							{truncate(note[0].topicName)}
 						</div>
-						<div className={Styles.download}>Download Notes</div>
+						{download.length > 0 ? (
+							<div className={Styles.download}>Download Notes</div>
+						) : (
+							''
+						)}
 					</div>
 					<div className={Styles.BodyContent}>
 						<div
