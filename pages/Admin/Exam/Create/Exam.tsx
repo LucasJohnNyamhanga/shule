@@ -67,16 +67,11 @@ type formData = {
 }[];
 
 const Notes = ({
-    	forms,
-    	subjects,
-    	examType,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	forms,
+	subjects,
+	examType,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
-
-	useEffect(() => {
-		setNavActive('Admin');
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [navActive]);
 
 	const [formOptions, setFormOptions] = useState<formData>([]);
 	const [subjectOptions, setSubjectOptions] = useState<formData>([]);
@@ -101,6 +96,7 @@ const Notes = ({
 	const notifyError = (message: string) => toast.error(message);
 
 	useEffect(() => {
+		setNavActive('Admin');
 		let subjectFromServer: formData = [];
 		subjects.map((subject: subject) => {
 			subjectFromServer.push({
@@ -124,7 +120,7 @@ const Notes = ({
 		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [change]);
+	}, [change, navActive]);
 
 	let retriaveExamTypeData = () => {
 		setHideShow(false);
@@ -218,22 +214,24 @@ const Notes = ({
 			})
 				.then(function (response) {
 					// handle success
-					setExamSelectValue({
-						examTypeId: '',
-						exam: '',
-						description: '',
-						year: '',
-						hasAnswers: '',
-					});
-					setExamDetails({
-						formId: '',
-						subjectId: '',
-					});
+
 					let jibu: string = response.data.message;
 					let type: string = response.data.type;
 
 					if (type == 'success') {
 						notifySuccess(jibu);
+						setExamSelectValue({
+							examTypeId: '',
+							exam: '',
+							description: '',
+							year: '',
+							hasAnswers: '',
+						});
+
+						setExamDetails({
+							formId: '',
+							subjectId: '',
+						});
 					} else {
 						notifyError(jibu);
 					}

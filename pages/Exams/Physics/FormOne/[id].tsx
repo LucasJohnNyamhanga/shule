@@ -145,6 +145,18 @@ const Index = ({
 
 	useEffect(() => {
 		setNavActive('Exams');
+	}, [navActive]);
+
+	if (examTypeAll.length == 0 || thisexamType.exam == 'undefined') {
+		return (
+			<div className={Styles.notFound}>
+				Reviews for ${thisexamType.name} topic will be available soon.
+			</div>
+		);
+	}
+
+	useEffect(() => {
+		setNavActive('Exams');
 
 		let listKey: string[] = [];
 
@@ -156,14 +168,6 @@ const Index = ({
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [navActive, thisexamType.exam]);
-
-	if (examTypeAll.length == 0 || thisexamType.exam == 'undefined') {
-		return (
-			<div className={Styles.notFound}>
-				Reviews for ${thisexamType.name} topic will be available soon.
-			</div>
-		);
-	}
 
 	let truncateLimit = 12;
 	function truncate(str: string) {

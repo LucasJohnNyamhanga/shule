@@ -1,40 +1,57 @@
-import InputTextMui from '../../../../components/tools/InputTextMui';
-import { type } from 'os';
-import { form, subject } from '@prisma/client';
-import { prisma } from '../../../../db/prisma';
-import SelectMiu from '../../../../components/tools/SelectMui';
-import axios from 'axios';
-import { useContext, useEffect, useState } from 'react';
-import Styles from '../../../../styles/topic.module.scss';
-import { ReactNode } from 'react';
-import SnackBar from '../../../../components/tools/SnackBar';
+import React, {
+	ReactNode,
+	useContext,
+	useEffect,
+	useRef,
+	useState,
+} from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import FileUpload from '../../../../components/tools/FileUploadAny';
+import { examType, form, subject, topic } from '@prisma/client';
+import { prisma } from '../../../../db/prisma';
+import Styles from '../../../../styles/notesMaker.module.scss';
+import SelectMiu from '../../../../components/tools/SelectMui';
 import toast, { Toaster } from 'react-hot-toast';
+import dynamic from 'next/dynamic';
+import axios from 'axios';
 import { NavContext } from '../../../../components/context/StateContext';
-import Progress from '../../../../components/tools/progressFileUpload';
+import InputTextMui from '../../../../components/tools/InputTextMui';
+
+//load when browser kicks in, on page load
+const CkEditor = dynamic(() => import('../../../../components/tools/Ck'), {
+	ssr: false,
+});
 
 export const getServerSideProps: GetServerSideProps = async () => {
-	const formsFromServer: userData = await prisma.form.findMany({
+	const formsFromServer: userData = await prisma.formExams.findMany({
 		select: {
 			id: true,
 			formName: true,
 		},
 	});
 	const forms = JSON.parse(JSON.stringify(formsFromServer));
-	const subjectsFromServer = await prisma.subject.findMany({
+
+	const subjectsFromServer = await prisma.subjectExams.findMany({
 		select: {
 			id: true,
 			subjectName: true,
 		},
 	});
 	const subjects = JSON.parse(JSON.stringify(subjectsFromServer));
-	let deactiveteImage = true;
+
+	const examTypeFromServer = await prisma.examType.findMany({
+		select: {
+			id: true,
+			name: true,
+		},
+	});
+	const examType = JSON.parse(JSON.stringify(examTypeFromServer));
+
 	await prisma.$disconnect();
 	return {
 		props: {
 			forms,
 			subjects,
+			examType,
 		},
 	};
 };
@@ -49,10 +66,10 @@ type formData = {
 	value: string;
 }[];
 
-const Create = ({
+const Notes = ({
     	forms,
     	subjects,
-    	deactiveteImage,
+    	examType,
     }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
@@ -61,24 +78,27 @@ const Create = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [navActive]);
 
-	const [details, setDetails] = useState({
-		name: '',
-		link: '',
-		fileExtension: '',
+	const [formOptions, setFormOptions] = useState<formData>([]);
+	const [subjectOptions, setSubjectOptions] = useState<formData>([]);
+	const [topicOptions, setTopicOptions] = useState<formData>([]);
+	const [change, setChange] = useState(0);
+	const [hideShow, setHideShow] = useState(false);
+	const [examDetails, setExamDetails] = useState({
 		formId: '',
 		subjectId: '',
 	});
 
-	const [formOptions, setFormOptions] = useState<formData>([]);
-	const [subjectOptions, setSubjectOptions] = useState<formData>([]);
+	const [examSelectValue, setExamSelectValue] = useState({
+		examTypeId: '',
+		exam: '',
+		description: '',
+		year: '',
+		hasAnswers: '',
+	});
+
 	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
-	const [image, setImage] = useState<string | Blob>('');
-	const [clearData, setclearData] = useState(false);
-	const [uploadData, setUploadData] = useState(0);
-	const [showUpload, setShowUpload] = useState(false);
-	const [ext, setExt] = useState('');
 
 	useEffect(() => {
 		let subjectFromServer: formData = [];
@@ -90,196 +110,244 @@ const Create = ({
 		});
 		setSubjectOptions(subjectFromServer);
 
-		let topicFromServer: formData = [];
+		let formFromServer: formData = [];
 		forms.map((form: form) => {
-			topicFromServer.push({
+			formFromServer.push({
 				label: form.formName,
 				value: form.id as unknown as string,
 			});
 		});
-		setFormOptions(topicFromServer);
+		setFormOptions(formFromServer);
+
+		if (examDetails.formId != '' && examDetails.subjectId != '') {
+			retriaveExamTypeData();
+		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [change]);
 
-	let handleTextInput = (
-		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-		name: string
-	) => {
-		let value = event.currentTarget.value;
-		setDetails({ ...details, name: value });
-		console.log(details);
-	};
-
-	let handleSelectSubject = (value: string) => {
-		setDetails({ ...details, subjectId: value });
-	};
-
-	let handleSelectForm = (value: string) => {
-		setDetails({ ...details, formId: value });
-	};
-
-	let sendToDatabase = (location: string) => {
-		let databaseData = {
-			name: details.name,
-			link: location,
-			fileExtension: ext,
-			formId: details.formId,
-			subjectId: details.subjectId,
-		};
-
-		console.log(databaseData);
-
+	let retriaveExamTypeData = () => {
+		setHideShow(false);
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/addNotesDownloadable',
-			data: databaseData,
+			url: 'http://localhost:3000/api/examType',
+			data: examDetails,
 		})
 			.then(function (response) {
+				const exams: [] = JSON.parse(JSON.stringify(response.data));
 				// handle success
-				setDetails({
-					fileExtension: '',
-					name: '',
-					link: '',
-					formId: '',
-					subjectId: '',
-				});
-
-				setImage('');
-				setShowUpload(false);
-				setUploadData(0);
-				if (response.data.type == 'success') {
-					notifySuccess(response.data.message);
+				if (exams.length > 0) {
+					console.log(exams);
+					let examFromServer: formData = [];
+					exams.map((exam: examType) => {
+						examFromServer.push({
+							label: exam.name,
+							value: exam.id as unknown as string,
+						});
+					});
+					setTopicOptions(examFromServer);
+					setHideShow(true);
+					notifySuccess('Select topic to proceed..');
 				} else {
-					notifyError(response.data.message);
+					notifyError('No topics available for your selection.');
 				}
 			})
 			.catch(function (error) {
 				// handle error
 				console.log(error);
+				notifyError('Something went wrong.');
 			})
 			.then(function () {
 				// always executed
 			});
 	};
 
-	let handleCreateDownloadable = () => {
-		if (details.name != '' && details.formId != '' && details.subjectId != '') {
-			//!Call save to database
-			if (image != '') {
-				uploadToServer();
+	let handleContent = (data: string) => {
+		let convertedData = data.replaceAll(
+			`img`,
+			`Image layout="fill" objectFit="cover"`
+		);
+		setExamSelectValue({ ...examSelectValue, exam: convertedData });
+	};
+
+	let handleSelectSubject = (value: string) => {
+		setExamDetails({ ...examDetails, subjectId: value });
+		setChange(change + 1);
+	};
+
+	let handleSelectForm = (value: string) => {
+		setExamDetails({ ...examDetails, formId: value });
+		setChange(change + 1);
+	};
+
+	let handleSelectTopic = (value: string) => {
+		setExamSelectValue({ ...examSelectValue, examTypeId: value });
+	};
+
+	let handleCreateNotes = () => {
+		if (examSelectValue.examTypeId != '' && examSelectValue.exam.length > 200) {
+			sendToDatabase();
+		} else {
+			if (examSelectValue.exam.length < 200) {
+				notifyError('Notes content should exceed 200 characters..');
 			} else {
-				notifyError('No file detected. Attach file.');
+				notifyError('Fill in all fields including selections.');
 			}
-		} else {
-			//!return error
-			notifyError('Fill in all fields including topic relations.');
 		}
 	};
 
-	let clearDataProcess = () => {
-		setclearData(false);
-	};
+	function allnumeric(inputtxt: string) {
+		var numbers = /^[0-9]+$/;
+		if (inputtxt.match(numbers)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	let today = new Date().getFullYear();
+	let sendToDatabase = () => {
+		//!CHANGE TO DATE PICKER..
 
-	let uploadForServer = (image: string | Blob) => {
-		setImage(image);
-		//!TO BE CALLED FOR UPLOAD
-		// uploadToServer();
-	};
+		let year = examSelectValue.year;
+		let yearInNumber = parseInt(examSelectValue.year);
+		if (allnumeric(year) && 1999 < yearInNumber && yearInNumber < today + 1) {
+			axios({
+				method: 'post',
+				url: 'http://localhost:3000/api/addExam',
+				data: examSelectValue,
+			})
+				.then(function (response) {
+					// handle success
+					setExamSelectValue({
+						examTypeId: '',
+						exam: '',
+						description: '',
+						year: '',
+						hasAnswers: '',
+					});
+					setExamDetails({
+						formId: '',
+						subjectId: '',
+					});
+					let jibu: string = response.data.message;
+					let type: string = response.data.type;
 
-	//! for uploading
-	const uploadToServer = async () => {
-		console.log(details);
-		if (typeof image != 'string') {
-			setShowUpload(true);
-			const body = new FormData();
-			body.append('file', image);
-			axios
-				.post('/api/upload', body, {
-					onUploadProgress: (progressEvent) => {
-						// console.log('Upload Progress: ' + Math.round(progressEvent.loaded / progressEvent.total * 100) + "%");
-						setUploadData(
-							Math.round((progressEvent.loaded / progressEvent.total) * 100)
-						);
-					},
-				})
-				.then(
-					(res) => {
-						let location = res.data.file;
-						setclearData(true);
-						clearDataProcess();
-						sendToDatabase(location);
-					},
-					(err) => {
-						//some error
+					if (type == 'success') {
+						notifySuccess(jibu);
+					} else {
+						notifyError(jibu);
 					}
-				);
+				})
+				.catch(function (error) {
+					// handle error
+					console.log(error);
+					notifyError('Error has occured, try later.');
+				})
+				.then(function () {
+					// always executed
+				});
 		} else {
-			notifyError('No file selected');
+			notifyError(`Wrong date. Should be a number between 2000 and ${today}`);
 		}
+	};
+
+	let handleOnReady = () => {
+		console.log('Editor is ready');
+	};
+
+	let handleTextInput = (
+		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+		name: string
+	) => {
+		let value = event.currentTarget.value;
+		setExamSelectValue({ ...examSelectValue, [name]: value });
+	};
+
+	const [trueAndFalse, setTrueAndFalse] = useState([
+		{
+			label: 'True',
+			value: 'true',
+		},
+		{
+			label: 'False',
+			value: 'false',
+		},
+	]);
+
+	let handleAnswerValid = (value: string) => {
+		setExamSelectValue({ ...examSelectValue, hasAnswers: value });
 	};
 
 	return (
 		<div className={Styles.container}>
-			<Toaster position='bottom-left' reverseOrder={false} />
+			<Toaster position='bottom-left' />
 			<div className={Styles.innerContainer}>
-				<div className={Styles.rightInnercontainerBody}>
-					<div className={Styles.mainMain}>
-						<div className={Styles.formHeader}>Downloadable Details.</div>
+				<div className={Styles.content}>
+					<div className={Styles.mainContent}>
 						<InputTextMui
-							label='File Name'
-							content={details.name}
-							name='name'
+							label={`Year Between 2000 - ${today}`}
+							content={examSelectValue.year}
+							name='year'
 							handleChange={handleTextInput}
 						/>
-						<FileUpload
-							deactiveteImage={deactiveteImage}
-							clear={clearData}
-							clearData={clearDataProcess}
-							uploadToServer={uploadForServer}
-							image={''}
-							extension={(value) => {
-								setExt(value);
-								console.log(value);
-							}}
+						<InputTextMui
+							label='Exam Description'
+							content={examSelectValue.description}
+							name='description'
+							handleChange={handleTextInput}
+						/>
+						<SelectMiu
+							displayLabel='Exam has Answers'
+							show={true}
+							forms={trueAndFalse}
+							handlechange={handleAnswerValid}
+							value={examSelectValue.hasAnswers}
+						/>
+						<CkEditor
+							content={handleContent}
+							dataCk={examSelectValue.exam}
+							onReadyToStart={handleOnReady}
 						/>
 					</div>
-					<div className={Styles.mainLeft}>
-						<div className={Styles.formHeader}>Downloadable Relations.</div>
+					<div className={Styles.controlContent}>
 						<SelectMiu
-							displayLabel='Select Subject'
 							show={true}
+							displayLabel='Select Subject'
 							forms={subjectOptions}
 							handlechange={handleSelectSubject}
-							value={details.subjectId}
+							value={examDetails.subjectId}
 						/>
 						<SelectMiu
-							displayLabel='Select Form'
 							show={true}
+							displayLabel='Select Form'
 							forms={formOptions}
 							handlechange={handleSelectForm}
-							value={details.formId}
+							value={examDetails.formId}
 						/>
+						{hideShow && (
+							<SelectMiu
+								show={true}
+								displayLabel='Select Exam Type'
+								forms={topicOptions}
+								handlechange={handleSelectTopic}
+								value={examSelectValue.examTypeId}
+							/>
+						)}
 					</div>
 				</div>
-				{showUpload && <Progress data={uploadData} />}
-				{showUpload ? (
-					<div className={Styles.imageSelect}>Please wait...</div>
-				) : (
-					<div
-						onClick={handleCreateDownloadable}
-						className={Styles.imageSelect}>
-						Create Subject
+				<div>
+					<div onClick={handleCreateNotes} className={Styles.imageSelect}>
+						Create Exam
 					</div>
-				)}
+				</div>
 			</div>
 		</div>
 	);
 };
 
-export default Create;
+export default Notes;
 
 //*Removing default search bar :)
-Create.getLayout = function PageLayout(page: ReactNode) {
+Notes.getLayout = function PageLayout(page: ReactNode) {
 	return <>{page}</>;
 };

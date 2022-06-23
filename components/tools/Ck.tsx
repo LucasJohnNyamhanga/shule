@@ -16,7 +16,7 @@ const Ck = ({ content, dataCk, onReadyToStart }: dataContent) => {
 		<div className={Styles.container}>
 			<CKEditor
 				editor={ClassicEditor}
-				data={data}
+				data={dataCk}
 				onReady={onReadyToStart}
 				onChange={(event: any, editor: any) => {
 					const data = editor.getData();

@@ -119,14 +119,23 @@ type tableKey = {
 };
 
 const Index = ({
-    	topics,
-    	note,
-    }: InferGetStaticPropsType<typeof getStaticProps>) => {
+	topics,
+	note,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	const [keyInTable, setKeyInTable] = useState<tableKey>({
 		keys: [],
 	});
+
+	useEffect(() => {
+		setNavActive('Exams');
+	}, [navActive]);
+
+	if (topics.length < 1) {
+		return <Error statusCode={404} />;
+	}
+
 	useEffect(() => {
 		setNavActive('Exams');
 
@@ -140,10 +149,6 @@ const Index = ({
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [navActive]);
-
-	if (topics.length < 1) {
-		return <Error statusCode={404} />;
-	}
 
 	let truncateLimit = 12;
 	function truncate(str: string) {

@@ -15,20 +15,15 @@
     "static/development/_middlewareManifest.js"
   ],
   "pages": {
-    "/": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/index.js"
-    ],
     "/Admin": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/Admin.js"
     ],
-    "/Admin/Exam/Create/Downloadable": [
+    "/Admin/Exam/Edit/Exam/[id]": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/Admin/Exam/Create/Downloadable.js"
+      "static/chunks/pages/Admin/Exam/Edit/Exam/[id].js"
     ],
     "/_app": [
       "static/chunks/webpack.js",

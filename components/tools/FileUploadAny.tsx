@@ -45,6 +45,7 @@ export default function PrivatePage({
 			setDisplay(false);
 		} else {
 			setDisplay(true);
+			setName(image);
 		}
 	};
 

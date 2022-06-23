@@ -101,7 +101,6 @@ const Index = ({
 
 	useEffect(() => {
 		setNavActive('Exams');
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [navActive]);
 
 	if (thisexam == 'undefined') {
@@ -111,6 +110,11 @@ const Index = ({
 			</div>
 		);
 	}
+
+	useEffect(() => {
+		setNavActive('Exams');
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [navActive]);
 
 	//!mambo yanaanza
 

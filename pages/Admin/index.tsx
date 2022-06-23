@@ -6,7 +6,13 @@ import NotesIcon from '@mui/icons-material/Notes';
 import Books from '@mui/icons-material/ImportContacts';
 import SchoolIcon from '@mui/icons-material/School';
 import axios from 'axios';
-import { exam, question, reference, review } from '@prisma/client';
+import {
+	exam,
+	notesDownloadable,
+	question,
+	reference,
+	review,
+} from '@prisma/client';
 import Link from 'next/link';
 import CardBox from '../../components/tools/cardBoxStyle';
 import toast, { Toaster } from 'react-hot-toast';
@@ -41,6 +47,7 @@ const Index = ({}) => {
 	const [subjectReferenceList, setSubjectReferenceList] = useState([]);
 	const [notesData, setNotesData] = useState([]);
 	const [examData, setExamData] = useState([]);
+	const [downloadable, setDownloadable] = useState([]);
 	const [reviewData, setReviewData] = useState([]);
 	const [questionData, setQuestionData] = useState([]);
 	const [topicsNotes, setTopicsNotes] = useState<dataTypeSelect>([]);
@@ -53,6 +60,7 @@ const Index = ({}) => {
 	const [activateSubjectReferenceList, setActivateSubjectReferenceList] =
 		useState(false);
 	const [activateTopicsREview, setActivateTopicsReview] = useState(false);
+	const [activateDownloadable, setActivateDownloadable] = useState(false);
 	const [activateFormsReference, setActivateFormsReference] = useState(false);
 	const [activateExamType, setActivateExamType] = useState(false);
 	const [activateReference, setActivateReference] = useState(false);
@@ -93,6 +101,11 @@ const Index = ({}) => {
 	const [activateListReview, setActivateListReview] = useState(false);
 
 	const [topicDetails, setTopicDetails] = useState({
+		formId: '',
+		subjectId: '',
+	});
+
+	const [downloadableDetails, setDownloadableDetails] = useState({
 		formId: '',
 		subjectId: '',
 	});
@@ -174,6 +187,7 @@ const Index = ({}) => {
 				break;
 			case 'Downloads':
 				downloads.current.classList.add(Styles.Active);
+				retrivalTopics();
 				setActive('Downloads');
 				break;
 			case 'Subjects':
@@ -671,6 +685,32 @@ const Index = ({}) => {
 			});
 	};
 
+	let handleUpdateNotesDownloadable = (published: boolean, id: number) => {
+		setLoading(true);
+		axios
+			.post(
+				'http://localhost:3000/api/updateDraftOrPublishedNotesDownloadable',
+				{
+					id,
+					published: !published,
+				}
+			)
+			.then(function (response) {
+				retriaveDownloadable();
+				let jibu: string = response.data.message;
+				notifySuccess(jibu);
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+				notifyError('Error has occured, try later.');
+				setLoading(false);
+			})
+			.then(function () {
+				// always executed
+			});
+	};
+
 	let handleUpdateTopic = (published: boolean, id: number) => {
 		setLoading(true);
 		axios
@@ -960,6 +1000,18 @@ const Index = ({}) => {
 		setActivateTopics(false);
 	};
 
+	//downloadable
+
+	let handleSelectedDownloadableForm = (value: string) => {
+		setDownloadableDetails({ ...downloadableDetails, formId: value });
+		setActivateDownloadable(false);
+	};
+
+	let handleSelectedDownloadableSubject = (value: string) => {
+		setDownloadableDetails({ ...downloadableDetails, subjectId: value });
+		setActivateDownloadable(false);
+	};
+
 	//*topics review
 	let handleSelectedTopicSubjectReview = (value: string) => {
 		setTopicDetailsReview({ ...topicDetailsReview, subjectId: value });
@@ -1093,6 +1145,44 @@ const Index = ({}) => {
 						setActivateTopics(true);
 					} else {
 						setActivateTopics(false);
+						notifyError('Ooops, No topics available yet.');
+					}
+					setLoading(false);
+				})
+				.catch(function (error) {
+					// handle error
+					console.log(error);
+					notifyError('Something went wrong.');
+					setLoading(false);
+				})
+				.then(function () {
+					// always executed
+				});
+		} else {
+			notifyError('All fields should be filled.');
+		}
+	};
+
+	let retriaveDownloadable = () => {
+		if (
+			downloadableDetails.formId != '' &&
+			downloadableDetails.subjectId != ''
+		) {
+			setLoading(true);
+			axios({
+				method: 'post',
+				url: 'http://localhost:3000/api/downloadable',
+				data: downloadableDetails,
+			})
+				.then(function (response) {
+					const topicsFromServer = JSON.parse(JSON.stringify(response.data));
+					// handle success
+					console.log(topicsFromServer);
+					if (topicsFromServer.length > 0) {
+						setDownloadable(topicsFromServer);
+						setActivateDownloadable(true);
+					} else {
+						setActivateDownloadable(false);
 						notifyError('Ooops, No topics available yet.');
 					}
 					setLoading(false);
@@ -1637,7 +1727,7 @@ const Index = ({}) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [changerNotes, navActive]);
 
-	let truncateLimit = 20;
+	let truncateLimit = 25;
 	function truncate(str: string) {
 		return str.length > truncateLimit
 			? str.slice(0, truncateLimit) + '...'
@@ -2084,23 +2174,39 @@ const Index = ({}) => {
 													</div>
 												</Link>
 											</div>
+											<div className={Styles.selectDivTopic}>
+												<SelectMiu
+													displayLabel='Select Subject'
+													show={true}
+													forms={selectOption}
+													handlechange={handleSelectedDownloadableSubject}
+													value={downloadableDetails.subjectId}
+												/>
+												<SelectMiu
+													displayLabel='Select Form'
+													show={true}
+													forms={selectOptionForms}
+													handlechange={handleSelectedDownloadableForm}
+													value={downloadableDetails.formId}
+												/>
+											</div>
+											<div
+												onClick={retriaveDownloadable}
+												className={Styles.subjectHeaderButton}>
+												Retrieve Downloadables
+											</div>
 											<div className={Styles.subjectBody}>
-												{subjects.map(
-													(subject: {
-														subjectName: string;
-														id: number;
-														published: boolean;
-													}) => (
+												{activateDownloadable &&
+													downloadable.map((item: notesDownloadable) => (
 														<CardBox
-															handleUpdate={handleUpdateSubject}
-															link={'/Admin/Notes/Edit/Subject/' + subject.id}
-															label={subject.subjectName}
-															published={subject.published}
-															id={subject.id}
-															key={subject.id}
+															handleUpdate={handleUpdateNotesDownloadable}
+															link={'/Admin/Notes/Edit/Downloadable/' + item.id}
+															label={truncate(item.name)}
+															published={item.published}
+															id={item.id}
+															key={item.id}
 														/>
-													)
-												)}
+													))}
 											</div>
 										</div>
 									</div>
