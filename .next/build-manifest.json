@@ -15,15 +15,15 @@
     "static/development/_middlewareManifest.js"
   ],
   "pages": {
-    "/Notes/Physics/FormOne": [
+    "/Admin": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/Notes/Physics/FormOne.js"
+      "static/chunks/pages/Admin.js"
     ],
-    "/Notes/Physics/FormOne/[id]": [
+    "/Admin/Notes/Create/Downloadable": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/Notes/Physics/FormOne/[id].js"
+      "static/chunks/pages/Admin/Notes/Create/Downloadable.js"
     ],
     "/_app": [
       "static/chunks/webpack.js",

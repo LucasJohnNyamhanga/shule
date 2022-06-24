@@ -104,6 +104,22 @@ export const MuiDrawer = ({ textHeader, active, handleClick }: dataType) => {
 							</Link>
 						</div>
 						<Divider />
+						<div
+							onClick={() => {
+								setIsDrawerOpen(false);
+								handleClick('Downloads');
+							}}>
+							<Link passHref href={``}>
+								<a>
+									<ListItem
+										button
+										className={active == 'Downloads' ? `${Styles.active}` : ''}>
+										<ListItemText primary={'Downloadables'} />
+									</ListItem>
+								</a>
+							</Link>
+						</div>
+						<Divider />
 					</List>
 					<div className={Styles.headerDash}>Review</div>
 					<List>
@@ -259,6 +275,24 @@ export const MuiDrawer = ({ textHeader, active, handleClick }: dataType) => {
 										button
 										className={active == 'Exam' ? `${Styles.active}` : ''}>
 										<ListItemText primary={'Exams'} />
+									</ListItem>
+								</a>
+							</Link>
+						</div>
+						<Divider />
+						<div
+							onClick={() => {
+								setIsDrawerOpen(false);
+								handleClick('ExamDownloads');
+							}}>
+							<Link passHref href={``}>
+								<a>
+									<ListItem
+										button
+										className={
+											active == 'ExamDownloads' ? `${Styles.active}` : ''
+										}>
+										<ListItemText primary={'Downloadables'} />
 									</ListItem>
 								</a>
 							</Link>
