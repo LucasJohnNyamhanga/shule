@@ -104,10 +104,10 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Index = ({
-	topics,
-	note,
-	download,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	topics,
+    	note,
+    	download,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	console.log(download);
@@ -123,7 +123,7 @@ const Index = ({
 
 	let htmlServer;
 
-	if (note[0].note == null || note[0].note == 'undefined') {
+	if (typeof note[0].note == 'undefined') {
 		htmlServer = `<div className={Styles.notFound} >Notes for ${note[0].topicName} topic will be available soon.</div>`;
 	} else {
 		let result = note[0].note.content.replaceAll(

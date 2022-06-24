@@ -125,10 +125,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const Index = ({
-    	topics,
-    	thisTopicData,
-    	download,
-    }: InferGetStaticPropsType<typeof getStaticProps>) => {
+	topics,
+	thisTopicData,
+	download,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -138,7 +138,7 @@ const Index = ({
 
 	let htmlServer;
 
-	if (thisTopicData.note == null) {
+	if (typeof thisTopicData.note == 'undefined') {
 		htmlServer = `<div className={Styles.notFound} >Notes for ${thisTopicData.topicName} topic will be available soon.</div>`;
 	} else {
 		let result = thisTopicData.note.content.replaceAll(
