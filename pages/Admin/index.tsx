@@ -2878,8 +2878,10 @@ const Index = ({}) => {
 													examDownloadable.map((exam: examDownloadable) => (
 														<CardBox
 															handleUpdate={handleUpdateSubject}
-															link={'/Admin/Notes/Edit/Subject/' + exam.id}
-															label={exam.name}
+															link={'/Admin/Exam/Edit/Downloadable/' + exam.id}
+															label={`${truncate(
+																exam.name
+															)} [${exam.fileExtension.toUpperCase()}]`}
 															published={exam.published}
 															id={exam.id}
 															key={exam.id}
