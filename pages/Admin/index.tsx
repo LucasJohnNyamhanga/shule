@@ -24,6 +24,7 @@ import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import Loader from '../../components/tools/loader';
 import Drawer from '../../components/tools/DrawerMobileAdmin';
 import { BsDownload as Downloads } from 'react-icons/bs';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 type dataTypeSelect = {
 	value: string;
@@ -31,6 +32,10 @@ type dataTypeSelect = {
 }[];
 
 const Index = ({}) => {
+	const matches300 = useMediaQuery('(min-width:325px)');
+
+	console.log(matches300);
+
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	const [navValue, setNavValue] = useState('');
@@ -1525,7 +1530,11 @@ const Index = ({}) => {
 						for (const examType of topicsFromServer.exam) {
 							template = {
 								value: examType.id,
-								label: `${examType.description}${examType.year}`,
+								label: `${
+									matches300
+										? truncate(examType.description)
+										: truncateCustom(examType.description, 12)
+								}${examType.year}`,
 							};
 							data.push(template);
 						}
@@ -1922,13 +1931,17 @@ const Index = ({}) => {
 		retriaveDataForExamList();
 		setNavActive('Admin');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [changerNotes, navActive]);
+	}, [changerNotes, navActive, matches300]);
 
 	let truncateLimit = 20;
 	function truncate(str: string) {
 		return str.length > truncateLimit
 			? str.slice(0, truncateLimit) + '...'
 			: str;
+	}
+
+	function truncateCustom(str: string, size: number) {
+		return str.length > size ? str.slice(0, size) + '...' : str;
 	}
 
 	return (
