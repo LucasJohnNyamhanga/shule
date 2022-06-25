@@ -8,6 +8,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import axios from 'axios';
 import {
 	exam,
+	examDownloadable,
 	notesDownloadable,
 	question,
 	reference,
@@ -34,6 +35,7 @@ const Index = ({}) => {
 
 	const [navValue, setNavValue] = useState('');
 	const [subjects, setSubjects] = useState([]);
+	const [examDownloadable, setExamDownloadable] = useState([]);
 	const [subjectsReview, setSubjectsReview] = useState([]);
 	const [forms, setForms] = useState([]);
 	const [formsReview, setFormsReview] = useState([]);
@@ -55,6 +57,11 @@ const Index = ({}) => {
 		[]
 	);
 	const [examListSelect, SetexamListSelect] = useState<dataTypeSelect>([]);
+	const [examListSelectList, SetexamListSelectList] = useState<dataTypeSelect>(
+		[]
+	);
+	const [examListSelectCategory, SetexamListSelectCategory] =
+		useState<dataTypeSelect>([]);
 	const [activateTopics, setActivateTopics] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [activateSubjectReferenceList, setActivateSubjectReferenceList] =
@@ -66,6 +73,9 @@ const Index = ({}) => {
 	const [activateReference, setActivateReference] = useState(false);
 	const [activateNotesDisplay, setActivateNotesDisplay] = useState(false);
 	const [activateExamDisplay, setActivateExamDisplay] = useState(false);
+	const [activateExamCategory, setActivateExamCategory] = useState(false);
+	const [activateExamDisplayCategory, setActivateExamDisplayCategory] =
+		useState(false);
 	const [activateQuestionsDisplay, setActivateQuestionsDisplay] =
 		useState(false);
 	const [activateNotes, setActivateNotes] = useState(false);
@@ -79,6 +89,8 @@ const Index = ({}) => {
 		[]
 	);
 	const [selectOptionExam, setSelectOptionExam] = useState<dataTypeSelect>([]);
+	const [activateExamDisplayDownloadable, setActivateExamDisplayDownloadable] =
+		useState(false);
 	const [selectOptionFormsExam, setSelectOptionFormsExam] =
 		useState<dataTypeSelect>([]);
 	const [selectOptionReference, setSelectOptionReference] =
@@ -148,6 +160,13 @@ const Index = ({}) => {
 		subjectId: '',
 		topicId: '',
 		reviewId: '',
+	});
+
+	const [examListDetails, setExamListDetails] = useState({
+		formId: '',
+		subjectId: '',
+		examTypeId: '',
+		examId: '',
 	});
 
 	const notifySuccess = (message: string) => toast.success(message);
@@ -252,6 +271,7 @@ const Index = ({}) => {
 				break;
 			case 'ExamDownloads':
 				examDownloads.current.classList.add(Styles.Active);
+				retriaveSubjectsExam();
 				setActive('ExamDownloads');
 				break;
 			case 'SubjectReference':
@@ -1067,13 +1087,13 @@ const Index = ({}) => {
 	//* exam
 
 	let handleSelectedExamSubject = (value: string) => {
-		setDetailsExam({ ...DetailsExam, subjectId: value });
+		setDetailsExam({ ...DetailsExam, subjectId: value, examTypeId: '' });
 		setChangerNotes(changerNotes + 1);
 		setActivateExamDisplay(false);
 	};
 
 	let handleSelectedExamForm = (value: string) => {
-		setDetailsExam({ ...DetailsExam, formId: value });
+		setDetailsExam({ ...DetailsExam, formId: value, examTypeId: '' });
 		setChangerNotes(changerNotes + 1);
 		setActivateExamDisplay(false);
 	};
@@ -1081,6 +1101,48 @@ const Index = ({}) => {
 	let handleSelectedExam = (value: string) => {
 		setDetailsExam({ ...DetailsExam, examTypeId: value });
 		setActivateExamDisplay(false);
+	};
+
+	//* examDownloadable
+
+	let handleSelectedExamListSubject = (value: string) => {
+		setExamListDetails({
+			...examListDetails,
+			subjectId: value,
+			examTypeId: '',
+		});
+		setChangerNotes(changerNotes + 1);
+		setActivateExamDisplay(false);
+		setActivateExamDisplayDownloadable(false);
+	};
+
+	let handleSelectedExamListForm = (value: string) => {
+		setExamListDetails({
+			...examListDetails,
+			formId: value,
+			examTypeId: '',
+		});
+		setChangerNotes(changerNotes + 1);
+		setActivateExamDisplay(false);
+		setActivateExamDisplayDownloadable(false);
+	};
+
+	let handleSelectedExamList = (value: string) => {
+		setExamListDetails({
+			...examListDetails,
+			examTypeId: value,
+			examId: '',
+		});
+		setActivateExamDisplay(false);
+		setActivateExamDisplayCategory(false);
+		setChangerNotes(changerNotes + 1);
+		setActivateExamDisplayDownloadable(false);
+	};
+
+	let handleSelectedExamForDownload = (value: string) => {
+		setExamListDetails({ ...examListDetails, examId: value });
+		setActivateExamDisplay(false);
+		setActivateExamDisplayDownloadable(false);
 	};
 
 	//* review
@@ -1177,7 +1239,6 @@ const Index = ({}) => {
 				.then(function (response) {
 					const topicsFromServer = JSON.parse(JSON.stringify(response.data));
 					// handle success
-					console.log(topicsFromServer);
 					if (topicsFromServer.length > 0) {
 						setDownloadable(topicsFromServer);
 						setActivateDownloadable(true);
@@ -1350,8 +1411,6 @@ const Index = ({}) => {
 	let retriaveDataForExam = () => {
 		if (DetailsExam.formId != '' && DetailsExam.subjectId != '') {
 			setLoading(true);
-			setActivateExam(false);
-			setActivateExamDisplay(false);
 			axios({
 				method: 'post',
 				url: 'http://localhost:3000/api/examType',
@@ -1374,11 +1433,12 @@ const Index = ({}) => {
 							data.push(template);
 						}
 						SetexamListSelect(data);
-						console.log(examListSelect);
 						setActivateExam(true);
 						setActivateExamDisplay(true);
 					} else {
 						notifyError(`Ooops, No Exam Category  available for selection.`);
+						setActivateExamDisplay(false);
+						setActivateExam(false);
 					}
 					setLoading(false);
 				})
@@ -1387,6 +1447,102 @@ const Index = ({}) => {
 					console.log(error);
 					notifyError('Something went wrong.');
 					setLoading(false);
+					setActivateExamDisplay(false);
+					setActivateExam(false);
+				})
+				.then(function () {
+					// always executed
+				});
+		}
+
+		if (examListDetails.formId != '' && examListDetails.subjectId != '') {
+			setLoading(true);
+			axios({
+				method: 'post',
+				url: 'http://localhost:3000/api/examType',
+				data: examListDetails,
+			})
+				.then(function (response) {
+					const topicsFromServer = JSON.parse(JSON.stringify(response.data));
+					// handle success
+					if (topicsFromServer.length > 0) {
+						let data = [];
+						let template: templateType = {
+							value: '',
+							label: '',
+						};
+						for (const examType of topicsFromServer) {
+							template = {
+								value: examType.id,
+								label: examType.name,
+							};
+							data.push(template);
+						}
+						SetexamListSelectCategory(data);
+						setActivateExamCategory(true);
+					} else {
+						notifyError(`Ooops, No Exam Category  available for selection.`);
+						setActivateExamCategory(false);
+						setActivateExamDisplayCategory(false);
+					}
+					setLoading(false);
+				})
+				.catch(function (error) {
+					// handle error
+					console.log(error);
+					notifyError('Something went wrong.');
+					setLoading(false);
+					setActivateExamCategory(false);
+					setActivateExamDisplayCategory(false);
+				})
+				.then(function () {
+					// always executed
+				});
+		}
+	};
+
+	let retriaveDataForExamList = () => {
+		if (
+			examListDetails.formId != '' &&
+			examListDetails.subjectId != '' &&
+			examListDetails.examTypeId != ''
+		) {
+			setLoading(true);
+			axios({
+				method: 'post',
+				url: 'http://localhost:3000/api/examList',
+				data: examListDetails,
+			})
+				.then(function (response) {
+					const topicsFromServer = JSON.parse(JSON.stringify(response.data));
+					// handle success
+					if (topicsFromServer.exam.length > 0) {
+						let data = [];
+						let template: templateType = {
+							value: '',
+							label: '',
+						};
+						for (const examType of topicsFromServer.exam) {
+							template = {
+								value: examType.id,
+								label: `${examType.description}${examType.year}`,
+							};
+							data.push(template);
+						}
+						SetexamListSelectList(data);
+						setActivateExamDisplayCategory(true);
+					} else {
+						notifyError(`Ooops, No Exam Category  available for selection.`);
+						setActivateExamDisplayCategory(false);
+					}
+					setLoading(false);
+				})
+				.catch(function (error) {
+					// handle error
+					console.log(error);
+					notifyError('Something went wrong.');
+					setLoading(false);
+					setActivateExamDisplayCategory(false);
 				})
 				.then(function () {
 					// always executed
@@ -1605,6 +1761,46 @@ const Index = ({}) => {
 		}
 	};
 
+	let retriaveExamDownloadableDataNow = () => {
+		if (
+			examListDetails.formId != '' &&
+			examListDetails.subjectId != '' &&
+			examListDetails.examTypeId != '' &&
+			examListDetails.examId != ''
+		) {
+			setLoading(true);
+			axios({
+				method: 'post',
+				url: 'http://localhost:3000/api/examDownloadable',
+				data: examListDetails,
+			})
+				.then(function (response) {
+					const notesFromServer = JSON.parse(JSON.stringify(response.data));
+					// handle success
+					if (notesFromServer.length != 0) {
+						setExamDownloadable(notesFromServer);
+						setActivateExamDisplayDownloadable(true);
+					} else {
+						setActivateExamDisplayDownloadable(false);
+						notifyError('Ooops, No exam found');
+					}
+					setLoading(false);
+				})
+				.catch(function (error) {
+					// handle error
+					console.log(error);
+					notifyError('Something went wrong.');
+					setLoading(false);
+					setActivateExamDisplayDownloadable(false);
+				})
+				.then(function () {
+					// always executed
+				});
+		} else {
+			notifyError('Oops, All fields should be selected.');
+		}
+	};
+
 	let retriaveReviewDataNow = () => {
 		if (
 			notesDetailsReview.formId != '' &&
@@ -1723,11 +1919,12 @@ const Index = ({}) => {
 		retriaveTopicsDataForNotes();
 		retriaveTopicsDataForReview();
 		retriaveDataForExam();
+		retriaveDataForExamList();
 		setNavActive('Admin');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [changerNotes, navActive]);
 
-	let truncateLimit = 25;
+	let truncateLimit = 20;
 	function truncate(str: string) {
 		return str.length > truncateLimit
 			? str.slice(0, truncateLimit) + '...'
@@ -2637,23 +2834,57 @@ const Index = ({}) => {
 													</div>
 												</Link>
 											</div>
+											<div className={Styles.selectDivTopic}>
+												<SelectMiu
+													displayLabel='Select Subject'
+													show={true}
+													forms={selectOptionExam}
+													handlechange={handleSelectedExamListSubject}
+													value={examListDetails.subjectId}
+												/>
+												<SelectMiu
+													displayLabel='Select Form'
+													show={true}
+													forms={selectOptionFormsExam}
+													handlechange={handleSelectedExamListForm}
+													value={examListDetails.formId}
+												/>
+												{activateExamCategory && (
+													<SelectMiu
+														displayLabel='Select Exam Category'
+														show={true}
+														forms={examListSelectCategory}
+														handlechange={handleSelectedExamList}
+														value={examListDetails.examTypeId}
+													/>
+												)}
+												{activateExamDisplayCategory && (
+													<SelectMiu
+														displayLabel='Select Exam'
+														show={true}
+														forms={examListSelectList}
+														handlechange={handleSelectedExamForDownload}
+														value={examListDetails.examId}
+													/>
+												)}
+											</div>
+											<div
+												onClick={retriaveExamDownloadableDataNow}
+												className={Styles.subjectHeaderButton}>
+												Retrieve Downloadable
+											</div>
 											<div className={Styles.subjectBody}>
-												{subjects.map(
-													(subject: {
-														subjectName: string;
-														id: number;
-														published: boolean;
-													}) => (
+												{activateExamDisplayDownloadable &&
+													examDownloadable.map((exam: examDownloadable) => (
 														<CardBox
 															handleUpdate={handleUpdateSubject}
-															link={'/Admin/Notes/Edit/Subject/' + subject.id}
-															label={subject.subjectName}
-															published={subject.published}
-															id={subject.id}
-															key={subject.id}
+															link={'/Admin/Notes/Edit/Subject/' + exam.id}
+															label={exam.name}
+															published={exam.published}
+															id={exam.id}
+															key={exam.id}
 														/>
-													)
-												)}
+													))}
 											</div>
 										</div>
 									</div>

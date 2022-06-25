@@ -69,10 +69,10 @@ type formData = {
 }[];
 
 const Notes = ({
-	forms,
-	subjects,
-	examType,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	forms,
+    	subjects,
+    	examType,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -405,7 +405,7 @@ const Notes = ({
 						{hideShowExam && (
 							<SelectMiu
 								show={true}
-								displayLabel='Select Exam Type'
+								displayLabel='Select Exam'
 								forms={topicOptionsExam}
 								handlechange={handleSelectExam}
 								value={examSelectValue.examId}

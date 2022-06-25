@@ -8,6 +8,7 @@ export default async function handler(
 ) {
 	const { examTypeId } = req.body;
 	let id = parseInt(examTypeId);
+	console.log('id ya examType ni ' + id);
 	try {
 		const topicsFromServer = await prisma.examType.findUnique({
 			where: {
