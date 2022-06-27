@@ -155,19 +155,18 @@ const Notes = ({
 		});
 		setFormOptions(formFromServer);
 
-		setExamDetails({
-			formId: exam.exam.examType.formId,
-			subjectId: exam.exam.examType.subjectId,
-			examTypeId: exam.exam.examType.id,
-		});
-		setExamSelectValue({
-			name: exam.name,
-			link: exam.link,
-			fileExtension: exam.fileExtension,
-			examId: exam.examId,
-		});
-
 		if (check) {
+			setExamDetails({
+				formId: exam.exam.examType.formId,
+				subjectId: exam.exam.examType.subjectId,
+				examTypeId: exam.exam.examType.id,
+			});
+			setExamSelectValue({
+				name: exam.name,
+				link: exam.link,
+				fileExtension: exam.fileExtension,
+				examId: exam.examId,
+			});
 			preloader();
 			setCheck(false);
 		}
@@ -192,7 +191,6 @@ const Notes = ({
 	}, [navActive, change]);
 
 	let retriaveExamTypeData = () => {
-		console.log('retriaveExamTypeData called');
 		axios({
 			method: 'post',
 			url: 'http://localhost:3000/api/examType',
@@ -235,8 +233,6 @@ const Notes = ({
 			subjectId: exam.exam.examType.subjectId,
 			examTypeId: exam.exam.examType.id,
 		};
-
-		console.log(examDetails);
 
 		axios({
 			method: 'post',
@@ -308,7 +304,6 @@ const Notes = ({
 	};
 
 	let retriaveExamData = () => {
-		console.log('retriaveExamData called');
 		axios({
 			method: 'post',
 			url: 'http://localhost:3000/api/examList',
@@ -350,11 +345,13 @@ const Notes = ({
 
 	let handleSelectSubject = (value: string) => {
 		setExamDetails({ ...examDetails, subjectId: value, examTypeId: '' });
+		setExamSelectValue({ ...examSelectValue, examId: '' });
 		setChange(change + 1);
 	};
 
 	let handleSelectForm = (value: string) => {
 		setExamDetails({ ...examDetails, formId: value, examTypeId: '' });
+		setExamSelectValue({ ...examSelectValue, examId: '' });
 		setChange(change + 1);
 		console.log(value);
 	};
