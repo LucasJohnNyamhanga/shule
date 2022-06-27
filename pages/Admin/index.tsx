@@ -34,8 +34,6 @@ type dataTypeSelect = {
 const Index = ({}) => {
 	const matches300 = useMediaQuery('(min-width:325px)');
 
-	console.log(matches300);
-
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	const [navValue, setNavValue] = useState('');
