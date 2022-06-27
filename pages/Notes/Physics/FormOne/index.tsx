@@ -9,6 +9,11 @@ import Link from 'next/link';
 import Error from 'next/error';
 import Drawer from '../../../../components/tools/Drawer';
 import { NavContext } from '../../../../components/context/StateContext';
+import { unified } from 'unified';
+import rehypeStringify from 'rehype-stringify';
+import rehypeParse from 'rehype-parse';
+import { visit } from 'unist-util-visit';
+import parameterize from 'parameterize-js';
 
 const subjectLocator = 'Physics';
 const formLocator = 'Form One';
@@ -122,6 +127,10 @@ const Index = ({
 	}
 
 	let htmlServer;
+	let toc: {
+		id: string;
+		title: string;
+	}[] = [];
 
 	if (typeof note[0].note == 'undefined') {
 		htmlServer = `<div className={Styles.notFound} >Notes for ${note[0].topicName} topic will be available soon.</div>`;
@@ -130,7 +139,34 @@ const Index = ({
 			`img`,
 			`Image layout="fill" objectfit="cover"`
 		);
-		htmlServer = result;
+
+		const content = unified()
+			.use(rehypeParse, {
+				fragment: true,
+			})
+			.use(() => {
+				return (tree) => {
+					visit(tree, 'element', (node) => {
+						if (node.tagName == 'h2') {
+							//
+							if (node.children[0].type == 'text') {
+								const id = parameterize(node.children[0].value);
+								node.properties!.id = id;
+								console.log(id);
+								toc.push({
+									id,
+									title: node.children[0].value,
+								});
+							}
+						}
+					});
+				};
+			})
+			.use(rehypeStringify)
+			.processSync(result)
+			.toString();
+
+		htmlServer = content;
 	}
 
 	let truncateLimit = 12;
@@ -199,10 +235,20 @@ const Index = ({
 						)}
 					</div>
 					<div className={Styles.BodyContent}>
-						<div
-							className='ckContent'
-							dangerouslySetInnerHTML={{ __html: htmlServer }}
-						/>
+						<div className='ckContent'>
+							<div className='toc'>
+								<h2>INSIDE THIS TOPIC 🧐</h2>
+								<ul>
+									{toc.map(({ id, title }) => (
+										<a href={`#${id}`} key={id}>
+											<li>{title}</li>
+										</a>
+									))}
+								</ul>
+							</div>
+
+							<div dangerouslySetInnerHTML={{ __html: htmlServer }} />
+						</div>
 					</div>
 				</div>
 			</div>
