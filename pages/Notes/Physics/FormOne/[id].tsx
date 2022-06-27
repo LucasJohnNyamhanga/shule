@@ -28,6 +28,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			subject: {
 				select: {
 					subjectName: true,
+					su,
 				},
 			},
 			form: {

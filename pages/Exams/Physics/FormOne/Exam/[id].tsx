@@ -6,6 +6,7 @@ import Styles from '../../../../../styles/reviewDisplay.module.scss';
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import Head from 'next/head';
 import { NavContext } from '../../../../../components/context/StateContext';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const subjectLocator = 'Physics';
 const formLocator = 'Form One';
@@ -26,27 +27,12 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			year: true,
 			hasAnswers: true,
 			exam: true,
-			examType: {
+			examDownloadable: {
+				where: {
+					published: true,
+				},
 				select: {
-					subjectExams: {
-						select: {
-							subjectName: true,
-						},
-					},
-					formExams: {
-						select: {
-							formName: true,
-						},
-					},
-					exam: {
-						select: {
-							examDownloadable: {
-								select: {
-									id: true,
-								},
-							},
-						},
-					},
+					id: true,
 				},
 			},
 		},
@@ -103,7 +89,7 @@ const Index = ({
 	thisexam,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
-
+	const matches300 = useMediaQuery('(min-width:345px)');
 	const [keyInTable, setKeyInTable] = useState<tableKey>({
 		keys: [],
 	});
@@ -125,9 +111,13 @@ const Index = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [navActive]);
 
+	function truncateCustom(str: string, size: number) {
+		return str.length > size ? str.slice(0, size) + '...' : str;
+	}
+
 	//!mambo yanaanza
 
-	let truncateLimit = 12;
+	let truncateLimit = 20;
 	function truncate(str: string) {
 		return str.length > truncateLimit
 			? str.slice(0, truncateLimit) + '...'
@@ -150,12 +140,13 @@ const Index = ({
 					</div> */}
 					<div className={Styles.BodyHeader}>
 						<div className={Styles.statusBar}>
-							{thisexam.examType.subjectExams.subjectName}{' '}
+							{subjectLocator} <ChevronRightOutlinedIcon /> {formLocator}{' '}
 							<ChevronRightOutlinedIcon />{' '}
-							{thisexam.examType.formExams.formName}{' '}
-							<ChevronRightOutlinedIcon /> {truncate(thisexam.description)}
+							{matches300
+								? truncate(thisexam.description)
+								: truncateCustom(thisexam.description, 10)}
 						</div>
-						{typeof thisexam.examType.examType != 'undefined' ? (
+						{thisexam.examDownloadable.length > 0 ? (
 							<div className={Styles.download}>Download Exam</div>
 						) : (
 							''

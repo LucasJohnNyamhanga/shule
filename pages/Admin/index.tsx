@@ -613,6 +613,32 @@ const Index = ({}) => {
 			});
 	};
 
+	let handleUpdateExamDownloadable = (published: boolean, id: number) => {
+		setLoading(true);
+		axios
+			.post(
+				'http://localhost:3000/api/updateDraftOrPublishedExamDownloadable',
+				{
+					id,
+					published: !published,
+				}
+			)
+			.then(function (response) {
+				retriaveExamDownloadableDataNow();
+				let jibu: string = response.data.message;
+				notifySuccess(jibu);
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+				notifyError('Error has occured, try later.');
+				setLoading(false);
+			})
+			.then(function () {
+				// always executed
+			});
+	};
+
 	let handleUpdatePublishExam = (published: boolean, id: number) => {
 		setLoading(true);
 		axios
@@ -1802,9 +1828,11 @@ const Index = ({}) => {
 				})
 				.then(function () {
 					// always executed
+					setLoading(false);
 				});
 		} else {
 			notifyError('Oops, All fields should be selected.');
+			setLoading(false);
 		}
 	};
 
@@ -2888,7 +2916,7 @@ const Index = ({}) => {
 												{activateExamDisplayDownloadable &&
 													examDownloadable.map((exam: examDownloadable) => (
 														<CardBox
-															handleUpdate={handleUpdateSubject}
+															handleUpdate={handleUpdateExamDownloadable}
 															link={'/Admin/Exam/Edit/Downloadable/' + exam.id}
 															label={`${truncate(
 																exam.name
