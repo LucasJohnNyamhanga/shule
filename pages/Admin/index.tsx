@@ -2437,7 +2437,9 @@ const Index = ({}) => {
 														<CardBox
 															handleUpdate={handleUpdateNotesDownloadable}
 															link={'/Admin/Notes/Edit/Downloadable/' + item.id}
-															label={truncate(item.name)}
+															label={`${truncate(
+																item.name
+															)} [${item.fileExtension.toUpperCase()}]`}
 															published={item.published}
 															id={item.id}
 															key={item.id}

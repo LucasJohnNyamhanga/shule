@@ -109,10 +109,10 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Index = ({
-	topics,
-	note,
-	download,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	topics,
+    	note,
+    	download,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -226,7 +226,11 @@ const Index = ({
 							{truncate(note[0].topicName)}
 						</div>
 						{download.length > 0 ? (
-							<div className={Styles.download}>Download Notes</div>
+							<Link href={`/Notes/Physics/Downloads`} passHref>
+								<a>
+									<div className={Styles.download}>Download Notes</div>
+								</a>
+							</Link>
 						) : (
 							''
 						)}

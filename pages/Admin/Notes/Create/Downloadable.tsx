@@ -50,10 +50,10 @@ type formData = {
 }[];
 
 const Create = ({
-	forms,
-	subjects,
-	deactiveteImage,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	forms,
+    	subjects,
+    	deactiveteImage,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {

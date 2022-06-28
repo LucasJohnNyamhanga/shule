@@ -257,7 +257,11 @@ const Index = ({
 							{truncate(thisTopicData.topicName)}
 						</div>
 						{download.length > 0 ? (
-							<div className={Styles.download}>Download Notes</div>
+							<Link href={`/Notes/Physics/Downloads`} passHref>
+								<a>
+									<div className={Styles.download}>Download Notes</div>
+								</a>
+							</Link>
 						) : (
 							''
 						)}

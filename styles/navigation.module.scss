@@ -1,190 +1,182 @@
-@import "index";
+@import 'index';
 
 .mainContainer {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  
+	width: 100%;
+	display: flex;
+	flex-direction: column;
 }
 
 .innerContainerTop {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 
-  .NavDetails {
-    background-color: $lightkahawa;
-    height: fit-content;
-    min-height: 30px;
-    font-family: $fontHeader;
-    font-size: 15px;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    color: $ugoro;
+	.NavDetails {
+		background-color: $lightkahawa;
+		height: fit-content;
+		min-height: 30px;
+		font-family: $fontHeader;
+		font-size: 15px;
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		color: $ugoro;
 
-    .topAdvatisment{
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+		.topAdvatisment {
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
 
-      p {
-        text-align: center;
-        width: fit-content;
-        padding: 5px;
-        margin: 5px;
-        padding-left: 10px;
-        padding-right: 10px;
-      }
-    }
+			p {
+				text-align: center;
+				width: fit-content;
+				padding: 5px;
+				margin: 5px;
+				padding-left: 10px;
+				padding-right: 10px;
+			}
+		}
+	}
 
-    
-  }
+	.NavHeader {
+		background-color: $ugoro;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		width: 100%;
+		padding-left: 2rem;
+		padding-right: 2rem;
 
-  .NavHeader {
-    background-color: $ugoro;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    width: 100%;
-    padding-left: 2rem;
-    padding-right: 2rem;
+		.nav {
+			font-family: $fontHeader;
+			font-weight: 400;
+			background-color: $ugoro;
+			width: 100%;
+			height: 60px;
+			max-width: 1200px;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
 
-    .nav {
-      font-family: $fontHeader;
-      font-weight: 400;
-      background-color: $ugoro;
-      width: 100%;
-      height: 60px;
-      max-width: 1200px;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
+			.logo {
+				font-family: 'Montserrat';
+				font-weight: 500;
+				font-size: 24px;
+				display: flex;
+				flex-direction: row;
+				cursor: pointer;
+				color: $lightblue;
 
-      .logo {
-        font-family: "Montserrat";
-        font-weight: 500;
-        font-size: 24px;
-        display: flex;
-        flex-direction: row;
-        cursor: pointer;
-        color: $lightblue;
+				.icon {
+					padding-right: 10px;
+					padding-top: 2px;
+				}
 
-        .icon {
-          padding-right: 10px;
-          padding-top: 2px;
-        }
+				.shule {
+					color: $lightkahawa;
+				}
+			}
 
-        .shule {
-          color: $lightkahawa;
-        }
-      }
+			.links ul {
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				justify-content: center;
+				list-style-type: none;
+				padding: 0 0;
+				margin: 0 0;
+				color: $lightkahawa;
+			}
 
-      .links ul {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        list-style-type: none;
-        padding: 0 0;
-        margin: 0 0;
-        color: $lightkahawa;
-      }
+			.links ul li {
+				padding: 0.5rem 1rem;
+				border-radius: 4px;
+				border: 2px solid transparent;
+				font-family: 'Montserrat';
+				font-weight: 500;
+				font-size: 16px;
+				margin: 0px 1.5px;
+			}
 
-      .links ul li {
-        padding: 0.5rem 1rem;
-        border-radius: 4px;
-        border: 2px solid transparent;
-        font-family: "Montserrat";
-        font-weight: 500;
-        font-size: 16px;
-        margin: 0px 1.5px;
-      }
+			.links ul li:hover {
+				border: 2px solid $lightkahawa;
+				background-color: $lightkahawa;
+				color: $ugoro;
+				border-radius: 4px;
+				cursor: pointer;
+			}
 
-      .links ul li:hover {
-        border: 2px solid $lightkahawa;
-        background-color: $lightkahawa;
-        color: $ugoro;
-        border-radius: 4px;
-        cursor: pointer;
-        
-      }
+			.buttonsNav {
+				color: $lightkahawa;
+				font-family: 'Montserrat';
+				font-weight: 500;
+				font-size: 16px;
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+				align-items: center;
 
-     
+				.Sign {
+					padding: 0.5rem 1rem;
+					border-radius: 4px;
+					border: 2px solid transparent;
+					font-family: 'Montserrat';
+					font-weight: 500;
+					font-size: 16px;
+					margin: 0px 1.5px;
+				}
 
-      .buttonsNav {
-        color: $lightkahawa;
-        font-family: "Montserrat";
-        font-weight: 500;
-        font-size: 16px;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
+				.Sign:hover {
+					border: 2px solid $lightkahawa;
+					background-color: $lightkahawa;
+					color: $ugoro;
+					border-radius: 4px;
+					cursor: pointer;
+				}
 
-        .Sign {
-          padding: 0.5rem 1rem;
-          border-radius: 4px;
-          border: 2px solid transparent;
-          font-family: "Montserrat";
-          font-weight: 500;
-          font-size: 16px;
-          margin: 0px 1.5px;
-        }
+				.Register {
+					padding: 0.5rem 1rem;
+					border-radius: 4px;
+					border: 2px solid $lightblue;
+					background-color: $ugoro;
+					font-family: 'Montserrat';
+					font-weight: 500;
+					font-size: 16px;
+					margin: 0px 1.5px;
+					color: $lightkahawa;
+				}
 
-        .Sign:hover {
-          border: 2px solid $lightkahawa;
-          background-color: $lightkahawa;
-          color: $ugoro;
-          border-radius: 4px;
-          cursor: pointer;
-        }
-
-        .Register {
-          padding: 0.5rem 1rem;
-          border-radius: 4px;
-          border: 2px solid $lightblue;
-          background-color: $ugoro;
-          font-family: "Montserrat";
-          font-weight: 500;
-          font-size: 16px;
-          margin: 0px 1.5px;
-          color: $lightkahawa;
-        }
-
-        .Register:hover {
-          border: 2px solid $lightkahawa;
-          background-color: $lightkahawa;
-          color: $ugoro;
-          border-radius: 4px;
-          cursor: pointer;
-        }
-      }
-    }
-  }
+				.Register:hover {
+					border: 2px solid $lightkahawa;
+					background-color: $lightkahawa;
+					color: $ugoro;
+					border-radius: 4px;
+					cursor: pointer;
+				}
+			}
+		}
+	}
 }
 
 .active {
-  border: 2px solid $lightblue;
-  background-color: $lightblue;
-  color: $white;
-  border-radius: 4px;
-  cursor: pointer;
+	border: 2px solid $lightblue;
+	background-color: $lightblue;
+	color: $white;
+	border-radius: 4px;
+	cursor: pointer;
 }
 
 .active:hover {
-  border: 2px solid $lightblue !important;
-  background-color: $lightblue !important;
-  color: $white !important;
-  border-radius: 4px !important;
-  cursor: pointer !important;
+	border: 2px solid $lightblue !important;
+	background-color: $lightblue !important;
+	color: $white !important;
+	border-radius: 4px !important;
+	cursor: pointer !important;
 }
-
-

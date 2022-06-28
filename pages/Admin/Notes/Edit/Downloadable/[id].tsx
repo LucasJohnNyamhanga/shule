@@ -76,10 +76,10 @@ type formData = {
 }[];
 
 const Create = ({
-	notesData,
-	formsList,
-	subjects,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	notesData,
+    	formsList,
+    	subjects,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -172,7 +172,7 @@ const Create = ({
 			id: notesData.id,
 			name: details.name,
 			link: location != '' ? location : notesData.link,
-			fileExtension: location != '' ? notesData.fileExtension : ext,
+			fileExtension: location != '' ? ext : notesData.fileExtension,
 			formId: details.formId,
 			subjectId: details.subjectId,
 		};
