@@ -167,7 +167,6 @@ const Index = ({
 							if (node.children[0].type == 'text') {
 								const id = parameterize(node.children[0].value);
 								node.properties!.id = id;
-								console.log(id);
 								toc.push({
 									id,
 									title: node.children[0].value,
