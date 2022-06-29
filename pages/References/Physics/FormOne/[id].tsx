@@ -46,6 +46,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		props: {
 			reference,
 		},
+		revalidate: 15,
 	};
 };
 
@@ -84,8 +85,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const Index = ({
-	reference,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	reference,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {

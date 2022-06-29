@@ -7,27 +7,15 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { elementTypeAcceptingRef } from '@mui/utils';
 import { unstable_composeClasses as composeClasses } from '@mui/base';
-import { alpha, getPath } from '@mui/system';
 import capitalize from '../utils/capitalize';
 import styled from '../styles/styled';
-import useTheme from '../styles/useTheme';
 import useThemeProps from '../styles/useThemeProps';
 import useIsFocusVisible from '../utils/useIsFocusVisible';
 import useForkRef from '../utils/useForkRef';
 import Typography from '../Typography';
 import linkClasses, { getLinkUtilityClass } from './linkClasses';
+import getTextDecoration, { colorTransformations } from './getTextDecoration';
 import { jsx as _jsx } from "react/jsx-runtime";
-var colorTransformations = {
-  primary: 'primary.main',
-  textPrimary: 'text.primary',
-  secondary: 'secondary.main',
-  textSecondary: 'text.secondary',
-  error: 'error.main'
-};
-
-var transformDeprecatedColors = function transformDeprecatedColors(color) {
-  return colorTransformations[color] || color;
-};
 
 var useUtilityClasses = function useUtilityClasses(ownerState) {
   var classes = ownerState.classes,
@@ -50,7 +38,6 @@ var LinkRoot = styled(Typography, {
 })(function (_ref) {
   var theme = _ref.theme,
       ownerState = _ref.ownerState;
-  var color = getPath(theme, "palette.".concat(transformDeprecatedColors(ownerState.color))) || ownerState.color;
   return _extends({}, ownerState.underline === 'none' && {
     textDecoration: 'none'
   }, ownerState.underline === 'hover' && {
@@ -58,13 +45,18 @@ var LinkRoot = styled(Typography, {
     '&:hover': {
       textDecoration: 'underline'
     }
-  }, ownerState.underline === 'always' && {
-    textDecoration: 'underline',
-    textDecorationColor: color !== 'inherit' ? alpha(color, 0.4) : undefined,
+  }, ownerState.underline === 'always' && _extends({
+    textDecoration: 'underline'
+  }, ownerState.color !== 'inherit' && {
+    textDecorationColor: getTextDecoration({
+      theme: theme,
+      ownerState: ownerState
+    })
+  }, {
     '&:hover': {
       textDecorationColor: 'inherit'
     }
-  }, ownerState.component === 'button' && _defineProperty({
+  }), ownerState.component === 'button' && _defineProperty({
     position: 'relative',
     WebkitTapHighlightColor: 'transparent',
     backgroundColor: 'transparent',
@@ -93,7 +85,6 @@ var LinkRoot = styled(Typography, {
   }));
 });
 var Link = /*#__PURE__*/React.forwardRef(function Link(inProps, ref) {
-  var theme = useTheme();
   var props = useThemeProps({
     props: inProps,
     name: 'MuiLink'
@@ -113,8 +104,6 @@ var Link = /*#__PURE__*/React.forwardRef(function Link(inProps, ref) {
       variant = _props$variant === void 0 ? 'inherit' : _props$variant,
       sx = props.sx,
       other = _objectWithoutProperties(props, ["className", "color", "component", "onBlur", "onFocus", "TypographyClasses", "underline", "variant", "sx"]);
-
-  var sxColor = typeof sx === 'function' ? sx(theme).color : sx == null ? void 0 : sx.color;
 
   var _useIsFocusVisible = useIsFocusVisible(),
       isFocusVisibleRef = _useIsFocusVisible.isFocusVisibleRef,
@@ -153,9 +142,7 @@ var Link = /*#__PURE__*/React.forwardRef(function Link(inProps, ref) {
   };
 
   var ownerState = _extends({}, props, {
-    // It is too complex to support any types of `sx`.
-    // Need to find a better way to get rid of the color manipulation for `textDecorationColor`.
-    color: (typeof sxColor === 'function' ? sxColor(theme) : sxColor) || color,
+    color: color,
     component: component,
     focusVisible: focusVisible,
     underline: underline,
@@ -173,8 +160,8 @@ var Link = /*#__PURE__*/React.forwardRef(function Link(inProps, ref) {
     ref: handlerRef,
     ownerState: ownerState,
     variant: variant,
-    sx: [].concat(_toConsumableArray(inProps.color ? [{
-      color: colorTransformations[color] || color
+    sx: [].concat(_toConsumableArray(!Object.keys(colorTransformations).includes(color) ? [{
+      color: color
     }] : []), _toConsumableArray(Array.isArray(sx) ? sx : [sx]))
   }, other));
 });

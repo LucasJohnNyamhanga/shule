@@ -1,5 +1,4 @@
 export { default } from './OptionUnstyled';
-export type { default as OptionUnstyledProps } from './OptionUnstyledProps';
-export * from './OptionUnstyledProps';
+export * from './OptionUnstyled.types';
 export { default as optionUnstyledClasses } from './optionUnstyledClasses';
 export * from './optionUnstyledClasses';

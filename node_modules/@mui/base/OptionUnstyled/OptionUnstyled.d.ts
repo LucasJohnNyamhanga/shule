@@ -1,5 +1,5 @@
 import React from 'react';
-import OptionUnstyledProps from './OptionUnstyledProps';
+import { OptionUnstyledProps } from './OptionUnstyled.types';
 declare const _default: <TValue>(props: OptionUnstyledProps<TValue> & React.RefAttributes<HTMLElement>) => JSX.Element | null;
 /**
  * An unstyled option to be used within a SelectUnstyled.

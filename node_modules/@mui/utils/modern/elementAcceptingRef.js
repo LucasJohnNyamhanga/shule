@@ -15,7 +15,7 @@ function acceptingRef(props, propName, componentName, location, propFullName) {
 
   if (element == null || // When server-side rendering React doesn't warn either.
   // This is not an accurate check for SSR.
-  // This is only in place for emotion compat.
+  // This is only in place for Emotion compat.
   // TODO: Revisit once https://github.com/facebook/react/issues/20047 is resolved.
   typeof window === 'undefined') {
     return null;

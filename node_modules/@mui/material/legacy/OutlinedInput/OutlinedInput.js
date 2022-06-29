@@ -41,18 +41,18 @@ var OutlinedInputRoot = styled(InputBaseRoot, {
   var borderColor = theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.23)' : 'rgba(255, 255, 255, 0.23)';
   return _extends((_extends2 = {
     position: 'relative',
-    borderRadius: theme.shape.borderRadius
+    borderRadius: (theme.vars || theme).shape.borderRadius
   }, _defineProperty(_extends2, "&:hover .".concat(outlinedInputClasses.notchedOutline), {
-    borderColor: theme.palette.text.primary
+    borderColor: (theme.vars || theme).palette.text.primary
   }), _defineProperty(_extends2, '@media (hover: none)', _defineProperty({}, "&:hover .".concat(outlinedInputClasses.notchedOutline), {
-    borderColor: borderColor
+    borderColor: theme.vars ? "rgba(".concat(theme.vars.palette.common.onBackgroundChannel, " / 0.23)") : borderColor
   })), _defineProperty(_extends2, "&.".concat(outlinedInputClasses.focused, " .").concat(outlinedInputClasses.notchedOutline), {
-    borderColor: theme.palette[ownerState.color].main,
+    borderColor: (theme.vars || theme).palette[ownerState.color].main,
     borderWidth: 2
   }), _defineProperty(_extends2, "&.".concat(outlinedInputClasses.error, " .").concat(outlinedInputClasses.notchedOutline), {
-    borderColor: theme.palette.error.main
+    borderColor: (theme.vars || theme).palette.error.main
   }), _defineProperty(_extends2, "&.".concat(outlinedInputClasses.disabled, " .").concat(outlinedInputClasses.notchedOutline), {
-    borderColor: theme.palette.action.disabled
+    borderColor: (theme.vars || theme).palette.action.disabled
   }), _extends2), ownerState.startAdornment && {
     paddingLeft: 14
   }, ownerState.endAdornment && {
@@ -71,8 +71,9 @@ var NotchedOutlineRoot = styled(NotchedOutline, {
   }
 })(function (_ref2) {
   var theme = _ref2.theme;
+  var borderColor = theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.23)' : 'rgba(255, 255, 255, 0.23)';
   return {
-    borderColor: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.23)' : 'rgba(255, 255, 255, 0.23)'
+    borderColor: theme.vars ? "rgba(".concat(theme.vars.palette.common.onBackgroundChannel, " / 0.23)") : borderColor
   };
 });
 var OutlinedInputInput = styled(InputBaseInput, {
@@ -83,14 +84,25 @@ var OutlinedInputInput = styled(InputBaseInput, {
   var theme = _ref3.theme,
       ownerState = _ref3.ownerState;
   return _extends({
-    padding: '16.5px 14px',
+    padding: '16.5px 14px'
+  }, !theme.vars && {
     '&:-webkit-autofill': {
       WebkitBoxShadow: theme.palette.mode === 'light' ? null : '0 0 0 100px #266798 inset',
       WebkitTextFillColor: theme.palette.mode === 'light' ? null : '#fff',
       caretColor: theme.palette.mode === 'light' ? null : '#fff',
       borderRadius: 'inherit'
     }
-  }, ownerState.size === 'small' && {
+  }, theme.vars && _defineProperty({
+    '&:-webkit-autofill': {
+      borderRadius: 'inherit'
+    }
+  }, theme.getColorSchemeSelector('dark'), {
+    '&:-webkit-autofill': {
+      WebkitBoxShadow: '0 0 0 100px #266798 inset',
+      WebkitTextFillColor: '#fff',
+      caretColor: '#fff'
+    }
+  }), ownerState.size === 'small' && {
     padding: '8.5px 14px'
   }, ownerState.multiline && {
     padding: 0
@@ -129,6 +141,20 @@ var OutlinedInput = /*#__PURE__*/React.forwardRef(function OutlinedInput(inProps
     muiFormControl: muiFormControl,
     states: ['required']
   });
+
+  var ownerState = _extends({}, props, {
+    color: fcs.color || 'primary',
+    disabled: fcs.disabled,
+    error: fcs.error,
+    focused: fcs.focused,
+    formControl: muiFormControl,
+    fullWidth: fullWidth,
+    hiddenLabel: fcs.hiddenLabel,
+    multiline: multiline,
+    size: fcs.size,
+    type: type
+  });
+
   return /*#__PURE__*/_jsx(InputBase, _extends({
     components: _extends({
       Root: OutlinedInputRoot,
@@ -136,6 +162,7 @@ var OutlinedInput = /*#__PURE__*/React.forwardRef(function OutlinedInput(inProps
     }, components),
     renderSuffix: function renderSuffix(state) {
       return /*#__PURE__*/_jsx(NotchedOutlineRoot, {
+        ownerState: ownerState,
         className: classes.notchedOutline,
         label: label != null && label !== '' && fcs.required ? _React$Fragment || (_React$Fragment = /*#__PURE__*/_jsxs(React.Fragment, {
           children: [label, "\xA0", '*']

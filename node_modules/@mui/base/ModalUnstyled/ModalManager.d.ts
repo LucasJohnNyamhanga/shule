@@ -19,7 +19,7 @@ export default class ModalManager {
     constructor();
     add(modal: Modal, container: HTMLElement): number;
     mount(modal: Modal, props: ManagedModalProps): void;
-    remove(modal: Modal): number;
+    remove(modal: Modal, ariaHiddenState?: boolean): number;
     isTopModal(modal: Modal): boolean;
 }
 export {};

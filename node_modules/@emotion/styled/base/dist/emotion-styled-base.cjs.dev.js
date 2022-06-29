@@ -31,7 +31,6 @@ function _interopNamespace(e) {
   return Object.freeze(n);
 }
 
-var _extends__default = /*#__PURE__*/_interopDefault(_extends);
 var React__namespace = /*#__PURE__*/_interopNamespace(React);
 var isPropValid__default = /*#__PURE__*/_interopDefault(isPropValid);
 
@@ -223,7 +222,7 @@ var createStyled = function createStyled(tag, options) {
     });
 
     Styled.withComponent = function (nextTag, nextOptions) {
-      return createStyled(nextTag, _extends__default['default']({}, options, nextOptions, {
+      return createStyled(nextTag, _extends({}, options, nextOptions, {
         shouldForwardProp: composeShouldForwardProps(Styled, nextOptions, true)
       })).apply(void 0, styles);
     };

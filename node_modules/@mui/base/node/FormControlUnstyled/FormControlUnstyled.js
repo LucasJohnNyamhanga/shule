@@ -15,19 +15,19 @@ var React = _interopRequireWildcard(require("react"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
-var _clsx = _interopRequireDefault(require("clsx"));
-
 var _utils = require("@mui/utils");
 
 var _FormControlUnstyledContext = _interopRequireDefault(require("./FormControlUnstyledContext"));
 
-var _appendOwnerState = _interopRequireDefault(require("../utils/appendOwnerState"));
+var _formControlUnstyledClasses = require("./formControlUnstyledClasses");
 
-var _formControlUnstyledClasses = _interopRequireDefault(require("./formControlUnstyledClasses"));
+var _utils2 = require("../utils");
+
+var _composeClasses = _interopRequireDefault(require("../composeClasses"));
 
 var _jsxRuntime = require("react/jsx-runtime");
 
-const _excluded = ["defaultValue", "children", "className", "component", "components", "componentsProps", "disabled", "error", "onChange", "required", "value"];
+const _excluded = ["defaultValue", "children", "component", "components", "componentsProps", "disabled", "error", "onChange", "required", "value"];
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -35,6 +35,20 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 
 function hasValue(value) {
   return value != null && !(Array.isArray(value) && value.length === 0) && value !== '';
+}
+
+function useUtilityClasses(ownerState) {
+  const {
+    disabled,
+    error,
+    filled,
+    focused,
+    required
+  } = ownerState;
+  const slots = {
+    root: ['root', disabled && 'disabled', focused && 'focused', error && 'error', filled && 'filled', required && 'required']
+  };
+  return (0, _composeClasses.default)(slots, _formControlUnstyledClasses.getFormControlUnstyledUtilityClass, {});
 }
 /**
  * Provides context such as filled/focused/error/required for form inputs.
@@ -47,7 +61,7 @@ function hasValue(value) {
  * *   Input
  * *   InputLabel
  *
- * You can find one composition example below and more going to [the demos](https://mui.com/components/text-fields/#components).
+ * You can find one composition example below and more going to [the demos](https://mui.com/material-ui/react-text-field/#components).
  *
  * ```jsx
  * <FormControl>
@@ -76,7 +90,6 @@ const FormControlUnstyled = /*#__PURE__*/React.forwardRef(function FormControlUn
   const {
     defaultValue,
     children,
-    className,
     component,
     components = {},
     componentsProps = {},
@@ -128,8 +141,7 @@ const FormControlUnstyled = /*#__PURE__*/React.forwardRef(function FormControlUn
     required,
     value: value != null ? value : ''
   };
-  const Root = (_ref = component != null ? component : components.Root) != null ? _ref : 'div';
-  const rootProps = (0, _appendOwnerState.default)(Root, (0, _extends2.default)({}, other, componentsProps.root), ownerState);
+  const classes = useUtilityClasses(ownerState);
 
   const renderChildren = () => {
     if (typeof children === 'function') {
@@ -139,14 +151,21 @@ const FormControlUnstyled = /*#__PURE__*/React.forwardRef(function FormControlUn
     return children;
   };
 
+  const Root = (_ref = component != null ? component : components.Root) != null ? _ref : 'div';
+  const rootProps = (0, _utils2.useSlotProps)({
+    elementType: Root,
+    externalSlotProps: componentsProps.root,
+    externalForwardedProps: other,
+    additionalProps: {
+      ref,
+      children: renderChildren()
+    },
+    ownerState,
+    className: classes.root
+  });
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_FormControlUnstyledContext.default.Provider, {
     value: childContext,
-    children: /*#__PURE__*/(0, _jsxRuntime.jsx)(Root, (0, _extends2.default)({
-      ref: ref
-    }, rootProps, {
-      className: (0, _clsx.default)(_formControlUnstyledClasses.default.root, className, rootProps == null ? void 0 : rootProps.className, disabled && _formControlUnstyledClasses.default.disabled, error && _formControlUnstyledClasses.default.error, filled && _formControlUnstyledClasses.default.filled, focused && _formControlUnstyledClasses.default.focused, required && _formControlUnstyledClasses.default.required),
-      children: renderChildren()
-    }))
+    children: /*#__PURE__*/(0, _jsxRuntime.jsx)(Root, (0, _extends2.default)({}, rootProps))
   });
 });
 process.env.NODE_ENV !== "production" ? FormControlUnstyled.propTypes
@@ -163,11 +182,6 @@ process.env.NODE_ENV !== "production" ? FormControlUnstyled.propTypes
   children: _propTypes.default
   /* @typescript-to-proptypes-ignore */
   .oneOfType([_propTypes.default.node, _propTypes.default.func]),
-
-  /**
-   * Class name applied to the root element.
-   */
-  className: _propTypes.default.string,
 
   /**
    * The component used for the root node.
@@ -188,7 +202,7 @@ process.env.NODE_ENV !== "production" ? FormControlUnstyled.propTypes
    * @ignore
    */
   componentsProps: _propTypes.default.shape({
-    root: _propTypes.default.object
+    root: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object])
   }),
 
   /**

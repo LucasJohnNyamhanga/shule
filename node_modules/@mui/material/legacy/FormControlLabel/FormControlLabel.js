@@ -61,7 +61,7 @@ export var FormControlLabelRoot = styled('label', {
     flexDirection: 'column',
     marginLeft: 16
   }, _defineProperty({}, "& .".concat(formControlLabelClasses.label), _defineProperty({}, "&.".concat(formControlLabelClasses.disabled), {
-    color: theme.palette.text.disabled
+    color: (theme.vars || theme).palette.text.disabled
   })));
 });
 /**

@@ -21,7 +21,7 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-function useInput(props, inputRef) {
+function useInput(parameters) {
   const {
     defaultValue: defaultValueProp,
     disabled: disabledProp = false,
@@ -31,7 +31,7 @@ function useInput(props, inputRef) {
     onFocus,
     required: requiredProp = false,
     value: valueProp
-  } = props;
+  } = parameters;
   const formControlContext = (0, _FormControlUnstyled.useFormControlUnstyledContext)();
   let defaultValue;
   let disabled;
@@ -49,7 +49,7 @@ function useInput(props, inputRef) {
     value = formControlContext.value;
 
     if (process.env.NODE_ENV !== 'production') {
-      const definedLocalProps = ['defaultValue', 'disabled', 'error', 'required', 'value'].filter(prop => props[prop] !== undefined);
+      const definedLocalProps = ['defaultValue', 'disabled', 'error', 'required', 'value'].filter(prop => parameters[prop] !== undefined);
 
       if (definedLocalProps.length > 0) {
         console.warn(['MUI: You have set props on an input that is inside a FormControlUnstyled.', 'Set these props on a FormControlUnstyled instead. Otherwise they will be ignored.', `Ignored props: ${definedLocalProps.join(', ')}`].join('\n'));
@@ -73,9 +73,8 @@ function useInput(props, inputRef) {
       }
     }
   }, []);
-  const internalInputRef = React.useRef(null);
-  const handleIncomingRef = (0, _utils.unstable_useForkRef)(inputRef, handleInputRefWarning);
-  const handleInputRef = (0, _utils.unstable_useForkRef)(internalInputRef, handleIncomingRef);
+  const inputRef = React.useRef(null);
+  const handleInputRef = (0, _utils.unstable_useForkRef)(inputRef, handleInputRefWarning);
   const [focused, setFocused] = React.useState(false); // The blur won't fire when the disabled state is set on a focused input.
   // We need to book keep the focused state manually.
 
@@ -124,7 +123,7 @@ function useInput(props, inputRef) {
     var _formControlContext$o2, _otherHandlers$onChan;
 
     if (!isControlled) {
-      const element = event.target || internalInputRef.current;
+      const element = event.target || inputRef.current;
 
       if (element == null) {
         throw new Error(process.env.NODE_ENV !== "production" ? `MUI: Expected valid input target. Did you use a custom \`components.Input\` and forget to forward refs? See https://mui.com/r/input-component-ref-interface for more info.` : (0, _utils.formatMuiErrorMessage)(17));
@@ -139,23 +138,23 @@ function useInput(props, inputRef) {
   const handleClick = otherHandlers => event => {
     var _otherHandlers$onClic;
 
-    if (internalInputRef.current && event.currentTarget === event.target) {
-      internalInputRef.current.focus();
+    if (inputRef.current && event.currentTarget === event.target) {
+      inputRef.current.focus();
     }
 
     (_otherHandlers$onClic = otherHandlers.onClick) == null ? void 0 : _otherHandlers$onClic.call(otherHandlers, event);
   };
 
-  const getRootProps = externalProps => {
+  const getRootProps = (externalProps = {}) => {
     // onBlur, onChange and onFocus are forwarded to the input slot.
-    const propsEventHandlers = (0, _extractEventHandlers.default)(props, ['onBlur', 'onChange', 'onFocus']);
+    const propsEventHandlers = (0, _extractEventHandlers.default)(parameters, ['onBlur', 'onChange', 'onFocus']);
     const externalEventHandlers = (0, _extends2.default)({}, propsEventHandlers, (0, _extractEventHandlers.default)(externalProps));
     return (0, _extends2.default)({}, externalProps, externalEventHandlers, {
       onClick: handleClick(externalEventHandlers)
     });
   };
 
-  const getInputProps = externalProps => {
+  const getInputProps = (externalProps = {}) => {
     const propsEventHandlers = {
       onBlur,
       onChange,

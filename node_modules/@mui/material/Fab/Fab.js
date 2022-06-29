@@ -37,77 +37,81 @@ const FabRoot = styled(ButtonBase, {
 })(({
   theme,
   ownerState
-}) => _extends({}, theme.typography.button, {
-  minHeight: 36,
-  transition: theme.transitions.create(['background-color', 'box-shadow', 'border-color'], {
-    duration: theme.transitions.duration.short
-  }),
-  borderRadius: '50%',
-  padding: 0,
-  minWidth: 0,
-  width: 56,
-  height: 56,
-  zIndex: theme.zIndex.fab,
-  boxShadow: theme.shadows[6],
-  '&:active': {
-    boxShadow: theme.shadows[12]
-  },
-  color: theme.palette.getContrastText(theme.palette.grey[300]),
-  backgroundColor: theme.palette.grey[300],
-  '&:hover': {
-    backgroundColor: theme.palette.grey.A100,
-    // Reset on touch devices, it doesn't add specificity
-    '@media (hover: none)': {
-      backgroundColor: theme.palette.grey[300]
+}) => {
+  var _theme$palette$getCon, _theme$palette;
+
+  return _extends({}, theme.typography.button, {
+    minHeight: 36,
+    transition: theme.transitions.create(['background-color', 'box-shadow', 'border-color'], {
+      duration: theme.transitions.duration.short
+    }),
+    borderRadius: '50%',
+    padding: 0,
+    minWidth: 0,
+    width: 56,
+    height: 56,
+    zIndex: (theme.vars || theme).zIndex.fab,
+    boxShadow: (theme.vars || theme).shadows[6],
+    '&:active': {
+      boxShadow: (theme.vars || theme).shadows[12]
     },
-    textDecoration: 'none'
-  },
-  [`&.${fabClasses.focusVisible}`]: {
-    boxShadow: theme.shadows[6]
-  },
-  [`&.${fabClasses.disabled}`]: {
-    color: theme.palette.action.disabled,
-    boxShadow: theme.shadows[0],
-    backgroundColor: theme.palette.action.disabledBackground
-  }
-}, ownerState.size === 'small' && {
-  width: 40,
-  height: 40
-}, ownerState.size === 'medium' && {
-  width: 48,
-  height: 48
-}, ownerState.variant === 'extended' && {
-  borderRadius: 48 / 2,
-  padding: '0 16px',
-  width: 'auto',
-  minHeight: 'auto',
-  minWidth: 48,
-  height: 48
-}, ownerState.variant === 'extended' && ownerState.size === 'small' && {
-  width: 'auto',
-  padding: '0 8px',
-  borderRadius: 34 / 2,
-  minWidth: 34,
-  height: 34
-}, ownerState.variant === 'extended' && ownerState.size === 'medium' && {
-  width: 'auto',
-  padding: '0 16px',
-  borderRadius: 40 / 2,
-  minWidth: 40,
-  height: 40
-}, ownerState.color === 'inherit' && {
-  color: 'inherit'
-}), ({
+    color: theme.vars ? theme.vars.palette.text.primary : (_theme$palette$getCon = (_theme$palette = theme.palette).getContrastText) == null ? void 0 : _theme$palette$getCon.call(_theme$palette, theme.palette.grey[300]),
+    backgroundColor: (theme.vars || theme).palette.grey[300],
+    '&:hover': {
+      backgroundColor: (theme.vars || theme).palette.grey.A100,
+      // Reset on touch devices, it doesn't add specificity
+      '@media (hover: none)': {
+        backgroundColor: (theme.vars || theme).palette.grey[300]
+      },
+      textDecoration: 'none'
+    },
+    [`&.${fabClasses.focusVisible}`]: {
+      boxShadow: (theme.vars || theme).shadows[6]
+    },
+    [`&.${fabClasses.disabled}`]: {
+      color: (theme.vars || theme).palette.action.disabled,
+      boxShadow: (theme.vars || theme).shadows[0],
+      backgroundColor: (theme.vars || theme).palette.action.disabledBackground
+    }
+  }, ownerState.size === 'small' && {
+    width: 40,
+    height: 40
+  }, ownerState.size === 'medium' && {
+    width: 48,
+    height: 48
+  }, ownerState.variant === 'extended' && {
+    borderRadius: 48 / 2,
+    padding: '0 16px',
+    width: 'auto',
+    minHeight: 'auto',
+    minWidth: 48,
+    height: 48
+  }, ownerState.variant === 'extended' && ownerState.size === 'small' && {
+    width: 'auto',
+    padding: '0 8px',
+    borderRadius: 34 / 2,
+    minWidth: 34,
+    height: 34
+  }, ownerState.variant === 'extended' && ownerState.size === 'medium' && {
+    width: 'auto',
+    padding: '0 16px',
+    borderRadius: 40 / 2,
+    minWidth: 40,
+    height: 40
+  }, ownerState.color === 'inherit' && {
+    color: 'inherit'
+  });
+}, ({
   theme,
   ownerState
-}) => _extends({}, ownerState.color !== 'inherit' && ownerState.color !== 'default' && theme.palette[ownerState.color] != null && {
-  color: theme.palette[ownerState.color].contrastText,
-  backgroundColor: theme.palette[ownerState.color].main,
+}) => _extends({}, ownerState.color !== 'inherit' && ownerState.color !== 'default' && (theme.vars || theme).palette[ownerState.color] != null && {
+  color: (theme.vars || theme).palette[ownerState.color].contrastText,
+  backgroundColor: (theme.vars || theme).palette[ownerState.color].main,
   '&:hover': {
-    backgroundColor: theme.palette[ownerState.color].dark,
+    backgroundColor: (theme.vars || theme).palette[ownerState.color].dark,
     // Reset on touch devices, it doesn't add specificity
     '@media (hover: none)': {
-      backgroundColor: theme.palette[ownerState.color].main
+      backgroundColor: (theme.vars || theme).palette[ownerState.color].main
     }
   }
 }));
@@ -181,7 +185,9 @@ process.env.NODE_ENV !== "production" ? Fab.propTypes
    * [palette customization guide](https://mui.com/material-ui/customization/palette/#adding-new-colors).
    * @default 'default'
    */
-  color: PropTypes.oneOf(['default', 'error', 'info', 'inherit', 'primary', 'secondary', 'success', 'warning']),
+  color: PropTypes
+  /* @typescript-to-proptypes-ignore */
+  .oneOfType([PropTypes.oneOf(['default', 'error', 'info', 'inherit', 'primary', 'secondary', 'success', 'warning']), PropTypes.string]),
 
   /**
    * The component used for the root node.

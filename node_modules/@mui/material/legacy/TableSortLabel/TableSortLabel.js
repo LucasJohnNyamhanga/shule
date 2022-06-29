@@ -41,18 +41,18 @@ var TableSortLabelRoot = styled(ButtonBase, {
     flexDirection: 'inherit',
     alignItems: 'center',
     '&:focus': {
-      color: theme.palette.text.secondary
+      color: (theme.vars || theme).palette.text.secondary
     },
     '&:hover': _defineProperty({
-      color: theme.palette.text.secondary
+      color: (theme.vars || theme).palette.text.secondary
     }, "& .".concat(tableSortLabelClasses.icon), {
       opacity: 0.5
     })
   }, "&.".concat(tableSortLabelClasses.active), _defineProperty({
-    color: theme.palette.text.primary
+    color: (theme.vars || theme).palette.text.primary
   }, "& .".concat(tableSortLabelClasses.icon), {
     opacity: 1,
-    color: theme.palette.text.secondary
+    color: (theme.vars || theme).palette.text.secondary
   }));
 });
 var TableSortLabelIcon = styled('span', {

@@ -42,11 +42,11 @@ var TableRowRoot = styled('tr', {
     // We disable the focus ring for mouse, touch and keyboard users.
     outline: 0
   }, _defineProperty(_ref2, "&.".concat(tableRowClasses.hover, ":hover"), {
-    backgroundColor: theme.palette.action.hover
+    backgroundColor: (theme.vars || theme).palette.action.hover
   }), _defineProperty(_ref2, "&.".concat(tableRowClasses.selected), {
-    backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
+    backgroundColor: theme.vars ? "rgba(".concat(theme.vars.palette.primary.mainChannel, " / ").concat(theme.vars.palette.action.selectedOpacity, ")") : alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
     '&:hover': {
-      backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity + theme.palette.action.hoverOpacity)
+      backgroundColor: theme.vars ? "rgba(".concat(theme.vars.palette.primary.mainChannel, " / calc(").concat(theme.vars.palette.action.selectedOpacity, " + ").concat(theme.vars.palette.action.hoverOpacity, "))") : alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity + theme.palette.action.hoverOpacity)
     }
   }), _ref2;
 });

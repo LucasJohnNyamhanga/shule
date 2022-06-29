@@ -63,28 +63,28 @@ var ListItemButtonRoot = styled(ButtonBase, {
     }),
     '&:hover': {
       textDecoration: 'none',
-      backgroundColor: theme.palette.action.hover,
+      backgroundColor: (theme.vars || theme).palette.action.hover,
       // Reset on touch devices, it doesn't add specificity
       '@media (hover: none)': {
         backgroundColor: 'transparent'
       }
     }
   }, _defineProperty(_extends2, "&.".concat(listItemButtonClasses.selected), _defineProperty({
-    backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity)
+    backgroundColor: theme.vars ? "rgba(".concat(theme.vars.palette.primary.mainChannel, " / ").concat(theme.vars.palette.action.selectedOpacity, ")") : alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity)
   }, "&.".concat(listItemButtonClasses.focusVisible), {
-    backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity + theme.palette.action.focusOpacity)
+    backgroundColor: theme.vars ? "rgba(".concat(theme.vars.palette.primary.mainChannel, " / calc(").concat(theme.vars.palette.action.selectedOpacity, " + ").concat(theme.vars.palette.action.focusOpacity, "))") : alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity + theme.palette.action.focusOpacity)
   })), _defineProperty(_extends2, "&.".concat(listItemButtonClasses.selected, ":hover"), {
-    backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity + theme.palette.action.hoverOpacity),
+    backgroundColor: theme.vars ? "rgba(".concat(theme.vars.palette.primary.mainChannel, " / calc(").concat(theme.vars.palette.action.selectedOpacity, " + ").concat(theme.vars.palette.action.hoverOpacity, "))") : alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity + theme.palette.action.hoverOpacity),
     // Reset on touch devices, it doesn't add specificity
     '@media (hover: none)': {
-      backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity)
+      backgroundColor: theme.vars ? "rgba(".concat(theme.vars.palette.primary.mainChannel, " / ").concat(theme.vars.palette.action.selectedOpacity, ")") : alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity)
     }
   }), _defineProperty(_extends2, "&.".concat(listItemButtonClasses.focusVisible), {
-    backgroundColor: theme.palette.action.focus
+    backgroundColor: (theme.vars || theme).palette.action.focus
   }), _defineProperty(_extends2, "&.".concat(listItemButtonClasses.disabled), {
-    opacity: theme.palette.action.disabledOpacity
+    opacity: (theme.vars || theme).palette.action.disabledOpacity
   }), _extends2), ownerState.divider && {
-    borderBottom: "1px solid ".concat(theme.palette.divider),
+    borderBottom: "1px solid ".concat((theme.vars || theme).palette.divider),
     backgroundClip: 'padding-box'
   }, ownerState.alignItems === 'flex-start' && {
     alignItems: 'flex-start'
@@ -151,7 +151,8 @@ var ListItemButton = /*#__PURE__*/React.forwardRef(function ListItemButton(inPro
     value: childContext,
     children: /*#__PURE__*/_jsx(ListItemButtonRoot, _extends({
       ref: handleRef,
-      component: component,
+      href: other.href || other.to,
+      component: (other.href || other.to) && component === 'div' ? 'a' : component,
       focusVisibleClassName: clsx(classes.focusVisible, focusVisibleClassName),
       ownerState: ownerState
     }, other, {
@@ -232,6 +233,11 @@ process.env.NODE_ENV !== "production" ? ListItemButton.propTypes
    * if needed.
    */
   focusVisibleClassName: PropTypes.string,
+
+  /**
+   * @ignore
+   */
+  href: PropTypes.string,
 
   /**
    * Use to apply selected styling.

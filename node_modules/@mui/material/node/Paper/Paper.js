@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.getOverlayAlpha = exports.default = void 0;
 
 var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutPropertiesLoose"));
 
@@ -52,6 +52,8 @@ const getOverlayAlpha = elevation => {
   return (alphaValue / 100).toFixed(2);
 };
 
+exports.getOverlayAlpha = getOverlayAlpha;
+
 const useUtilityClasses = ownerState => {
   const {
     square,
@@ -77,19 +79,25 @@ const PaperRoot = (0, _styled.default)('div', {
 })(({
   theme,
   ownerState
-}) => (0, _extends2.default)({
-  backgroundColor: theme.palette.background.paper,
-  color: theme.palette.text.primary,
-  transition: theme.transitions.create('box-shadow')
-}, !ownerState.square && {
-  borderRadius: theme.shape.borderRadius
-}, ownerState.variant === 'outlined' && {
-  border: `1px solid ${theme.palette.divider}`
-}, ownerState.variant === 'elevation' && (0, _extends2.default)({
-  boxShadow: theme.shadows[ownerState.elevation]
-}, theme.palette.mode === 'dark' && {
-  backgroundImage: `linear-gradient(${(0, _system.alpha)('#fff', getOverlayAlpha(ownerState.elevation))}, ${(0, _system.alpha)('#fff', getOverlayAlpha(ownerState.elevation))})`
-})));
+}) => {
+  var _theme$vars$overlays;
+
+  return (0, _extends2.default)({
+    backgroundColor: (theme.vars || theme).palette.background.paper,
+    color: (theme.vars || theme).palette.text.primary,
+    transition: theme.transitions.create('box-shadow')
+  }, !ownerState.square && {
+    borderRadius: theme.shape.borderRadius
+  }, ownerState.variant === 'outlined' && {
+    border: `1px solid ${(theme.vars || theme).palette.divider}`
+  }, ownerState.variant === 'elevation' && (0, _extends2.default)({
+    boxShadow: (theme.vars || theme).shadows[ownerState.elevation]
+  }, !theme.vars && theme.palette.mode === 'dark' && {
+    backgroundImage: `linear-gradient(${(0, _system.alpha)('#fff', getOverlayAlpha(ownerState.elevation))}, ${(0, _system.alpha)('#fff', getOverlayAlpha(ownerState.elevation))})`
+  }, theme.vars && {
+    backgroundImage: (_theme$vars$overlays = theme.vars.overlays) == null ? void 0 : _theme$vars$overlays[ownerState.elevation]
+  }));
+});
 const Paper = /*#__PURE__*/React.forwardRef(function Paper(inProps, ref) {
   const props = (0, _useThemeProps.default)({
     props: inProps,

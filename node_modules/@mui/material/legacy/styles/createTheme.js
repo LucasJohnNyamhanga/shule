@@ -30,7 +30,7 @@ function createTheme() {
   var palette = createPalette(paletteInput);
   var systemTheme = systemCreateTheme(options);
   var muiTheme = deepmerge(systemTheme, {
-    mixins: createMixins(systemTheme.breakpoints, systemTheme.spacing, mixinsInput),
+    mixins: createMixins(systemTheme.breakpoints, mixinsInput),
     palette: palette,
     // Don't use [...shadows] until you've verified its transpiled code is not invoking the iterator protocol.
     shadows: shadows.slice(),

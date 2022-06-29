@@ -41,6 +41,7 @@ model pin {
   pin        Int
   active     Boolean  @default(true)
   used       Boolean  @default(false)
+  days       Int
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   categoryId Int

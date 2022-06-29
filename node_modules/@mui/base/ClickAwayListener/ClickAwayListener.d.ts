@@ -1,5 +1,5 @@
 import * as React from 'react';
-declare type ClickAwayMouseEventHandler = 'onClick' | 'onMouseDown' | 'onMouseUp';
+declare type ClickAwayMouseEventHandler = 'onClick' | 'onMouseDown' | 'onMouseUp' | 'onPointerDown' | 'onPointerUp';
 declare type ClickAwayTouchEventHandler = 'onTouchStart' | 'onTouchEnd';
 export interface ClickAwayListenerProps {
     /**

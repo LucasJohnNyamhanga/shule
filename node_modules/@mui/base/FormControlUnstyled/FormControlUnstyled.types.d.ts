@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { OverrideProps, Simplify } from '@mui/types';
+import { SlotComponentProps } from '../utils';
 export declare type NativeFormControlElement = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
 export interface FormControlUnstyledComponentsPropsOverrides {
 }
@@ -21,7 +22,7 @@ export interface FormControlUnstyledOwnProps {
         Root?: React.ElementType;
     };
     componentsProps?: {
-        root?: React.HTMLAttributes<HTMLDivElement> & FormControlUnstyledComponentsPropsOverrides;
+        root?: SlotComponentProps<'div', FormControlUnstyledComponentsPropsOverrides, FormControlUnstyledOwnerState>;
     };
     defaultValue?: unknown;
     /**
@@ -57,6 +58,7 @@ export declare type FormControlUnstyledProps<D extends React.ElementType = FormC
 declare type NonOptionalOwnerState = 'disabled' | 'error' | 'required';
 export declare type FormControlUnstyledOwnerState = Simplify<Omit<FormControlUnstyledOwnProps, NonOptionalOwnerState> & Required<Pick<FormControlUnstyledProps, NonOptionalOwnerState>> & {
     filled: boolean;
+    focused: boolean;
 }>;
 declare type ContextFromPropsKey = 'disabled' | 'error' | 'onChange' | 'required' | 'value';
 export declare type FormControlUnstyledState = Simplify<Pick<FormControlUnstyledProps, ContextFromPropsKey> & {
@@ -65,4 +67,9 @@ export declare type FormControlUnstyledState = Simplify<Pick<FormControlUnstyled
     onBlur: () => void;
     onFocus: () => void;
 }>;
+export declare type FormControlUnstyledRootSlotProps = {
+    children: React.ReactNode | ((state: FormControlUnstyledState) => React.ReactNode);
+    className?: string;
+    ownerState: FormControlUnstyledOwnerState;
+};
 export {};

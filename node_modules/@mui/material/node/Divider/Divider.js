@@ -71,7 +71,7 @@ const DividerRoot = (0, _styled.default)('div', {
   flexShrink: 0,
   borderWidth: 0,
   borderStyle: 'solid',
-  borderColor: theme.palette.divider,
+  borderColor: (theme.vars || theme).palette.divider,
   borderBottomWidth: 'thin'
 }, ownerState.absolute && {
   position: 'absolute',
@@ -79,7 +79,7 @@ const DividerRoot = (0, _styled.default)('div', {
   left: 0,
   width: '100%'
 }, ownerState.light && {
-  borderColor: (0, _system.alpha)(theme.palette.divider, 0.08)
+  borderColor: theme.vars ? `rgba(${theme.vars.palette.dividerChannel} / 0.08)` : (0, _system.alpha)(theme.palette.divider, 0.08)
 }, ownerState.variant === 'inset' && {
   marginLeft: 72
 }, ownerState.variant === 'middle' && ownerState.orientation === 'horizontal' && {
@@ -106,7 +106,7 @@ const DividerRoot = (0, _styled.default)('div', {
   '&::before, &::after': {
     position: 'relative',
     width: '100%',
-    borderTop: `thin solid ${theme.palette.divider}`,
+    borderTop: `thin solid ${(theme.vars || theme).palette.divider}`,
     top: '50%',
     content: '""',
     transform: 'translateY(50%)'
@@ -121,7 +121,7 @@ const DividerRoot = (0, _styled.default)('div', {
     top: '0%',
     left: '50%',
     borderTop: 0,
-    borderLeft: `thin solid ${theme.palette.divider}`,
+    borderLeft: `thin solid ${(theme.vars || theme).palette.divider}`,
     transform: 'translateX(0%)'
   }
 }), ({

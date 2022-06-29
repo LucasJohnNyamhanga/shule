@@ -79,7 +79,7 @@ const InputAdornmentRoot = (0, _styled.default)('div', {
   maxHeight: '2em',
   alignItems: 'center',
   whiteSpace: 'nowrap',
-  color: theme.palette.action.active
+  color: (theme.vars || theme).palette.action.active
 }, ownerState.variant === 'filled' && {
   // Styles applied to the root element if `variant="filled"`.
   [`&.${_inputAdornmentClasses.default.positionStart}&:not(.${_inputAdornmentClasses.default.hiddenLabel})`]: {

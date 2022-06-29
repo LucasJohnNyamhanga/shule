@@ -1,12 +1,11 @@
 import * as React from 'react';
-import BadgeUnstyledProps from './BadgeUnstyledProps';
-export interface UseBadgeProps {
-    badgeContent: BadgeUnstyledProps['badgeContent'];
-    invisible: BadgeUnstyledProps['invisible'];
-    max: BadgeUnstyledProps['max'];
-    showZero: BadgeUnstyledProps['showZero'];
+export interface UseBadgeParameters {
+    badgeContent?: React.ReactNode;
+    invisible?: boolean;
+    max?: number;
+    showZero?: boolean;
 }
-export default function useBadge(props: UseBadgeProps): {
+export default function useBadge(parameters: UseBadgeParameters): {
     badgeContent: React.ReactNode;
     invisible: boolean;
     max: number;

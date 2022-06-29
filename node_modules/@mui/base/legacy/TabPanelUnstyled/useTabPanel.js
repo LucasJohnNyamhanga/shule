@@ -1,7 +1,7 @@
 import { useTabContext, getPanelId, getTabId } from '../TabsUnstyled';
 
-var useTabPanel = function useTabPanel(props) {
-  var value = props.value;
+var useTabPanel = function useTabPanel(parameters) {
+  var value = parameters.value;
   var context = useTabContext();
 
   if (context === null) {
@@ -14,9 +14,9 @@ var useTabPanel = function useTabPanel(props) {
 
   var getRootProps = function getRootProps() {
     return {
-      'aria-labelledby': tabId,
+      'aria-labelledby': tabId != null ? tabId : undefined,
       hidden: hidden,
-      id: id
+      id: id != null ? id : undefined
     };
   };
 

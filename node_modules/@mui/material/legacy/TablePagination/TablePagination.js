@@ -32,7 +32,7 @@ var TablePaginationRoot = styled(TableCell, {
   var theme = _ref.theme;
   return {
     overflow: 'auto',
-    color: theme.palette.text.primary,
+    color: (theme.vars || theme).palette.text.primary,
     fontSize: theme.typography.pxToRem(14),
     // Increase the specificity to override TableCell.
     '&:last-child': {

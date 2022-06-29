@@ -64,13 +64,13 @@ const moveFocus = (list, currentFocus, traversalFunction) => {
   }
 };
 
-const useTabsList = props => {
+const useTabsList = parameters => {
   const {
     'aria-label': ariaLabel,
     'aria-labelledby': ariaLabelledBy,
     children,
     ref
-  } = props;
+  } = parameters;
   const tabsListRef = /*#__PURE__*/React.createRef();
   const handleRef = useForkRef(tabsListRef, ref);
   const context = useTabContext();
@@ -140,8 +140,8 @@ const useTabsList = props => {
     (_otherHandlers$onKeyD = otherHandlers.onKeyDown) == null ? void 0 : _otherHandlers$onKeyD.call(otherHandlers, event);
   };
 
-  const getRootProps = otherHandlers => {
-    const propsEventHandlers = extractEventHandlers(props);
+  const getRootProps = (otherHandlers = {}) => {
+    const propsEventHandlers = extractEventHandlers(parameters);
 
     const externalEventHandlers = _extends({}, propsEventHandlers, otherHandlers);
 
@@ -154,7 +154,7 @@ const useTabsList = props => {
     return _extends({
       'aria-label': ariaLabel,
       'aria-labelledby': ariaLabelledBy,
-      'aria-orientation': orientation === 'vertical' ? 'vertical' : null,
+      'aria-orientation': orientation === 'vertical' ? 'vertical' : undefined,
       role: 'tablist',
       ref: handleRef
     }, mergedEventHandlers);

@@ -97,7 +97,7 @@ const SkeletonRoot = (0, _styled.default)('span', {
   return (0, _extends2.default)({
     display: 'block',
     // Create a "on paper" color with sufficient contrast retaining the color
-    backgroundColor: (0, _styles.alpha)(theme.palette.text.primary, theme.palette.mode === 'light' ? 0.11 : 0.13),
+    backgroundColor: theme.vars ? theme.vars.palette.Skeleton.bg : (0, _styles.alpha)(theme.palette.text.primary, theme.palette.mode === 'light' ? 0.11 : 0.13),
     height: '1.2em'
   }, ownerState.variant === 'text' && {
     marginTop: 0,
@@ -136,7 +136,12 @@ const SkeletonRoot = (0, _styled.default)('span', {
 
       &::after {
         animation: ${waveKeyframe} 1.6s linear 0.5s infinite;
-        background: linear-gradient(90deg, transparent, ${theme.palette.action.hover}, transparent);
+        background: linear-gradient(
+          90deg,
+          transparent,
+          ${(theme.vars || theme).palette.action.hover},
+          transparent
+        );
         content: '';
         position: absolute;
         transform: translateX(-100%); /* Avoid flash during server-side hydration */

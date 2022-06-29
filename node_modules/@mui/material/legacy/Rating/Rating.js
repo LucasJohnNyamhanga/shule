@@ -88,7 +88,7 @@ var RatingRoot = styled('span', {
     textAlign: 'left',
     WebkitTapHighlightColor: 'transparent'
   }, _defineProperty(_extends2, "&.".concat(ratingClasses.disabled), {
-    opacity: theme.palette.action.disabledOpacity,
+    opacity: (theme.vars || theme).palette.action.disabledOpacity,
     pointerEvents: 'none'
   }), _defineProperty(_extends2, "&.".concat(ratingClasses.focusVisible, " .").concat(ratingClasses.iconActive), {
     outline: '1px solid #999'
@@ -140,7 +140,7 @@ var RatingIcon = styled('span', {
   }, ownerState.iconActive && {
     transform: 'scale(1.2)'
   }, ownerState.iconEmpty && {
-    color: theme.palette.action.disabled
+    color: (theme.vars || theme).palette.action.disabled
   });
 });
 var RatingDecimal = styled('span', {

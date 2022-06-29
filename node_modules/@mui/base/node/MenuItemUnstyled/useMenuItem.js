@@ -22,8 +22,9 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function useMenuItem(props) {
+  var _itemState$disabled;
+
   const {
-    component,
     disabled = false,
     ref,
     label
@@ -59,7 +60,6 @@ function useMenuItem(props) {
     getRootProps: getButtonProps,
     focusVisible
   } = (0, _ButtonUnstyled.useButton)({
-    component,
     disabled,
     focusableWhenDisabled: true,
     ref: handleRef
@@ -95,7 +95,7 @@ function useMenuItem(props) {
       getRootProps: other => (0, _extends2.default)({}, other, getButtonProps(other), {
         role: 'menuitem'
       }),
-      itemState: null,
+      disabled: false,
       focusVisible
     };
   }
@@ -109,7 +109,7 @@ function useMenuItem(props) {
         role: 'menuitem'
       });
     },
-    itemState,
+    disabled: (_itemState$disabled = itemState == null ? void 0 : itemState.disabled) != null ? _itemState$disabled : false,
     focusVisible
   };
 }

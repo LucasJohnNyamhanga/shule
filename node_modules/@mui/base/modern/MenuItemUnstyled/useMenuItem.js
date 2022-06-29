@@ -5,7 +5,6 @@ import { MenuUnstyledContext } from '../MenuUnstyled';
 import { useButton } from '../ButtonUnstyled';
 export default function useMenuItem(props) {
   const {
-    component,
     disabled = false,
     ref,
     label
@@ -41,7 +40,6 @@ export default function useMenuItem(props) {
     getRootProps: getButtonProps,
     focusVisible
   } = useButton({
-    component,
     disabled,
     focusableWhenDisabled: true,
     ref: handleRef
@@ -77,7 +75,7 @@ export default function useMenuItem(props) {
       getRootProps: other => _extends({}, other, getButtonProps(other), {
         role: 'menuitem'
       }),
-      itemState: null,
+      disabled: false,
       focusVisible
     };
   }
@@ -91,7 +89,7 @@ export default function useMenuItem(props) {
         role: 'menuitem'
       });
     },
-    itemState,
+    disabled: itemState?.disabled ?? false,
     focusVisible
   };
 }

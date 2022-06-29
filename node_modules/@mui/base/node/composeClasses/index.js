@@ -1,15 +1,13 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 Object.defineProperty(exports, "default", {
   enumerable: true,
   get: function () {
-    return _composeClasses.default;
+    return _utils.unstable_composeClasses;
   }
 });
 
-var _composeClasses = _interopRequireDefault(require("./composeClasses"));
+var _utils = require("@mui/utils");

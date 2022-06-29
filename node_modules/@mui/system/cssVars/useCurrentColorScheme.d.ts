@@ -40,11 +40,14 @@ export declare type Result<SupportedColorScheme extends string> = State<Supporte
 };
 export declare function getSystemMode(mode: undefined | string): SystemMode | undefined;
 export declare function getColorScheme<SupportedColorScheme extends string>(state: State<SupportedColorScheme>): SupportedColorScheme | undefined;
-export default function useCurrentColorScheme<SupportedColorScheme extends string>(options: {
+interface UseCurrentColoSchemeOptions<SupportedColorScheme extends string> {
     defaultLightColorScheme: SupportedColorScheme;
     defaultDarkColorScheme: SupportedColorScheme;
     supportedColorSchemes: Array<SupportedColorScheme>;
     defaultMode?: Mode;
     modeStorageKey?: string;
     colorSchemeStorageKey?: string;
-}): Result<SupportedColorScheme>;
+    storageWindow?: Window | null;
+}
+export default function useCurrentColorScheme<SupportedColorScheme extends string>(options: UseCurrentColoSchemeOptions<SupportedColorScheme>): Result<SupportedColorScheme>;
+export {};

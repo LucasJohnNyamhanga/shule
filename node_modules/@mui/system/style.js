@@ -14,13 +14,13 @@ var _responsivePropType = _interopRequireDefault(require("./responsivePropType")
 
 var _breakpoints = require("./breakpoints");
 
-function getPath(obj, path) {
+function getPath(obj, path, checkVars = true) {
   if (!path || typeof path !== 'string') {
     return null;
   } // Check if CSS variables are used
 
 
-  if (obj && obj.vars) {
+  if (obj && obj.vars && checkVars) {
     const val = `vars.${path}`.split('.').reduce((acc, item) => acc && acc[item] ? acc[item] : null, obj);
 
     if (val != null) {

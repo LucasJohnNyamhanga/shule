@@ -44,13 +44,13 @@ var StepIconRoot = styled(SvgIcon, {
     transition: theme.transitions.create('color', {
       duration: theme.transitions.duration.shortest
     }),
-    color: theme.palette.text.disabled
+    color: (theme.vars || theme).palette.text.disabled
   }, _defineProperty(_ref2, "&.".concat(stepIconClasses.completed), {
-    color: theme.palette.primary.main
+    color: (theme.vars || theme).palette.primary.main
   }), _defineProperty(_ref2, "&.".concat(stepIconClasses.active), {
-    color: theme.palette.primary.main
+    color: (theme.vars || theme).palette.primary.main
   }), _defineProperty(_ref2, "&.".concat(stepIconClasses.error), {
-    color: theme.palette.error.main
+    color: (theme.vars || theme).palette.error.main
   }), _ref2;
 });
 var StepIconText = styled('text', {
@@ -62,7 +62,7 @@ var StepIconText = styled('text', {
 })(function (_ref3) {
   var theme = _ref3.theme;
   return {
-    fill: theme.palette.primary.contrastText,
+    fill: (theme.vars || theme).palette.primary.contrastText,
     fontSize: theme.typography.caption.fontSize,
     fontFamily: theme.typography.fontFamily
   };
@@ -124,8 +124,9 @@ var StepIcon = /*#__PURE__*/React.forwardRef(function StepIcon(inProps, ref) {
       })), /*#__PURE__*/_jsx(StepIconText, {
         className: classes.text,
         x: "12",
-        y: "16",
+        y: "12",
         textAnchor: "middle",
+        dominantBaseline: "central",
         ownerState: ownerState,
         children: icon
       })]

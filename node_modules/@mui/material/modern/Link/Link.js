@@ -6,27 +6,15 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { elementTypeAcceptingRef } from '@mui/utils';
 import { unstable_composeClasses as composeClasses } from '@mui/base';
-import { alpha, getPath } from '@mui/system';
 import capitalize from '../utils/capitalize';
 import styled from '../styles/styled';
-import useTheme from '../styles/useTheme';
 import useThemeProps from '../styles/useThemeProps';
 import useIsFocusVisible from '../utils/useIsFocusVisible';
 import useForkRef from '../utils/useForkRef';
 import Typography from '../Typography';
 import linkClasses, { getLinkUtilityClass } from './linkClasses';
+import getTextDecoration, { colorTransformations } from './getTextDecoration';
 import { jsx as _jsx } from "react/jsx-runtime";
-const colorTransformations = {
-  primary: 'primary.main',
-  textPrimary: 'text.primary',
-  secondary: 'secondary.main',
-  textSecondary: 'text.secondary',
-  error: 'error.main'
-};
-
-const transformDeprecatedColors = color => {
-  return colorTransformations[color] || color;
-};
 
 const useUtilityClasses = ownerState => {
   const {
@@ -54,7 +42,6 @@ const LinkRoot = styled(Typography, {
   theme,
   ownerState
 }) => {
-  const color = getPath(theme, `palette.${transformDeprecatedColors(ownerState.color)}`) || ownerState.color;
   return _extends({}, ownerState.underline === 'none' && {
     textDecoration: 'none'
   }, ownerState.underline === 'hover' && {
@@ -62,13 +49,18 @@ const LinkRoot = styled(Typography, {
     '&:hover': {
       textDecoration: 'underline'
     }
-  }, ownerState.underline === 'always' && {
-    textDecoration: 'underline',
-    textDecorationColor: color !== 'inherit' ? alpha(color, 0.4) : undefined,
+  }, ownerState.underline === 'always' && _extends({
+    textDecoration: 'underline'
+  }, ownerState.color !== 'inherit' && {
+    textDecorationColor: getTextDecoration({
+      theme,
+      ownerState
+    })
+  }, {
     '&:hover': {
       textDecorationColor: 'inherit'
     }
-  }, ownerState.component === 'button' && {
+  }), ownerState.component === 'button' && {
     position: 'relative',
     WebkitTapHighlightColor: 'transparent',
     backgroundColor: 'transparent',
@@ -98,7 +90,6 @@ const LinkRoot = styled(Typography, {
   });
 });
 const Link = /*#__PURE__*/React.forwardRef(function Link(inProps, ref) {
-  const theme = useTheme();
   const props = useThemeProps({
     props: inProps,
     name: 'MuiLink'
@@ -117,7 +108,6 @@ const Link = /*#__PURE__*/React.forwardRef(function Link(inProps, ref) {
   } = props,
         other = _objectWithoutPropertiesLoose(props, _excluded);
 
-  const sxColor = typeof sx === 'function' ? sx(theme).color : sx?.color;
   const {
     isFocusVisibleRef,
     onBlur: handleBlurVisible,
@@ -152,9 +142,7 @@ const Link = /*#__PURE__*/React.forwardRef(function Link(inProps, ref) {
   };
 
   const ownerState = _extends({}, props, {
-    // It is too complex to support any types of `sx`.
-    // Need to find a better way to get rid of the color manipulation for `textDecorationColor`.
-    color: (typeof sxColor === 'function' ? sxColor(theme) : sxColor) || color,
+    color,
     component,
     focusVisible,
     underline,
@@ -172,8 +160,8 @@ const Link = /*#__PURE__*/React.forwardRef(function Link(inProps, ref) {
     ref: handlerRef,
     ownerState: ownerState,
     variant: variant,
-    sx: [...(inProps.color ? [{
-      color: colorTransformations[color] || color
+    sx: [...(!Object.keys(colorTransformations).includes(color) ? [{
+      color
     }] : []), ...(Array.isArray(sx) ? sx : [sx])]
   }, other));
 });

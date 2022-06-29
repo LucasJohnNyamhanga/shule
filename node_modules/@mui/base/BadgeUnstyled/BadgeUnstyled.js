@@ -1,13 +1,12 @@
 import _extends from "@babel/runtime/helpers/esm/extends";
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
-const _excluded = ["badgeContent", "component", "children", "className", "components", "componentsProps", "invisible", "max", "showZero"];
+const _excluded = ["badgeContent", "component", "children", "components", "componentsProps", "invisible", "max", "showZero"];
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import composeClasses from '../composeClasses';
-import appendOwnerState from '../utils/appendOwnerState';
 import useBadge from './useBadge';
 import { getBadgeUnstyledUtilityClass } from './badgeUnstyledClasses';
+import { useSlotProps } from '../utils';
 import { jsx as _jsx } from "react/jsx-runtime";
 import { jsxs as _jsxs } from "react/jsx-runtime";
 
@@ -21,12 +20,22 @@ const useUtilityClasses = ownerState => {
   };
   return composeClasses(slots, getBadgeUnstyledUtilityClass, undefined);
 };
+/**
+ *
+ * Demos:
+ *
+ * - [Badge](https://mui.com/base/react-badge/)
+ *
+ * API:
+ *
+ * - [BadgeUnstyled API](https://mui.com/base/api/badge-unstyled/)
+ */
+
 
 const BadgeUnstyled = /*#__PURE__*/React.forwardRef(function BadgeUnstyled(props, ref) {
   const {
     component,
     children,
-    className,
     components = {},
     componentsProps = {},
     max: maxProp = 99,
@@ -52,15 +61,25 @@ const BadgeUnstyled = /*#__PURE__*/React.forwardRef(function BadgeUnstyled(props
 
   const classes = useUtilityClasses(ownerState);
   const Root = component || components.Root || 'span';
-  const rootProps = appendOwnerState(Root, _extends({}, other, componentsProps.root), ownerState);
+  const rootProps = useSlotProps({
+    elementType: Root,
+    externalSlotProps: componentsProps.root,
+    externalForwardedProps: other,
+    additionalProps: {
+      ref
+    },
+    ownerState,
+    className: classes.root
+  });
   const Badge = components.Badge || 'span';
-  const badgeProps = appendOwnerState(Badge, componentsProps.badge, ownerState);
+  const badgeProps = useSlotProps({
+    elementType: Badge,
+    externalSlotProps: componentsProps.badge,
+    ownerState,
+    className: classes.badge
+  });
   return /*#__PURE__*/_jsxs(Root, _extends({}, rootProps, {
-    ref: ref
-  }, other, {
-    className: clsx(classes.root, rootProps.className, className),
     children: [children, /*#__PURE__*/_jsx(Badge, _extends({}, badgeProps, {
-      className: clsx(classes.badge, badgeProps.className),
       children: displayValue
     }))]
   }));
@@ -70,7 +89,7 @@ process.env.NODE_ENV !== "production" ? BadgeUnstyled.propTypes
 = {
   // ----------------------------- Warning --------------------------------
   // | These PropTypes are generated from the TypeScript type definitions |
-  // |     To update them edit the d.ts file and run "yarn proptypes"     |
+  // |     To update them edit TypeScript types and run "yarn proptypes"  |
   // ----------------------------------------------------------------------
 
   /**
@@ -82,11 +101,6 @@ process.env.NODE_ENV !== "production" ? BadgeUnstyled.propTypes
    * The badge will be added relative to this node.
    */
   children: PropTypes.node,
-
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
 
   /**
    * The component used for the root node.
@@ -109,8 +123,8 @@ process.env.NODE_ENV !== "production" ? BadgeUnstyled.propTypes
    * @default {}
    */
   componentsProps: PropTypes.shape({
-    badge: PropTypes.object,
-    root: PropTypes.object
+    badge: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object])
   }),
 
   /**

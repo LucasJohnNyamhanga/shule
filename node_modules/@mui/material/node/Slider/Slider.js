@@ -52,11 +52,7 @@ const SliderRoot = (0, _styled.default)('span', {
     const {
       ownerState
     } = props;
-    const marks = ownerState.marksProp === true && ownerState.step !== null ? [...Array(Math.floor((ownerState.max - ownerState.min) / ownerState.step) + 1)].map((_, index) => ({
-      value: ownerState.min + ownerState.step * index
-    })) : ownerState.marksProp || [];
-    const marked = marks.length > 0 && marks.some(mark => mark.label);
-    return [styles.root, styles[`color${(0, _capitalize.default)(ownerState.color)}`], ownerState.size !== 'medium' && styles[`size${(0, _capitalize.default)(ownerState.size)}`], marked && styles.marked, ownerState.orientation === 'vertical' && styles.vertical, ownerState.track === 'inverted' && styles.trackInverted, ownerState.track === false && styles.trackFalse];
+    return [styles.root, styles[`color${(0, _capitalize.default)(ownerState.color)}`], ownerState.size !== 'medium' && styles[`size${(0, _capitalize.default)(ownerState.size)}`], ownerState.marked && styles.marked, ownerState.orientation === 'vertical' && styles.vertical, ownerState.track === 'inverted' && styles.trackInverted, ownerState.track === false && styles.trackFalse];
   }
 })(({
   theme,
@@ -68,7 +64,7 @@ const SliderRoot = (0, _styled.default)('span', {
   position: 'relative',
   cursor: 'pointer',
   touchAction: 'none',
-  color: theme.palette[ownerState.color].main,
+  color: (theme.vars || theme).palette[ownerState.color].main,
   WebkitTapHighlightColor: 'transparent'
 }, ownerState.orientation === 'horizontal' && (0, _extends2.default)({
   height: 4,
@@ -103,7 +99,7 @@ const SliderRoot = (0, _styled.default)('span', {
   [`&.${sliderClasses.disabled}`]: {
     pointerEvents: 'none',
     cursor: 'default',
-    color: theme.palette.grey[400]
+    color: (theme.vars || theme).palette.grey[400]
   },
   [`&.${sliderClasses.dragging}`]: {
     [`& .${sliderClasses.thumb}, & .${sliderClasses.track}`]: {
@@ -196,8 +192,8 @@ const SliderTrack = (0, _styled.default)('span', {
   }, ownerState.track === false && {
     display: 'none'
   }, ownerState.track === 'inverted' && {
-    backgroundColor: color,
-    borderColor: color
+    backgroundColor: theme.vars ? theme.vars.palette.Slider[`${ownerState.color}Track`] : color,
+    borderColor: theme.vars ? theme.vars.palette.Slider[`${ownerState.color}Track`] : color
   });
 });
 exports.SliderTrack = SliderTrack;
@@ -256,7 +252,7 @@ const SliderThumb = (0, _styled.default)('span', {
     borderRadius: 'inherit',
     width: '100%',
     height: '100%',
-    boxShadow: theme.shadows[2]
+    boxShadow: (theme.vars || theme).shadows[2]
   }, ownerState.size === 'small' && {
     boxShadow: 'none'
   }),
@@ -272,13 +268,13 @@ const SliderThumb = (0, _styled.default)('span', {
     transform: 'translate(-50%, -50%)'
   },
   [`&:hover, &.${sliderClasses.focusVisible}`]: {
-    boxShadow: `0px 0px 0px 8px ${(0, _system.alpha)(theme.palette[ownerState.color].main, 0.16)}`,
+    boxShadow: `0px 0px 0px 8px ${theme.vars ? `rgba(${theme.vars.palette[ownerState.color].mainChannel} / 0.16)` : (0, _system.alpha)(theme.palette[ownerState.color].main, 0.16)}`,
     '@media (hover: none)': {
       boxShadow: 'none'
     }
   },
   [`&.${sliderClasses.active}`]: {
-    boxShadow: `0px 0px 0px 14px ${(0, _system.alpha)(theme.palette[ownerState.color].main, 0.16)}`
+    boxShadow: `0px 0px 0px 14px ${theme.vars ? `rgba(${theme.vars.palette[ownerState.color].mainChannel} / 0.16)` : (0, _system.alpha)(theme.palette[ownerState.color].main, 0.16)}`
   },
   [`&.${sliderClasses.disabled}`]: {
     '&:hover': {
@@ -318,31 +314,44 @@ const SliderValueLabel = (0, _styled.default)(_SliderUnstyled.SliderValueLabelUn
   transition: theme.transitions.create(['transform'], {
     duration: theme.transitions.duration.shortest
   }),
-  top: -10,
   transformOrigin: 'bottom center',
   transform: 'translateY(-100%) scale(0)',
   position: 'absolute',
-  backgroundColor: theme.palette.grey[600],
+  backgroundColor: (theme.vars || theme).palette.grey[600],
   borderRadius: 2,
-  color: theme.palette.common.white,
+  color: (theme.vars || theme).palette.common.white,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   padding: '0.25rem 0.75rem'
-}, ownerState.size === 'small' && {
-  fontSize: theme.typography.pxToRem(12),
-  padding: '0.25rem 0.5rem'
-}, {
+}, ownerState.orientation === 'horizontal' && {
+  top: '-10px',
   '&:before': {
     position: 'absolute',
     content: '""',
     width: 8,
     height: 8,
-    bottom: 0,
-    left: '50%',
     transform: 'translate(-50%, 50%) rotate(45deg)',
-    backgroundColor: 'inherit'
+    backgroundColor: 'inherit',
+    bottom: 0,
+    left: '50%'
   }
+}, ownerState.orientation === 'vertical' && {
+  right: '30px',
+  top: '25px',
+  '&:before': {
+    position: 'absolute',
+    content: '""',
+    width: 8,
+    height: 8,
+    transform: 'translate(-50%, 50%) rotate(45deg)',
+    backgroundColor: 'inherit',
+    right: '-20%',
+    top: '25%'
+  }
+}, ownerState.size === 'small' && {
+  fontSize: theme.typography.pxToRem(12),
+  padding: '0.25rem 0.5rem'
 }));
 exports.SliderValueLabel = SliderValueLabel;
 process.env.NODE_ENV !== "production" ? SliderValueLabel.propTypes
@@ -380,7 +389,7 @@ const SliderMark = (0, _styled.default)('span', {
   left: '50%',
   transform: 'translate(-50%, 1px)'
 }, markActive && {
-  backgroundColor: theme.palette.background.paper,
+  backgroundColor: (theme.vars || theme).palette.background.paper,
   opacity: 0.8
 }));
 exports.SliderMark = SliderMark;
@@ -407,7 +416,7 @@ const SliderMarkLabel = (0, _styled.default)('span', {
   ownerState,
   markLabelActive
 }) => (0, _extends2.default)({}, theme.typography.body2, {
-  color: theme.palette.text.secondary,
+  color: (theme.vars || theme).palette.text.secondary,
   position: 'absolute',
   whiteSpace: 'nowrap'
 }, ownerState.orientation === 'horizontal' && {
@@ -423,7 +432,7 @@ const SliderMarkLabel = (0, _styled.default)('span', {
     left: 44
   }
 }, markLabelActive && {
-  color: theme.palette.text.primary
+  color: (theme.vars || theme).palette.text.primary
 }));
 exports.SliderMarkLabel = SliderMarkLabel;
 process.env.NODE_ENV !== "production" ? SliderMarkLabel.propTypes
@@ -597,22 +606,24 @@ process.env.NODE_ENV !== "production" ? Slider.propTypes
    * @default {}
    */
   componentsProps: _propTypes.default.shape({
-    input: _propTypes.default.object,
-    mark: _propTypes.default.object,
-    markLabel: _propTypes.default.object,
-    rail: _propTypes.default.object,
-    root: _propTypes.default.object,
-    thumb: _propTypes.default.object,
-    track: _propTypes.default.object,
-    valueLabel: _propTypes.default.shape({
+    input: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object]),
+    mark: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object]),
+    markLabel: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object]),
+    rail: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object]),
+    root: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object]),
+    thumb: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object]),
+    track: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object]),
+    valueLabel: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.shape({
+      children: _propTypes.default.element,
       className: _propTypes.default.string,
       components: _propTypes.default.shape({
         Root: _propTypes.default.elementType
       }),
+      open: _propTypes.default.bool,
       style: _propTypes.default.object,
-      value: _propTypes.default.oneOfType([_propTypes.default.arrayOf(_propTypes.default.number), _propTypes.default.number]),
+      value: _propTypes.default.number,
       valueLabelDisplay: _propTypes.default.oneOf(['auto', 'off', 'on'])
-    })
+    })])
   }),
 
   /**

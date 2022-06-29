@@ -16,7 +16,7 @@ export default function useMenuItem(props: UseMenuItemParameters): {
         onMouseUp: React.MouseEventHandler<Element>;
         ref: React.Ref<any>;
     };
-    itemState: null;
+    disabled: boolean;
     focusVisible: boolean;
 } | {
     getRootProps: (other?: Record<string, any> | undefined) => {
@@ -35,6 +35,6 @@ export default function useMenuItem(props: UseMenuItemParameters): {
         onMouseUp: React.MouseEventHandler<Element>;
         ref: React.Ref<any>;
     };
-    itemState: import("../MenuUnstyled").MenuItemState | undefined;
+    disabled: boolean;
     focusVisible: boolean;
 };

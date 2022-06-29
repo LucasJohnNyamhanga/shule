@@ -9,6 +9,14 @@ export interface ButtonClasses {
     textPrimary: string;
     /** Styles applied to the root element if `variant="text"` and `color="secondary"`. */
     textSecondary: string;
+    /** Styles applied to the root element if `variant="text"` and `color="success"`. */
+    textSuccess: string;
+    /** Styles applied to the root element if `variant="text"` and `color="error"`. */
+    textError: string;
+    /** Styles applied to the root element if `variant="text"` and `color="info"`. */
+    textInfo: string;
+    /** Styles applied to the root element if `variant="text"` and `color="warning"`. */
+    textWarning: string;
     /** Styles applied to the root element if `variant="outlined"`. */
     outlined: string;
     /** Styles applied to the root element if `variant="outlined"` and `color="inherit"`. */
@@ -17,6 +25,14 @@ export interface ButtonClasses {
     outlinedPrimary: string;
     /** Styles applied to the root element if `variant="outlined"` and `color="secondary"`. */
     outlinedSecondary: string;
+    /** Styles applied to the root element if `variant="outlined"` and `color="success"`. */
+    outlinedSuccess: string;
+    /** Styles applied to the root element if `variant="outlined"` and `color="error"`. */
+    outlinedError: string;
+    /** Styles applied to the root element if `variant="outlined"` and `color="info"`. */
+    outlinedInfo: string;
+    /** Styles applied to the root element if `variant="outlined"` and `color="warning"`. */
+    outlinedWarning: string;
     /** Styles applied to the root element if `variant="contained"`. */
     contained: string;
     /** Styles applied to the root element if `variant="contained"` and `color="inherit"`. */
@@ -25,6 +41,14 @@ export interface ButtonClasses {
     containedPrimary: string;
     /** Styles applied to the root element if `variant="contained"` and `color="secondary"`. */
     containedSecondary: string;
+    /** Styles applied to the root element if `variant="contained"` and `color="success"`. */
+    containedSuccess: string;
+    /** Styles applied to the root element if `variant="contained"` and `color="info"`. */
+    containedInfo: string;
+    /** Styles applied to the root element if `variant="contained"` and `color="error"`. */
+    containedError: string;
+    /** Styles applied to the root element if `variant="contained"` and `color="warning"`. */
+    containedWarning: string;
     /** Styles applied to the root element if `disableElevation={true}`. */
     disableElevation: string;
     /** State class applied to the ButtonBase root element if the button is keyboard focused. */

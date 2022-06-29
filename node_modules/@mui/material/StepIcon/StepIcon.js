@@ -42,15 +42,15 @@ const StepIconRoot = styled(SvgIcon, {
   transition: theme.transitions.create('color', {
     duration: theme.transitions.duration.shortest
   }),
-  color: theme.palette.text.disabled,
+  color: (theme.vars || theme).palette.text.disabled,
   [`&.${stepIconClasses.completed}`]: {
-    color: theme.palette.primary.main
+    color: (theme.vars || theme).palette.primary.main
   },
   [`&.${stepIconClasses.active}`]: {
-    color: theme.palette.primary.main
+    color: (theme.vars || theme).palette.primary.main
   },
   [`&.${stepIconClasses.error}`]: {
-    color: theme.palette.error.main
+    color: (theme.vars || theme).palette.error.main
   }
 }));
 const StepIconText = styled('text', {
@@ -60,7 +60,7 @@ const StepIconText = styled('text', {
 })(({
   theme
 }) => ({
-  fill: theme.palette.primary.contrastText,
+  fill: (theme.vars || theme).palette.primary.contrastText,
   fontSize: theme.typography.caption.fontSize,
   fontFamily: theme.typography.fontFamily
 }));
@@ -120,8 +120,9 @@ const StepIcon = /*#__PURE__*/React.forwardRef(function StepIcon(inProps, ref) {
       })), /*#__PURE__*/_jsx(StepIconText, {
         className: classes.text,
         x: "12",
-        y: "16",
+        y: "12",
         textAnchor: "middle",
+        dominantBaseline: "central",
         ownerState: ownerState,
         children: icon
       })]

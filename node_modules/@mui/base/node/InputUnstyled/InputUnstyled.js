@@ -13,17 +13,15 @@ var _objectWithoutPropertiesLoose2 = _interopRequireDefault(require("@babel/runt
 
 var React = _interopRequireWildcard(require("react"));
 
-var _clsx = _interopRequireDefault(require("clsx"));
-
 var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _appendOwnerState = _interopRequireDefault(require("../utils/appendOwnerState"));
 
 var _isHostComponent = _interopRequireDefault(require("../utils/isHostComponent"));
 
 var _inputUnstyledClasses = _interopRequireDefault(require("./inputUnstyledClasses"));
 
 var _useInput = _interopRequireDefault(require("./useInput"));
+
+var _utils = require("../utils");
 
 var _jsxRuntime = require("react/jsx-runtime");
 
@@ -44,8 +42,8 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
  *
  * - [InputUnstyled API](https://mui.com/base/api/input-unstyled/)
  */
-const InputUnstyled = /*#__PURE__*/React.forwardRef(function InputUnstyled(props, ref) {
-  var _componentsProps$inpu, _ref, _componentsProps$root, _components$Input, _componentsProps$inpu2;
+const InputUnstyled = /*#__PURE__*/React.forwardRef(function InputUnstyled(props, forwardedRef) {
+  var _ref, _components$Input;
 
   const {
     'aria-describedby': ariaDescribedby,
@@ -98,7 +96,7 @@ const InputUnstyled = /*#__PURE__*/React.forwardRef(function InputUnstyled(props
     onFocus,
     required,
     value
-  }, (_componentsProps$inpu = componentsProps.input) == null ? void 0 : _componentsProps$inpu.ref);
+  });
   const ownerState = (0, _extends2.default)({}, props, {
     disabled: disabledState,
     error: errorState,
@@ -107,8 +105,19 @@ const InputUnstyled = /*#__PURE__*/React.forwardRef(function InputUnstyled(props
     multiline,
     type
   });
-  const rootStateClasses = (0, _clsx.default)(disabledState && _inputUnstyledClasses.default.disabled, errorState && _inputUnstyledClasses.default.error, focused && _inputUnstyledClasses.default.focused, Boolean(formControlContext) && _inputUnstyledClasses.default.formControl, multiline && _inputUnstyledClasses.default.multiline, Boolean(startAdornment) && _inputUnstyledClasses.default.adornedStart, Boolean(endAdornment) && _inputUnstyledClasses.default.adornedEnd);
-  const inputStateClasses = (0, _clsx.default)(disabledState && _inputUnstyledClasses.default.disabled, multiline && _inputUnstyledClasses.default.multiline);
+  const rootStateClasses = {
+    [_inputUnstyledClasses.default.disabled]: disabledState,
+    [_inputUnstyledClasses.default.error]: errorState,
+    [_inputUnstyledClasses.default.focused]: focused,
+    [_inputUnstyledClasses.default.formControl]: Boolean(formControlContext),
+    [_inputUnstyledClasses.default.multiline]: multiline,
+    [_inputUnstyledClasses.default.adornedStart]: Boolean(startAdornment),
+    [_inputUnstyledClasses.default.adornedEnd]: Boolean(endAdornment)
+  };
+  const inputStateClasses = {
+    [_inputUnstyledClasses.default.disabled]: disabledState,
+    [_inputUnstyledClasses.default.multiline]: multiline
+  };
   const propsToForward = {
     'aria-describedby': ariaDescribedby,
     'aria-label': ariaLabel,
@@ -124,14 +133,25 @@ const InputUnstyled = /*#__PURE__*/React.forwardRef(function InputUnstyled(props
     type
   };
   const Root = (_ref = component != null ? component : components.Root) != null ? _ref : 'div';
-  const rootProps = (0, _appendOwnerState.default)(Root, (0, _extends2.default)({}, getRootProps((0, _extends2.default)({}, other, componentsProps.root)), {
-    className: (0, _clsx.default)(_inputUnstyledClasses.default.root, rootStateClasses, className, (_componentsProps$root = componentsProps.root) == null ? void 0 : _componentsProps$root.className)
-  }), ownerState);
-  let Input = (_components$Input = components.Input) != null ? _components$Input : 'input'; // TODO: type this properly
-
-  let inputProps = (0, _appendOwnerState.default)(Input, (0, _extends2.default)({}, getInputProps((0, _extends2.default)({}, componentsProps.input, propsToForward)), {
-    className: (0, _clsx.default)(_inputUnstyledClasses.default.input, inputStateClasses, (_componentsProps$inpu2 = componentsProps.input) == null ? void 0 : _componentsProps$inpu2.className)
-  }), ownerState);
+  const rootProps = (0, _utils.useSlotProps)({
+    elementType: Root,
+    getSlotProps: getRootProps,
+    externalSlotProps: componentsProps.root,
+    externalForwardedProps: other,
+    additionalProps: {
+      ref: forwardedRef
+    },
+    ownerState,
+    className: [_inputUnstyledClasses.default.root, rootStateClasses, className]
+  });
+  let Input = (_components$Input = components.Input) != null ? _components$Input : 'input';
+  let inputProps = (0, _utils.useSlotProps)({
+    elementType: Input,
+    getSlotProps: otherHandlers => getInputProps((0, _extends2.default)({}, otherHandlers, propsToForward)),
+    externalSlotProps: componentsProps.input,
+    ownerState,
+    className: [_inputUnstyledClasses.default.input, inputStateClasses]
+  });
 
   if (multiline) {
     var _components$Textarea, _components$Textarea2;
@@ -147,17 +167,16 @@ const InputUnstyled = /*#__PURE__*/React.forwardRef(function InputUnstyled(props
       }
     }
 
-    inputProps = (0, _extends2.default)({
-      type: undefined
-    }, !hasHostTextarea && {
+    inputProps = (0, _extends2.default)({}, !hasHostTextarea && {
       minRows: rows || minRows,
       maxRows: rows || maxRows
-    }, hasHostTextarea ? inputPropsWithoutOwnerState : inputProps);
+    }, hasHostTextarea ? inputPropsWithoutOwnerState : inputProps, {
+      type: undefined
+    });
     Input = (_components$Textarea2 = components.Textarea) != null ? _components$Textarea2 : 'textarea';
   }
 
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(Root, (0, _extends2.default)({}, rootProps, {
-    ref: ref,
     children: [startAdornment, /*#__PURE__*/(0, _jsxRuntime.jsx)(Input, (0, _extends2.default)({}, inputProps)), endAdornment]
   }));
 });
@@ -228,8 +247,8 @@ process.env.NODE_ENV !== "production" ? InputUnstyled.propTypes
    * @default {}
    */
   componentsProps: _propTypes.default.shape({
-    input: _propTypes.default.object,
-    root: _propTypes.default.object
+    input: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object]),
+    root: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object])
   }),
 
   /**
@@ -341,7 +360,9 @@ process.env.NODE_ENV !== "production" ? InputUnstyled.propTypes
    * Type of the `input` element. It should be [a valid HTML5 input type](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Form_%3Cinput%3E_types).
    * @default 'text'
    */
-  type: _propTypes.default.string,
+  type: _propTypes.default
+  /* @typescript-to-proptypes-ignore */
+  .oneOf(['button', 'checkbox', 'color', 'date', 'datetime-local', 'email', 'file', 'hidden', 'image', 'month', 'number', 'password', 'radio', 'range', 'reset', 'search', 'submit', 'tel', 'text', 'time', 'url', 'week']),
 
   /**
    * The value of the `input` element, required for a controlled component.

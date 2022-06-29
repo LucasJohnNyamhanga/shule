@@ -43,7 +43,7 @@ function createTheme(options = {}, ...args) {
   const palette = (0, _createPalette.default)(paletteInput);
   const systemTheme = (0, _system.createTheme)(options);
   let muiTheme = (0, _utils.deepmerge)(systemTheme, {
-    mixins: (0, _createMixins.default)(systemTheme.breakpoints, systemTheme.spacing, mixinsInput),
+    mixins: (0, _createMixins.default)(systemTheme.breakpoints, mixinsInput),
     palette,
     // Don't use [...shadows] until you've verified its transpiled code is not invoking the iterator protocol.
     shadows: _shadows.default.slice(),

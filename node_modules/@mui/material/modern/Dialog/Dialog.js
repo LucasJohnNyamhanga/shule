@@ -125,7 +125,7 @@ const DialogPaper = styled(Paper, {
       maxWidth: 'calc(100% - 64px)'
     }
   }
-}, ownerState.maxWidth !== 'xs' && {
+}, ownerState.maxWidth && ownerState.maxWidth !== 'xs' && {
   maxWidth: `${theme.breakpoints.values[ownerState.maxWidth]}${theme.breakpoints.unit}`,
   [`&.${dialogClasses.paperScrollBody}`]: {
     [theme.breakpoints.down(theme.breakpoints.values[ownerState.maxWidth] + 32 * 2)]: {
@@ -226,12 +226,16 @@ const Dialog = /*#__PURE__*/React.forwardRef(function Dialog(inProps, ref) {
   }, [ariaLabelledby]);
   return /*#__PURE__*/_jsx(DialogRoot, _extends({
     className: clsx(classes.root, className),
-    BackdropProps: _extends({
-      transitionDuration,
-      as: BackdropComponent
-    }, BackdropProps),
     closeAfterTransition: true,
-    BackdropComponent: DialogBackdrop,
+    components: {
+      Backdrop: DialogBackdrop
+    },
+    componentsProps: {
+      backdrop: _extends({
+        transitionDuration,
+        as: BackdropComponent
+      }, BackdropProps)
+    },
     disableEscapeKeyDown: disableEscapeKeyDown,
     onClose: onClose,
     open: open,
@@ -287,6 +291,7 @@ process.env.NODE_ENV !== "production" ? Dialog.propTypes
 
   /**
    * A backdrop component. This prop enables custom backdrop rendering.
+   * @deprecated Use `components.Backdrop` instead.
    * @default styled(Backdrop, {
    *   name: 'MuiModal',
    *   slot: 'Backdrop',

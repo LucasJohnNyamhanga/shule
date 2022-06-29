@@ -100,7 +100,7 @@ const InputBaseRoot = (0, _styled.default)('div', {
   theme,
   ownerState
 }) => (0, _extends2.default)({}, theme.typography.body1, {
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   lineHeight: '1.4375em',
   // 23px
   boxSizing: 'border-box',
@@ -110,7 +110,7 @@ const InputBaseRoot = (0, _styled.default)('div', {
   display: 'inline-flex',
   alignItems: 'center',
   [`&.${_inputBaseClasses.default.disabled}`]: {
-    color: theme.palette.text.disabled,
+    color: (theme.vars || theme).palette.text.disabled,
     cursor: 'default'
   }
 }, ownerState.multiline && (0, _extends2.default)({
@@ -130,17 +130,23 @@ const InputBaseComponent = (0, _styled.default)('input', {
   ownerState
 }) => {
   const light = theme.palette.mode === 'light';
-  const placeholder = {
-    color: 'currentColor',
-    opacity: light ? 0.42 : 0.5,
+  const placeholder = (0, _extends2.default)({
+    color: 'currentColor'
+  }, theme.vars ? {
+    opacity: theme.vars.opacity.inputPlaceholder
+  } : {
+    opacity: light ? 0.42 : 0.5
+  }, {
     transition: theme.transitions.create('opacity', {
       duration: theme.transitions.duration.shorter
     })
-  };
+  });
   const placeholderHidden = {
     opacity: '0 !important'
   };
-  const placeholderVisible = {
+  const placeholderVisible = theme.vars ? {
+    opacity: theme.vars.opacity.inputPlaceholder
+  } : {
     opacity: light ? 0.42 : 0.5
   };
   return (0, _extends2.default)({
@@ -201,7 +207,7 @@ const InputBaseComponent = (0, _styled.default)('input', {
     [`&.${_inputBaseClasses.default.disabled}`]: {
       opacity: 1,
       // Reset iOS opacity
-      WebkitTextFillColor: theme.palette.text.disabled // Fix opacity Safari bug
+      WebkitTextFillColor: (theme.vars || theme).palette.text.disabled // Fix opacity Safari bug
 
     },
     '&:-webkit-autofill': {

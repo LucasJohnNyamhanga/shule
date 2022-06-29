@@ -42,8 +42,8 @@ const DialogContentRoot = styled('div', {
   padding: '20px 24px'
 }, ownerState.dividers ? {
   padding: '16px 24px',
-  borderTop: `1px solid ${theme.palette.divider}`,
-  borderBottom: `1px solid ${theme.palette.divider}`
+  borderTop: `1px solid ${(theme.vars || theme).palette.divider}`,
+  borderBottom: `1px solid ${(theme.vars || theme).palette.divider}`
 } : {
   [`.${dialogTitleClasses.root} + &`]: {
     paddingTop: 0

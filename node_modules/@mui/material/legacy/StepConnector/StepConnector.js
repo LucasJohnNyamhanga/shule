@@ -57,9 +57,10 @@ var StepConnectorLine = styled('span', {
 })(function (_ref2) {
   var ownerState = _ref2.ownerState,
       theme = _ref2.theme;
+  var borderColor = theme.palette.mode === 'light' ? theme.palette.grey[400] : theme.palette.grey[600];
   return _extends({
     display: 'block',
-    borderColor: theme.palette.mode === 'light' ? theme.palette.grey[400] : theme.palette.grey[600]
+    borderColor: theme.vars ? theme.vars.palette.StepConnector.border : borderColor
   }, ownerState.orientation === 'horizontal' && {
     borderTopStyle: 'solid',
     borderTopWidth: 1

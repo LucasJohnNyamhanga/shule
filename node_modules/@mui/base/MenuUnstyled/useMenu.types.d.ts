@@ -3,8 +3,8 @@ import { UseListboxRootSlotProps } from '../ListboxUnstyled';
 export interface MenuItemMetadata {
     id: string;
     disabled: boolean;
-    ref: React.RefObject<HTMLElement>;
     label?: string;
+    ref: React.RefObject<HTMLElement>;
 }
 export interface MenuItemState {
     disabled: boolean;
@@ -14,13 +14,14 @@ export interface UseMenuParameters {
     open?: boolean;
     onClose?: () => void;
     listboxId?: string;
-    listboxRef?: React.Ref<HTMLElement>;
+    listboxRef?: React.Ref<any>;
 }
 interface UseMenuListboxSlotEventHandlers {
     onBlur: React.FocusEventHandler;
     onKeyDown: React.KeyboardEventHandler;
 }
 export declare type UseMenuListboxSlotProps<TOther = {}> = UseListboxRootSlotProps<Omit<TOther, keyof UseMenuListboxSlotEventHandlers> & UseMenuListboxSlotEventHandlers> & {
+    ref: React.Ref<any>;
     role: React.AriaRole;
 };
 export {};

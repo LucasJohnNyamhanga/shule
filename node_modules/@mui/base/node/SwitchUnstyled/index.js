@@ -1,5 +1,7 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -26,30 +28,34 @@ Object.defineProperty(exports, "useSwitch", {
   }
 });
 
-var _SwitchUnstyled = _interopRequireWildcard(require("./SwitchUnstyled"));
+var _SwitchUnstyled = _interopRequireDefault(require("./SwitchUnstyled"));
 
-Object.keys(_SwitchUnstyled).forEach(function (key) {
+var _SwitchUnstyled2 = require("./SwitchUnstyled.types");
+
+Object.keys(_SwitchUnstyled2).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
-  if (key in exports && exports[key] === _SwitchUnstyled[key]) return;
+  if (key in exports && exports[key] === _SwitchUnstyled2[key]) return;
   Object.defineProperty(exports, key, {
     enumerable: true,
     get: function () {
-      return _SwitchUnstyled[key];
+      return _SwitchUnstyled2[key];
     }
   });
 });
 
-var _useSwitch = _interopRequireWildcard(require("./useSwitch"));
+var _useSwitch = _interopRequireDefault(require("./useSwitch"));
 
-Object.keys(_useSwitch).forEach(function (key) {
+var _useSwitch2 = require("./useSwitch.types");
+
+Object.keys(_useSwitch2).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
-  if (key in exports && exports[key] === _useSwitch[key]) return;
+  if (key in exports && exports[key] === _useSwitch2[key]) return;
   Object.defineProperty(exports, key, {
     enumerable: true,
     get: function () {
-      return _useSwitch[key];
+      return _useSwitch2[key];
     }
   });
 });

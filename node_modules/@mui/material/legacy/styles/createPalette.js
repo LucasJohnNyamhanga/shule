@@ -278,7 +278,8 @@ export default function createPalette(palette) {
 
   var paletteOutput = deepmerge(_extends({
     // A collection of common colors.
-    common: common,
+    common: _extends({}, common),
+    // prevent mutable object.
     // The palette mode, can be light or dark.
     mode: mode,
     // The colors used to represent primary interface elements for a user.

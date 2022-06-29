@@ -52,7 +52,7 @@ var spacingKeys = [].concat(marginKeys, paddingKeys);
 export function createUnaryUnit(theme, themeKey, defaultValue, propName) {
   var _getPath;
 
-  var themeSpacing = (_getPath = getPath(theme, themeKey)) != null ? _getPath : defaultValue;
+  var themeSpacing = (_getPath = getPath(theme, themeKey, false)) != null ? _getPath : defaultValue;
 
   if (typeof themeSpacing === 'number') {
     return function (abs) {

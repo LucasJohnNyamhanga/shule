@@ -90,7 +90,7 @@ const TooltipPopper = (0, _styled.default)(_Popper.default, {
   ownerState,
   open
 }) => (0, _extends2.default)({
-  zIndex: theme.zIndex.tooltip,
+  zIndex: (theme.vars || theme).zIndex.tooltip,
   pointerEvents: 'none'
 }, !ownerState.disableInteractive && {
   pointerEvents: 'auto'
@@ -151,9 +151,9 @@ const TooltipTooltip = (0, _styled.default)('div', {
   theme,
   ownerState
 }) => (0, _extends2.default)({
-  backgroundColor: (0, _system.alpha)(theme.palette.grey[700], 0.92),
-  borderRadius: theme.shape.borderRadius,
-  color: theme.palette.common.white,
+  backgroundColor: theme.vars ? theme.vars.palette.Tooltip.bg : (0, _system.alpha)(theme.palette.grey[700], 0.92),
+  borderRadius: (theme.vars || theme).shape.borderRadius,
+  color: (theme.vars || theme).palette.common.white,
   fontFamily: theme.typography.fontFamily,
   padding: '4px 8px',
   fontSize: theme.typography.pxToRem(11),
@@ -219,7 +219,7 @@ const TooltipArrow = (0, _styled.default)('span', {
   /* = width / sqrt(2) = (length of the hypotenuse) */
   ,
   boxSizing: 'border-box',
-  color: (0, _system.alpha)(theme.palette.grey[700], 0.9),
+  color: theme.vars ? `rgba(${theme.vars.palette.grey.darkChannel} / 0.9)` : (0, _system.alpha)(theme.palette.grey[700], 0.9),
   '&::before': {
     content: '""',
     margin: 'auto',

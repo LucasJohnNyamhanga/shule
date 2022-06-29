@@ -19,8 +19,6 @@ var _utils = require("@mui/utils");
 
 var _system = require("@mui/system");
 
-var _hoistNonReactStatics = _interopRequireDefault(require("hoist-non-react-statics"));
-
 var _useTheme = _interopRequireDefault(require("../styles/useTheme"));
 
 var _useEnhancedEffect = _interopRequireDefault(require("../utils/useEnhancedEffect"));
@@ -141,7 +139,6 @@ const withWidth = (options = {}) => Component => {
     WithWidth.displayName = `WithWidth(${(0, _utils.getDisplayName)(Component)})`;
   }
 
-  (0, _hoistNonReactStatics.default)(WithWidth, Component);
   return WithWidth;
 };
 

@@ -15,7 +15,6 @@ export interface SelectOptionGroup<TValue> {
 export declare type SelectChild<TValue> = SelectOption<TValue> | SelectOptionGroup<TValue>;
 export declare function isOptionGroup<TValue>(child: SelectChild<TValue>): child is SelectOptionGroup<TValue>;
 interface UseSelectCommonProps<TValue> {
-    buttonComponent?: React.ElementType;
     buttonRef?: React.Ref<Element>;
     disabled?: boolean;
     listboxId?: string;

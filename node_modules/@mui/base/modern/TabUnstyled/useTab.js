@@ -4,15 +4,15 @@ const _excluded = ["getRootProps"];
 import { useTabContext, getTabId, getPanelId } from '../TabsUnstyled';
 import { useButton } from '../ButtonUnstyled';
 
-const useTab = props => {
+const useTab = parameters => {
   const {
     value: valueProp,
     onChange,
     onClick,
     onFocus
-  } = props;
+  } = parameters;
 
-  const _useButton = useButton(props),
+  const _useButton = useButton(parameters),
         {
     getRootProps: getRootPropsButton
   } = _useButton,
@@ -29,13 +29,19 @@ const useTab = props => {
   const selectionFollowsFocus = context.selectionFollowsFocus;
   const a11yAttributes = {
     role: 'tab',
-    'aria-controls': getPanelId(context, value),
-    id: getTabId(context, value),
+    'aria-controls': getPanelId(context, value) ?? undefined,
+    id: getTabId(context, value) ?? undefined,
     'aria-selected': selected,
     disabled: otherButtonProps.disabled
   };
 
-  const handleFocus = event => {
+  const createHandleFocus = otherHandlers => event => {
+    otherHandlers.onFocus?.(event);
+
+    if (event.defaultPrevented) {
+      return;
+    }
+
     if (selectionFollowsFocus && !selected) {
       if (onChange) {
         onChange(event, value);
@@ -49,7 +55,13 @@ const useTab = props => {
     }
   };
 
-  const handleClick = event => {
+  const createHandleClick = otherHandlers => event => {
+    otherHandlers.onClick?.(event);
+
+    if (event.defaultPrevented) {
+      return;
+    }
+
     if (!selected) {
       if (onChange) {
         onChange(event, value);
@@ -63,11 +75,11 @@ const useTab = props => {
     }
   };
 
-  const getRootProps = otherHandlers => {
-    const buttonResolvedProps = getRootPropsButton(_extends({
-      onClick: handleClick,
-      onFocus: handleFocus
-    }, otherHandlers));
+  const getRootProps = (otherHandlers = {}) => {
+    const buttonResolvedProps = getRootPropsButton(_extends({}, otherHandlers, {
+      onClick: createHandleClick(otherHandlers),
+      onFocus: createHandleFocus(otherHandlers)
+    }));
     return _extends({}, buttonResolvedProps, a11yAttributes);
   };
 

@@ -92,7 +92,7 @@ const RatingRoot = styled('span', {
   textAlign: 'left',
   WebkitTapHighlightColor: 'transparent',
   [`&.${ratingClasses.disabled}`]: {
-    opacity: theme.palette.action.disabledOpacity,
+    opacity: (theme.vars || theme).palette.action.disabledOpacity,
     pointerEvents: 'none'
   },
   [`&.${ratingClasses.focusVisible} .${ratingClasses.iconActive}`]: {
@@ -145,7 +145,7 @@ const RatingIcon = styled('span', {
 }, ownerState.iconActive && {
   transform: 'scale(1.2)'
 }, ownerState.iconEmpty && {
-  color: theme.palette.action.disabled
+  color: (theme.vars || theme).palette.action.disabled
 }));
 const RatingDecimal = styled('span', {
   name: 'MuiRating',

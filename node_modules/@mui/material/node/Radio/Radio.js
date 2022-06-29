@@ -70,9 +70,9 @@ const RadioRoot = (0, _styled.default)(_SwitchBase.default, {
   theme,
   ownerState
 }) => (0, _extends2.default)({
-  color: theme.palette.text.secondary,
+  color: (theme.vars || theme).palette.text.secondary,
   '&:hover': {
-    backgroundColor: (0, _system.alpha)(ownerState.color === 'default' ? theme.palette.action.active : theme.palette[ownerState.color].main, theme.palette.action.hoverOpacity),
+    backgroundColor: theme.vars ? `rgba(${ownerState.color === 'default' ? theme.vars.palette.action.activeChannel : theme.vars.palette[ownerState.color].mainChannel} / ${theme.vars.palette.action.hoverOpacity})` : (0, _system.alpha)(ownerState.color === 'default' ? theme.palette.action.active : theme.palette[ownerState.color].main, theme.palette.action.hoverOpacity),
     // Reset on touch devices, it doesn't add specificity
     '@media (hover: none)': {
       backgroundColor: 'transparent'
@@ -80,11 +80,11 @@ const RadioRoot = (0, _styled.default)(_SwitchBase.default, {
   }
 }, ownerState.color !== 'default' && {
   [`&.${_radioClasses.default.checked}`]: {
-    color: theme.palette[ownerState.color].main
+    color: (theme.vars || theme).palette[ownerState.color].main
   }
 }, {
   [`&.${_radioClasses.default.disabled}`]: {
-    color: theme.palette.action.disabled
+    color: (theme.vars || theme).palette.action.disabled
   }
 }));
 

@@ -41,17 +41,17 @@ export var FormLabelRoot = styled('label', {
   var theme = _ref2.theme,
       ownerState = _ref2.ownerState;
   return _extends({
-    color: theme.palette.text.secondary
+    color: (theme.vars || theme).palette.text.secondary
   }, theme.typography.body1, (_extends2 = {
     lineHeight: '1.4375em',
     padding: 0,
     position: 'relative'
   }, _defineProperty(_extends2, "&.".concat(formLabelClasses.focused), {
-    color: theme.palette[ownerState.color].main
+    color: (theme.vars || theme).palette[ownerState.color].main
   }), _defineProperty(_extends2, "&.".concat(formLabelClasses.disabled), {
-    color: theme.palette.text.disabled
+    color: (theme.vars || theme).palette.text.disabled
   }), _defineProperty(_extends2, "&.".concat(formLabelClasses.error), {
-    color: theme.palette.error.main
+    color: (theme.vars || theme).palette.error.main
   }), _extends2));
 });
 var AsteriskComponent = styled('span', {
@@ -63,7 +63,7 @@ var AsteriskComponent = styled('span', {
 })(function (_ref3) {
   var theme = _ref3.theme;
   return _defineProperty({}, "&.".concat(formLabelClasses.error), {
-    color: theme.palette.error.main
+    color: (theme.vars || theme).palette.error.main
   });
 });
 var FormLabel = /*#__PURE__*/React.forwardRef(function FormLabel(inProps, ref) {

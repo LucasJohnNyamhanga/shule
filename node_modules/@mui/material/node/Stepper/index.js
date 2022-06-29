@@ -6,8 +6,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var _exportNames = {
-  stepperClasses: true
+  stepperClasses: true,
+  StepperContext: true
 };
+Object.defineProperty(exports, "StepperContext", {
+  enumerable: true,
+  get: function () {
+    return _StepperContext.default;
+  }
+});
 Object.defineProperty(exports, "default", {
   enumerable: true,
   get: function () {
@@ -33,6 +40,20 @@ Object.keys(_stepperClasses).forEach(function (key) {
     enumerable: true,
     get: function () {
       return _stepperClasses[key];
+    }
+  });
+});
+
+var _StepperContext = _interopRequireWildcard(require("./StepperContext"));
+
+Object.keys(_StepperContext).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  if (key in exports && exports[key] === _StepperContext[key]) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _StepperContext[key];
     }
   });
 });

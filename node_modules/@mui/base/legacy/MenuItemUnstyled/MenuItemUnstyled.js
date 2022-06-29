@@ -2,11 +2,10 @@ import _extends from "@babel/runtime/helpers/esm/extends";
 import _objectWithoutProperties from "@babel/runtime/helpers/esm/objectWithoutProperties";
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { appendOwnerState } from '../utils';
 import { getMenuItemUnstyledUtilityClass } from './menuItemUnstyledClasses';
 import useMenuItem from './useMenuItem';
 import composeClasses from '../composeClasses';
+import useSlotProps from '../utils/useSlotProps';
 import { jsx as _jsx } from "react/jsx-runtime";
 
 function getUtilityClasses(ownerState) {
@@ -30,44 +29,43 @@ function getUtilityClasses(ownerState) {
 
 
 var MenuItemUnstyled = /*#__PURE__*/React.forwardRef(function MenuItemUnstyled(props, ref) {
-  var _ref, _componentsProps$root;
+  var _ref;
 
   var children = props.children,
-      className = props.className,
       _props$disabled = props.disabled,
-      disabled = _props$disabled === void 0 ? false : _props$disabled,
+      disabledProp = _props$disabled === void 0 ? false : _props$disabled,
       component = props.component,
       _props$components = props.components,
       components = _props$components === void 0 ? {} : _props$components,
       _props$componentsProp = props.componentsProps,
       componentsProps = _props$componentsProp === void 0 ? {} : _props$componentsProp,
       label = props.label,
-      other = _objectWithoutProperties(props, ["children", "className", "disabled", "component", "components", "componentsProps", "label"]);
-
-  var Root = (_ref = component != null ? component : components.Root) != null ? _ref : 'li';
+      other = _objectWithoutProperties(props, ["children", "disabled", "component", "components", "componentsProps", "label"]);
 
   var _useMenuItem = useMenuItem({
-    component: Root,
-    disabled: disabled,
+    disabled: disabledProp,
     ref: ref,
     label: label
   }),
       getRootProps = _useMenuItem.getRootProps,
-      itemState = _useMenuItem.itemState,
+      disabled = _useMenuItem.disabled,
       focusVisible = _useMenuItem.focusVisible;
 
-  if (itemState == null) {
-    return null;
-  }
-
-  var ownerState = _extends({}, props, itemState, {
+  var ownerState = _extends({}, props, {
+    disabled: disabled,
     focusVisible: focusVisible
   });
 
   var classes = getUtilityClasses(ownerState);
-  var rootProps = appendOwnerState(Root, _extends({}, other, componentsProps.root, getRootProps(other), {
-    className: clsx(classes.root, className, (_componentsProps$root = componentsProps.root) == null ? void 0 : _componentsProps$root.className)
-  }), ownerState);
+  var Root = (_ref = component != null ? component : components.Root) != null ? _ref : 'li';
+  var rootProps = useSlotProps({
+    elementType: Root,
+    getSlotProps: getRootProps,
+    externalSlotProps: componentsProps.root,
+    externalForwardedProps: other,
+    className: classes.root,
+    ownerState: ownerState
+  });
   return /*#__PURE__*/_jsx(Root, _extends({}, rootProps, {
     children: children
   }));
@@ -88,11 +86,6 @@ process.env.NODE_ENV !== "production" ? MenuItemUnstyled.propTypes
   /**
    * @ignore
    */
-  className: PropTypes.string,
-
-  /**
-   * @ignore
-   */
   component: PropTypes.elementType,
 
   /**
@@ -106,7 +99,7 @@ process.env.NODE_ENV !== "production" ? MenuItemUnstyled.propTypes
    * @ignore
    */
   componentsProps: PropTypes.shape({
-    root: PropTypes.object
+    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object])
   }),
 
   /**

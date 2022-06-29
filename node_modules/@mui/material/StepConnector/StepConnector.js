@@ -63,17 +63,20 @@ const StepConnectorLine = styled('span', {
 })(({
   ownerState,
   theme
-}) => _extends({
-  display: 'block',
-  borderColor: theme.palette.mode === 'light' ? theme.palette.grey[400] : theme.palette.grey[600]
-}, ownerState.orientation === 'horizontal' && {
-  borderTopStyle: 'solid',
-  borderTopWidth: 1
-}, ownerState.orientation === 'vertical' && {
-  borderLeftStyle: 'solid',
-  borderLeftWidth: 1,
-  minHeight: 24
-}));
+}) => {
+  const borderColor = theme.palette.mode === 'light' ? theme.palette.grey[400] : theme.palette.grey[600];
+  return _extends({
+    display: 'block',
+    borderColor: theme.vars ? theme.vars.palette.StepConnector.border : borderColor
+  }, ownerState.orientation === 'horizontal' && {
+    borderTopStyle: 'solid',
+    borderTopWidth: 1
+  }, ownerState.orientation === 'vertical' && {
+    borderLeftStyle: 'solid',
+    borderLeftWidth: 1,
+    minHeight: 24
+  });
+});
 const StepConnector = /*#__PURE__*/React.forwardRef(function StepConnector(inProps, ref) {
   const props = useThemeProps({
     props: inProps,

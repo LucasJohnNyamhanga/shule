@@ -1,9 +1,9 @@
 import { useTabContext, getPanelId, getTabId } from '../TabsUnstyled';
 
-const useTabPanel = props => {
+const useTabPanel = parameters => {
   const {
     value
-  } = props;
+  } = parameters;
   const context = useTabContext();
 
   if (context === null) {
@@ -16,9 +16,9 @@ const useTabPanel = props => {
 
   const getRootProps = () => {
     return {
-      'aria-labelledby': tabId,
+      'aria-labelledby': tabId != null ? tabId : undefined,
       hidden,
-      id
+      id: id != null ? id : undefined
     };
   };
 

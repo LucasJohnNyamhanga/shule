@@ -107,8 +107,8 @@ const BadgeBadge = (0, _styled.default)('span', {
     duration: theme.transitions.duration.enteringScreen
   })
 }, ownerState.color !== 'default' && {
-  backgroundColor: theme.palette[ownerState.color].main,
-  color: theme.palette[ownerState.color].contrastText
+  backgroundColor: (theme.vars || theme).palette[ownerState.color].main,
+  color: (theme.vars || theme).palette[ownerState.color].contrastText
 }, ownerState.variant === 'dot' && {
   borderRadius: RADIUS_DOT,
   height: RADIUS_DOT * 2,
@@ -347,8 +347,8 @@ process.env.NODE_ENV !== "production" ? Badge.propTypes
    * @default {}
    */
   componentsProps: _propTypes.default.shape({
-    badge: _propTypes.default.object,
-    root: _propTypes.default.object
+    badge: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object]),
+    root: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object])
   }),
 
   /**

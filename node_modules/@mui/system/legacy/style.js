@@ -3,12 +3,14 @@ import { unstable_capitalize as capitalize } from '@mui/utils';
 import responsivePropType from './responsivePropType';
 import { handleBreakpoints } from './breakpoints';
 export function getPath(obj, path) {
+  var checkVars = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+
   if (!path || typeof path !== 'string') {
     return null;
   } // Check if CSS variables are used
 
 
-  if (obj && obj.vars) {
+  if (obj && obj.vars && checkVars) {
     var val = "vars.".concat(path).split('.').reduce(function (acc, item) {
       return acc && acc[item] ? acc[item] : null;
     }, obj);

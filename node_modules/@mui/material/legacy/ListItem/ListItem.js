@@ -76,17 +76,17 @@ export var ListItemRoot = styled('div', {
   }), !!ownerState.secondaryAction && _defineProperty({}, "& > .".concat(listItemButtonClasses.root), {
     paddingRight: 48
   }), (_extends2 = {}, _defineProperty(_extends2, "&.".concat(listItemClasses.focusVisible), {
-    backgroundColor: theme.palette.action.focus
+    backgroundColor: (theme.vars || theme).palette.action.focus
   }), _defineProperty(_extends2, "&.".concat(listItemClasses.selected), _defineProperty({
-    backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity)
+    backgroundColor: theme.vars ? "rgba(".concat(theme.vars.palette.primary.mainChannel, " / ").concat(theme.vars.palette.action.selectedOpacity, ")") : alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity)
   }, "&.".concat(listItemClasses.focusVisible), {
-    backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity + theme.palette.action.focusOpacity)
+    backgroundColor: theme.vars ? "rgba(".concat(theme.vars.palette.primary.mainChannel, " / calc(").concat(theme.vars.palette.action.selectedOpacity, " + ").concat(theme.vars.palette.action.focusOpacity, "))") : alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity + theme.palette.action.focusOpacity)
   })), _defineProperty(_extends2, "&.".concat(listItemClasses.disabled), {
-    opacity: theme.palette.action.disabledOpacity
+    opacity: (theme.vars || theme).palette.action.disabledOpacity
   }), _extends2), ownerState.alignItems === 'flex-start' && {
     alignItems: 'flex-start'
   }, ownerState.divider && {
-    borderBottom: "1px solid ".concat(theme.palette.divider),
+    borderBottom: "1px solid ".concat((theme.vars || theme).palette.divider),
     backgroundClip: 'padding-box'
   }, ownerState.button && _defineProperty({
     transition: theme.transitions.create('background-color', {
@@ -94,17 +94,17 @@ export var ListItemRoot = styled('div', {
     }),
     '&:hover': {
       textDecoration: 'none',
-      backgroundColor: theme.palette.action.hover,
+      backgroundColor: (theme.vars || theme).palette.action.hover,
       // Reset on touch devices, it doesn't add specificity
       '@media (hover: none)': {
         backgroundColor: 'transparent'
       }
     }
   }, "&.".concat(listItemClasses.selected, ":hover"), {
-    backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity + theme.palette.action.hoverOpacity),
+    backgroundColor: theme.vars ? "rgba(".concat(theme.vars.palette.primary.mainChannel, " / calc(").concat(theme.vars.palette.action.selectedOpacity, " + ").concat(theme.vars.palette.action.hoverOpacity, "))") : alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity + theme.palette.action.hoverOpacity),
     // Reset on touch devices, it doesn't add specificity
     '@media (hover: none)': {
-      backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity)
+      backgroundColor: theme.vars ? "rgba(".concat(theme.vars.palette.primary.mainChannel, " / ").concat(theme.vars.palette.action.selectedOpacity, ")") : alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity)
     }
   }), ownerState.hasSecondaryAction && {
     // Add some space to avoid collision as `ListItemSecondaryAction`

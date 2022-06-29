@@ -94,11 +94,11 @@ const StepLabelLabel = (0, _styled.default)('span', {
     duration: theme.transitions.duration.shortest
   }),
   [`&.${_stepLabelClasses.default.active}`]: {
-    color: theme.palette.text.primary,
+    color: (theme.vars || theme).palette.text.primary,
     fontWeight: 500
   },
   [`&.${_stepLabelClasses.default.completed}`]: {
-    color: theme.palette.text.primary,
+    color: (theme.vars || theme).palette.text.primary,
     fontWeight: 500
   },
   [`&.${_stepLabelClasses.default.alternativeLabel}`]: {
@@ -106,7 +106,7 @@ const StepLabelLabel = (0, _styled.default)('span', {
     marginTop: 16
   },
   [`&.${_stepLabelClasses.default.error}`]: {
-    color: theme.palette.error.main
+    color: (theme.vars || theme).palette.error.main
   }
 }));
 const StepLabelIconContainer = (0, _styled.default)('span', {
@@ -130,7 +130,7 @@ const StepLabelLabelContainer = (0, _styled.default)('span', {
   theme
 }) => ({
   width: '100%',
-  color: theme.palette.text.secondary
+  color: (theme.vars || theme).palette.text.secondary
 }));
 const StepLabel = /*#__PURE__*/React.forwardRef(function StepLabel(inProps, ref) {
   const props = (0, _useThemeProps.default)({

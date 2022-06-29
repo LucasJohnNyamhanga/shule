@@ -68,19 +68,19 @@ const FormLabelRoot = (0, _styled.default)('label', {
   theme,
   ownerState
 }) => (0, _extends2.default)({
-  color: theme.palette.text.secondary
+  color: (theme.vars || theme).palette.text.secondary
 }, theme.typography.body1, {
   lineHeight: '1.4375em',
   padding: 0,
   position: 'relative',
   [`&.${_formLabelClasses.default.focused}`]: {
-    color: theme.palette[ownerState.color].main
+    color: (theme.vars || theme).palette[ownerState.color].main
   },
   [`&.${_formLabelClasses.default.disabled}`]: {
-    color: theme.palette.text.disabled
+    color: (theme.vars || theme).palette.text.disabled
   },
   [`&.${_formLabelClasses.default.error}`]: {
-    color: theme.palette.error.main
+    color: (theme.vars || theme).palette.error.main
   }
 }));
 exports.FormLabelRoot = FormLabelRoot;
@@ -92,7 +92,7 @@ const AsteriskComponent = (0, _styled.default)('span', {
   theme
 }) => ({
   [`&.${_formLabelClasses.default.error}`]: {
-    color: theme.palette.error.main
+    color: (theme.vars || theme).palette.error.main
   }
 }));
 const FormLabel = /*#__PURE__*/React.forwardRef(function FormLabel(inProps, ref) {

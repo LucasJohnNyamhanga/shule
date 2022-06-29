@@ -79,7 +79,7 @@ const SkeletonRoot = styled('span', {
   return _extends({
     display: 'block',
     // Create a "on paper" color with sufficient contrast retaining the color
-    backgroundColor: alpha(theme.palette.text.primary, theme.palette.mode === 'light' ? 0.11 : 0.13),
+    backgroundColor: theme.vars ? theme.vars.palette.Skeleton.bg : alpha(theme.palette.text.primary, theme.palette.mode === 'light' ? 0.11 : 0.13),
     height: '1.2em'
   }, ownerState.variant === 'text' && {
     marginTop: 0,
@@ -118,7 +118,12 @@ const SkeletonRoot = styled('span', {
 
       &::after {
         animation: ${0} 1.6s linear 0.5s infinite;
-        background: linear-gradient(90deg, transparent, ${0}, transparent);
+        background: linear-gradient(
+          90deg,
+          transparent,
+          ${0},
+          transparent
+        );
         content: '';
         position: absolute;
         transform: translateX(-100%); /* Avoid flash during server-side hydration */
@@ -127,7 +132,7 @@ const SkeletonRoot = styled('span', {
         right: 0;
         top: 0;
       }
-    `), waveKeyframe, theme.palette.action.hover));
+    `), waveKeyframe, (theme.vars || theme).palette.action.hover));
 const Skeleton = /*#__PURE__*/React.forwardRef(function Skeleton(inProps, ref) {
   const props = useThemeProps({
     props: inProps,

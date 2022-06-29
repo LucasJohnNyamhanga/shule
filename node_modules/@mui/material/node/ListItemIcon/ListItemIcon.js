@@ -60,7 +60,7 @@ const ListItemIconRoot = (0, _styled.default)('div', {
   ownerState
 }) => (0, _extends2.default)({
   minWidth: 56,
-  color: theme.palette.action.active,
+  color: (theme.vars || theme).palette.action.active,
   flexShrink: 0,
   display: 'inline-flex'
 }, ownerState.alignItems === 'flex-start' && {

@@ -1,16 +1,15 @@
 import _extends from "@babel/runtime/helpers/esm/extends";
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
-const _excluded = ["actions", "anchorEl", "children", "className", "component", "components", "componentsProps", "onClose", "open"];
+const _excluded = ["actions", "anchorEl", "children", "component", "components", "componentsProps", "keepMounted", "listboxId", "onClose", "open"];
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import { HTMLElementType, refType } from '@mui/utils';
-import appendOwnerState from '../utils/appendOwnerState';
 import MenuUnstyledContext from './MenuUnstyledContext';
 import { getMenuUnstyledUtilityClass } from './menuUnstyledClasses';
 import useMenu from './useMenu';
 import composeClasses from '../composeClasses';
 import PopperUnstyled from '../PopperUnstyled';
+import useSlotProps from '../utils/useSlotProps';
 import { jsx as _jsx } from "react/jsx-runtime";
 
 function getUtilityClasses(ownerState) {
@@ -40,10 +39,11 @@ const MenuUnstyled = /*#__PURE__*/React.forwardRef(function MenuUnstyled(props, 
     actions,
     anchorEl,
     children,
-    className,
     component,
     components = {},
     componentsProps = {},
+    keepMounted = false,
+    listboxId,
     onClose,
     open = false
   } = props,
@@ -60,8 +60,7 @@ const MenuUnstyled = /*#__PURE__*/React.forwardRef(function MenuUnstyled(props, 
   } = useMenu({
     open,
     onClose,
-    listboxRef: componentsProps.listbox?.ref,
-    listboxId: componentsProps.listbox?.id
+    listboxId
   });
   React.useImperativeHandle(actions, () => ({
     highlightFirstItem,
@@ -73,19 +72,29 @@ const MenuUnstyled = /*#__PURE__*/React.forwardRef(function MenuUnstyled(props, 
   });
 
   const classes = getUtilityClasses(ownerState);
-  const Popper = component ?? components.Root ?? PopperUnstyled;
-  const popperProps = appendOwnerState(Popper, _extends({}, other, {
-    anchorEl,
-    open,
-    keepMounted: true,
-    role: undefined
-  }, componentsProps.root, {
-    className: clsx(classes.root, className, componentsProps.root?.className)
-  }), ownerState);
+  const Root = component ?? components.Root ?? PopperUnstyled;
+  const rootProps = useSlotProps({
+    elementType: Root,
+    externalForwardedProps: other,
+    externalSlotProps: componentsProps.root,
+    additionalProps: {
+      anchorEl,
+      open,
+      keepMounted,
+      role: undefined,
+      ref: forwardedRef
+    },
+    className: classes.root,
+    ownerState
+  });
   const Listbox = components.Listbox ?? 'ul';
-  const listboxProps = appendOwnerState(Listbox, _extends({}, componentsProps.listbox, getListboxProps(), {
-    className: clsx(classes.listbox, componentsProps.listbox?.className)
-  }), ownerState);
+  const listboxProps = useSlotProps({
+    elementType: Listbox,
+    getSlotProps: getListboxProps,
+    externalSlotProps: componentsProps.listbox,
+    ownerState,
+    className: classes.listbox
+  });
   const contextValue = {
     registerItem,
     unregisterItem,
@@ -93,8 +102,7 @@ const MenuUnstyled = /*#__PURE__*/React.forwardRef(function MenuUnstyled(props, 
     getItemProps,
     open
   };
-  return /*#__PURE__*/_jsx(Popper, _extends({}, popperProps, {
-    ref: forwardedRef,
+  return /*#__PURE__*/_jsx(Root, _extends({}, rootProps, {
     children: /*#__PURE__*/_jsx(Listbox, _extends({}, listboxProps, {
       children: /*#__PURE__*/_jsx(MenuUnstyledContext.Provider, {
         value: contextValue,
@@ -134,11 +142,6 @@ process.env.NODE_ENV !== "production" ? MenuUnstyled.propTypes
   /**
    * @ignore
    */
-  className: PropTypes.string,
-
-  /**
-   * @ignore
-   */
   component: PropTypes.elementType,
 
   /**
@@ -153,9 +156,22 @@ process.env.NODE_ENV !== "production" ? MenuUnstyled.propTypes
    * @ignore
    */
   componentsProps: PropTypes.shape({
-    listbox: PropTypes.object,
-    root: PropTypes.object
+    listbox: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object])
   }),
+
+  /**
+   * Always keep the menu in the DOM.
+   * This prop can be useful in SEO situation or when you want to maximize the responsiveness of the Menu.
+   *
+   * @default false
+   */
+  keepMounted: PropTypes.bool,
+
+  /**
+   * @ignore
+   */
+  listboxId: PropTypes.string,
 
   /**
    * Triggered when focus leaves the menu and the menu should close.

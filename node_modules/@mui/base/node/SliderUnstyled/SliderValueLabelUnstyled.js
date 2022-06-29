@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.default = SliderValueLabelUnstyled;
 
 var React = _interopRequireWildcard(require("react"));
 
@@ -69,5 +69,3 @@ process.env.NODE_ENV !== "production" ? SliderValueLabelUnstyled.propTypes = {
   theme: _propTypes.default.any,
   value: _propTypes.default.node
 } : void 0;
-var _default = SliderValueLabelUnstyled;
-exports.default = _default;

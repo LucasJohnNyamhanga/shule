@@ -63,31 +63,31 @@ var MenuItemRoot = styled(ButtonBase, {
     paddingLeft: 16,
     paddingRight: 16
   }, ownerState.divider && {
-    borderBottom: "1px solid ".concat(theme.palette.divider),
+    borderBottom: "1px solid ".concat((theme.vars || theme).palette.divider),
     backgroundClip: 'padding-box'
   }, (_extends2 = {
     '&:hover': {
       textDecoration: 'none',
-      backgroundColor: theme.palette.action.hover,
+      backgroundColor: (theme.vars || theme).palette.action.hover,
       // Reset on touch devices, it doesn't add specificity
       '@media (hover: none)': {
         backgroundColor: 'transparent'
       }
     }
   }, _defineProperty(_extends2, "&.".concat(menuItemClasses.selected), _defineProperty({
-    backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity)
+    backgroundColor: theme.vars ? "rgba(".concat(theme.vars.palette.primary.mainChannel, " / ").concat(theme.vars.palette.action.selectedOpacity, ")") : alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity)
   }, "&.".concat(menuItemClasses.focusVisible), {
-    backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity + theme.palette.action.focusOpacity)
+    backgroundColor: theme.vars ? "rgba(".concat(theme.vars.palette.primary.mainChannel, " / calc(").concat(theme.vars.palette.action.selectedOpacity, " + ").concat(theme.vars.palette.action.focusOpacity, "))") : alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity + theme.palette.action.focusOpacity)
   })), _defineProperty(_extends2, "&.".concat(menuItemClasses.selected, ":hover"), {
-    backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity + theme.palette.action.hoverOpacity),
+    backgroundColor: theme.vars ? "rgba(".concat(theme.vars.palette.primary.mainChannel, " / calc(").concat(theme.vars.palette.action.selectedOpacity, " + ").concat(theme.vars.palette.action.hoverOpacity, "))") : alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity + theme.palette.action.hoverOpacity),
     // Reset on touch devices, it doesn't add specificity
     '@media (hover: none)': {
-      backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity)
+      backgroundColor: theme.vars ? "rgba(".concat(theme.vars.palette.primary.mainChannel, " / ").concat(theme.vars.palette.action.selectedOpacity, ")") : alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity)
     }
   }), _defineProperty(_extends2, "&.".concat(menuItemClasses.focusVisible), {
-    backgroundColor: theme.palette.action.focus
+    backgroundColor: (theme.vars || theme).palette.action.focus
   }), _defineProperty(_extends2, "&.".concat(menuItemClasses.disabled), {
-    opacity: theme.palette.action.disabledOpacity
+    opacity: (theme.vars || theme).palette.action.disabledOpacity
   }), _defineProperty(_extends2, "& + .".concat(dividerClasses.root), {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1)

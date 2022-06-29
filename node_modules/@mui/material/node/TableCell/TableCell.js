@@ -73,18 +73,18 @@ const TableCellRoot = (0, _styled.default)('td', {
   verticalAlign: 'inherit',
   // Workaround for a rendering bug with spanned columns in Chrome 62.0.
   // Removes the alpha (sets it to 1), and lightens or darkens the theme color.
-  borderBottom: `1px solid
+  borderBottom: theme.vars ? `1px solid ${theme.vars.palette.TableCell.border}` : `1px solid
     ${theme.palette.mode === 'light' ? (0, _system.lighten)((0, _system.alpha)(theme.palette.divider, 1), 0.88) : (0, _system.darken)((0, _system.alpha)(theme.palette.divider, 1), 0.68)}`,
   textAlign: 'left',
   padding: 16
 }, ownerState.variant === 'head' && {
-  color: theme.palette.text.primary,
+  color: (theme.vars || theme).palette.text.primary,
   lineHeight: theme.typography.pxToRem(24),
   fontWeight: theme.typography.fontWeightMedium
 }, ownerState.variant === 'body' && {
-  color: theme.palette.text.primary
+  color: (theme.vars || theme).palette.text.primary
 }, ownerState.variant === 'footer' && {
-  color: theme.palette.text.secondary,
+  color: (theme.vars || theme).palette.text.secondary,
   lineHeight: theme.typography.pxToRem(21),
   fontSize: theme.typography.pxToRem(12)
 }, ownerState.size === 'small' && {
@@ -116,7 +116,7 @@ const TableCellRoot = (0, _styled.default)('td', {
   position: 'sticky',
   top: 0,
   zIndex: 2,
-  backgroundColor: theme.palette.background.default
+  backgroundColor: (theme.vars || theme).palette.background.default
 }));
 /**
  * The component renders a `<th>` element when the parent context is a header

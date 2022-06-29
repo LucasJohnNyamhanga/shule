@@ -28,7 +28,7 @@ export default function useSwitch(props) {
     state: 'checked'
   });
 
-  const handleInputChange = (event, otherHandler) => {
+  const createHandleInputChange = otherProps => event => {
     // Workaround for https://github.com/facebook/react/issues/9023
     if (event.nativeEvent.defaultPrevented) {
       return;
@@ -36,7 +36,7 @@ export default function useSwitch(props) {
 
     setCheckedState(event.target.checked);
     onChange?.(event);
-    otherHandler?.(event);
+    otherProps.onChange?.(event);
   };
 
   const {
@@ -56,7 +56,7 @@ export default function useSwitch(props) {
   }, [focusVisible, isFocusVisibleRef]);
   const inputRef = React.useRef(null);
 
-  const handleFocus = (event, otherHandler) => {
+  const createHandleFocus = otherProps => event => {
     // Fix for https://github.com/facebook/react/issues/7769
     if (!inputRef.current) {
       inputRef.current = event.currentTarget;
@@ -70,10 +70,10 @@ export default function useSwitch(props) {
     }
 
     onFocus?.(event);
-    otherHandler?.(event);
+    otherProps.onFocus?.(event);
   };
 
-  const handleBlur = (event, otherHandler) => {
+  const createHandleBlur = otherProps => event => {
     handleBlurVisible(event);
 
     if (isFocusVisibleRef.current === false) {
@@ -81,7 +81,7 @@ export default function useSwitch(props) {
     }
 
     onBlur?.(event);
-    otherHandler?.(event);
+    otherProps.onBlur?.(event);
   };
 
   const handleRefChange = useForkRef(focusVisibleRef, inputRef);
@@ -91,13 +91,13 @@ export default function useSwitch(props) {
     defaultChecked,
     disabled,
     readOnly,
+    ref: handleRefChange,
     required,
     type: 'checkbox'
   }, otherProps, {
-    onChange: event => handleInputChange(event, otherProps.onChange),
-    onFocus: event => handleFocus(event, otherProps.onFocus),
-    onBlur: event => handleBlur(event, otherProps.onBlur),
-    ref: handleRefChange
+    onChange: createHandleInputChange(otherProps),
+    onFocus: createHandleFocus(otherProps),
+    onBlur: createHandleBlur(otherProps)
   });
 
   return {

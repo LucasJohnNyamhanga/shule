@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { UseInputProps } from './InputUnstyledProps';
-export default function useInput(props: UseInputProps, inputRef?: React.Ref<HTMLInputElement>): {
+import { UseInputInputSlotProps, UseInputParameters, UseInputRootSlotProps } from './useInput.types';
+export default function useInput(parameters: UseInputParameters): {
     disabled: boolean;
     error: boolean;
     focused: boolean;
@@ -15,17 +15,8 @@ export default function useInput(props: UseInputProps, inputRef?: React.Ref<HTML
         onBlur: () => void;
         onFocus: () => void;
     } | undefined;
-    getInputProps: (externalProps?: Record<string, unknown> | undefined) => {
-        'aria-invalid': true | undefined;
-        defaultValue: string | number | readonly string[] | undefined;
-        ref: React.Ref<any>;
-        value: string | number | readonly string[] | undefined;
-        required: boolean;
-        disabled: boolean;
-    };
-    getRootProps: (externalProps?: Record<string, unknown> | undefined) => {
-        onClick: (event: React.MouseEvent<HTMLInputElement>) => void;
-    };
+    getInputProps: <TOther extends Record<string, any> = {}>(externalProps?: TOther) => UseInputInputSlotProps<TOther>;
+    getRootProps: <TOther_1 extends Record<string, any> = {}>(externalProps?: TOther_1) => UseInputRootSlotProps<TOther_1>;
     required: boolean;
     value: unknown;
 };

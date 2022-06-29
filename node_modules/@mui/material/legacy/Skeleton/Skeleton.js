@@ -45,7 +45,7 @@ var SkeletonRoot = styled('span', {
   return _extends({
     display: 'block',
     // Create a "on paper" color with sufficient contrast retaining the color
-    backgroundColor: alpha(theme.palette.text.primary, theme.palette.mode === 'light' ? 0.11 : 0.13),
+    backgroundColor: theme.vars ? theme.vars.palette.Skeleton.bg : alpha(theme.palette.text.primary, theme.palette.mode === 'light' ? 0.11 : 0.13),
     height: '1.2em'
   }, ownerState.variant === 'text' && {
     marginTop: 0,
@@ -74,7 +74,7 @@ var SkeletonRoot = styled('span', {
 }, function (_ref3) {
   var ownerState = _ref3.ownerState,
       theme = _ref3.theme;
-  return ownerState.animation === 'wave' && css(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n      position: relative;\n      overflow: hidden;\n\n      /* Fix bug in Safari https://bugs.webkit.org/show_bug.cgi?id=68196 */\n      -webkit-mask-image: -webkit-radial-gradient(white, black);\n\n      &::after {\n        animation: ", " 1.6s linear 0.5s infinite;\n        background: linear-gradient(90deg, transparent, ", ", transparent);\n        content: '';\n        position: absolute;\n        transform: translateX(-100%); /* Avoid flash during server-side hydration */\n        bottom: 0;\n        left: 0;\n        right: 0;\n        top: 0;\n      }\n    "])), waveKeyframe, theme.palette.action.hover);
+  return ownerState.animation === 'wave' && css(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n      position: relative;\n      overflow: hidden;\n\n      /* Fix bug in Safari https://bugs.webkit.org/show_bug.cgi?id=68196 */\n      -webkit-mask-image: -webkit-radial-gradient(white, black);\n\n      &::after {\n        animation: ", " 1.6s linear 0.5s infinite;\n        background: linear-gradient(\n          90deg,\n          transparent,\n          ", ",\n          transparent\n        );\n        content: '';\n        position: absolute;\n        transform: translateX(-100%); /* Avoid flash during server-side hydration */\n        bottom: 0;\n        left: 0;\n        right: 0;\n        top: 0;\n      }\n    "])), waveKeyframe, (theme.vars || theme).palette.action.hover);
 });
 var Skeleton = /*#__PURE__*/React.forwardRef(function Skeleton(inProps, ref) {
   var props = useThemeProps({

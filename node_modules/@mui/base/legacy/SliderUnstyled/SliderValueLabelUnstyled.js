@@ -19,7 +19,7 @@ var useValueLabelClasses = function useValueLabelClasses(props) {
  */
 
 
-function SliderValueLabelUnstyled(props) {
+export default function SliderValueLabelUnstyled(props) {
   var children = props.children,
       className = props.className,
       value = props.value,
@@ -42,11 +42,9 @@ function SliderValueLabelUnstyled(props) {
     })]
   }));
 }
-
 process.env.NODE_ENV !== "production" ? SliderValueLabelUnstyled.propTypes = {
   children: PropTypes.element.isRequired,
   className: PropTypes.string,
   theme: PropTypes.any,
   value: PropTypes.node
 } : void 0;
-export default SliderValueLabelUnstyled;

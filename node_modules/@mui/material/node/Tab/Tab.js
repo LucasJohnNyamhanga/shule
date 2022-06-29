@@ -104,23 +104,23 @@ const TabRoot = (0, _styled.default)(_ButtonBase.default, {
     opacity: 1
   },
   [`&.${_tabClasses.default.disabled}`]: {
-    opacity: theme.palette.action.disabledOpacity
+    opacity: (theme.vars || theme).palette.action.disabledOpacity
   }
 }, ownerState.textColor === 'primary' && {
-  color: theme.palette.text.secondary,
+  color: (theme.vars || theme).palette.text.secondary,
   [`&.${_tabClasses.default.selected}`]: {
-    color: theme.palette.primary.main
+    color: (theme.vars || theme).palette.primary.main
   },
   [`&.${_tabClasses.default.disabled}`]: {
-    color: theme.palette.text.disabled
+    color: (theme.vars || theme).palette.text.disabled
   }
 }, ownerState.textColor === 'secondary' && {
-  color: theme.palette.text.secondary,
+  color: (theme.vars || theme).palette.text.secondary,
   [`&.${_tabClasses.default.selected}`]: {
-    color: theme.palette.secondary.main
+    color: (theme.vars || theme).palette.secondary.main
   },
   [`&.${_tabClasses.default.disabled}`]: {
-    color: theme.palette.text.disabled
+    color: (theme.vars || theme).palette.text.disabled
   }
 }, ownerState.fullWidth && {
   flexShrink: 1,

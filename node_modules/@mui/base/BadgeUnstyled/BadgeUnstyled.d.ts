@@ -1,10 +1,5 @@
-import { OverridableComponent, OverridableTypeMap } from '@mui/types';
-import { ExtendBadgeUnstyledTypeMap, BadgeUnstyledTypeMap } from './BadgeUnstyledProps';
-
-export type ExtendBadgeUnstyled<M extends OverridableTypeMap> = OverridableComponent<
-  ExtendBadgeUnstyledTypeMap<M>
->;
-
+import { OverridableComponent } from '@mui/types';
+import { BadgeUnstyledTypeMap } from './BadgeUnstyled.types';
 /**
  *
  * Demos:
@@ -15,6 +10,5 @@ export type ExtendBadgeUnstyled<M extends OverridableTypeMap> = OverridableCompo
  *
  * - [BadgeUnstyled API](https://mui.com/base/api/badge-unstyled/)
  */
-declare const BadgeUnstyled: OverridableComponent<BadgeUnstyledTypeMap>;
-
+declare const BadgeUnstyled: OverridableComponent<BadgeUnstyledTypeMap<{}, "span">>;
 export default BadgeUnstyled;

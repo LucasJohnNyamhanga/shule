@@ -71,7 +71,7 @@ const FormHelperTextRoot = (0, _styled.default)('p', {
   theme,
   ownerState
 }) => (0, _extends2.default)({
-  color: theme.palette.text.secondary
+  color: (theme.vars || theme).palette.text.secondary
 }, theme.typography.caption, {
   textAlign: 'left',
   marginTop: 3,
@@ -79,10 +79,10 @@ const FormHelperTextRoot = (0, _styled.default)('p', {
   marginBottom: 0,
   marginLeft: 0,
   [`&.${_formHelperTextClasses.default.disabled}`]: {
-    color: theme.palette.text.disabled
+    color: (theme.vars || theme).palette.text.disabled
   },
   [`&.${_formHelperTextClasses.default.error}`]: {
-    color: theme.palette.error.main
+    color: (theme.vars || theme).palette.error.main
   }
 }, ownerState.size === 'small' && {
   marginTop: 4

@@ -278,7 +278,8 @@ const theme2 = createTheme({ palette: {
 
   const paletteOutput = deepmerge(_extends({
     // A collection of common colors.
-    common,
+    common: _extends({}, common),
+    // prevent mutable object.
     // The palette mode, can be light or dark.
     mode,
     // The colors used to represent primary interface elements for a user.

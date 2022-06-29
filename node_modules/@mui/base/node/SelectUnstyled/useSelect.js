@@ -41,7 +41,6 @@ const defaultOptionStringifier = option => {
 
 function useSelect(props) {
   const {
-    buttonComponent,
     buttonRef: buttonRefProp,
     defaultValue,
     disabled = false,
@@ -200,7 +199,6 @@ function useSelect(props) {
     active: buttonActive,
     focusVisible: buttonFocusVisible
   } = (0, _ButtonUnstyled.useButton)({
-    component: buttonComponent,
     disabled,
     ref: handleButtonRef
   });

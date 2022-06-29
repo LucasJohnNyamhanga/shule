@@ -94,33 +94,33 @@ const ListItemButtonRoot = (0, _styled.default)(_ButtonBase.default, {
   }),
   '&:hover': {
     textDecoration: 'none',
-    backgroundColor: theme.palette.action.hover,
+    backgroundColor: (theme.vars || theme).palette.action.hover,
     // Reset on touch devices, it doesn't add specificity
     '@media (hover: none)': {
       backgroundColor: 'transparent'
     }
   },
   [`&.${_listItemButtonClasses.default.selected}`]: {
-    backgroundColor: (0, _system.alpha)(theme.palette.primary.main, theme.palette.action.selectedOpacity),
+    backgroundColor: theme.vars ? `rgba(${theme.vars.palette.primary.mainChannel} / ${theme.vars.palette.action.selectedOpacity})` : (0, _system.alpha)(theme.palette.primary.main, theme.palette.action.selectedOpacity),
     [`&.${_listItemButtonClasses.default.focusVisible}`]: {
-      backgroundColor: (0, _system.alpha)(theme.palette.primary.main, theme.palette.action.selectedOpacity + theme.palette.action.focusOpacity)
+      backgroundColor: theme.vars ? `rgba(${theme.vars.palette.primary.mainChannel} / calc(${theme.vars.palette.action.selectedOpacity} + ${theme.vars.palette.action.focusOpacity}))` : (0, _system.alpha)(theme.palette.primary.main, theme.palette.action.selectedOpacity + theme.palette.action.focusOpacity)
     }
   },
   [`&.${_listItemButtonClasses.default.selected}:hover`]: {
-    backgroundColor: (0, _system.alpha)(theme.palette.primary.main, theme.palette.action.selectedOpacity + theme.palette.action.hoverOpacity),
+    backgroundColor: theme.vars ? `rgba(${theme.vars.palette.primary.mainChannel} / calc(${theme.vars.palette.action.selectedOpacity} + ${theme.vars.palette.action.hoverOpacity}))` : (0, _system.alpha)(theme.palette.primary.main, theme.palette.action.selectedOpacity + theme.palette.action.hoverOpacity),
     // Reset on touch devices, it doesn't add specificity
     '@media (hover: none)': {
-      backgroundColor: (0, _system.alpha)(theme.palette.primary.main, theme.palette.action.selectedOpacity)
+      backgroundColor: theme.vars ? `rgba(${theme.vars.palette.primary.mainChannel} / ${theme.vars.palette.action.selectedOpacity})` : (0, _system.alpha)(theme.palette.primary.main, theme.palette.action.selectedOpacity)
     }
   },
   [`&.${_listItemButtonClasses.default.focusVisible}`]: {
-    backgroundColor: theme.palette.action.focus
+    backgroundColor: (theme.vars || theme).palette.action.focus
   },
   [`&.${_listItemButtonClasses.default.disabled}`]: {
-    opacity: theme.palette.action.disabledOpacity
+    opacity: (theme.vars || theme).palette.action.disabledOpacity
   }
 }, ownerState.divider && {
-  borderBottom: `1px solid ${theme.palette.divider}`,
+  borderBottom: `1px solid ${(theme.vars || theme).palette.divider}`,
   backgroundClip: 'padding-box'
 }, ownerState.alignItems === 'flex-start' && {
   alignItems: 'flex-start'
@@ -177,7 +177,8 @@ const ListItemButton = /*#__PURE__*/React.forwardRef(function ListItemButton(inP
     value: childContext,
     children: /*#__PURE__*/(0, _jsxRuntime.jsx)(ListItemButtonRoot, (0, _extends2.default)({
       ref: handleRef,
-      component: component,
+      href: other.href || other.to,
+      component: (other.href || other.to) && component === 'div' ? 'a' : component,
       focusVisibleClassName: (0, _clsx.default)(classes.focusVisible, focusVisibleClassName),
       ownerState: ownerState
     }, other, {
@@ -258,6 +259,11 @@ process.env.NODE_ENV !== "production" ? ListItemButton.propTypes
    * if needed.
    */
   focusVisibleClassName: _propTypes.default.string,
+
+  /**
+   * @ignore
+   */
+  href: _propTypes.default.string,
 
   /**
    * Use to apply selected styling.

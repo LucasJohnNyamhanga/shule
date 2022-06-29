@@ -22,8 +22,7 @@ var defaultOptionStringifier = function defaultOptionStringifier(option) {
 };
 
 function useSelect(props) {
-  var buttonComponent = props.buttonComponent,
-      buttonRefProp = props.buttonRef,
+  var buttonRefProp = props.buttonRef,
       defaultValue = props.defaultValue,
       _props$disabled = props.disabled,
       disabled = _props$disabled === void 0 ? false : _props$disabled,
@@ -200,7 +199,6 @@ function useSelect(props) {
   };
 
   var _useButton = useButton({
-    component: buttonComponent,
     disabled: disabled,
     ref: handleButtonRef
   }),

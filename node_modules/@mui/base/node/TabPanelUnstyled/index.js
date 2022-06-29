@@ -30,6 +30,20 @@ Object.defineProperty(exports, "useTabPanel", {
 
 var _TabPanelUnstyled = _interopRequireDefault(require("./TabPanelUnstyled"));
 
+var _TabPanelUnstyled2 = require("./TabPanelUnstyled.types");
+
+Object.keys(_TabPanelUnstyled2).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  if (key in exports && exports[key] === _TabPanelUnstyled2[key]) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _TabPanelUnstyled2[key];
+    }
+  });
+});
+
 var _tabPanelUnstyledClasses = _interopRequireWildcard(require("./tabPanelUnstyledClasses"));
 
 Object.keys(_tabPanelUnstyledClasses).forEach(function (key) {
@@ -44,19 +58,7 @@ Object.keys(_tabPanelUnstyledClasses).forEach(function (key) {
   });
 });
 
-var _useTabPanel = _interopRequireWildcard(require("./useTabPanel"));
-
-Object.keys(_useTabPanel).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
-  if (key in exports && exports[key] === _useTabPanel[key]) return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function () {
-      return _useTabPanel[key];
-    }
-  });
-});
+var _useTabPanel = _interopRequireDefault(require("./useTabPanel"));
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 

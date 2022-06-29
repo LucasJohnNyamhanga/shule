@@ -4,8 +4,9 @@ import { unstable_useId as useId, unstable_useForkRef as useForkRef } from '@mui
 import { MenuUnstyledContext } from '../MenuUnstyled';
 import { useButton } from '../ButtonUnstyled';
 export default function useMenuItem(props) {
-  var component = props.component,
-      _props$disabled = props.disabled,
+  var _itemState$disabled;
+
+  var _props$disabled = props.disabled,
       disabled = _props$disabled === void 0 ? false : _props$disabled,
       ref = props.ref,
       label = props.label;
@@ -38,7 +39,6 @@ export default function useMenuItem(props) {
   }, [id, registerItem, unregisterItem, disabled, ref, label]);
 
   var _useButton = useButton({
-    component: component,
     disabled: disabled,
     focusableWhenDisabled: true,
     ref: handleRef
@@ -83,7 +83,7 @@ export default function useMenuItem(props) {
           role: 'menuitem'
         });
       },
-      itemState: null,
+      disabled: false,
       focusVisible: focusVisible
     };
   }
@@ -97,7 +97,7 @@ export default function useMenuItem(props) {
         role: 'menuitem'
       });
     },
-    itemState: itemState,
+    disabled: (_itemState$disabled = itemState == null ? void 0 : itemState.disabled) != null ? _itemState$disabled : false,
     focusVisible: focusVisible
   };
 }

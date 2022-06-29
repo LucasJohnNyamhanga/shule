@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { unstable_useControlled as useControlled, unstable_useId as useId } from '@mui/utils';
 
-const useTabs = props => {
+const useTabs = parameters => {
   const {
     value: valueProp,
     defaultValue,
@@ -9,7 +9,7 @@ const useTabs = props => {
     orientation,
     direction,
     selectionFollowsFocus
-  } = props;
+  } = parameters;
   const [value, setValue] = useControlled({
     controlled: valueProp,
     default: defaultValue,
@@ -24,11 +24,6 @@ const useTabs = props => {
       onChange(e, newValue);
     }
   }, [onChange, setValue]);
-
-  const getRootProps = () => {
-    return {};
-  };
-
   const tabsContextValue = React.useMemo(() => {
     return {
       idPrefix,
@@ -40,7 +35,6 @@ const useTabs = props => {
     };
   }, [idPrefix, value, onSelected, orientation, direction, selectionFollowsFocus]);
   return {
-    getRootProps,
     tabsContextValue
   };
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import OptionGroupUnstyledProps from './OptionGroupUnstyledProps';
+import { OptionGroupUnstyledProps } from './OptionGroupUnstyled.types';
 /**
  * An unstyled option group to be used within a SelectUnstyled.
  *

@@ -15,19 +15,17 @@ var React = _interopRequireWildcard(require("react"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
-var _clsx = _interopRequireDefault(require("clsx"));
-
-var _utils = require("../utils");
-
 var _menuItemUnstyledClasses = require("./menuItemUnstyledClasses");
 
 var _useMenuItem = _interopRequireDefault(require("./useMenuItem"));
 
 var _composeClasses = _interopRequireDefault(require("../composeClasses"));
 
+var _useSlotProps = _interopRequireDefault(require("../utils/useSlotProps"));
+
 var _jsxRuntime = require("react/jsx-runtime");
 
-const _excluded = ["children", "className", "disabled", "component", "components", "componentsProps", "label"];
+const _excluded = ["children", "disabled", "component", "components", "componentsProps", "label"];
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -56,41 +54,40 @@ function getUtilityClasses(ownerState) {
 
 
 const MenuItemUnstyled = /*#__PURE__*/React.forwardRef(function MenuItemUnstyled(props, ref) {
-  var _ref, _componentsProps$root;
+  var _ref;
 
   const {
     children,
-    className,
-    disabled = false,
+    disabled: disabledProp = false,
     component,
     components = {},
     componentsProps = {},
     label
   } = props,
         other = (0, _objectWithoutPropertiesLoose2.default)(props, _excluded);
-  const Root = (_ref = component != null ? component : components.Root) != null ? _ref : 'li';
   const {
     getRootProps,
-    itemState,
+    disabled,
     focusVisible
   } = (0, _useMenuItem.default)({
-    component: Root,
-    disabled,
+    disabled: disabledProp,
     ref,
     label
   });
-
-  if (itemState == null) {
-    return null;
-  }
-
-  const ownerState = (0, _extends2.default)({}, props, itemState, {
+  const ownerState = (0, _extends2.default)({}, props, {
+    disabled,
     focusVisible
   });
   const classes = getUtilityClasses(ownerState);
-  const rootProps = (0, _utils.appendOwnerState)(Root, (0, _extends2.default)({}, other, componentsProps.root, getRootProps(other), {
-    className: (0, _clsx.default)(classes.root, className, (_componentsProps$root = componentsProps.root) == null ? void 0 : _componentsProps$root.className)
-  }), ownerState);
+  const Root = (_ref = component != null ? component : components.Root) != null ? _ref : 'li';
+  const rootProps = (0, _useSlotProps.default)({
+    elementType: Root,
+    getSlotProps: getRootProps,
+    externalSlotProps: componentsProps.root,
+    externalForwardedProps: other,
+    className: classes.root,
+    ownerState
+  });
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(Root, (0, _extends2.default)({}, rootProps, {
     children: children
   }));
@@ -111,11 +108,6 @@ process.env.NODE_ENV !== "production" ? MenuItemUnstyled.propTypes
   /**
    * @ignore
    */
-  className: _propTypes.default.string,
-
-  /**
-   * @ignore
-   */
   component: _propTypes.default.elementType,
 
   /**
@@ -129,7 +121,7 @@ process.env.NODE_ENV !== "production" ? MenuItemUnstyled.propTypes
    * @ignore
    */
   componentsProps: _propTypes.default.shape({
-    root: _propTypes.default.object
+    root: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object])
   }),
 
   /**

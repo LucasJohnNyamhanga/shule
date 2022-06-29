@@ -21,13 +21,9 @@ var _utils = require("@mui/utils");
 
 var _base = require("@mui/base");
 
-var _system = require("@mui/system");
-
 var _capitalize = _interopRequireDefault(require("../utils/capitalize"));
 
 var _styled = _interopRequireDefault(require("../styles/styled"));
-
-var _useTheme = _interopRequireDefault(require("../styles/useTheme"));
 
 var _useThemeProps = _interopRequireDefault(require("../styles/useThemeProps"));
 
@@ -39,6 +35,8 @@ var _Typography = _interopRequireDefault(require("../Typography"));
 
 var _linkClasses = _interopRequireWildcard(require("./linkClasses"));
 
+var _getTextDecoration = _interopRequireWildcard(require("./getTextDecoration"));
+
 var _jsxRuntime = require("react/jsx-runtime");
 
 const _excluded = ["className", "color", "component", "onBlur", "onFocus", "TypographyClasses", "underline", "variant", "sx"];
@@ -46,18 +44,6 @@ const _excluded = ["className", "color", "component", "onBlur", "onFocus", "Typo
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-const colorTransformations = {
-  primary: 'primary.main',
-  textPrimary: 'text.primary',
-  secondary: 'secondary.main',
-  textSecondary: 'text.secondary',
-  error: 'error.main'
-};
-
-const transformDeprecatedColors = color => {
-  return colorTransformations[color] || color;
-};
 
 const useUtilityClasses = ownerState => {
   const {
@@ -85,7 +71,6 @@ const LinkRoot = (0, _styled.default)(_Typography.default, {
   theme,
   ownerState
 }) => {
-  const color = (0, _system.getPath)(theme, `palette.${transformDeprecatedColors(ownerState.color)}`) || ownerState.color;
   return (0, _extends2.default)({}, ownerState.underline === 'none' && {
     textDecoration: 'none'
   }, ownerState.underline === 'hover' && {
@@ -93,13 +78,18 @@ const LinkRoot = (0, _styled.default)(_Typography.default, {
     '&:hover': {
       textDecoration: 'underline'
     }
-  }, ownerState.underline === 'always' && {
-    textDecoration: 'underline',
-    textDecorationColor: color !== 'inherit' ? (0, _system.alpha)(color, 0.4) : undefined,
+  }, ownerState.underline === 'always' && (0, _extends2.default)({
+    textDecoration: 'underline'
+  }, ownerState.color !== 'inherit' && {
+    textDecorationColor: (0, _getTextDecoration.default)({
+      theme,
+      ownerState
+    })
+  }, {
     '&:hover': {
       textDecorationColor: 'inherit'
     }
-  }, ownerState.component === 'button' && {
+  }), ownerState.component === 'button' && {
     position: 'relative',
     WebkitTapHighlightColor: 'transparent',
     backgroundColor: 'transparent',
@@ -129,7 +119,6 @@ const LinkRoot = (0, _styled.default)(_Typography.default, {
   });
 });
 const Link = /*#__PURE__*/React.forwardRef(function Link(inProps, ref) {
-  const theme = (0, _useTheme.default)();
   const props = (0, _useThemeProps.default)({
     props: inProps,
     name: 'MuiLink'
@@ -146,7 +135,6 @@ const Link = /*#__PURE__*/React.forwardRef(function Link(inProps, ref) {
     sx
   } = props,
         other = (0, _objectWithoutPropertiesLoose2.default)(props, _excluded);
-  const sxColor = typeof sx === 'function' ? sx(theme).color : sx == null ? void 0 : sx.color;
   const {
     isFocusVisibleRef,
     onBlur: handleBlurVisible,
@@ -181,9 +169,7 @@ const Link = /*#__PURE__*/React.forwardRef(function Link(inProps, ref) {
   };
 
   const ownerState = (0, _extends2.default)({}, props, {
-    // It is too complex to support any types of `sx`.
-    // Need to find a better way to get rid of the color manipulation for `textDecorationColor`.
-    color: (typeof sxColor === 'function' ? sxColor(theme) : sxColor) || color,
+    color,
     component,
     focusVisible,
     underline,
@@ -200,8 +186,8 @@ const Link = /*#__PURE__*/React.forwardRef(function Link(inProps, ref) {
     ref: handlerRef,
     ownerState: ownerState,
     variant: variant,
-    sx: [...(inProps.color ? [{
-      color: colorTransformations[color] || color
+    sx: [...(!Object.keys(_getTextDecoration.colorTransformations).includes(color) ? [{
+      color
     }] : []), ...(Array.isArray(sx) ? sx : [sx])]
   }, other));
 });

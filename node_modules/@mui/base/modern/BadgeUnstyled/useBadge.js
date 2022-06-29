@@ -1,11 +1,11 @@
 import { usePreviousProps } from '@mui/utils';
-export default function useBadge(props) {
+export default function useBadge(parameters) {
   const {
     badgeContent: badgeContentProp,
     invisible: invisibleProp = false,
     max: maxProp = 99,
     showZero = false
-  } = props;
+  } = parameters;
   const prevProps = usePreviousProps({
     badgeContent: badgeContentProp,
     max: maxProp
@@ -19,7 +19,7 @@ export default function useBadge(props) {
   const {
     badgeContent,
     max = maxProp
-  } = invisible ? prevProps : props;
+  } = invisible ? prevProps : parameters;
   const displayValue = badgeContent && Number(badgeContent) > max ? `${max}+` : badgeContent;
   return {
     badgeContent,

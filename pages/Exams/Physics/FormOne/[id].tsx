@@ -102,6 +102,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			examTypeAll,
 			thisexamType,
 		},
+		revalidate: 15,
 	};
 };
 

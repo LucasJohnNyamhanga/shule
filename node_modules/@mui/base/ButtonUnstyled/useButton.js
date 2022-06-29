@@ -4,7 +4,6 @@ import { unstable_setRef as setRef, unstable_useForkRef as useForkRef, unstable_
 import extractEventHandlers from '../utils/extractEventHandlers';
 export default function useButton(parameters) {
   const {
-    component = 'button',
     disabled = false,
     focusableWhenDisabled,
     href,
@@ -30,6 +29,7 @@ export default function useButton(parameters) {
   React.useEffect(() => {
     isFocusVisibleRef.current = focusVisible;
   }, [focusVisible, isFocusVisibleRef]);
+  const [hostElementName, setHostElementName] = React.useState('');
 
   const createHandleMouseLeave = otherHandlers => event => {
     var _otherHandlers$onMous;
@@ -73,9 +73,9 @@ export default function useButton(parameters) {
     (_otherHandlers$onFocu2 = otherHandlers.onFocus) == null ? void 0 : _otherHandlers$onFocu2.call(otherHandlers, event);
   };
 
-  const isNonNativeButton = () => {
+  const isNativeButton = () => {
     const button = buttonRef.current;
-    return component !== 'button' && !((button == null ? void 0 : button.tagName) === 'A' && button != null && button.href);
+    return hostElementName === 'BUTTON' || hostElementName === 'INPUT' && ['button', 'submit', 'reset'].includes(button == null ? void 0 : button.type) || hostElementName === 'A' && (button == null ? void 0 : button.href);
   };
 
   const createHandleClick = otherHandlers => event => {
@@ -115,7 +115,7 @@ export default function useButton(parameters) {
       return;
     }
 
-    if (event.target === event.currentTarget && isNonNativeButton() && event.key === ' ') {
+    if (event.target === event.currentTarget && !isNativeButton() && event.key === ' ') {
       event.preventDefault();
     }
 
@@ -124,7 +124,7 @@ export default function useButton(parameters) {
     } // Keyboard accessibility for non interactive elements
 
 
-    if (event.target === event.currentTarget && isNonNativeButton() && event.key === 'Enter' && !disabled) {
+    if (event.target === event.currentTarget && !isNativeButton() && event.key === 'Enter' && !disabled) {
       var _otherHandlers$onClic2;
 
       (_otherHandlers$onClic2 = otherHandlers.onClick) == null ? void 0 : _otherHandlers$onClic2.call(otherHandlers, event);
@@ -143,7 +143,7 @@ export default function useButton(parameters) {
 
     (_otherHandlers$onKeyU = otherHandlers.onKeyUp) == null ? void 0 : _otherHandlers$onKeyU.call(otherHandlers, event); // Keyboard accessibility for non interactive elements
 
-    if (event.target === event.currentTarget && isNonNativeButton() && !disabled && event.key === ' ' && !event.defaultPrevented) {
+    if (event.target === event.currentTarget && !isNativeButton() && !disabled && event.key === ' ' && !event.defaultPrevented) {
       var _otherHandlers$onClic3;
 
       (_otherHandlers$onClic3 = otherHandlers.onClick) == null ? void 0 : _otherHandlers$onClic3.call(otherHandlers, event);
@@ -152,7 +152,6 @@ export default function useButton(parameters) {
 
   const handleOwnRef = useForkRef(focusVisibleRef, buttonRef);
   const handleRef = useForkRef(ref, handleOwnRef);
-  const [hostElementName, setHostElementName] = React.useState('');
 
   const updateRef = instance => {
     var _instance$tagName;

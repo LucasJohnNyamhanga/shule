@@ -36,12 +36,12 @@ var CardActionAreaRoot = styled(ButtonBase, {
     textAlign: 'inherit',
     width: '100%'
   }, _defineProperty(_ref2, "&:hover .".concat(cardActionAreaClasses.focusHighlight), {
-    opacity: theme.palette.action.hoverOpacity,
+    opacity: (theme.vars || theme).palette.action.hoverOpacity,
     '@media (hover: none)': {
       opacity: 0
     }
   }), _defineProperty(_ref2, "&.".concat(cardActionAreaClasses.focusVisible, " .").concat(cardActionAreaClasses.focusHighlight), {
-    opacity: theme.palette.action.focusOpacity
+    opacity: (theme.vars || theme).palette.action.focusOpacity
   }), _ref2;
 });
 var CardActionAreaFocusHighlight = styled('span', {

@@ -35,19 +35,13 @@ var SnackbarRoot = styled('div', {
 })(function (_ref) {
   var theme = _ref.theme,
       ownerState = _ref.ownerState;
-
-  var center = _extends({}, !ownerState.isRtl && {
+  var center = {
     left: '50%',
     right: 'auto',
     transform: 'translateX(-50%)'
-  }, ownerState.isRtl && {
-    right: '50%',
-    left: 'auto',
-    transform: 'translateX(50%)'
-  });
-
+  };
   return _extends({
-    zIndex: theme.zIndex.snackbar,
+    zIndex: (theme.vars || theme).zIndex.snackbar,
     position: 'fixed',
     display: 'flex',
     left: 8,
@@ -66,19 +60,13 @@ var SnackbarRoot = styled('div', {
     top: 24
   } : {
     bottom: 24
-  }, ownerState.anchorOrigin.horizontal === 'center' && center, ownerState.anchorOrigin.horizontal === 'left' && _extends({}, !ownerState.isRtl && {
+  }, ownerState.anchorOrigin.horizontal === 'center' && center, ownerState.anchorOrigin.horizontal === 'left' && {
     left: 24,
     right: 'auto'
-  }, ownerState.isRtl && {
+  }, ownerState.anchorOrigin.horizontal === 'right' && {
     right: 24,
     left: 'auto'
-  }), ownerState.anchorOrigin.horizontal === 'right' && _extends({}, !ownerState.isRtl && {
-    right: 24,
-    left: 'auto'
-  }, ownerState.isRtl && {
-    left: 24,
-    right: 'auto'
-  }))));
+  })));
 });
 var Snackbar = /*#__PURE__*/React.forwardRef(function Snackbar(inProps, ref) {
   var props = useThemeProps({
@@ -126,14 +114,11 @@ var Snackbar = /*#__PURE__*/React.forwardRef(function Snackbar(inProps, ref) {
       TransitionProps = _objectWithoutProperties(_props$TransitionProp, ["onEnter", "onExited"]),
       other = _objectWithoutProperties(props, ["action", "anchorOrigin", "autoHideDuration", "children", "className", "ClickAwayListenerProps", "ContentProps", "disableWindowBlurListener", "message", "onBlur", "onClose", "onFocus", "onMouseEnter", "onMouseLeave", "open", "resumeHideDuration", "TransitionComponent", "transitionDuration", "TransitionProps"]);
 
-  var isRtl = theme.direction === 'rtl';
-
   var ownerState = _extends({}, props, {
     anchorOrigin: {
       vertical: vertical,
       horizontal: horizontal
-    },
-    isRtl: isRtl
+    }
   });
 
   var classes = useUtilityClasses(ownerState);

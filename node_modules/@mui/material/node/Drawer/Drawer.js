@@ -77,7 +77,7 @@ const DrawerRoot = (0, _styled.default)(_Modal.default, {
 })(({
   theme
 }) => ({
-  zIndex: theme.zIndex.drawer
+  zIndex: (theme.vars || theme).zIndex.drawer
 }));
 const DrawerDockedRoot = (0, _styled.default)('div', {
   shouldForwardProp: _styled.rootShouldForwardProp,
@@ -106,7 +106,7 @@ const DrawerPaper = (0, _styled.default)(_Paper.default, {
   flexDirection: 'column',
   height: '100%',
   flex: '1 0 auto',
-  zIndex: theme.zIndex.drawer,
+  zIndex: (theme.vars || theme).zIndex.drawer,
   // Add iOS momentum scrolling for iOS < 13.0
   WebkitOverflowScrolling: 'touch',
   // temporary style
@@ -134,13 +134,13 @@ const DrawerPaper = (0, _styled.default)(_Paper.default, {
   height: 'auto',
   maxHeight: '100%'
 }, ownerState.anchor === 'left' && ownerState.variant !== 'temporary' && {
-  borderRight: `1px solid ${theme.palette.divider}`
+  borderRight: `1px solid ${(theme.vars || theme).palette.divider}`
 }, ownerState.anchor === 'top' && ownerState.variant !== 'temporary' && {
-  borderBottom: `1px solid ${theme.palette.divider}`
+  borderBottom: `1px solid ${(theme.vars || theme).palette.divider}`
 }, ownerState.anchor === 'right' && ownerState.variant !== 'temporary' && {
-  borderLeft: `1px solid ${theme.palette.divider}`
+  borderLeft: `1px solid ${(theme.vars || theme).palette.divider}`
 }, ownerState.anchor === 'bottom' && ownerState.variant !== 'temporary' && {
-  borderTop: `1px solid ${theme.palette.divider}`
+  borderTop: `1px solid ${(theme.vars || theme).palette.divider}`
 }));
 const oppositeDirection = {
   left: 'right',

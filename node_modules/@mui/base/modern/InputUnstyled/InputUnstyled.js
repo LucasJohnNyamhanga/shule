@@ -3,12 +3,11 @@ import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWith
 const _excluded = ["aria-describedby", "aria-label", "aria-labelledby", "autoComplete", "autoFocus", "className", "component", "components", "componentsProps", "defaultValue", "disabled", "endAdornment", "error", "id", "maxRows", "minRows", "multiline", "name", "onClick", "onChange", "onKeyDown", "onKeyUp", "onFocus", "onBlur", "placeholder", "readOnly", "required", "rows", "type", "startAdornment", "value"],
       _excluded2 = ["ownerState"];
 import * as React from 'react';
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import appendOwnerState from '../utils/appendOwnerState';
 import isHostComponent from '../utils/isHostComponent';
 import classes from './inputUnstyledClasses';
 import useInput from './useInput';
+import { useSlotProps } from '../utils';
 /**
  *
  * Demos:
@@ -22,7 +21,7 @@ import useInput from './useInput';
 
 import { jsx as _jsx } from "react/jsx-runtime";
 import { jsxs as _jsxs } from "react/jsx-runtime";
-const InputUnstyled = /*#__PURE__*/React.forwardRef(function InputUnstyled(props, ref) {
+const InputUnstyled = /*#__PURE__*/React.forwardRef(function InputUnstyled(props, forwardedRef) {
   const {
     'aria-describedby': ariaDescribedby,
     'aria-label': ariaLabel,
@@ -75,7 +74,7 @@ const InputUnstyled = /*#__PURE__*/React.forwardRef(function InputUnstyled(props
     onFocus,
     required,
     value
-  }, componentsProps.input?.ref);
+  });
 
   const ownerState = _extends({}, props, {
     disabled: disabledState,
@@ -86,8 +85,19 @@ const InputUnstyled = /*#__PURE__*/React.forwardRef(function InputUnstyled(props
     type
   });
 
-  const rootStateClasses = clsx(disabledState && classes.disabled, errorState && classes.error, focused && classes.focused, Boolean(formControlContext) && classes.formControl, multiline && classes.multiline, Boolean(startAdornment) && classes.adornedStart, Boolean(endAdornment) && classes.adornedEnd);
-  const inputStateClasses = clsx(disabledState && classes.disabled, multiline && classes.multiline);
+  const rootStateClasses = {
+    [classes.disabled]: disabledState,
+    [classes.error]: errorState,
+    [classes.focused]: focused,
+    [classes.formControl]: Boolean(formControlContext),
+    [classes.multiline]: multiline,
+    [classes.adornedStart]: Boolean(startAdornment),
+    [classes.adornedEnd]: Boolean(endAdornment)
+  };
+  const inputStateClasses = {
+    [classes.disabled]: disabledState,
+    [classes.multiline]: multiline
+  };
   const propsToForward = {
     'aria-describedby': ariaDescribedby,
     'aria-label': ariaLabel,
@@ -103,14 +113,25 @@ const InputUnstyled = /*#__PURE__*/React.forwardRef(function InputUnstyled(props
     type
   };
   const Root = component ?? components.Root ?? 'div';
-  const rootProps = appendOwnerState(Root, _extends({}, getRootProps(_extends({}, other, componentsProps.root)), {
-    className: clsx(classes.root, rootStateClasses, className, componentsProps.root?.className)
-  }), ownerState);
-  let Input = components.Input ?? 'input'; // TODO: type this properly
-
-  let inputProps = appendOwnerState(Input, _extends({}, getInputProps(_extends({}, componentsProps.input, propsToForward)), {
-    className: clsx(classes.input, inputStateClasses, componentsProps.input?.className)
-  }), ownerState);
+  const rootProps = useSlotProps({
+    elementType: Root,
+    getSlotProps: getRootProps,
+    externalSlotProps: componentsProps.root,
+    externalForwardedProps: other,
+    additionalProps: {
+      ref: forwardedRef
+    },
+    ownerState,
+    className: [classes.root, rootStateClasses, className]
+  });
+  let Input = components.Input ?? 'input';
+  let inputProps = useSlotProps({
+    elementType: Input,
+    getSlotProps: otherHandlers => getInputProps(_extends({}, otherHandlers, propsToForward)),
+    externalSlotProps: componentsProps.input,
+    ownerState,
+    className: [classes.input, inputStateClasses]
+  });
 
   if (multiline) {
     const hasHostTextarea = isHostComponent(components.Textarea ?? 'textarea');
@@ -125,17 +146,16 @@ const InputUnstyled = /*#__PURE__*/React.forwardRef(function InputUnstyled(props
       }
     }
 
-    inputProps = _extends({
-      type: undefined
-    }, !hasHostTextarea && {
+    inputProps = _extends({}, !hasHostTextarea && {
       minRows: rows || minRows,
       maxRows: rows || maxRows
-    }, hasHostTextarea ? inputPropsWithoutOwnerState : inputProps);
+    }, hasHostTextarea ? inputPropsWithoutOwnerState : inputProps, {
+      type: undefined
+    });
     Input = components.Textarea ?? 'textarea';
   }
 
   return /*#__PURE__*/_jsxs(Root, _extends({}, rootProps, {
-    ref: ref,
     children: [startAdornment, /*#__PURE__*/_jsx(Input, _extends({}, inputProps)), endAdornment]
   }));
 });
@@ -206,8 +226,8 @@ process.env.NODE_ENV !== "production" ? InputUnstyled.propTypes
    * @default {}
    */
   componentsProps: PropTypes.shape({
-    input: PropTypes.object,
-    root: PropTypes.object
+    input: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object])
   }),
 
   /**
@@ -319,7 +339,9 @@ process.env.NODE_ENV !== "production" ? InputUnstyled.propTypes
    * Type of the `input` element. It should be [a valid HTML5 input type](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Form_%3Cinput%3E_types).
    * @default 'text'
    */
-  type: PropTypes.string,
+  type: PropTypes
+  /* @typescript-to-proptypes-ignore */
+  .oneOf(['button', 'checkbox', 'color', 'date', 'datetime-local', 'email', 'file', 'hidden', 'image', 'month', 'number', 'password', 'radio', 'range', 'reset', 'search', 'submit', 'tel', 'text', 'time', 'url', 'week']),
 
   /**
    * The value of the `input` element, required for a controlled component.

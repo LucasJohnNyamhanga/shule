@@ -73,20 +73,20 @@ const MobileStepperRoot = (0, _styled.default)(_Paper.default, {
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
-  background: theme.palette.background.default,
+  background: (theme.vars || theme).palette.background.default,
   padding: 8
 }, ownerState.position === 'bottom' && {
   position: 'fixed',
   bottom: 0,
   left: 0,
   right: 0,
-  zIndex: theme.zIndex.mobileStepper
+  zIndex: (theme.vars || theme).zIndex.mobileStepper
 }, ownerState.position === 'top' && {
   position: 'fixed',
   top: 0,
   left: 0,
   right: 0,
-  zIndex: theme.zIndex.mobileStepper
+  zIndex: (theme.vars || theme).zIndex.mobileStepper
 }));
 const MobileStepperDots = (0, _styled.default)('div', {
   name: 'MuiMobileStepper',
@@ -116,13 +116,13 @@ const MobileStepperDot = (0, _styled.default)('div', {
   transition: theme.transitions.create('background-color', {
     duration: theme.transitions.duration.shortest
   }),
-  backgroundColor: theme.palette.action.disabled,
+  backgroundColor: (theme.vars || theme).palette.action.disabled,
   borderRadius: '50%',
   width: 8,
   height: 8,
   margin: '0 2px'
 }, dotActive && {
-  backgroundColor: theme.palette.primary.main
+  backgroundColor: (theme.vars || theme).palette.primary.main
 })));
 const MobileStepperProgress = (0, _styled.default)(_LinearProgress.default, {
   name: 'MuiMobileStepper',

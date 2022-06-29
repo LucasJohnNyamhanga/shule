@@ -51,7 +51,7 @@ function unstable_createStyleFunctionSx(styleFunctionMapping = _getThemeValue.st
     } = props || {};
 
     if (!sx) {
-      return null; // emotion & styled-components will neglect null
+      return null; // Emotion & styled-components will neglect null
     }
     /*
      * Receive `sxInput` as object or callback

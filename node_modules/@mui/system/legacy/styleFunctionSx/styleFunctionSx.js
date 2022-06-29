@@ -47,7 +47,7 @@ export function unstable_createStyleFunctionSx() {
         theme = _ref2$theme === void 0 ? {} : _ref2$theme;
 
     if (!sx) {
-      return null; // emotion & styled-components will neglect null
+      return null; // Emotion & styled-components will neglect null
     }
     /*
      * Receive `sxInput` as object or callback

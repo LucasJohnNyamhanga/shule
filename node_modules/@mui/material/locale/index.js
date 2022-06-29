@@ -82,26 +82,26 @@ export const arEG = {
   components: {
     MuiBreadcrumbs: {
       defaultProps: {
-        expandText: 'ظهر العنوان'
+        expandText: 'إظهار المسار'
       }
     },
     MuiTablePagination: {
       defaultProps: {
         getItemAriaLabel: type => {
           if (type === 'first') {
-            return 'امش للصفحة الأولى';
+            return 'انتقل إلى الصفحة الأولى';
           }
 
           if (type === 'last') {
-            return 'امش للصفحة الأخيرة';
+            return 'انتقل إلى الصفحة الأخيرة';
           }
 
           if (type === 'next') {
-            return 'امش للصفحة التالية';
+            return 'انتقل إلى الصفحة التالية';
           } // if (type === 'previous') {
 
 
-          return 'امش للصفحة السابقة';
+          return 'انتقل إلى الصفحة السابقة';
         },
         labelRowsPerPage: 'عدد الصفوف في الصفحة:',
         labelDisplayedRows: ({
@@ -121,7 +121,7 @@ export const arEG = {
       defaultProps: {
         clearText: 'مسح',
         closeText: 'إغلاق',
-        loadingText: 'يتم التحميل…',
+        loadingText: 'جار التحميل...',
         noOptionsText: 'لا يوجد خيارات',
         openText: 'فتح'
       }
@@ -136,23 +136,23 @@ export const arEG = {
         'aria-label': 'التنقل عبر الصفحات',
         getItemAriaLabel: (type, page, selected) => {
           if (type === 'page') {
-            return `${selected ? '' : 'امش إلى '} صفحة ${page}`;
+            return `${selected ? '' : 'انتقل إلى '} صفحة ${page}`;
           }
 
           if (type === 'first') {
-            return 'امش للصفحة الأولى';
+            return 'انتقل إلى الصفحة الأولى';
           }
 
           if (type === 'last') {
-            return 'امش للصفحة الأخيرة';
+            return 'انتقل إلى الصفحة الأخيرة';
           }
 
           if (type === 'next') {
-            return 'امش للصفحة التالية';
+            return 'انتقل إلى الصفحة التالية';
           } // if (type === 'previous') {
 
 
-          return 'امش  للصفحة السابقة';
+          return 'انتقل  إلى الصفحة السابقة';
         }
       }
     }
@@ -162,26 +162,26 @@ export const arSD = {
   components: {
     MuiBreadcrumbs: {
       defaultProps: {
-        expandText: 'إظهر العنوان'
+        expandText: 'إظهار المسار'
       }
     },
     MuiTablePagination: {
       defaultProps: {
         getItemAriaLabel: type => {
           if (type === 'first') {
-            return 'إذهب الى الصفحة الأولى';
+            return 'انتقل إلى الصفحة الأولى';
           }
 
           if (type === 'last') {
-            return 'إذهب الي الصفحة الأخيرة';
+            return 'انتقل إلى الصفحة الأخيرة';
           }
 
           if (type === 'next') {
-            return 'إذهب الى الصفحة التالية';
+            return 'انتقل إلى الصفحة التالية';
           } // if (type === 'previous') {
 
 
-          return 'إذهب الى الصفحة السابقة';
+          return 'انتقل إلى الصفحة السابقة';
         },
         labelRowsPerPage: 'عدد الصفوف في الصفحة:',
         labelDisplayedRows: ({
@@ -201,7 +201,7 @@ export const arSD = {
       defaultProps: {
         clearText: 'مسح',
         closeText: 'إغلاق',
-        loadingText: 'يتم التحميل…',
+        loadingText: 'جار التحميل...',
         noOptionsText: 'لا يوجد خيارات',
         openText: 'فتح'
       }
@@ -216,23 +216,23 @@ export const arSD = {
         'aria-label': 'التنقل عبر الصفحات',
         getItemAriaLabel: (type, page, selected) => {
           if (type === 'page') {
-            return `${selected ? '' : 'إذهب إلى '} صفحة ${page}`;
+            return `${selected ? '' : 'انتقل إلى '} صفحة ${page}`;
           }
 
           if (type === 'first') {
-            return 'إذهب الى الصفحة الأولى';
+            return 'انتقل إلى الصفحة الأولى';
           }
 
           if (type === 'last') {
-            return 'إذهب الي الصفحة الأخيرة';
+            return 'انتقل الي الصفحة الأخيرة';
           }
 
           if (type === 'next') {
-            return 'إذهب الى الصفحة التالية';
+            return 'انتقل إلى الصفحة التالية';
           } // if (type === 'previous') {
 
 
-          return 'إذهب الى الصفحة السابقة';
+          return 'انتقل إلى الصفحة السابقة';
         }
       }
     }
@@ -619,7 +619,7 @@ export const csCZ = {
         'aria-label': 'Navigace stránkováním',
         getItemAriaLabel: (type, page, selected) => {
           if (type === 'page') {
-            return `${selected ? '' : 'Jít na '}${page} stránku`;
+            return `${selected ? '' : 'Jít na '}${page}. stránku`;
           }
 
           if (type === 'first') {

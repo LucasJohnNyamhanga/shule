@@ -1,15 +1,30 @@
 import _extends from "@babel/runtime/helpers/esm/extends";
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
-const _excluded = ["checked", "className", "component", "components", "componentsProps", "defaultChecked", "disabled", "onBlur", "onChange", "onFocus", "onFocusVisible", "readOnly", "required"];
+const _excluded = ["checked", "component", "components", "componentsProps", "defaultChecked", "disabled", "onBlur", "onChange", "onFocus", "onFocusVisible", "readOnly", "required"];
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
+import composeClasses from '../composeClasses';
 import useSwitch from './useSwitch';
-import classes from './switchUnstyledClasses';
-import appendOwnerState from '../utils/appendOwnerState';
+import { getSwitchUnstyledUtilityClass } from './switchUnstyledClasses';
+import { useSlotProps } from '../utils';
 import { jsx as _jsx } from "react/jsx-runtime";
 import { jsxs as _jsxs } from "react/jsx-runtime";
 
+const useUtilityClasses = ownerState => {
+  const {
+    checked,
+    disabled,
+    focusVisible,
+    readOnly
+  } = ownerState;
+  const slots = {
+    root: ['root', checked && 'checked', disabled && 'disabled', focusVisible && 'focusVisible', readOnly && 'readOnly'],
+    thumb: ['thumb'],
+    input: ['input'],
+    track: ['track']
+  };
+  return composeClasses(slots, getSwitchUnstyledUtilityClass, {});
+};
 /**
  * The foundation for building custom-styled switches.
  *
@@ -21,10 +36,11 @@ import { jsxs as _jsxs } from "react/jsx-runtime";
  *
  * - [SwitchUnstyled API](https://mui.com/base/api/switch-unstyled/)
  */
+
+
 const SwitchUnstyled = /*#__PURE__*/React.forwardRef(function SwitchUnstyled(props, ref) {
   const {
     checked: checkedProp,
-    className,
     component,
     components = {},
     componentsProps = {},
@@ -36,7 +52,7 @@ const SwitchUnstyled = /*#__PURE__*/React.forwardRef(function SwitchUnstyled(pro
     onFocusVisible,
     readOnly: readOnlyProp
   } = props,
-        otherProps = _objectWithoutPropertiesLoose(props, _excluded);
+        other = _objectWithoutPropertiesLoose(props, _excluded);
 
   const useSwitchProps = {
     checked: checkedProp,
@@ -63,26 +79,42 @@ const SwitchUnstyled = /*#__PURE__*/React.forwardRef(function SwitchUnstyled(pro
     readOnly
   });
 
+  const classes = useUtilityClasses(ownerState);
   const Root = component ?? components.Root ?? 'span';
-  const rootProps = appendOwnerState(Root, _extends({}, otherProps, componentsProps.root), ownerState);
+  const rootProps = useSlotProps({
+    elementType: Root,
+    externalSlotProps: componentsProps.root,
+    externalForwardedProps: other,
+    additionalProps: {
+      ref
+    },
+    ownerState,
+    className: classes.root
+  });
   const Thumb = components.Thumb ?? 'span';
-  const thumbProps = appendOwnerState(Thumb, componentsProps.thumb ?? {}, ownerState);
+  const thumbProps = useSlotProps({
+    elementType: Thumb,
+    externalSlotProps: componentsProps.thumb,
+    ownerState,
+    className: classes.thumb
+  });
   const Input = components.Input ?? 'input';
-  const inputProps = appendOwnerState(Input, componentsProps.input ?? {}, ownerState);
+  const inputProps = useSlotProps({
+    elementType: Input,
+    getSlotProps: getInputProps,
+    externalSlotProps: componentsProps.input,
+    ownerState,
+    className: classes.input
+  });
   const Track = components.Track === null ? () => null : components.Track ?? 'span';
-  const trackProps = appendOwnerState(Track, componentsProps.track ?? {}, ownerState);
-  const stateClasses = clsx(checked && classes.checked, disabled && classes.disabled, focusVisible && classes.focusVisible, readOnly && classes.readOnly);
-  return /*#__PURE__*/_jsxs(Root, _extends({
-    ref: ref
-  }, rootProps, {
-    className: clsx(classes.root, stateClasses, className, rootProps?.className),
-    children: [/*#__PURE__*/_jsx(Track, _extends({}, trackProps, {
-      className: clsx(classes.track, trackProps?.className)
-    })), /*#__PURE__*/_jsx(Thumb, _extends({}, thumbProps, {
-      className: clsx(classes.thumb, thumbProps?.className)
-    })), /*#__PURE__*/_jsx(Input, _extends({}, getInputProps(inputProps), {
-      className: clsx(classes.input, inputProps?.className)
-    }))]
+  const trackProps = useSlotProps({
+    elementType: Track,
+    externalSlotProps: componentsProps.track,
+    ownerState,
+    className: classes.track
+  });
+  return /*#__PURE__*/_jsxs(Root, _extends({}, rootProps, {
+    children: [/*#__PURE__*/_jsx(Track, _extends({}, trackProps)), /*#__PURE__*/_jsx(Thumb, _extends({}, thumbProps)), /*#__PURE__*/_jsx(Input, _extends({}, inputProps))]
   }));
 });
 process.env.NODE_ENV !== "production" ? SwitchUnstyled.propTypes
@@ -97,11 +129,6 @@ process.env.NODE_ENV !== "production" ? SwitchUnstyled.propTypes
    * If `true`, the component is checked.
    */
   checked: PropTypes.bool,
-
-  /**
-   * Class name applied to the root element.
-   */
-  className: PropTypes.string,
 
   /**
    * The component used for the Root slot.
@@ -129,10 +156,10 @@ process.env.NODE_ENV !== "production" ? SwitchUnstyled.propTypes
    * @default {}
    */
   componentsProps: PropTypes.shape({
-    input: PropTypes.object,
-    root: PropTypes.object,
-    thumb: PropTypes.object,
-    track: PropTypes.object
+    input: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+    thumb: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+    track: PropTypes.oneOfType([PropTypes.func, PropTypes.object])
   }),
 
   /**

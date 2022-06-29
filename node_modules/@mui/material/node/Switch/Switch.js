@@ -126,7 +126,7 @@ const SwitchSwitchBase = (0, _styled.default)(_SwitchBase.default, {
   left: 0,
   zIndex: 1,
   // Render above the focus ripple.
-  color: theme.palette.mode === 'light' ? theme.palette.common.white : theme.palette.grey[300],
+  color: theme.vars ? theme.vars.palette.Switch.defaultColor : `${theme.palette.mode === 'light' ? theme.palette.common.white : theme.palette.grey[300]}`,
   transition: theme.transitions.create(['left', 'transform'], {
     duration: theme.transitions.duration.shortest
   }),
@@ -134,13 +134,13 @@ const SwitchSwitchBase = (0, _styled.default)(_SwitchBase.default, {
     transform: 'translateX(20px)'
   },
   [`&.${_switchClasses.default.disabled}`]: {
-    color: theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[600]
+    color: theme.vars ? theme.vars.palette.Switch.defaultDisabledColor : `${theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[600]}`
   },
   [`&.${_switchClasses.default.checked} + .${_switchClasses.default.track}`]: {
     opacity: 0.5
   },
   [`&.${_switchClasses.default.disabled} + .${_switchClasses.default.track}`]: {
-    opacity: theme.palette.mode === 'light' ? 0.12 : 0.2
+    opacity: theme.vars ? theme.vars.opacity.switchTrackDisabled : `${theme.palette.mode === 'light' ? 0.12 : 0.2}`
   },
   [`& .${_switchClasses.default.input}`]: {
     left: '-100%',
@@ -151,7 +151,7 @@ const SwitchSwitchBase = (0, _styled.default)(_SwitchBase.default, {
   ownerState
 }) => (0, _extends2.default)({
   '&:hover': {
-    backgroundColor: (0, _system.alpha)(theme.palette.action.active, theme.palette.action.hoverOpacity),
+    backgroundColor: theme.vars ? `rgba(${theme.vars.palette.action.activeChannel} / ${theme.vars.palette.action.hoverOpacity})` : (0, _system.alpha)(theme.palette.action.active, theme.palette.action.hoverOpacity),
     // Reset on touch devices, it doesn't add specificity
     '@media (hover: none)': {
       backgroundColor: 'transparent'
@@ -159,19 +159,19 @@ const SwitchSwitchBase = (0, _styled.default)(_SwitchBase.default, {
   }
 }, ownerState.color !== 'default' && {
   [`&.${_switchClasses.default.checked}`]: {
-    color: theme.palette[ownerState.color].main,
+    color: (theme.vars || theme).palette[ownerState.color].main,
     '&:hover': {
-      backgroundColor: (0, _system.alpha)(theme.palette[ownerState.color].main, theme.palette.action.hoverOpacity),
+      backgroundColor: theme.vars ? `rgba(${theme.vars.palette[ownerState.color].mainChannel} / ${theme.vars.palette.action.hoverOpacity})` : (0, _system.alpha)(theme.palette[ownerState.color].main, theme.palette.action.hoverOpacity),
       '@media (hover: none)': {
         backgroundColor: 'transparent'
       }
     },
     [`&.${_switchClasses.default.disabled}`]: {
-      color: theme.palette.mode === 'light' ? (0, _system.lighten)(theme.palette[ownerState.color].main, 0.62) : (0, _system.darken)(theme.palette[ownerState.color].main, 0.55)
+      color: theme.vars ? theme.vars.palette.Switch[`${ownerState.color}DisabledColor`] : `${theme.palette.mode === 'light' ? (0, _system.lighten)(theme.palette[ownerState.color].main, 0.62) : (0, _system.darken)(theme.palette[ownerState.color].main, 0.55)}`
     }
   },
   [`&.${_switchClasses.default.checked} + .${_switchClasses.default.track}`]: {
-    backgroundColor: theme.palette[ownerState.color].main
+    backgroundColor: (theme.vars || theme).palette[ownerState.color].main
   }
 }));
 const SwitchTrack = (0, _styled.default)('span', {
@@ -188,8 +188,8 @@ const SwitchTrack = (0, _styled.default)('span', {
   transition: theme.transitions.create(['opacity', 'background-color'], {
     duration: theme.transitions.duration.shortest
   }),
-  backgroundColor: theme.palette.mode === 'light' ? theme.palette.common.black : theme.palette.common.white,
-  opacity: theme.palette.mode === 'light' ? 0.38 : 0.3
+  backgroundColor: theme.vars ? theme.vars.palette.common.onBackground : `${theme.palette.mode === 'light' ? theme.palette.common.black : theme.palette.common.white}`,
+  opacity: theme.vars ? theme.vars.opacity.switchTrack : `${theme.palette.mode === 'light' ? 0.38 : 0.3}`
 }));
 const SwitchThumb = (0, _styled.default)('span', {
   name: 'MuiSwitch',
@@ -198,7 +198,7 @@ const SwitchThumb = (0, _styled.default)('span', {
 })(({
   theme
 }) => ({
-  boxShadow: theme.shadows[1],
+  boxShadow: (theme.vars || theme).shadows[1],
   backgroundColor: 'currentColor',
   width: 20,
   height: 20,

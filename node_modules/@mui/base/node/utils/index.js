@@ -9,7 +9,9 @@ var _exportNames = {
   appendOwnerState: true,
   areArraysEqual: true,
   extractEventHandlers: true,
-  isHostComponent: true
+  isHostComponent: true,
+  resolveComponentProps: true,
+  useSlotProps: true
 };
 Object.defineProperty(exports, "appendOwnerState", {
   enumerable: true,
@@ -35,6 +37,18 @@ Object.defineProperty(exports, "isHostComponent", {
     return _isHostComponent.default;
   }
 });
+Object.defineProperty(exports, "resolveComponentProps", {
+  enumerable: true,
+  get: function () {
+    return _resolveComponentProps.default;
+  }
+});
+Object.defineProperty(exports, "useSlotProps", {
+  enumerable: true,
+  get: function () {
+    return _useSlotProps.default;
+  }
+});
 
 var _appendOwnerState = _interopRequireDefault(require("./appendOwnerState"));
 
@@ -43,6 +57,10 @@ var _areArraysEqual = _interopRequireDefault(require("./areArraysEqual"));
 var _extractEventHandlers = _interopRequireDefault(require("./extractEventHandlers"));
 
 var _isHostComponent = _interopRequireDefault(require("./isHostComponent"));
+
+var _resolveComponentProps = _interopRequireDefault(require("./resolveComponentProps"));
+
+var _useSlotProps = _interopRequireDefault(require("./useSlotProps"));
 
 var _types = require("./types");
 

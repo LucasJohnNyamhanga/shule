@@ -6,13 +6,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-exports.getFormControlUnstyledUtilityClasses = getFormControlUnstyledUtilityClasses;
+exports.getFormControlUnstyledUtilityClass = getFormControlUnstyledUtilityClass;
 
 var _generateUtilityClass = _interopRequireDefault(require("../generateUtilityClass"));
 
 var _generateUtilityClasses = _interopRequireDefault(require("../generateUtilityClasses"));
 
-function getFormControlUnstyledUtilityClasses(slot) {
+function getFormControlUnstyledUtilityClass(slot) {
   return (0, _generateUtilityClass.default)('BaseFormControl', slot);
 }
 

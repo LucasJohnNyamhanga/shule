@@ -4,15 +4,17 @@ const _excluded = ["getRootProps"];
 import { useTabContext, getTabId, getPanelId } from '../TabsUnstyled';
 import { useButton } from '../ButtonUnstyled';
 
-const useTab = props => {
+const useTab = parameters => {
+  var _getPanelId, _getTabId;
+
   const {
     value: valueProp,
     onChange,
     onClick,
     onFocus
-  } = props;
+  } = parameters;
 
-  const _useButton = useButton(props),
+  const _useButton = useButton(parameters),
         {
     getRootProps: getRootPropsButton
   } = _useButton,
@@ -29,13 +31,21 @@ const useTab = props => {
   const selectionFollowsFocus = context.selectionFollowsFocus;
   const a11yAttributes = {
     role: 'tab',
-    'aria-controls': getPanelId(context, value),
-    id: getTabId(context, value),
+    'aria-controls': (_getPanelId = getPanelId(context, value)) != null ? _getPanelId : undefined,
+    id: (_getTabId = getTabId(context, value)) != null ? _getTabId : undefined,
     'aria-selected': selected,
     disabled: otherButtonProps.disabled
   };
 
-  const handleFocus = event => {
+  const createHandleFocus = otherHandlers => event => {
+    var _otherHandlers$onFocu;
+
+    (_otherHandlers$onFocu = otherHandlers.onFocus) == null ? void 0 : _otherHandlers$onFocu.call(otherHandlers, event);
+
+    if (event.defaultPrevented) {
+      return;
+    }
+
     if (selectionFollowsFocus && !selected) {
       if (onChange) {
         onChange(event, value);
@@ -49,7 +59,15 @@ const useTab = props => {
     }
   };
 
-  const handleClick = event => {
+  const createHandleClick = otherHandlers => event => {
+    var _otherHandlers$onClic;
+
+    (_otherHandlers$onClic = otherHandlers.onClick) == null ? void 0 : _otherHandlers$onClic.call(otherHandlers, event);
+
+    if (event.defaultPrevented) {
+      return;
+    }
+
     if (!selected) {
       if (onChange) {
         onChange(event, value);
@@ -63,11 +81,11 @@ const useTab = props => {
     }
   };
 
-  const getRootProps = otherHandlers => {
-    const buttonResolvedProps = getRootPropsButton(_extends({
-      onClick: handleClick,
-      onFocus: handleFocus
-    }, otherHandlers));
+  const getRootProps = (otherHandlers = {}) => {
+    const buttonResolvedProps = getRootPropsButton(_extends({}, otherHandlers, {
+      onClick: createHandleClick(otherHandlers),
+      onFocus: createHandleFocus(otherHandlers)
+    }));
     return _extends({}, buttonResolvedProps, a11yAttributes);
   };
 

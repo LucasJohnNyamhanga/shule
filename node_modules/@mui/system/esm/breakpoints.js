@@ -154,9 +154,11 @@ export function resolveBreakpointValues({
     if (Array.isArray(breakpointValues)) {
       acc[breakpoint] = breakpointValues[i] != null ? breakpointValues[i] : breakpointValues[previous];
       previous = i;
-    } else {
-      acc[breakpoint] = breakpointValues[breakpoint] != null ? breakpointValues[breakpoint] : breakpointValues[previous] || breakpointValues;
+    } else if (typeof breakpointValues === 'object') {
+      acc[breakpoint] = breakpointValues[breakpoint] != null ? breakpointValues[breakpoint] : breakpointValues[previous];
       previous = breakpoint;
+    } else {
+      acc[breakpoint] = breakpointValues;
     }
 
     return acc;

@@ -231,6 +231,12 @@ process.env.NODE_ENV !== "production" ? InputLabel.propTypes
   shrink: _propTypes.default.bool,
 
   /**
+   * The size of the component.
+   * @default 'normal'
+   */
+  size: _propTypes.default.oneOf(['normal', 'small']),
+
+  /**
    * The system prop that allows defining system overrides as well as additional CSS styles.
    */
   sx: _propTypes.default.oneOfType([_propTypes.default.arrayOf(_propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object, _propTypes.default.bool])), _propTypes.default.func, _propTypes.default.object]),

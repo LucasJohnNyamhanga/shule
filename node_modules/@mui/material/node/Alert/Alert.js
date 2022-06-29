@@ -90,22 +90,30 @@ const AlertRoot = (0, _styled.default)(_Paper.default, {
     display: 'flex',
     padding: '6px 16px'
   }, color && ownerState.variant === 'standard' && {
-    color: getColor(theme.palette[color].light, 0.6),
-    backgroundColor: getBackgroundColor(theme.palette[color].light, 0.9),
-    [`& .${_alertClasses.default.icon}`]: {
+    color: theme.vars ? theme.vars.palette.Alert[`${color}Color`] : getColor(theme.palette[color].light, 0.6),
+    backgroundColor: theme.vars ? theme.vars.palette.Alert[`${color}StandardBg`] : getBackgroundColor(theme.palette[color].light, 0.9),
+    [`& .${_alertClasses.default.icon}`]: theme.vars ? {
+      color: theme.vars.palette.Alert[`${color}IconColor`]
+    } : {
       color: theme.palette.mode === 'dark' ? theme.palette[color].main : theme.palette[color].light
     }
   }, color && ownerState.variant === 'outlined' && {
-    color: getColor(theme.palette[color].light, 0.6),
-    border: `1px solid ${theme.palette[color].light}`,
-    [`& .${_alertClasses.default.icon}`]: {
+    color: theme.vars ? theme.vars.palette.Alert[`${color}Color`] : getColor(theme.palette[color].light, 0.6),
+    border: `1px solid ${(theme.vars || theme).palette[color].light}`,
+    [`& .${_alertClasses.default.icon}`]: theme.vars ? {
+      color: theme.vars.palette.Alert[`${color}IconColor`]
+    } : {
       color: theme.palette.mode === 'dark' ? theme.palette[color].main : theme.palette[color].light
     }
-  }, color && ownerState.variant === 'filled' && {
-    color: '#fff',
-    fontWeight: theme.typography.fontWeightMedium,
-    backgroundColor: theme.palette.mode === 'dark' ? theme.palette[color].dark : theme.palette[color].main
-  });
+  }, color && ownerState.variant === 'filled' && (0, _extends2.default)({
+    fontWeight: theme.typography.fontWeightMedium
+  }, theme.vars ? {
+    color: theme.vars.palette.Alert[`${color}FilledColor`],
+    backgroundColor: theme.vars.palette.Alert[`${color}FilledBg`]
+  } : {
+    backgroundColor: theme.palette.mode === 'dark' ? theme.palette[color].dark : theme.palette[color].main,
+    color: theme.palette.getContrastText(theme.palette.mode === 'dark' ? theme.palette[color].dark : theme.palette[color].main)
+  }));
 });
 const AlertIcon = (0, _styled.default)('div', {
   name: 'MuiAlert',
@@ -123,7 +131,9 @@ const AlertMessage = (0, _styled.default)('div', {
   slot: 'Message',
   overridesResolver: (props, styles) => styles.message
 })({
-  padding: '8px 0'
+  padding: '8px 0',
+  minWidth: 0,
+  overflow: 'auto'
 });
 const AlertAction = (0, _styled.default)('div', {
   name: 'MuiAlert',
@@ -191,6 +201,7 @@ const Alert = /*#__PURE__*/React.forwardRef(function Alert(inProps, ref) {
       className: classes.message,
       children: children
     }), action != null ? /*#__PURE__*/(0, _jsxRuntime.jsx)(AlertAction, {
+      ownerState: ownerState,
       className: classes.action,
       children: action
     }) : null, action == null && onClose ? /*#__PURE__*/(0, _jsxRuntime.jsx)(AlertAction, {

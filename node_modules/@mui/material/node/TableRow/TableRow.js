@@ -69,12 +69,12 @@ const TableRowRoot = (0, _styled.default)('tr', {
   // We disable the focus ring for mouse, touch and keyboard users.
   outline: 0,
   [`&.${_tableRowClasses.default.hover}:hover`]: {
-    backgroundColor: theme.palette.action.hover
+    backgroundColor: (theme.vars || theme).palette.action.hover
   },
   [`&.${_tableRowClasses.default.selected}`]: {
-    backgroundColor: (0, _system.alpha)(theme.palette.primary.main, theme.palette.action.selectedOpacity),
+    backgroundColor: theme.vars ? `rgba(${theme.vars.palette.primary.mainChannel} / ${theme.vars.palette.action.selectedOpacity})` : (0, _system.alpha)(theme.palette.primary.main, theme.palette.action.selectedOpacity),
     '&:hover': {
-      backgroundColor: (0, _system.alpha)(theme.palette.primary.main, theme.palette.action.selectedOpacity + theme.palette.action.hoverOpacity)
+      backgroundColor: theme.vars ? `rgba(${theme.vars.palette.primary.mainChannel} / calc(${theme.vars.palette.action.selectedOpacity} + ${theme.vars.palette.action.hoverOpacity}))` : (0, _system.alpha)(theme.palette.primary.main, theme.palette.action.selectedOpacity + theme.palette.action.hoverOpacity)
     }
   }
 }));

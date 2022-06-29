@@ -1,5 +1,5 @@
 import { OverridableComponent } from '@mui/types';
-import { TablePaginationActionsUnstyledTypeMap } from './TablePaginationActionsUnstyledProps';
+import { TablePaginationActionsUnstyledTypeMap } from './TablePaginationActionsUnstyled.types';
 /**
  * @ignore - internal component.
  */

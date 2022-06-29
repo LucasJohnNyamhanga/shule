@@ -13,6 +13,6 @@ export interface FormControlUnstyledClasses {
     required: string;
 }
 export declare type FormControlUnstyledClassKey = keyof FormControlUnstyledClasses;
-export declare function getFormControlUnstyledUtilityClasses(slot: string): string;
+export declare function getFormControlUnstyledUtilityClass(slot: string): string;
 declare const formControlUnstyledClasses: FormControlUnstyledClasses;
 export default formControlUnstyledClasses;

@@ -122,7 +122,7 @@ export default function createStyled() {
       }
 
       var expressionsWithDefaultTheme = expressions ? expressions.map(function (stylesArg) {
-        // On the server emotion doesn't use React.forwardRef for creating components, so the created
+        // On the server Emotion doesn't use React.forwardRef for creating components, so the created
         // component stays as a function. This condition makes sure that we do not interpolate functions
         // which are basically components used as a selectors.
         // eslint-disable-next-line no-underscore-dangle
@@ -149,7 +149,9 @@ export default function createStyled() {
                   slotKey = _ref3[0],
                   slotStyle = _ref3[1];
 
-              resolvedStyleOverrides[slotKey] = typeof slotStyle === 'function' ? slotStyle(props) : slotStyle;
+              resolvedStyleOverrides[slotKey] = typeof slotStyle === 'function' ? slotStyle(_extends({}, props, {
+                theme: theme
+              })) : slotStyle;
             });
             return overridesResolver(props, resolvedStyleOverrides);
           }
@@ -181,7 +183,7 @@ export default function createStyled() {
 
         transformedStyleArg = [].concat(_toConsumableArray(styleArg), _toConsumableArray(placeholders));
         transformedStyleArg.raw = [].concat(_toConsumableArray(styleArg.raw), _toConsumableArray(placeholders));
-      } else if (typeof styleArg === 'function' && // On the server emotion doesn't use React.forwardRef for creating components, so the created
+      } else if (typeof styleArg === 'function' && // On the server Emotion doesn't use React.forwardRef for creating components, so the created
       // component stays as a function. This condition makes sure that we do not interpolate functions
       // which are basically components used as a selectors.
       // eslint-disable-next-line no-underscore-dangle

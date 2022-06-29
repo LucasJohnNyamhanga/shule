@@ -104,7 +104,7 @@ const SpeedDialRoot = (0, _styled.default)('div', {
   theme,
   ownerState
 }) => (0, _extends2.default)({
-  zIndex: theme.zIndex.speedDial,
+  zIndex: (theme.vars || theme).zIndex.speedDial,
   display: 'flex',
   alignItems: 'center',
   pointerEvents: 'none'

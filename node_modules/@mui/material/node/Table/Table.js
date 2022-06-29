@@ -65,7 +65,7 @@ const TableRoot = (0, _styled.default)('table', {
   borderSpacing: 0,
   '& caption': (0, _extends2.default)({}, theme.typography.body2, {
     padding: theme.spacing(2),
-    color: theme.palette.text.secondary,
+    color: (theme.vars || theme).palette.text.secondary,
     textAlign: 'left',
     captionSide: 'bottom'
   })

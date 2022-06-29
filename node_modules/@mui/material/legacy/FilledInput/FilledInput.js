@@ -35,36 +35,38 @@ var FilledInputRoot = styled(InputBaseRoot, {
     return [].concat(_toConsumableArray(inputBaseRootOverridesResolver(props, styles)), [!ownerState.disableUnderline && styles.underline]);
   }
 })(function (_ref) {
-  var _extends2, _ref2;
+  var _extends2, _palette, _ref2;
 
   var theme = _ref.theme,
       ownerState = _ref.ownerState;
   var light = theme.palette.mode === 'light';
   var bottomLineColor = light ? 'rgba(0, 0, 0, 0.42)' : 'rgba(255, 255, 255, 0.7)';
   var backgroundColor = light ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.09)';
+  var hoverBackground = light ? 'rgba(0, 0, 0, 0.09)' : 'rgba(255, 255, 255, 0.13)';
+  var disabledBackground = light ? 'rgba(0, 0, 0, 0.12)' : 'rgba(255, 255, 255, 0.12)';
   return _extends((_extends2 = {
     position: 'relative',
-    backgroundColor: backgroundColor,
-    borderTopLeftRadius: theme.shape.borderRadius,
-    borderTopRightRadius: theme.shape.borderRadius,
+    backgroundColor: theme.vars ? theme.vars.palette.FilledInput.bg : backgroundColor,
+    borderTopLeftRadius: (theme.vars || theme).shape.borderRadius,
+    borderTopRightRadius: (theme.vars || theme).shape.borderRadius,
     transition: theme.transitions.create('background-color', {
       duration: theme.transitions.duration.shorter,
       easing: theme.transitions.easing.easeOut
     }),
     '&:hover': {
-      backgroundColor: light ? 'rgba(0, 0, 0, 0.09)' : 'rgba(255, 255, 255, 0.13)',
+      backgroundColor: theme.vars ? theme.vars.palette.FilledInput.hoverBg : hoverBackground,
       // Reset on touch devices, it doesn't add specificity
       '@media (hover: none)': {
-        backgroundColor: backgroundColor
+        backgroundColor: theme.vars ? theme.vars.palette.FilledInput.bg : backgroundColor
       }
     }
   }, _defineProperty(_extends2, "&.".concat(filledInputClasses.focused), {
-    backgroundColor: backgroundColor
+    backgroundColor: theme.vars ? theme.vars.palette.FilledInput.bg : backgroundColor
   }), _defineProperty(_extends2, "&.".concat(filledInputClasses.disabled), {
-    backgroundColor: light ? 'rgba(0, 0, 0, 0.12)' : 'rgba(255, 255, 255, 0.12)'
+    backgroundColor: theme.vars ? theme.vars.palette.FilledInput.disabledBg : disabledBackground
   }), _extends2), !ownerState.disableUnderline && (_ref2 = {
     '&:after': {
-      borderBottom: "2px solid ".concat(theme.palette[ownerState.color].main),
+      borderBottom: "2px solid ".concat((_palette = (theme.vars || theme).palette[ownerState.color || 'primary']) == null ? void 0 : _palette.main),
       left: 0,
       bottom: 0,
       // Doing the other way around crash on IE11 "''" https://github.com/cssinjs/jss/issues/242
@@ -84,11 +86,11 @@ var FilledInputRoot = styled(InputBaseRoot, {
     // See https://github.com/mui/material-ui/issues/31766
     transform: 'scaleX(1) translateX(0)'
   }), _defineProperty(_ref2, "&.".concat(filledInputClasses.error, ":after"), {
-    borderBottomColor: theme.palette.error.main,
+    borderBottomColor: (theme.vars || theme).palette.error.main,
     transform: 'scaleX(1)' // error is always underlined in red
 
   }), _defineProperty(_ref2, '&:before', {
-    borderBottom: "1px solid ".concat(bottomLineColor),
+    borderBottom: "1px solid ".concat(theme.vars ? "rgba(".concat(theme.vars.palette.common.onBackgroundChannel, " / ").concat(theme.vars.opacity.inputUnderline, ")") : bottomLineColor),
     left: 0,
     bottom: 0,
     // Doing the other way around crash on IE11 "''" https://github.com/cssinjs/jss/issues/242
@@ -101,7 +103,7 @@ var FilledInputRoot = styled(InputBaseRoot, {
     pointerEvents: 'none' // Transparent to the hover style.
 
   }), _defineProperty(_ref2, "&:hover:not(.".concat(filledInputClasses.disabled, "):before"), {
-    borderBottom: "1px solid ".concat(theme.palette.text.primary)
+    borderBottom: "1px solid ".concat((theme.vars || theme).palette.text.primary)
   }), _defineProperty(_ref2, "&.".concat(filledInputClasses.disabled, ":before"), {
     borderBottomStyle: 'dotted'
   }), _ref2), ownerState.startAdornment && {
@@ -129,7 +131,8 @@ var FilledInputInput = styled(InputBaseInput, {
     paddingTop: 25,
     paddingRight: 12,
     paddingBottom: 8,
-    paddingLeft: 12,
+    paddingLeft: 12
+  }, !theme.vars && {
     '&:-webkit-autofill': {
       WebkitBoxShadow: theme.palette.mode === 'light' ? null : '0 0 0 100px #266798 inset',
       WebkitTextFillColor: theme.palette.mode === 'light' ? null : '#fff',
@@ -137,7 +140,18 @@ var FilledInputInput = styled(InputBaseInput, {
       borderTopLeftRadius: 'inherit',
       borderTopRightRadius: 'inherit'
     }
-  }, ownerState.size === 'small' && {
+  }, theme.vars && _defineProperty({
+    '&:-webkit-autofill': {
+      borderTopLeftRadius: 'inherit',
+      borderTopRightRadius: 'inherit'
+    }
+  }, theme.getColorSchemeSelector('dark'), {
+    '&:-webkit-autofill': {
+      WebkitBoxShadow: '0 0 0 100px #266798 inset',
+      WebkitTextFillColor: '#fff',
+      caretColor: '#fff'
+    }
+  }), ownerState.size === 'small' && {
     paddingTop: 21,
     paddingBottom: 4
   }, ownerState.hiddenLabel && {

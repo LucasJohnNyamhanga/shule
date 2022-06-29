@@ -70,16 +70,16 @@ var StepLabelLabel = styled('span', {
       duration: theme.transitions.duration.shortest
     })
   }, _defineProperty(_extends3, "&.".concat(stepLabelClasses.active), {
-    color: theme.palette.text.primary,
+    color: (theme.vars || theme).palette.text.primary,
     fontWeight: 500
   }), _defineProperty(_extends3, "&.".concat(stepLabelClasses.completed), {
-    color: theme.palette.text.primary,
+    color: (theme.vars || theme).palette.text.primary,
     fontWeight: 500
   }), _defineProperty(_extends3, "&.".concat(stepLabelClasses.alternativeLabel), {
     textAlign: 'center',
     marginTop: 16
   }), _defineProperty(_extends3, "&.".concat(stepLabelClasses.error), {
-    color: theme.palette.error.main
+    color: (theme.vars || theme).palette.error.main
   }), _extends3));
 });
 var StepLabelIconContainer = styled('span', {
@@ -108,7 +108,7 @@ var StepLabelLabelContainer = styled('span', {
   var theme = _ref4.theme;
   return {
     width: '100%',
-    color: theme.palette.text.secondary
+    color: (theme.vars || theme).palette.text.secondary
   };
 });
 var StepLabel = /*#__PURE__*/React.forwardRef(function StepLabel(inProps, ref) {

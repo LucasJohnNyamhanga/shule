@@ -1,13 +1,12 @@
 import _extends from "@babel/runtime/helpers/esm/extends";
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
-const _excluded = ["children", "className", "disabled", "component", "components", "componentsProps", "label"];
+const _excluded = ["children", "disabled", "component", "components", "componentsProps", "label"];
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { appendOwnerState } from '../utils';
 import { getMenuItemUnstyledUtilityClass } from './menuItemUnstyledClasses';
 import useMenuItem from './useMenuItem';
 import composeClasses from '../composeClasses';
+import useSlotProps from '../utils/useSlotProps';
 import { jsx as _jsx } from "react/jsx-runtime";
 
 function getUtilityClasses(ownerState) {
@@ -33,12 +32,11 @@ function getUtilityClasses(ownerState) {
 
 
 const MenuItemUnstyled = /*#__PURE__*/React.forwardRef(function MenuItemUnstyled(props, ref) {
-  var _ref, _componentsProps$root;
+  var _ref;
 
   const {
     children,
-    className,
-    disabled = false,
+    disabled: disabledProp = false,
     component,
     components = {},
     componentsProps = {},
@@ -46,30 +44,31 @@ const MenuItemUnstyled = /*#__PURE__*/React.forwardRef(function MenuItemUnstyled
   } = props,
         other = _objectWithoutPropertiesLoose(props, _excluded);
 
-  const Root = (_ref = component != null ? component : components.Root) != null ? _ref : 'li';
   const {
     getRootProps,
-    itemState,
+    disabled,
     focusVisible
   } = useMenuItem({
-    component: Root,
-    disabled,
+    disabled: disabledProp,
     ref,
     label
   });
 
-  if (itemState == null) {
-    return null;
-  }
-
-  const ownerState = _extends({}, props, itemState, {
+  const ownerState = _extends({}, props, {
+    disabled,
     focusVisible
   });
 
   const classes = getUtilityClasses(ownerState);
-  const rootProps = appendOwnerState(Root, _extends({}, other, componentsProps.root, getRootProps(other), {
-    className: clsx(classes.root, className, (_componentsProps$root = componentsProps.root) == null ? void 0 : _componentsProps$root.className)
-  }), ownerState);
+  const Root = (_ref = component != null ? component : components.Root) != null ? _ref : 'li';
+  const rootProps = useSlotProps({
+    elementType: Root,
+    getSlotProps: getRootProps,
+    externalSlotProps: componentsProps.root,
+    externalForwardedProps: other,
+    className: classes.root,
+    ownerState
+  });
   return /*#__PURE__*/_jsx(Root, _extends({}, rootProps, {
     children: children
   }));
@@ -90,11 +89,6 @@ process.env.NODE_ENV !== "production" ? MenuItemUnstyled.propTypes
   /**
    * @ignore
    */
-  className: PropTypes.string,
-
-  /**
-   * @ignore
-   */
   component: PropTypes.elementType,
 
   /**
@@ -108,7 +102,7 @@ process.env.NODE_ENV !== "production" ? MenuItemUnstyled.propTypes
    * @ignore
    */
   componentsProps: PropTypes.shape({
-    root: PropTypes.object
+    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object])
   }),
 
   /**

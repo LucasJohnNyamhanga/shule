@@ -15,11 +15,7 @@ var React = _interopRequireWildcard(require("react"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
-var _clsx = _interopRequireDefault(require("clsx"));
-
 var _utils = require("@mui/utils");
-
-var _appendOwnerState = _interopRequireDefault(require("../utils/appendOwnerState"));
 
 var _MenuUnstyledContext = _interopRequireDefault(require("./MenuUnstyledContext"));
 
@@ -31,9 +27,11 @@ var _composeClasses = _interopRequireDefault(require("../composeClasses"));
 
 var _PopperUnstyled = _interopRequireDefault(require("../PopperUnstyled"));
 
+var _useSlotProps = _interopRequireDefault(require("../utils/useSlotProps"));
+
 var _jsxRuntime = require("react/jsx-runtime");
 
-const _excluded = ["actions", "anchorEl", "children", "className", "component", "components", "componentsProps", "onClose", "open"];
+const _excluded = ["actions", "anchorEl", "children", "component", "components", "componentsProps", "keepMounted", "listboxId", "onClose", "open"];
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -62,16 +60,17 @@ function getUtilityClasses(ownerState) {
 
 
 const MenuUnstyled = /*#__PURE__*/React.forwardRef(function MenuUnstyled(props, forwardedRef) {
-  var _componentsProps$list, _componentsProps$list2, _ref, _componentsProps$root, _components$Listbox, _componentsProps$list3;
+  var _ref, _components$Listbox;
 
   const {
     actions,
     anchorEl,
     children,
-    className,
     component,
     components = {},
     componentsProps = {},
+    keepMounted = false,
+    listboxId,
     onClose,
     open = false
   } = props,
@@ -87,8 +86,7 @@ const MenuUnstyled = /*#__PURE__*/React.forwardRef(function MenuUnstyled(props, 
   } = (0, _useMenu.default)({
     open,
     onClose,
-    listboxRef: (_componentsProps$list = componentsProps.listbox) == null ? void 0 : _componentsProps$list.ref,
-    listboxId: (_componentsProps$list2 = componentsProps.listbox) == null ? void 0 : _componentsProps$list2.id
+    listboxId
   });
   React.useImperativeHandle(actions, () => ({
     highlightFirstItem,
@@ -98,19 +96,29 @@ const MenuUnstyled = /*#__PURE__*/React.forwardRef(function MenuUnstyled(props, 
     open
   });
   const classes = getUtilityClasses(ownerState);
-  const Popper = (_ref = component != null ? component : components.Root) != null ? _ref : _PopperUnstyled.default;
-  const popperProps = (0, _appendOwnerState.default)(Popper, (0, _extends2.default)({}, other, {
-    anchorEl,
-    open,
-    keepMounted: true,
-    role: undefined
-  }, componentsProps.root, {
-    className: (0, _clsx.default)(classes.root, className, (_componentsProps$root = componentsProps.root) == null ? void 0 : _componentsProps$root.className)
-  }), ownerState);
+  const Root = (_ref = component != null ? component : components.Root) != null ? _ref : _PopperUnstyled.default;
+  const rootProps = (0, _useSlotProps.default)({
+    elementType: Root,
+    externalForwardedProps: other,
+    externalSlotProps: componentsProps.root,
+    additionalProps: {
+      anchorEl,
+      open,
+      keepMounted,
+      role: undefined,
+      ref: forwardedRef
+    },
+    className: classes.root,
+    ownerState
+  });
   const Listbox = (_components$Listbox = components.Listbox) != null ? _components$Listbox : 'ul';
-  const listboxProps = (0, _appendOwnerState.default)(Listbox, (0, _extends2.default)({}, componentsProps.listbox, getListboxProps(), {
-    className: (0, _clsx.default)(classes.listbox, (_componentsProps$list3 = componentsProps.listbox) == null ? void 0 : _componentsProps$list3.className)
-  }), ownerState);
+  const listboxProps = (0, _useSlotProps.default)({
+    elementType: Listbox,
+    getSlotProps: getListboxProps,
+    externalSlotProps: componentsProps.listbox,
+    ownerState,
+    className: classes.listbox
+  });
   const contextValue = {
     registerItem,
     unregisterItem,
@@ -118,8 +126,7 @@ const MenuUnstyled = /*#__PURE__*/React.forwardRef(function MenuUnstyled(props, 
     getItemProps,
     open
   };
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(Popper, (0, _extends2.default)({}, popperProps, {
-    ref: forwardedRef,
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(Root, (0, _extends2.default)({}, rootProps, {
     children: /*#__PURE__*/(0, _jsxRuntime.jsx)(Listbox, (0, _extends2.default)({}, listboxProps, {
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_MenuUnstyledContext.default.Provider, {
         value: contextValue,
@@ -159,11 +166,6 @@ process.env.NODE_ENV !== "production" ? MenuUnstyled.propTypes
   /**
    * @ignore
    */
-  className: _propTypes.default.string,
-
-  /**
-   * @ignore
-   */
   component: _propTypes.default.elementType,
 
   /**
@@ -178,9 +180,22 @@ process.env.NODE_ENV !== "production" ? MenuUnstyled.propTypes
    * @ignore
    */
   componentsProps: _propTypes.default.shape({
-    listbox: _propTypes.default.object,
-    root: _propTypes.default.object
+    listbox: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object]),
+    root: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object])
   }),
+
+  /**
+   * Always keep the menu in the DOM.
+   * This prop can be useful in SEO situation or when you want to maximize the responsiveness of the Menu.
+   *
+   * @default false
+   */
+  keepMounted: _propTypes.default.bool,
+
+  /**
+   * @ignore
+   */
+  listboxId: _propTypes.default.string,
 
   /**
    * Triggered when focus leaves the menu and the menu should close.

@@ -64,11 +64,11 @@ var moveFocus = function moveFocus(list, currentFocus, traversalFunction) {
   }
 };
 
-var useTabsList = function useTabsList(props) {
-  var ariaLabel = props['aria-label'],
-      ariaLabelledBy = props['aria-labelledby'],
-      children = props.children,
-      ref = props.ref;
+var useTabsList = function useTabsList(parameters) {
+  var ariaLabel = parameters['aria-label'],
+      ariaLabelledBy = parameters['aria-labelledby'],
+      children = parameters.children,
+      ref = parameters.ref;
   var tabsListRef = /*#__PURE__*/React.createRef();
   var handleRef = useForkRef(tabsListRef, ref);
   var context = useTabContext();
@@ -140,8 +140,9 @@ var useTabsList = function useTabsList(props) {
     };
   };
 
-  var getRootProps = function getRootProps(otherHandlers) {
-    var propsEventHandlers = extractEventHandlers(props);
+  var getRootProps = function getRootProps() {
+    var otherHandlers = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var propsEventHandlers = extractEventHandlers(parameters);
 
     var externalEventHandlers = _extends({}, propsEventHandlers, otherHandlers);
 
@@ -154,7 +155,7 @@ var useTabsList = function useTabsList(props) {
     return _extends({
       'aria-label': ariaLabel,
       'aria-labelledby': ariaLabelledBy,
-      'aria-orientation': orientation === 'vertical' ? 'vertical' : null,
+      'aria-orientation': orientation === 'vertical' ? 'vertical' : undefined,
       role: 'tablist',
       ref: handleRef
     }, mergedEventHandlers);

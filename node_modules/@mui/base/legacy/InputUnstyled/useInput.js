@@ -4,18 +4,18 @@ import * as React from 'react';
 import { unstable_useForkRef as useForkRef } from '@mui/utils';
 import { useFormControlUnstyledContext } from '../FormControlUnstyled';
 import extractEventHandlers from '../utils/extractEventHandlers';
-export default function useInput(props, inputRef) {
-  var defaultValueProp = props.defaultValue,
-      _props$disabled = props.disabled,
-      disabledProp = _props$disabled === void 0 ? false : _props$disabled,
-      _props$error = props.error,
-      errorProp = _props$error === void 0 ? false : _props$error,
-      onBlur = props.onBlur,
-      onChange = props.onChange,
-      onFocus = props.onFocus,
-      _props$required = props.required,
-      requiredProp = _props$required === void 0 ? false : _props$required,
-      valueProp = props.value;
+export default function useInput(parameters) {
+  var defaultValueProp = parameters.defaultValue,
+      _parameters$disabled = parameters.disabled,
+      disabledProp = _parameters$disabled === void 0 ? false : _parameters$disabled,
+      _parameters$error = parameters.error,
+      errorProp = _parameters$error === void 0 ? false : _parameters$error,
+      onBlur = parameters.onBlur,
+      onChange = parameters.onChange,
+      onFocus = parameters.onFocus,
+      _parameters$required = parameters.required,
+      requiredProp = _parameters$required === void 0 ? false : _parameters$required,
+      valueProp = parameters.value;
   var formControlContext = useFormControlUnstyledContext();
   var defaultValue;
   var disabled;
@@ -34,7 +34,7 @@ export default function useInput(props, inputRef) {
 
     if (process.env.NODE_ENV !== 'production') {
       var definedLocalProps = ['defaultValue', 'disabled', 'error', 'required', 'value'].filter(function (prop) {
-        return props[prop] !== undefined;
+        return parameters[prop] !== undefined;
       });
 
       if (definedLocalProps.length > 0) {
@@ -59,9 +59,8 @@ export default function useInput(props, inputRef) {
       }
     }
   }, []);
-  var internalInputRef = React.useRef(null);
-  var handleIncomingRef = useForkRef(inputRef, handleInputRefWarning);
-  var handleInputRef = useForkRef(internalInputRef, handleIncomingRef);
+  var inputRef = React.useRef(null);
+  var handleInputRef = useForkRef(inputRef, handleInputRefWarning);
 
   var _React$useState = React.useState(false),
       focused = _React$useState[0],
@@ -119,7 +118,7 @@ export default function useInput(props, inputRef) {
       var _formControlContext$o2, _otherHandlers$onChan;
 
       if (!isControlled) {
-        var element = event.target || internalInputRef.current;
+        var element = event.target || inputRef.current;
 
         if (element == null) {
           throw new Error(process.env.NODE_ENV !== "production" ? "MUI: Expected valid input target. Did you use a custom `components.Input` and forget to forward refs? See https://mui.com/r/input-component-ref-interface for more info." : _formatMuiErrorMessage(17));
@@ -140,17 +139,18 @@ export default function useInput(props, inputRef) {
     return function (event) {
       var _otherHandlers$onClic;
 
-      if (internalInputRef.current && event.currentTarget === event.target) {
-        internalInputRef.current.focus();
+      if (inputRef.current && event.currentTarget === event.target) {
+        inputRef.current.focus();
       }
 
       (_otherHandlers$onClic = otherHandlers.onClick) == null ? void 0 : _otherHandlers$onClic.call(otherHandlers, event);
     };
   };
 
-  var getRootProps = function getRootProps(externalProps) {
+  var getRootProps = function getRootProps() {
+    var externalProps = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     // onBlur, onChange and onFocus are forwarded to the input slot.
-    var propsEventHandlers = extractEventHandlers(props, ['onBlur', 'onChange', 'onFocus']);
+    var propsEventHandlers = extractEventHandlers(parameters, ['onBlur', 'onChange', 'onFocus']);
 
     var externalEventHandlers = _extends({}, propsEventHandlers, extractEventHandlers(externalProps));
 
@@ -159,7 +159,8 @@ export default function useInput(props, inputRef) {
     });
   };
 
-  var getInputProps = function getInputProps(externalProps) {
+  var getInputProps = function getInputProps() {
+    var externalProps = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var propsEventHandlers = {
       onBlur: onBlur,
       onChange: onChange,

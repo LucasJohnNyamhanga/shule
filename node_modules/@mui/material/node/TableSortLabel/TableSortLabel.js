@@ -70,19 +70,19 @@ const TableSortLabelRoot = (0, _styled.default)(_ButtonBase.default, {
   flexDirection: 'inherit',
   alignItems: 'center',
   '&:focus': {
-    color: theme.palette.text.secondary
+    color: (theme.vars || theme).palette.text.secondary
   },
   '&:hover': {
-    color: theme.palette.text.secondary,
+    color: (theme.vars || theme).palette.text.secondary,
     [`& .${_tableSortLabelClasses.default.icon}`]: {
       opacity: 0.5
     }
   },
   [`&.${_tableSortLabelClasses.default.active}`]: {
-    color: theme.palette.text.primary,
+    color: (theme.vars || theme).palette.text.primary,
     [`& .${_tableSortLabelClasses.default.icon}`]: {
       opacity: 1,
-      color: theme.palette.text.secondary
+      color: (theme.vars || theme).palette.text.secondary
     }
   }
 }));

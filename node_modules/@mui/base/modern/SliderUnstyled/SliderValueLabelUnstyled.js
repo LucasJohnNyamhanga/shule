@@ -21,7 +21,7 @@ const useValueLabelClasses = props => {
  */
 
 
-function SliderValueLabelUnstyled(props) {
+export default function SliderValueLabelUnstyled(props) {
   const {
     children,
     className,
@@ -46,11 +46,9 @@ function SliderValueLabelUnstyled(props) {
     })]
   }));
 }
-
 process.env.NODE_ENV !== "production" ? SliderValueLabelUnstyled.propTypes = {
   children: PropTypes.element.isRequired,
   className: PropTypes.string,
   theme: PropTypes.any,
   value: PropTypes.node
 } : void 0;
-export default SliderValueLabelUnstyled;

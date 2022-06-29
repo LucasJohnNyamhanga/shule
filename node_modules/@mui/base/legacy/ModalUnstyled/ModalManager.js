@@ -26,13 +26,25 @@ function getPaddingRight(element) {
   return parseInt(ownerWindow(element).getComputedStyle(element).paddingRight, 10) || 0;
 }
 
+function isAriaHiddenForbiddenOnElement(element) {
+  // The forbidden HTML tags are the ones from ARIA specification that
+  // can be children of body and can't have aria-hidden attribute.
+  // cf. https://www.w3.org/TR/html-aria/#docconformance
+  var forbiddenTagNames = ['TEMPLATE', 'SCRIPT', 'STYLE', 'LINK', 'MAP', 'META', 'NOSCRIPT', 'PICTURE', 'COL', 'COLGROUP', 'PARAM', 'SLOT', 'SOURCE', 'TRACK'];
+  var isForbiddenTagName = forbiddenTagNames.indexOf(element.tagName) !== -1;
+  var isInputHidden = element.tagName === 'INPUT' && element.getAttribute('type') === 'hidden';
+  return isForbiddenTagName || isInputHidden;
+}
+
 function ariaHiddenSiblings(container, mountElement, currentElement) {
   var elementsToExclude = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : [];
   var show = arguments.length > 4 ? arguments[4] : undefined;
   var blacklist = [mountElement, currentElement].concat(_toConsumableArray(elementsToExclude));
-  var blacklistTagNames = ['TEMPLATE', 'SCRIPT', 'STYLE'];
   [].forEach.call(container.children, function (element) {
-    if (blacklist.indexOf(element) === -1 && blacklistTagNames.indexOf(element.tagName) === -1) {
+    var isNotExcludedElement = blacklist.indexOf(element) === -1;
+    var isNotForbiddenElement = !isAriaHiddenForbiddenOnElement(element);
+
+    if (isNotExcludedElement && isNotForbiddenElement) {
       ariaHidden(element, show);
     }
   });
@@ -76,14 +88,21 @@ function handleContainer(containerInfo, props) {
         });
         element.style.paddingRight = "".concat(getPaddingRight(element) + scrollbarSize, "px");
       });
-    } // Improve Gatsby support
-    // https://css-tricks.com/snippets/css/force-vertical-scrollbar/
+    }
 
+    var scrollContainer;
 
-    var parent = container.parentElement;
-    var containerWindow = ownerWindow(container);
-    var scrollContainer = (parent == null ? void 0 : parent.nodeName) === 'HTML' && containerWindow.getComputedStyle(parent).overflowY === 'scroll' ? parent : container; // Block the scroll even if no scrollbar is visible to account for mobile keyboard
+    if (container.parentNode instanceof DocumentFragment) {
+      scrollContainer = ownerDocument(container).body;
+    } else {
+      // Improve Gatsby support
+      // https://css-tricks.com/snippets/css/force-vertical-scrollbar/
+      var parent = container.parentElement;
+      var containerWindow = ownerWindow(container);
+      scrollContainer = (parent == null ? void 0 : parent.nodeName) === 'HTML' && containerWindow.getComputedStyle(parent).overflowY === 'scroll' ? parent : container;
+    } // Block the scroll even if no scrollbar is visible to account for mobile keyboard
     // screensize shrink.
+
 
     restoreStyle.push({
       value: scrollContainer.style.overflow,
@@ -195,6 +214,7 @@ var ModalManager = /*#__PURE__*/function () {
   }, {
     key: "remove",
     value: function remove(modal) {
+      var ariaHiddenState = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       var modalIndex = this.modals.indexOf(modal);
 
       if (modalIndex === -1) {
@@ -216,7 +236,7 @@ var ModalManager = /*#__PURE__*/function () {
 
         if (modal.modalRef) {
           // In case the modal wasn't in the DOM yet.
-          ariaHidden(modal.modalRef, true);
+          ariaHidden(modal.modalRef, ariaHiddenState);
         }
 
         ariaHiddenSiblings(containerInfo.container, modal.mount, modal.modalRef, containerInfo.hiddenSiblings, false);

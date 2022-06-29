@@ -1,14 +1,12 @@
 import _extends from "@babel/runtime/helpers/esm/extends";
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
-const _excluded = ["action", "children", "className", "component", "components", "componentsProps", "disabled", "focusableWhenDisabled", "onBlur", "onClick", "onFocus", "onFocusVisible", "onKeyDown", "onKeyUp", "onMouseLeave"];
+const _excluded = ["action", "children", "component", "components", "componentsProps", "disabled", "focusableWhenDisabled", "onBlur", "onClick", "onFocus", "onFocusVisible", "onKeyDown", "onKeyUp", "onMouseLeave"];
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { unstable_useForkRef as useForkRef } from '@mui/utils';
 import composeClasses from '../composeClasses';
 import { getButtonUnstyledUtilityClass } from './buttonUnstyledClasses';
 import useButton from './useButton';
-import appendOwnerState from '../utils/appendOwnerState';
+import { useSlotProps } from '../utils';
 import { jsx as _jsx } from "react/jsx-runtime";
 
 const useUtilityClasses = ownerState => {
@@ -36,12 +34,11 @@ const useUtilityClasses = ownerState => {
 
 
 const ButtonUnstyled = /*#__PURE__*/React.forwardRef(function ButtonUnstyled(props, forwardedRef) {
-  var _ref, _componentsProps$root;
+  var _ref;
 
   const {
     action,
     children,
-    className,
     component,
     components = {},
     componentsProps = {},
@@ -50,17 +47,13 @@ const ButtonUnstyled = /*#__PURE__*/React.forwardRef(function ButtonUnstyled(pro
         other = _objectWithoutPropertiesLoose(props, _excluded);
 
   const buttonRef = React.useRef();
-  const handleRef = useForkRef(buttonRef, forwardedRef);
-  const ButtonRoot = (_ref = component != null ? component : components.Root) != null ? _ref : 'button';
   const {
     active,
     focusVisible,
     setFocusVisible,
     getRootProps
   } = useButton(_extends({}, props, {
-    component: ButtonRoot,
-    focusableWhenDisabled,
-    ref: handleRef
+    focusableWhenDisabled
   }));
   React.useImperativeHandle(action, () => ({
     focusVisible: () => {
@@ -76,10 +69,19 @@ const ButtonUnstyled = /*#__PURE__*/React.forwardRef(function ButtonUnstyled(pro
   });
 
   const classes = useUtilityClasses(ownerState);
-  const buttonRootProps = appendOwnerState(ButtonRoot, _extends({}, getRootProps(), other, componentsProps.root, {
-    className: clsx(classes.root, className, (_componentsProps$root = componentsProps.root) == null ? void 0 : _componentsProps$root.className)
-  }), ownerState);
-  return /*#__PURE__*/_jsx(ButtonRoot, _extends({}, buttonRootProps, {
+  const Root = (_ref = component != null ? component : components.Root) != null ? _ref : 'button';
+  const rootProps = useSlotProps({
+    elementType: Root,
+    getSlotProps: getRootProps,
+    externalForwardedProps: other,
+    externalSlotProps: componentsProps.root,
+    additionalProps: {
+      ref: forwardedRef
+    },
+    ownerState,
+    className: classes.root
+  });
+  return /*#__PURE__*/_jsx(Root, _extends({}, rootProps, {
     children: children
   }));
 });
@@ -106,16 +108,13 @@ process.env.NODE_ENV !== "production" ? ButtonUnstyled.propTypes
   children: PropTypes.node,
 
   /**
-   * @ignore
-   */
-  className: PropTypes.string,
-
-  /**
    * The component used for the Root slot.
    * Either a string to use a HTML element or a component.
-   * @default 'button'
+   * This is equivalent to `components.Root`. If both are provided, the `component` is used.
    */
-  component: PropTypes.elementType,
+  component: PropTypes
+  /* @typescript-to-proptypes-ignore */
+  .elementType,
 
   /**
    * The components used for each slot inside the Button.
@@ -131,7 +130,7 @@ process.env.NODE_ENV !== "production" ? ButtonUnstyled.propTypes
    * @default {}
    */
   componentsProps: PropTypes.shape({
-    root: PropTypes.object
+    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object])
   }),
 
   /**

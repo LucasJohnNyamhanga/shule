@@ -70,17 +70,13 @@ const SnackbarRoot = (0, _styled.default)('div', {
   theme,
   ownerState
 }) => {
-  const center = (0, _extends2.default)({}, !ownerState.isRtl && {
+  const center = {
     left: '50%',
     right: 'auto',
     transform: 'translateX(-50%)'
-  }, ownerState.isRtl && {
-    right: '50%',
-    left: 'auto',
-    transform: 'translateX(50%)'
-  });
+  };
   return (0, _extends2.default)({
-    zIndex: theme.zIndex.snackbar,
+    zIndex: (theme.vars || theme).zIndex.snackbar,
     position: 'fixed',
     display: 'flex',
     left: 8,
@@ -100,19 +96,13 @@ const SnackbarRoot = (0, _styled.default)('div', {
       top: 24
     } : {
       bottom: 24
-    }, ownerState.anchorOrigin.horizontal === 'center' && center, ownerState.anchorOrigin.horizontal === 'left' && (0, _extends2.default)({}, !ownerState.isRtl && {
+    }, ownerState.anchorOrigin.horizontal === 'center' && center, ownerState.anchorOrigin.horizontal === 'left' && {
       left: 24,
       right: 'auto'
-    }, ownerState.isRtl && {
+    }, ownerState.anchorOrigin.horizontal === 'right' && {
       right: 24,
       left: 'auto'
-    }), ownerState.anchorOrigin.horizontal === 'right' && (0, _extends2.default)({}, !ownerState.isRtl && {
-      right: 24,
-      left: 'auto'
-    }, ownerState.isRtl && {
-      left: 24,
-      right: 'auto'
-    }))
+    })
   });
 });
 const Snackbar = /*#__PURE__*/React.forwardRef(function Snackbar(inProps, ref) {
@@ -157,13 +147,11 @@ const Snackbar = /*#__PURE__*/React.forwardRef(function Snackbar(inProps, ref) {
   } = props,
         TransitionProps = (0, _objectWithoutPropertiesLoose2.default)(props.TransitionProps, _excluded),
         other = (0, _objectWithoutPropertiesLoose2.default)(props, _excluded2);
-  const isRtl = theme.direction === 'rtl';
   const ownerState = (0, _extends2.default)({}, props, {
     anchorOrigin: {
       vertical,
       horizontal
-    },
-    isRtl
+    }
   });
   const classes = useUtilityClasses(ownerState);
   const timerAutoHide = React.useRef();

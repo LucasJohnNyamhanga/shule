@@ -40,31 +40,38 @@ var ToggleButtonRoot = styled(ButtonBase, {
   var theme = _ref.theme,
       ownerState = _ref.ownerState;
   var selectedColor = ownerState.color === 'standard' ? theme.palette.text.primary : theme.palette[ownerState.color].main;
+  var selectedColorChannel;
+
+  if (theme.vars) {
+    selectedColor = ownerState.color === 'standard' ? theme.vars.palette.text.primary : theme.vars.palette[ownerState.color].main;
+    selectedColorChannel = ownerState.color === 'standard' ? theme.vars.palette.text.primaryChannel : theme.vars.palette[ownerState.color].mainChannel;
+  }
+
   return _extends({}, theme.typography.button, {
-    borderRadius: theme.shape.borderRadius,
+    borderRadius: (theme.vars || theme).shape.borderRadius,
     padding: 11,
-    border: "1px solid ".concat(theme.palette.divider),
-    color: theme.palette.action.active
+    border: "1px solid ".concat((theme.vars || theme).palette.divider),
+    color: (theme.vars || theme).palette.action.active
   }, ownerState.fullWidth && {
     width: '100%'
   }, (_extends2 = {}, _defineProperty(_extends2, "&.".concat(toggleButtonClasses.disabled), {
-    color: theme.palette.action.disabled,
-    border: "1px solid ".concat(theme.palette.action.disabledBackground)
+    color: (theme.vars || theme).palette.action.disabled,
+    border: "1px solid ".concat((theme.vars || theme).palette.action.disabledBackground)
   }), _defineProperty(_extends2, '&:hover', {
     textDecoration: 'none',
     // Reset on mouse devices
-    backgroundColor: alpha(theme.palette.text.primary, theme.palette.action.hoverOpacity),
+    backgroundColor: theme.vars ? "rgba(".concat(theme.vars.palette.text.primaryChannel, " / ").concat(theme.vars.palette.action.hoverOpacity, ")") : alpha(theme.palette.text.primary, theme.palette.action.hoverOpacity),
     '@media (hover: none)': {
       backgroundColor: 'transparent'
     }
   }), _defineProperty(_extends2, "&.".concat(toggleButtonClasses.selected), {
     color: selectedColor,
-    backgroundColor: alpha(selectedColor, theme.palette.action.selectedOpacity),
+    backgroundColor: theme.vars ? "rgba(".concat(selectedColorChannel, " / ").concat(theme.vars.palette.action.selectedOpacity, ")") : alpha(selectedColor, theme.palette.action.selectedOpacity),
     '&:hover': {
-      backgroundColor: alpha(selectedColor, theme.palette.action.selectedOpacity + theme.palette.action.hoverOpacity),
+      backgroundColor: theme.vars ? "rgba(".concat(selectedColorChannel, " / calc(").concat(theme.vars.palette.action.selectedOpacity, " + ").concat(theme.vars.palette.action.hoverOpacity, "))") : alpha(selectedColor, theme.palette.action.selectedOpacity + theme.palette.action.hoverOpacity),
       // Reset on touch devices, it doesn't add specificity
       '@media (hover: none)': {
-        backgroundColor: alpha(selectedColor, theme.palette.action.selectedOpacity)
+        backgroundColor: theme.vars ? "rgba(".concat(selectedColorChannel, " / ").concat(theme.vars.palette.action.selectedOpacity, ")") : alpha(selectedColor, theme.palette.action.selectedOpacity)
       }
     }
   }), _extends2), ownerState.size === 'small' && {

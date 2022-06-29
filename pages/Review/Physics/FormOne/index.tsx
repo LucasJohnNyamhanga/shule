@@ -90,6 +90,7 @@ export const getStaticProps: GetStaticProps = async () => {
 			topics,
 			note,
 		},
+		revalidate: 15,
 	};
 };
 

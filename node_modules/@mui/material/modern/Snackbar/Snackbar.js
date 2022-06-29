@@ -41,18 +41,13 @@ const SnackbarRoot = styled('div', {
   theme,
   ownerState
 }) => {
-  const center = _extends({}, !ownerState.isRtl && {
+  const center = {
     left: '50%',
     right: 'auto',
     transform: 'translateX(-50%)'
-  }, ownerState.isRtl && {
-    right: '50%',
-    left: 'auto',
-    transform: 'translateX(50%)'
-  });
-
+  };
   return _extends({
-    zIndex: theme.zIndex.snackbar,
+    zIndex: (theme.vars || theme).zIndex.snackbar,
     position: 'fixed',
     display: 'flex',
     left: 8,
@@ -72,19 +67,13 @@ const SnackbarRoot = styled('div', {
       top: 24
     } : {
       bottom: 24
-    }, ownerState.anchorOrigin.horizontal === 'center' && center, ownerState.anchorOrigin.horizontal === 'left' && _extends({}, !ownerState.isRtl && {
+    }, ownerState.anchorOrigin.horizontal === 'center' && center, ownerState.anchorOrigin.horizontal === 'left' && {
       left: 24,
       right: 'auto'
-    }, ownerState.isRtl && {
+    }, ownerState.anchorOrigin.horizontal === 'right' && {
       right: 24,
       left: 'auto'
-    }), ownerState.anchorOrigin.horizontal === 'right' && _extends({}, !ownerState.isRtl && {
-      right: 24,
-      left: 'auto'
-    }, ownerState.isRtl && {
-      left: 24,
-      right: 'auto'
-    }))
+    })
   });
 });
 const Snackbar = /*#__PURE__*/React.forwardRef(function Snackbar(inProps, ref) {
@@ -131,14 +120,11 @@ const Snackbar = /*#__PURE__*/React.forwardRef(function Snackbar(inProps, ref) {
         TransitionProps = _objectWithoutPropertiesLoose(props.TransitionProps, _excluded),
         other = _objectWithoutPropertiesLoose(props, _excluded2);
 
-  const isRtl = theme.direction === 'rtl';
-
   const ownerState = _extends({}, props, {
     anchorOrigin: {
       vertical,
       horizontal
-    },
-    isRtl
+    }
   });
 
   const classes = useUtilityClasses(ownerState);

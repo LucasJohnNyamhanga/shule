@@ -38,7 +38,7 @@ var StepContentRoot = styled('div', {
     paddingLeft: 8 + 12,
     // margin + half icon
     paddingRight: 8,
-    borderLeft: "1px solid ".concat(theme.palette.mode === 'light' ? theme.palette.grey[400] : theme.palette.grey[600])
+    borderLeft: theme.vars ? "1px solid ".concat(theme.vars.palette.StepContent.border) : "1px solid ".concat(theme.palette.mode === 'light' ? theme.palette.grey[400] : theme.palette.grey[600])
   }, ownerState.last && {
     borderLeft: 'none'
   });

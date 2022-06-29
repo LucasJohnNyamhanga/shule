@@ -56,9 +56,9 @@ const ButtonGroupRoot = styled('div', {
   ownerState
 }) => _extends({
   display: 'inline-flex',
-  borderRadius: theme.shape.borderRadius
+  borderRadius: (theme.vars || theme).shape.borderRadius
 }, ownerState.variant === 'contained' && {
-  boxShadow: theme.shadows[2]
+  boxShadow: (theme.vars || theme).shadows[2]
 }, ownerState.disableElevation && {
   boxShadow: 'none'
 }, ownerState.fullWidth && {
@@ -86,27 +86,27 @@ const ButtonGroupRoot = styled('div', {
       borderBottomRightRadius: 0,
       borderBottomLeftRadius: 0
     }, ownerState.variant === 'text' && ownerState.orientation === 'horizontal' && {
-      borderRight: `1px solid ${theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.23)' : 'rgba(255, 255, 255, 0.23)'}`
+      borderRight: theme.vars ? `1px solid rgba(${theme.vars.palette.common.onBackgroundChannel} / 0.23)` : `1px solid ${theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.23)' : 'rgba(255, 255, 255, 0.23)'}`
     }, ownerState.variant === 'text' && ownerState.orientation === 'vertical' && {
-      borderBottom: `1px solid ${theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.23)' : 'rgba(255, 255, 255, 0.23)'}`
+      borderBottom: theme.vars ? `1px solid rgba(${theme.vars.palette.common.onBackgroundChannel} / 0.23)` : `1px solid ${theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.23)' : 'rgba(255, 255, 255, 0.23)'}`
     }, ownerState.variant === 'text' && ownerState.color !== 'inherit' && {
-      borderColor: alpha(theme.palette[ownerState.color].main, 0.5)
+      borderColor: theme.vars ? `rgba(${theme.vars.palette[ownerState.color].mainChannel} / 0.5)` : alpha(theme.palette[ownerState.color].main, 0.5)
     }, ownerState.variant === 'outlined' && ownerState.orientation === 'horizontal' && {
       borderRightColor: 'transparent'
     }, ownerState.variant === 'outlined' && ownerState.orientation === 'vertical' && {
       borderBottomColor: 'transparent'
     }, ownerState.variant === 'contained' && ownerState.orientation === 'horizontal' && {
-      borderRight: `1px solid ${theme.palette.grey[400]}`,
+      borderRight: `1px solid ${(theme.vars || theme).palette.grey[400]}`,
       [`&.${buttonGroupClasses.disabled}`]: {
-        borderRight: `1px solid ${theme.palette.action.disabled}`
+        borderRight: `1px solid ${(theme.vars || theme).palette.action.disabled}`
       }
     }, ownerState.variant === 'contained' && ownerState.orientation === 'vertical' && {
-      borderBottom: `1px solid ${theme.palette.grey[400]}`,
+      borderBottom: `1px solid ${(theme.vars || theme).palette.grey[400]}`,
       [`&.${buttonGroupClasses.disabled}`]: {
-        borderBottom: `1px solid ${theme.palette.action.disabled}`
+        borderBottom: `1px solid ${(theme.vars || theme).palette.action.disabled}`
       }
     }, ownerState.variant === 'contained' && ownerState.color !== 'inherit' && {
-      borderColor: theme.palette[ownerState.color].dark
+      borderColor: (theme.vars || theme).palette[ownerState.color].dark
     }, {
       '&:hover': _extends({}, ownerState.variant === 'outlined' && ownerState.orientation === 'horizontal' && {
         borderRightColor: 'currentColor'

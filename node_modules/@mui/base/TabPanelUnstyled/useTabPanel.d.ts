@@ -1,15 +1,10 @@
-export interface UseTabPanelProps {
-    /**
-     * The value of the TabPanel. It will be shown when the Tab with the corresponding value is selected.
-     */
-    value: number | string;
-}
-declare const useTabPanel: (props: UseTabPanelProps) => {
+import { UseTabPanelParameters } from './useTabPanel.types';
+declare const useTabPanel: (parameters: UseTabPanelParameters) => {
     hidden: boolean;
     getRootProps: () => {
-        'aria-labelledby': string | null;
+        'aria-labelledby': string | undefined;
         hidden: boolean;
-        id: string | null;
+        id: string | undefined;
     };
 };
 export default useTabPanel;

@@ -21,6 +21,7 @@ import { unstable_composeClasses as composeClasses } from '@mui/base';
 import requirePropFactory from '../utils/requirePropFactory';
 import styled from '../styles/styled';
 import useThemeProps from '../styles/useThemeProps';
+import useTheme from '../styles/useTheme';
 import GridContext from './GridContext';
 import gridClasses, { getGridUtilityClass } from './gridClasses';
 import { jsx as _jsx } from "react/jsx-runtime";
@@ -193,26 +194,29 @@ export function generateColumnGap(_ref5) {
 
   return styles;
 }
-export function resolveSpacingClasses(spacing, container) {
+export function resolveSpacingStyles(spacing, breakpoints) {
   var styles = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
-  // in case of grid item or undefined/null or `spacing` <= 0
-  if (!container || !spacing || spacing <= 0) {
+  // undefined/null or `spacing` <= 0
+  if (!spacing || spacing <= 0) {
     return [];
   } // in case of string/number `spacing`
 
 
   if (typeof spacing === 'string' && !Number.isNaN(Number(spacing)) || typeof spacing === 'number') {
-    return [styles["spacing-xs-".concat(String(spacing))] || "spacing-xs-".concat(String(spacing))];
+    return [styles["spacing-xs-".concat(String(spacing))]];
   } // in case of object `spacing`
 
 
-  var xs = spacing.xs,
-      sm = spacing.sm,
-      md = spacing.md,
-      lg = spacing.lg,
-      xl = spacing.xl;
-  return [Number(xs) > 0 && (styles["spacing-xs-".concat(String(xs))] || "spacing-xs-".concat(String(xs))), Number(sm) > 0 && (styles["spacing-sm-".concat(String(sm))] || "spacing-sm-".concat(String(sm))), Number(md) > 0 && (styles["spacing-md-".concat(String(md))] || "spacing-md-".concat(String(md))), Number(lg) > 0 && (styles["spacing-lg-".concat(String(lg))] || "spacing-lg-".concat(String(lg))), Number(xl) > 0 && (styles["spacing-xl-".concat(String(xl))] || "spacing-xl-".concat(String(xl)))];
+  var spacingStyles = [];
+  breakpoints.forEach(function (breakpoint) {
+    var value = spacing[breakpoint];
+
+    if (Number(value) > 0) {
+      spacingStyles.push(styles["spacing-".concat(breakpoint, "-").concat(String(value))]);
+    }
+  });
+  return spacingStyles;
 } // Default CSS values
 // flex: '0 1 auto',
 // flexDirection: 'row',
@@ -224,19 +228,29 @@ var GridRoot = styled('div', {
   name: 'MuiGrid',
   slot: 'Root',
   overridesResolver: function overridesResolver(props, styles) {
-    var _props$ownerState = props.ownerState,
-        container = _props$ownerState.container,
-        direction = _props$ownerState.direction,
-        item = _props$ownerState.item,
-        lg = _props$ownerState.lg,
-        md = _props$ownerState.md,
-        sm = _props$ownerState.sm,
-        spacing = _props$ownerState.spacing,
-        wrap = _props$ownerState.wrap,
-        xl = _props$ownerState.xl,
-        xs = _props$ownerState.xs,
-        zeroMinWidth = _props$ownerState.zeroMinWidth;
-    return [styles.root, container && styles.container, item && styles.item, zeroMinWidth && styles.zeroMinWidth].concat(_toConsumableArray(resolveSpacingClasses(spacing, container, styles)), [direction !== 'row' && styles["direction-xs-".concat(String(direction))], wrap !== 'wrap' && styles["wrap-xs-".concat(String(wrap))], xs !== false && styles["grid-xs-".concat(String(xs))], sm !== false && styles["grid-sm-".concat(String(sm))], md !== false && styles["grid-md-".concat(String(md))], lg !== false && styles["grid-lg-".concat(String(lg))], xl !== false && styles["grid-xl-".concat(String(xl))]]);
+    var ownerState = props.ownerState;
+    var container = ownerState.container,
+        direction = ownerState.direction,
+        item = ownerState.item,
+        spacing = ownerState.spacing,
+        wrap = ownerState.wrap,
+        zeroMinWidth = ownerState.zeroMinWidth,
+        breakpoints = ownerState.breakpoints;
+    var spacingStyles = []; // in case of grid item
+
+    if (container) {
+      spacingStyles = resolveSpacingStyles(spacing, breakpoints, styles);
+    }
+
+    var breakpointsStyles = [];
+    breakpoints.forEach(function (breakpoint) {
+      var value = ownerState[breakpoint];
+
+      if (value) {
+        breakpointsStyles.push(styles["grid-".concat(breakpoint, "-").concat(String(value))]);
+      }
+    });
+    return [styles.root, container && styles.container, item && styles.item, zeroMinWidth && styles.zeroMinWidth].concat(_toConsumableArray(spacingStyles), [direction !== 'row' && styles["direction-xs-".concat(String(direction))], wrap !== 'wrap' && styles["wrap-xs-".concat(String(wrap))]], breakpointsStyles);
   }
 })(function (_ref7) {
   var ownerState = _ref7.ownerState;
@@ -255,22 +269,55 @@ var GridRoot = styled('div', {
     flexWrap: ownerState.wrap
   });
 }, generateDirection, generateRowGap, generateColumnGap, generateGrid);
+export function resolveSpacingClasses(spacing, breakpoints) {
+  // undefined/null or `spacing` <= 0
+  if (!spacing || spacing <= 0) {
+    return [];
+  } // in case of string/number `spacing`
+
+
+  if (typeof spacing === 'string' && !Number.isNaN(Number(spacing)) || typeof spacing === 'number') {
+    return ["spacing-xs-".concat(String(spacing))];
+  } // in case of object `spacing`
+
+
+  var classes = [];
+  breakpoints.forEach(function (breakpoint) {
+    var value = spacing[breakpoint];
+
+    if (Number(value) > 0) {
+      var className = "spacing-".concat(breakpoint, "-").concat(String(value));
+      classes.push(className);
+    }
+  });
+  return classes;
+}
 
 var useUtilityClasses = function useUtilityClasses(ownerState) {
   var classes = ownerState.classes,
       container = ownerState.container,
       direction = ownerState.direction,
       item = ownerState.item,
-      lg = ownerState.lg,
-      md = ownerState.md,
-      sm = ownerState.sm,
       spacing = ownerState.spacing,
       wrap = ownerState.wrap,
-      xl = ownerState.xl,
-      xs = ownerState.xs,
-      zeroMinWidth = ownerState.zeroMinWidth;
+      zeroMinWidth = ownerState.zeroMinWidth,
+      breakpoints = ownerState.breakpoints;
+  var spacingClasses = []; // in case of grid item
+
+  if (container) {
+    spacingClasses = resolveSpacingClasses(spacing, breakpoints);
+  }
+
+  var breakpointsClasses = [];
+  breakpoints.forEach(function (breakpoint) {
+    var value = ownerState[breakpoint];
+
+    if (value) {
+      breakpointsClasses.push("grid-".concat(breakpoint, "-").concat(String(value)));
+    }
+  });
   var slots = {
-    root: ['root', container && 'container', item && 'item', zeroMinWidth && 'zeroMinWidth'].concat(_toConsumableArray(resolveSpacingClasses(spacing, container)), [direction !== 'row' && "direction-xs-".concat(String(direction)), wrap !== 'wrap' && "wrap-xs-".concat(String(wrap)), xs !== false && "grid-xs-".concat(String(xs)), sm !== false && "grid-sm-".concat(String(sm)), md !== false && "grid-md-".concat(String(md)), lg !== false && "grid-lg-".concat(String(lg)), xl !== false && "grid-xl-".concat(String(xl))])
+    root: ['root', container && 'container', item && 'item', zeroMinWidth && 'zeroMinWidth'].concat(_toConsumableArray(spacingClasses), [direction !== 'row' && "direction-xs-".concat(String(direction)), wrap !== 'wrap' && "wrap-xs-".concat(String(wrap))], breakpointsClasses)
   };
   return composeClasses(slots, getGridUtilityClass, classes);
 };
@@ -280,6 +327,10 @@ var Grid = /*#__PURE__*/React.forwardRef(function Grid(inProps, ref) {
     props: inProps,
     name: 'MuiGrid'
   });
+
+  var _useTheme = useTheme(),
+      breakpoints = _useTheme.breakpoints;
+
   var props = extendSxProp(themeProps);
 
   var className = props.className,
@@ -293,45 +344,43 @@ var Grid = /*#__PURE__*/React.forwardRef(function Grid(inProps, ref) {
       direction = _props$direction === void 0 ? 'row' : _props$direction,
       _props$item = props.item,
       item = _props$item === void 0 ? false : _props$item,
-      _props$lg = props.lg,
-      lg = _props$lg === void 0 ? false : _props$lg,
-      _props$md = props.md,
-      md = _props$md === void 0 ? false : _props$md,
       rowSpacingProp = props.rowSpacing,
-      _props$sm = props.sm,
-      sm = _props$sm === void 0 ? false : _props$sm,
       _props$spacing = props.spacing,
       spacing = _props$spacing === void 0 ? 0 : _props$spacing,
       _props$wrap = props.wrap,
       wrap = _props$wrap === void 0 ? 'wrap' : _props$wrap,
-      _props$xl = props.xl,
-      xl = _props$xl === void 0 ? false : _props$xl,
-      _props$xs = props.xs,
-      xs = _props$xs === void 0 ? false : _props$xs,
       _props$zeroMinWidth = props.zeroMinWidth,
       zeroMinWidth = _props$zeroMinWidth === void 0 ? false : _props$zeroMinWidth,
-      other = _objectWithoutProperties(props, ["className", "columns", "columnSpacing", "component", "container", "direction", "item", "lg", "md", "rowSpacing", "sm", "spacing", "wrap", "xl", "xs", "zeroMinWidth"]);
+      other = _objectWithoutProperties(props, ["className", "columns", "columnSpacing", "component", "container", "direction", "item", "rowSpacing", "spacing", "wrap", "zeroMinWidth"]);
 
   var rowSpacing = rowSpacingProp || spacing;
   var columnSpacing = columnSpacingProp || spacing;
   var columnsContext = React.useContext(GridContext); // columns set with default breakpoint unit of 12
 
   var columns = container ? columnsProp || 12 : columnsContext;
+  var breakpointsValues = {};
+
+  var otherFiltered = _extends({}, other);
+
+  breakpoints.keys.forEach(function (breakpoint) {
+    if (other[breakpoint] != null) {
+      breakpointsValues[breakpoint] = other[breakpoint];
+      delete otherFiltered[breakpoint];
+    }
+  });
 
   var ownerState = _extends({}, props, {
     columns: columns,
     container: container,
     direction: direction,
     item: item,
-    lg: lg,
-    md: md,
-    sm: sm,
     rowSpacing: rowSpacing,
     columnSpacing: columnSpacing,
     wrap: wrap,
-    xl: xl,
-    xs: xs,
-    zeroMinWidth: zeroMinWidth
+    zeroMinWidth: zeroMinWidth,
+    spacing: spacing
+  }, breakpointsValues, {
+    breakpoints: breakpoints.keys
   });
 
   var classes = useUtilityClasses(ownerState);
@@ -342,7 +391,7 @@ var Grid = /*#__PURE__*/React.forwardRef(function Grid(inProps, ref) {
       className: clsx(classes.root, className),
       as: component,
       ref: ref
-    }, other))
+    }, otherFiltered))
   });
 });
 process.env.NODE_ENV !== "production" ? Grid.propTypes

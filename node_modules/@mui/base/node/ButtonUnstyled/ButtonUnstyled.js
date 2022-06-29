@@ -15,21 +15,17 @@ var React = _interopRequireWildcard(require("react"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
-var _clsx = _interopRequireDefault(require("clsx"));
-
-var _utils = require("@mui/utils");
-
 var _composeClasses = _interopRequireDefault(require("../composeClasses"));
 
 var _buttonUnstyledClasses = require("./buttonUnstyledClasses");
 
 var _useButton = _interopRequireDefault(require("./useButton"));
 
-var _appendOwnerState = _interopRequireDefault(require("../utils/appendOwnerState"));
+var _utils = require("../utils");
 
 var _jsxRuntime = require("react/jsx-runtime");
 
-const _excluded = ["action", "children", "className", "component", "components", "componentsProps", "disabled", "focusableWhenDisabled", "onBlur", "onClick", "onFocus", "onFocusVisible", "onKeyDown", "onKeyUp", "onMouseLeave"];
+const _excluded = ["action", "children", "component", "components", "componentsProps", "disabled", "focusableWhenDisabled", "onBlur", "onClick", "onFocus", "onFocusVisible", "onKeyDown", "onKeyUp", "onMouseLeave"];
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -60,12 +56,11 @@ const useUtilityClasses = ownerState => {
 
 
 const ButtonUnstyled = /*#__PURE__*/React.forwardRef(function ButtonUnstyled(props, forwardedRef) {
-  var _ref, _componentsProps$root;
+  var _ref;
 
   const {
     action,
     children,
-    className,
     component,
     components = {},
     componentsProps = {},
@@ -73,17 +68,13 @@ const ButtonUnstyled = /*#__PURE__*/React.forwardRef(function ButtonUnstyled(pro
   } = props,
         other = (0, _objectWithoutPropertiesLoose2.default)(props, _excluded);
   const buttonRef = React.useRef();
-  const handleRef = (0, _utils.unstable_useForkRef)(buttonRef, forwardedRef);
-  const ButtonRoot = (_ref = component != null ? component : components.Root) != null ? _ref : 'button';
   const {
     active,
     focusVisible,
     setFocusVisible,
     getRootProps
   } = (0, _useButton.default)((0, _extends2.default)({}, props, {
-    component: ButtonRoot,
-    focusableWhenDisabled,
-    ref: handleRef
+    focusableWhenDisabled
   }));
   React.useImperativeHandle(action, () => ({
     focusVisible: () => {
@@ -97,10 +88,19 @@ const ButtonUnstyled = /*#__PURE__*/React.forwardRef(function ButtonUnstyled(pro
     focusVisible
   });
   const classes = useUtilityClasses(ownerState);
-  const buttonRootProps = (0, _appendOwnerState.default)(ButtonRoot, (0, _extends2.default)({}, getRootProps(), other, componentsProps.root, {
-    className: (0, _clsx.default)(classes.root, className, (_componentsProps$root = componentsProps.root) == null ? void 0 : _componentsProps$root.className)
-  }), ownerState);
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(ButtonRoot, (0, _extends2.default)({}, buttonRootProps, {
+  const Root = (_ref = component != null ? component : components.Root) != null ? _ref : 'button';
+  const rootProps = (0, _utils.useSlotProps)({
+    elementType: Root,
+    getSlotProps: getRootProps,
+    externalForwardedProps: other,
+    externalSlotProps: componentsProps.root,
+    additionalProps: {
+      ref: forwardedRef
+    },
+    ownerState,
+    className: classes.root
+  });
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(Root, (0, _extends2.default)({}, rootProps, {
     children: children
   }));
 });
@@ -127,16 +127,13 @@ process.env.NODE_ENV !== "production" ? ButtonUnstyled.propTypes
   children: _propTypes.default.node,
 
   /**
-   * @ignore
-   */
-  className: _propTypes.default.string,
-
-  /**
    * The component used for the Root slot.
    * Either a string to use a HTML element or a component.
-   * @default 'button'
+   * This is equivalent to `components.Root`. If both are provided, the `component` is used.
    */
-  component: _propTypes.default.elementType,
+  component: _propTypes.default
+  /* @typescript-to-proptypes-ignore */
+  .elementType,
 
   /**
    * The components used for each slot inside the Button.
@@ -152,7 +149,7 @@ process.env.NODE_ENV !== "production" ? ButtonUnstyled.propTypes
    * @default {}
    */
   componentsProps: _propTypes.default.shape({
-    root: _propTypes.default.object
+    root: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object])
   }),
 
   /**

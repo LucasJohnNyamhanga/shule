@@ -182,33 +182,33 @@ function doesSupportTouchActionNone() {
   return cachedSupportsTouchActionNone;
 }
 
-export default function useSlider(props) {
-  var ref = props.ref,
-      ariaLabelledby = props['aria-labelledby'],
-      defaultValue = props.defaultValue,
-      _props$disableSwap = props.disableSwap,
-      disableSwap = _props$disableSwap === void 0 ? false : _props$disableSwap,
-      _props$disabled = props.disabled,
-      disabled = _props$disabled === void 0 ? false : _props$disabled,
-      _props$marks = props.marks,
-      marksProp = _props$marks === void 0 ? false : _props$marks,
-      _props$max = props.max,
-      max = _props$max === void 0 ? 100 : _props$max,
-      _props$min = props.min,
-      min = _props$min === void 0 ? 0 : _props$min,
-      name = props.name,
-      onChange = props.onChange,
-      onChangeCommitted = props.onChangeCommitted,
-      _props$orientation = props.orientation,
-      orientation = _props$orientation === void 0 ? 'horizontal' : _props$orientation,
-      _props$scale = props.scale,
-      scale = _props$scale === void 0 ? Identity : _props$scale,
-      _props$step = props.step,
-      step = _props$step === void 0 ? 1 : _props$step,
-      tabIndex = props.tabIndex,
-      valueProp = props.value,
-      _props$isRtl = props.isRtl,
-      isRtl = _props$isRtl === void 0 ? false : _props$isRtl;
+export default function useSlider(parameters) {
+  var ariaLabelledby = parameters['aria-labelledby'],
+      defaultValue = parameters.defaultValue,
+      _parameters$disabled = parameters.disabled,
+      disabled = _parameters$disabled === void 0 ? false : _parameters$disabled,
+      _parameters$disableSw = parameters.disableSwap,
+      disableSwap = _parameters$disableSw === void 0 ? false : _parameters$disableSw,
+      _parameters$isRtl = parameters.isRtl,
+      isRtl = _parameters$isRtl === void 0 ? false : _parameters$isRtl,
+      _parameters$marks = parameters.marks,
+      marksProp = _parameters$marks === void 0 ? false : _parameters$marks,
+      _parameters$max = parameters.max,
+      max = _parameters$max === void 0 ? 100 : _parameters$max,
+      _parameters$min = parameters.min,
+      min = _parameters$min === void 0 ? 0 : _parameters$min,
+      name = parameters.name,
+      onChange = parameters.onChange,
+      onChangeCommitted = parameters.onChangeCommitted,
+      _parameters$orientati = parameters.orientation,
+      orientation = _parameters$orientati === void 0 ? 'horizontal' : _parameters$orientati,
+      ref = parameters.ref,
+      _parameters$scale = parameters.scale,
+      scale = _parameters$scale === void 0 ? Identity : _parameters$scale,
+      _parameters$step = parameters.step,
+      step = _parameters$step === void 0 ? 1 : _parameters$step,
+      tabIndex = parameters.tabIndex,
+      valueProp = parameters.value;
   var touchId = React.useRef(); // We can't use the :active browser pseudo-classes.
   // - The active state isn't triggered when clicking on the rail.
   // - The active state isn't transferred when inversing a range slider.
@@ -275,8 +275,8 @@ export default function useSlider(props) {
       focusVisibleRef = _useIsFocusVisible.ref;
 
   var _React$useState4 = React.useState(-1),
-      focusVisible = _React$useState4[0],
-      setFocusVisible = _React$useState4[1];
+      focusedThumbIndex = _React$useState4[0],
+      setFocusedThumbIndex = _React$useState4[1];
 
   var sliderRef = React.useRef();
   var handleFocusRef = useForkRef(focusVisibleRef, sliderRef);
@@ -290,7 +290,7 @@ export default function useSlider(props) {
       handleFocusVisible(event);
 
       if (isFocusVisibleRef.current === true) {
-        setFocusVisible(index);
+        setFocusedThumbIndex(index);
       }
 
       setOpen(index);
@@ -305,7 +305,7 @@ export default function useSlider(props) {
       handleBlurVisible(event);
 
       if (isFocusVisibleRef.current === false) {
-        setFocusVisible(-1);
+        setFocusedThumbIndex(-1);
       }
 
       setOpen(-1);
@@ -329,8 +329,8 @@ export default function useSlider(props) {
     setActive(-1);
   }
 
-  if (disabled && focusVisible !== -1) {
-    setFocusVisible(-1);
+  if (disabled && focusedThumbIndex !== -1) {
+    setFocusedThumbIndex(-1);
   }
 
   var createHandleHiddenInputChange = function createHandleHiddenInputChange(otherHandlers) {
@@ -380,7 +380,7 @@ export default function useSlider(props) {
       }
 
       setValueState(newValue);
-      setFocusVisible(index);
+      setFocusedThumbIndex(index);
 
       if (handleChange) {
         handleChange(event, newValue, index);
@@ -517,6 +517,7 @@ export default function useSlider(props) {
 
     var _getFingerNewValue2 = getFingerNewValue({
       finger: finger,
+      move: true,
       values: values
     }),
         newValue = _getFingerNewValue2.newValue;
@@ -658,7 +659,8 @@ export default function useSlider(props) {
   var trackOffset = valueToPercent(range ? values[0] : min, min, max);
   var trackLeap = valueToPercent(values[values.length - 1], min, max) - trackOffset;
 
-  var getRootProps = function getRootProps(otherHandlers) {
+  var getRootProps = function getRootProps() {
+    var otherHandlers = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var ownEventHandlers = {
       onMouseDown: createHandleMouseDown(otherHandlers || {})
     };
@@ -689,18 +691,19 @@ export default function useSlider(props) {
     };
   };
 
-  var getThumbProps = function getThumbProps(otherHandlers) {
+  var getThumbProps = function getThumbProps() {
+    var otherHandlers = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var ownEventHandlers = {
       onMouseOver: createHandleMouseOver(otherHandlers || {}),
       onMouseLeave: createHandleMouseLeave(otherHandlers || {})
     };
-
-    var mergedEventHandlers = _extends({}, otherHandlers, ownEventHandlers);
-
-    return _extends({}, mergedEventHandlers);
+    return _extends({}, otherHandlers, ownEventHandlers);
   };
 
-  var getHiddenInputProps = function getHiddenInputProps(otherHandlers) {
+  var getHiddenInputProps = function getHiddenInputProps() {
+    var _parameters$step2;
+
+    var otherHandlers = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var ownEventHandlers = {
       onChange: createHandleHiddenInputChange(otherHandlers || {}),
       onFocus: createHandleHiddenInputFocus(otherHandlers || {}),
@@ -717,9 +720,9 @@ export default function useSlider(props) {
       'aria-valuemin': scale(min),
       name: name,
       type: 'range',
-      min: props.min,
-      max: props.max,
-      step: props.step,
+      min: parameters.min,
+      max: parameters.max,
+      step: (_parameters$step2 = parameters.step) != null ? _parameters$step2 : undefined,
       disabled: disabled
     }, mergedEventHandlers, {
       style: _extends({}, visuallyHidden, {
@@ -732,19 +735,19 @@ export default function useSlider(props) {
   };
 
   return {
+    active: active,
     axis: axis,
     axisProps: axisProps,
-    getRootProps: getRootProps,
-    getHiddenInputProps: getHiddenInputProps,
-    getThumbProps: getThumbProps,
     dragging: dragging,
+    focusedThumbIndex: focusedThumbIndex,
+    getHiddenInputProps: getHiddenInputProps,
+    getRootProps: getRootProps,
+    getThumbProps: getThumbProps,
     marks: marks,
-    values: values,
-    active: active,
-    focusVisible: focusVisible,
     open: open,
     range: range,
+    trackLeap: trackLeap,
     trackOffset: trackOffset,
-    trackLeap: trackLeap
+    values: values
   };
 }

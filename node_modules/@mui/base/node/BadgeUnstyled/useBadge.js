@@ -7,13 +7,13 @@ exports.default = useBadge;
 
 var _utils = require("@mui/utils");
 
-function useBadge(props) {
+function useBadge(parameters) {
   const {
     badgeContent: badgeContentProp,
     invisible: invisibleProp = false,
     max: maxProp = 99,
     showZero = false
-  } = props;
+  } = parameters;
   const prevProps = (0, _utils.usePreviousProps)({
     badgeContent: badgeContentProp,
     max: maxProp
@@ -27,7 +27,7 @@ function useBadge(props) {
   const {
     badgeContent,
     max = maxProp
-  } = invisible ? prevProps : props;
+  } = invisible ? prevProps : parameters;
   const displayValue = badgeContent && Number(badgeContent) > max ? `${max}+` : badgeContent;
   return {
     badgeContent,

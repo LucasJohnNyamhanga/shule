@@ -1,104 +1,24 @@
-import _objectWithoutProperties from "@babel/runtime/helpers/esm/objectWithoutProperties";
-import _defineProperty from "@babel/runtime/helpers/esm/defineProperty";
-import _extends from "@babel/runtime/helpers/esm/extends";
-import * as React from 'react';
+/* eslint-disable material-ui/mui-name-matches-component-name */
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { unstable_composeClasses as composeClasses } from '@mui/base';
-import useThemeProps from '../styles/useThemeProps';
-import styled from '../styles/styled';
-import { getContainerUtilityClass } from './containerClasses';
+import { createContainer } from '@mui/system';
 import capitalize from '../utils/capitalize';
-import { jsx as _jsx } from "react/jsx-runtime";
-
-var useUtilityClasses = function useUtilityClasses(ownerState) {
-  var classes = ownerState.classes,
-      fixed = ownerState.fixed,
-      disableGutters = ownerState.disableGutters,
-      maxWidth = ownerState.maxWidth;
-  var slots = {
-    root: ['root', maxWidth && "maxWidth".concat(capitalize(String(maxWidth))), fixed && 'fixed', disableGutters && 'disableGutters']
-  };
-  return composeClasses(slots, getContainerUtilityClass, classes);
-};
-
-var ContainerRoot = styled('div', {
-  name: 'MuiContainer',
-  slot: 'Root',
-  overridesResolver: function overridesResolver(props, styles) {
-    var ownerState = props.ownerState;
-    return [styles.root, styles["maxWidth".concat(capitalize(String(ownerState.maxWidth)))], ownerState.fixed && styles.fixed, ownerState.disableGutters && styles.disableGutters];
-  }
-})(function (_ref) {
-  var theme = _ref.theme,
-      ownerState = _ref.ownerState;
-  return _extends({
-    width: '100%',
-    marginLeft: 'auto',
-    boxSizing: 'border-box',
-    marginRight: 'auto',
-    display: 'block'
-  }, !ownerState.disableGutters && _defineProperty({
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2)
-  }, theme.breakpoints.up('sm'), {
-    paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(3)
-  }));
-}, function (_ref3) {
-  var theme = _ref3.theme,
-      ownerState = _ref3.ownerState;
-  return ownerState.fixed && Object.keys(theme.breakpoints.values).reduce(function (acc, breakpoint) {
-    var value = theme.breakpoints.values[breakpoint];
-
-    if (value !== 0) {
-      acc[theme.breakpoints.up(breakpoint)] = {
-        maxWidth: "".concat(value).concat(theme.breakpoints.unit)
-      };
+import styled from '../styles/styled';
+import _useThemeProps from '../styles/useThemeProps';
+var Container = createContainer({
+  createStyledComponent: styled('div', {
+    name: 'MuiContainer',
+    slot: 'Root',
+    overridesResolver: function overridesResolver(props, styles) {
+      var ownerState = props.ownerState;
+      return [styles.root, styles["maxWidth".concat(capitalize(String(ownerState.maxWidth)))], ownerState.fixed && styles.fixed, ownerState.disableGutters && styles.disableGutters];
     }
-
-    return acc;
-  }, {});
-}, function (_ref4) {
-  var theme = _ref4.theme,
-      ownerState = _ref4.ownerState;
-  return _extends({}, ownerState.maxWidth === 'xs' && _defineProperty({}, theme.breakpoints.up('xs'), {
-    maxWidth: Math.max(theme.breakpoints.values.xs, 444)
-  }), ownerState.maxWidth && ownerState.maxWidth !== 'xs' && _defineProperty({}, theme.breakpoints.up(ownerState.maxWidth), {
-    maxWidth: "".concat(theme.breakpoints.values[ownerState.maxWidth]).concat(theme.breakpoints.unit)
-  }));
-});
-var Container = /*#__PURE__*/React.forwardRef(function Container(inProps, ref) {
-  var props = useThemeProps({
-    props: inProps,
-    name: 'MuiContainer'
-  });
-
-  var className = props.className,
-      _props$component = props.component,
-      component = _props$component === void 0 ? 'div' : _props$component,
-      _props$disableGutters = props.disableGutters,
-      disableGutters = _props$disableGutters === void 0 ? false : _props$disableGutters,
-      _props$fixed = props.fixed,
-      fixed = _props$fixed === void 0 ? false : _props$fixed,
-      _props$maxWidth = props.maxWidth,
-      maxWidth = _props$maxWidth === void 0 ? 'lg' : _props$maxWidth,
-      other = _objectWithoutProperties(props, ["className", "component", "disableGutters", "fixed", "maxWidth"]);
-
-  var ownerState = _extends({}, props, {
-    component: component,
-    disableGutters: disableGutters,
-    fixed: fixed,
-    maxWidth: maxWidth
-  });
-
-  var classes = useUtilityClasses(ownerState);
-  return /*#__PURE__*/_jsx(ContainerRoot, _extends({
-    as: component,
-    ownerState: ownerState,
-    className: clsx(classes.root, className),
-    ref: ref
-  }, other));
+  }),
+  useThemeProps: function useThemeProps(inProps) {
+    return _useThemeProps({
+      props: inProps,
+      name: 'MuiContainer'
+    });
+  }
 });
 process.env.NODE_ENV !== "production" ? Container.propTypes
 /* remove-proptypes */
@@ -117,11 +37,6 @@ process.env.NODE_ENV !== "production" ? Container.propTypes
    * Override or extend the styles applied to the component.
    */
   classes: PropTypes.object,
-
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
 
   /**
    * The component used for the root node.

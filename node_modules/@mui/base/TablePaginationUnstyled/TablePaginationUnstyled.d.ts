@@ -1,5 +1,5 @@
 import { OverridableComponent } from '@mui/types';
-import { TablePaginationUnstyledTypeMap } from './TablePaginationUnstyledProps';
+import { TablePaginationUnstyledTypeMap } from './TablePaginationUnstyled.types';
 /**
  * A pagination for tables.
  *

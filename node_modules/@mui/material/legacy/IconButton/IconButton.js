@@ -44,13 +44,13 @@ var IconButtonRoot = styled(ButtonBase, {
     borderRadius: '50%',
     overflow: 'visible',
     // Explicitly set the default value to solve a bug on IE11.
-    color: theme.palette.action.active,
+    color: (theme.vars || theme).palette.action.active,
     transition: theme.transitions.create('background-color', {
       duration: theme.transitions.duration.shortest
     })
   }, !ownerState.disableRipple && {
     '&:hover': {
-      backgroundColor: alpha(theme.palette.action.active, theme.palette.action.hoverOpacity),
+      backgroundColor: theme.vars ? "rgba(".concat(theme.vars.palette.action.active, " / ").concat(theme.vars.palette.action.hoverOpacity, ")") : alpha(theme.palette.action.active, theme.palette.action.hoverOpacity),
       // Reset on touch devices, it doesn't add specificity
       '@media (hover: none)': {
         backgroundColor: 'transparent'
@@ -67,10 +67,10 @@ var IconButtonRoot = styled(ButtonBase, {
   return _extends({}, ownerState.color === 'inherit' && {
     color: 'inherit'
   }, ownerState.color !== 'inherit' && ownerState.color !== 'default' && _extends({
-    color: theme.palette[ownerState.color].main
+    color: (theme.vars || theme).palette[ownerState.color].main
   }, !ownerState.disableRipple && {
     '&:hover': {
-      backgroundColor: alpha(theme.palette[ownerState.color].main, theme.palette.action.hoverOpacity),
+      backgroundColor: theme.vars ? "rgba(".concat(theme.vars.palette[ownerState.color].mainChannel, " / ").concat(theme.vars.palette.action.hoverOpacity, ")") : alpha(theme.palette[ownerState.color].main, theme.palette.action.hoverOpacity),
       // Reset on touch devices, it doesn't add specificity
       '@media (hover: none)': {
         backgroundColor: 'transparent'
@@ -84,7 +84,7 @@ var IconButtonRoot = styled(ButtonBase, {
     fontSize: theme.typography.pxToRem(28)
   }, _defineProperty({}, "&.".concat(iconButtonClasses.disabled), {
     backgroundColor: 'transparent',
-    color: theme.palette.action.disabled
+    color: (theme.vars || theme).palette.action.disabled
   }));
 });
 /**

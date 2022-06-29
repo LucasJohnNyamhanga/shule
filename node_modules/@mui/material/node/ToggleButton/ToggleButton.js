@@ -67,35 +67,42 @@ const ToggleButtonRoot = (0, _styled.default)(_ButtonBase.default, {
   theme,
   ownerState
 }) => {
-  const selectedColor = ownerState.color === 'standard' ? theme.palette.text.primary : theme.palette[ownerState.color].main;
+  let selectedColor = ownerState.color === 'standard' ? theme.palette.text.primary : theme.palette[ownerState.color].main;
+  let selectedColorChannel;
+
+  if (theme.vars) {
+    selectedColor = ownerState.color === 'standard' ? theme.vars.palette.text.primary : theme.vars.palette[ownerState.color].main;
+    selectedColorChannel = ownerState.color === 'standard' ? theme.vars.palette.text.primaryChannel : theme.vars.palette[ownerState.color].mainChannel;
+  }
+
   return (0, _extends2.default)({}, theme.typography.button, {
-    borderRadius: theme.shape.borderRadius,
+    borderRadius: (theme.vars || theme).shape.borderRadius,
     padding: 11,
-    border: `1px solid ${theme.palette.divider}`,
-    color: theme.palette.action.active
+    border: `1px solid ${(theme.vars || theme).palette.divider}`,
+    color: (theme.vars || theme).palette.action.active
   }, ownerState.fullWidth && {
     width: '100%'
   }, {
     [`&.${_toggleButtonClasses.default.disabled}`]: {
-      color: theme.palette.action.disabled,
-      border: `1px solid ${theme.palette.action.disabledBackground}`
+      color: (theme.vars || theme).palette.action.disabled,
+      border: `1px solid ${(theme.vars || theme).palette.action.disabledBackground}`
     },
     '&:hover': {
       textDecoration: 'none',
       // Reset on mouse devices
-      backgroundColor: (0, _styles.alpha)(theme.palette.text.primary, theme.palette.action.hoverOpacity),
+      backgroundColor: theme.vars ? `rgba(${theme.vars.palette.text.primaryChannel} / ${theme.vars.palette.action.hoverOpacity})` : (0, _styles.alpha)(theme.palette.text.primary, theme.palette.action.hoverOpacity),
       '@media (hover: none)': {
         backgroundColor: 'transparent'
       }
     },
     [`&.${_toggleButtonClasses.default.selected}`]: {
       color: selectedColor,
-      backgroundColor: (0, _styles.alpha)(selectedColor, theme.palette.action.selectedOpacity),
+      backgroundColor: theme.vars ? `rgba(${selectedColorChannel} / ${theme.vars.palette.action.selectedOpacity})` : (0, _styles.alpha)(selectedColor, theme.palette.action.selectedOpacity),
       '&:hover': {
-        backgroundColor: (0, _styles.alpha)(selectedColor, theme.palette.action.selectedOpacity + theme.palette.action.hoverOpacity),
+        backgroundColor: theme.vars ? `rgba(${selectedColorChannel} / calc(${theme.vars.palette.action.selectedOpacity} + ${theme.vars.palette.action.hoverOpacity}))` : (0, _styles.alpha)(selectedColor, theme.palette.action.selectedOpacity + theme.palette.action.hoverOpacity),
         // Reset on touch devices, it doesn't add specificity
         '@media (hover: none)': {
-          backgroundColor: (0, _styles.alpha)(selectedColor, theme.palette.action.selectedOpacity)
+          backgroundColor: theme.vars ? `rgba(${selectedColorChannel} / ${theme.vars.palette.action.selectedOpacity})` : (0, _styles.alpha)(selectedColor, theme.palette.action.selectedOpacity)
         }
       }
     }

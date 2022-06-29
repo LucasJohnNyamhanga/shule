@@ -41,6 +41,11 @@ var InputRoot = styled(InputBaseRoot, {
       ownerState = _ref.ownerState;
   var light = theme.palette.mode === 'light';
   var bottomLineColor = light ? 'rgba(0, 0, 0, 0.42)' : 'rgba(255, 255, 255, 0.7)';
+
+  if (theme.vars) {
+    bottomLineColor = "rgba(".concat(theme.vars.palette.common.onBackgroundChannel, " / ").concat(theme.vars.opacity.inputUnderline, ")");
+  }
+
   return _extends({
     position: 'relative'
   }, ownerState.formControl && {
@@ -49,7 +54,7 @@ var InputRoot = styled(InputBaseRoot, {
     }
   }, !ownerState.disableUnderline && (_ref2 = {
     '&:after': {
-      borderBottom: "2px solid ".concat(theme.palette[ownerState.color].main),
+      borderBottom: "2px solid ".concat((theme.vars || theme).palette[ownerState.color].main),
       left: 0,
       bottom: 0,
       // Doing the other way around crash on IE11 "''" https://github.com/cssinjs/jss/issues/242
@@ -69,7 +74,7 @@ var InputRoot = styled(InputBaseRoot, {
     // See https://github.com/mui/material-ui/issues/31766
     transform: 'scaleX(1) translateX(0)'
   }), _defineProperty(_ref2, "&.".concat(inputClasses.error, ":after"), {
-    borderBottomColor: theme.palette.error.main,
+    borderBottomColor: (theme.vars || theme).palette.error.main,
     transform: 'scaleX(1)' // error is always underlined in red
 
   }), _defineProperty(_ref2, '&:before', {
@@ -86,7 +91,7 @@ var InputRoot = styled(InputBaseRoot, {
     pointerEvents: 'none' // Transparent to the hover style.
 
   }), _defineProperty(_ref2, "&:hover:not(.".concat(inputClasses.disabled, "):before"), {
-    borderBottom: "2px solid ".concat(theme.palette.text.primary),
+    borderBottom: "2px solid ".concat((theme.vars || theme).palette.text.primary),
     // Reset on touch devices, it doesn't add specificity
     '@media (hover: none)': {
       borderBottom: "1px solid ".concat(bottomLineColor)

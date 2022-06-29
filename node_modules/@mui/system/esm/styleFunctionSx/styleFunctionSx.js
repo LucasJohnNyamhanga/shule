@@ -39,7 +39,7 @@ export function unstable_createStyleFunctionSx(styleFunctionMapping = defaultSty
     } = props || {};
 
     if (!sx) {
-      return null; // emotion & styled-components will neglect null
+      return null; // Emotion & styled-components will neglect null
     }
     /*
      * Receive `sxInput` as object or callback

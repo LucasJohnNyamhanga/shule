@@ -105,6 +105,7 @@ export const getStaticProps: GetStaticProps = async () => {
 			note,
 			download,
 		},
+		revalidate: 15,
 	};
 };
 
@@ -239,13 +240,13 @@ const Index = ({
 						<div className='ckContent'>
 							<div className='toc'>
 								<h2>INSIDE THIS TOPIC 🧐</h2>
-								<ul>
+								<ol>
 									{toc.map(({ id, title }) => (
 										<a href={`#${id}`} key={id}>
 											<li>{title}</li>
 										</a>
 									))}
-								</ul>
+								</ol>
 							</div>
 
 							<div dangerouslySetInnerHTML={{ __html: htmlServer }} />

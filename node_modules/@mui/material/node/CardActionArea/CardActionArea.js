@@ -57,13 +57,13 @@ const CardActionAreaRoot = (0, _styled.default)(_ButtonBase.default, {
   textAlign: 'inherit',
   width: '100%',
   [`&:hover .${_cardActionAreaClasses.default.focusHighlight}`]: {
-    opacity: theme.palette.action.hoverOpacity,
+    opacity: (theme.vars || theme).palette.action.hoverOpacity,
     '@media (hover: none)': {
       opacity: 0
     }
   },
   [`&.${_cardActionAreaClasses.default.focusVisible} .${_cardActionAreaClasses.default.focusHighlight}`]: {
-    opacity: theme.palette.action.focusOpacity
+    opacity: (theme.vars || theme).palette.action.focusOpacity
   }
 }));
 const CardActionAreaFocusHighlight = (0, _styled.default)('span', {

@@ -43,19 +43,19 @@ var CheckboxRoot = styled(SwitchBase, {
   var theme = _ref.theme,
       ownerState = _ref.ownerState;
   return _extends({
-    color: theme.palette.text.secondary
+    color: (theme.vars || theme).palette.text.secondary
   }, !ownerState.disableRipple && {
     '&:hover': {
-      backgroundColor: alpha(ownerState.color === 'default' ? theme.palette.action.active : theme.palette[ownerState.color].main, theme.palette.action.hoverOpacity),
+      backgroundColor: theme.vars ? "rgba(".concat(ownerState.color === 'default' ? theme.vars.palette.action.activeChannel : theme.vars.palette.primary.mainChannel, " / ").concat(theme.vars.palette.action.hoverOpacity, ")") : alpha(ownerState.color === 'default' ? theme.palette.action.active : theme.palette[ownerState.color].main, theme.palette.action.hoverOpacity),
       // Reset on touch devices, it doesn't add specificity
       '@media (hover: none)': {
         backgroundColor: 'transparent'
       }
     }
   }, ownerState.color !== 'default' && (_ref2 = {}, _defineProperty(_ref2, "&.".concat(checkboxClasses.checked, ", &.").concat(checkboxClasses.indeterminate), {
-    color: theme.palette[ownerState.color].main
+    color: (theme.vars || theme).palette[ownerState.color].main
   }), _defineProperty(_ref2, "&.".concat(checkboxClasses.disabled), {
-    color: theme.palette.action.disabled
+    color: (theme.vars || theme).palette.action.disabled
   }), _ref2));
 });
 

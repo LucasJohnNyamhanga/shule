@@ -38,8 +38,8 @@ var DialogContentRoot = styled('div', {
     padding: '20px 24px'
   }, ownerState.dividers ? {
     padding: '16px 24px',
-    borderTop: "1px solid ".concat(theme.palette.divider),
-    borderBottom: "1px solid ".concat(theme.palette.divider)
+    borderTop: "1px solid ".concat((theme.vars || theme).palette.divider),
+    borderBottom: "1px solid ".concat((theme.vars || theme).palette.divider)
   } : _defineProperty({}, ".".concat(dialogTitleClasses.root, " + &"), {
     paddingTop: 0
   }));

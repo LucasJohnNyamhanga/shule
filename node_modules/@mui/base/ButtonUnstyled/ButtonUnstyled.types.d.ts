@@ -1,6 +1,7 @@
 import React from 'react';
 import { OverrideProps, Simplify } from '@mui/types';
 import { UseButtonParameters, UseButtonRootSlotProps } from './useButton.types';
+import { SlotComponentProps } from '../utils';
 export interface ButtonUnstyledActions {
     focusVisible(): void;
 }
@@ -26,7 +27,7 @@ export interface ButtonUnstyledOwnProps extends Omit<UseButtonParameters, 'ref'>
      * @default {}
      */
     componentsProps?: {
-        root?: React.ButtonHTMLAttributes<HTMLButtonElement> & ButtonUnstyledComponentsPropsOverrides;
+        root?: SlotComponentProps<'button', ButtonUnstyledComponentsPropsOverrides, ButtonUnstyledOwnerState>;
     };
 }
 export declare type ButtonUnstyledProps<D extends React.ElementType = ButtonUnstyledTypeMap['defaultComponent'], P = {}> = OverrideProps<ButtonUnstyledTypeMap<P, D>, D> & {
@@ -47,6 +48,6 @@ export declare type ButtonUnstyledOwnerState = ButtonUnstyledOwnProps & {
 };
 export declare type ButtonUnstyledRootSlotProps = Simplify<UseButtonRootSlotProps & {
     ownerState: ButtonUnstyledOwnerState;
-    className: string;
+    className?: string;
     children?: React.ReactNode;
 }>;

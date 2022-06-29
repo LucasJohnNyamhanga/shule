@@ -31,7 +31,7 @@ var ListItemIconRoot = styled('div', {
       ownerState = _ref.ownerState;
   return _extends({
     minWidth: 56,
-    color: theme.palette.action.active,
+    color: (theme.vars || theme).palette.action.active,
     flexShrink: 0,
     display: 'inline-flex'
   }, ownerState.alignItems === 'flex-start' && {

@@ -45,7 +45,7 @@ const ToggleButtonGroupRoot = styled('div', {
   theme
 }) => _extends({
   display: 'inline-flex',
-  borderRadius: theme.shape.borderRadius
+  borderRadius: (theme.vars || theme).shape.borderRadius
 }, ownerState.orientation === 'vertical' && {
   flexDirection: 'column'
 }, ownerState.fullWidth && {

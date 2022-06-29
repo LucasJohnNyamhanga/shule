@@ -173,7 +173,7 @@ process.env.NODE_ENV !== "production" ? ClickAwayListener.propTypes
    * The mouse event to listen to. You can disable the listener by providing `false`.
    * @default 'onClick'
    */
-  mouseEvent: PropTypes.oneOf(['onClick', 'onMouseDown', 'onMouseUp', false]),
+  mouseEvent: PropTypes.oneOf(['onClick', 'onMouseDown', 'onMouseUp', 'onPointerDown', 'onPointerUp', false]),
 
   /**
    * Callback fired when a "click away" event is detected.

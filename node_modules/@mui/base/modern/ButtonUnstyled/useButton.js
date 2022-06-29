@@ -4,7 +4,6 @@ import { unstable_setRef as setRef, unstable_useForkRef as useForkRef, unstable_
 import extractEventHandlers from '../utils/extractEventHandlers';
 export default function useButton(parameters) {
   const {
-    component = 'button',
     disabled = false,
     focusableWhenDisabled,
     href,
@@ -30,6 +29,7 @@ export default function useButton(parameters) {
   React.useEffect(() => {
     isFocusVisibleRef.current = focusVisible;
   }, [focusVisible, isFocusVisibleRef]);
+  const [hostElementName, setHostElementName] = React.useState('');
 
   const createHandleMouseLeave = otherHandlers => event => {
     if (focusVisible) {
@@ -65,9 +65,9 @@ export default function useButton(parameters) {
     otherHandlers.onFocus?.(event);
   };
 
-  const isNonNativeButton = () => {
+  const isNativeButton = () => {
     const button = buttonRef.current;
-    return component !== 'button' && !(button?.tagName === 'A' && button?.href);
+    return hostElementName === 'BUTTON' || hostElementName === 'INPUT' && ['button', 'submit', 'reset'].includes(button?.type) || hostElementName === 'A' && button?.href;
   };
 
   const createHandleClick = otherHandlers => event => {
@@ -99,7 +99,7 @@ export default function useButton(parameters) {
       return;
     }
 
-    if (event.target === event.currentTarget && isNonNativeButton() && event.key === ' ') {
+    if (event.target === event.currentTarget && !isNativeButton() && event.key === ' ') {
       event.preventDefault();
     }
 
@@ -108,7 +108,7 @@ export default function useButton(parameters) {
     } // Keyboard accessibility for non interactive elements
 
 
-    if (event.target === event.currentTarget && isNonNativeButton() && event.key === 'Enter' && !disabled) {
+    if (event.target === event.currentTarget && !isNativeButton() && event.key === 'Enter' && !disabled) {
       otherHandlers.onClick?.(event);
       event.preventDefault();
     }
@@ -123,14 +123,13 @@ export default function useButton(parameters) {
 
     otherHandlers.onKeyUp?.(event); // Keyboard accessibility for non interactive elements
 
-    if (event.target === event.currentTarget && isNonNativeButton() && !disabled && event.key === ' ' && !event.defaultPrevented) {
+    if (event.target === event.currentTarget && !isNativeButton() && !disabled && event.key === ' ' && !event.defaultPrevented) {
       otherHandlers.onClick?.(event);
     }
   };
 
   const handleOwnRef = useForkRef(focusVisibleRef, buttonRef);
   const handleRef = useForkRef(ref, handleOwnRef);
-  const [hostElementName, setHostElementName] = React.useState('');
 
   const updateRef = instance => {
     setHostElementName(instance?.tagName ?? '');

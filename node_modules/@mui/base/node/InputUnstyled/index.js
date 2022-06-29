@@ -30,21 +30,35 @@ Object.defineProperty(exports, "useInput", {
 
 var _InputUnstyled = _interopRequireDefault(require("./InputUnstyled"));
 
-var _InputUnstyledProps = require("./InputUnstyledProps");
+var _InputUnstyled2 = require("./InputUnstyled.types");
 
-Object.keys(_InputUnstyledProps).forEach(function (key) {
+Object.keys(_InputUnstyled2).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
-  if (key in exports && exports[key] === _InputUnstyledProps[key]) return;
+  if (key in exports && exports[key] === _InputUnstyled2[key]) return;
   Object.defineProperty(exports, key, {
     enumerable: true,
     get: function () {
-      return _InputUnstyledProps[key];
+      return _InputUnstyled2[key];
     }
   });
 });
 
 var _useInput = _interopRequireDefault(require("./useInput"));
+
+var _useInput2 = require("./useInput.types");
+
+Object.keys(_useInput2).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  if (key in exports && exports[key] === _useInput2[key]) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _useInput2[key];
+    }
+  });
+});
 
 var _inputUnstyledClasses = _interopRequireWildcard(require("./inputUnstyledClasses"));
 

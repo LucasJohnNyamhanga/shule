@@ -94,6 +94,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			topics,
 			thisTopicData,
 		},
+		revalidate: 15,
 	};
 };
 

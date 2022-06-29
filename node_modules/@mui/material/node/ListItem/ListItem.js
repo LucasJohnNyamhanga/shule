@@ -116,21 +116,21 @@ const ListItemRoot = (0, _styled.default)('div', {
   }
 }, {
   [`&.${_listItemClasses.default.focusVisible}`]: {
-    backgroundColor: theme.palette.action.focus
+    backgroundColor: (theme.vars || theme).palette.action.focus
   },
   [`&.${_listItemClasses.default.selected}`]: {
-    backgroundColor: (0, _system.alpha)(theme.palette.primary.main, theme.palette.action.selectedOpacity),
+    backgroundColor: theme.vars ? `rgba(${theme.vars.palette.primary.mainChannel} / ${theme.vars.palette.action.selectedOpacity})` : (0, _system.alpha)(theme.palette.primary.main, theme.palette.action.selectedOpacity),
     [`&.${_listItemClasses.default.focusVisible}`]: {
-      backgroundColor: (0, _system.alpha)(theme.palette.primary.main, theme.palette.action.selectedOpacity + theme.palette.action.focusOpacity)
+      backgroundColor: theme.vars ? `rgba(${theme.vars.palette.primary.mainChannel} / calc(${theme.vars.palette.action.selectedOpacity} + ${theme.vars.palette.action.focusOpacity}))` : (0, _system.alpha)(theme.palette.primary.main, theme.palette.action.selectedOpacity + theme.palette.action.focusOpacity)
     }
   },
   [`&.${_listItemClasses.default.disabled}`]: {
-    opacity: theme.palette.action.disabledOpacity
+    opacity: (theme.vars || theme).palette.action.disabledOpacity
   }
 }, ownerState.alignItems === 'flex-start' && {
   alignItems: 'flex-start'
 }, ownerState.divider && {
-  borderBottom: `1px solid ${theme.palette.divider}`,
+  borderBottom: `1px solid ${(theme.vars || theme).palette.divider}`,
   backgroundClip: 'padding-box'
 }, ownerState.button && {
   transition: theme.transitions.create('background-color', {
@@ -138,17 +138,17 @@ const ListItemRoot = (0, _styled.default)('div', {
   }),
   '&:hover': {
     textDecoration: 'none',
-    backgroundColor: theme.palette.action.hover,
+    backgroundColor: (theme.vars || theme).palette.action.hover,
     // Reset on touch devices, it doesn't add specificity
     '@media (hover: none)': {
       backgroundColor: 'transparent'
     }
   },
   [`&.${_listItemClasses.default.selected}:hover`]: {
-    backgroundColor: (0, _system.alpha)(theme.palette.primary.main, theme.palette.action.selectedOpacity + theme.palette.action.hoverOpacity),
+    backgroundColor: theme.vars ? `rgba(${theme.vars.palette.primary.mainChannel} / calc(${theme.vars.palette.action.selectedOpacity} + ${theme.vars.palette.action.hoverOpacity}))` : (0, _system.alpha)(theme.palette.primary.main, theme.palette.action.selectedOpacity + theme.palette.action.hoverOpacity),
     // Reset on touch devices, it doesn't add specificity
     '@media (hover: none)': {
-      backgroundColor: (0, _system.alpha)(theme.palette.primary.main, theme.palette.action.selectedOpacity)
+      backgroundColor: theme.vars ? `rgba(${theme.vars.palette.primary.mainChannel} / ${theme.vars.palette.action.selectedOpacity})` : (0, _system.alpha)(theme.palette.primary.main, theme.palette.action.selectedOpacity)
     }
   }
 }, ownerState.hasSecondaryAction && {

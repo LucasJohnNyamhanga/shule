@@ -6,8 +6,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var _exportNames = {
+  TablePaginationActionsUnstyled: true,
   tablePaginationUnstyledClasses: true
 };
+Object.defineProperty(exports, "TablePaginationActionsUnstyled", {
+  enumerable: true,
+  get: function () {
+    return _TablePaginationActionsUnstyled.default;
+  }
+});
 Object.defineProperty(exports, "default", {
   enumerable: true,
   get: function () {
@@ -23,19 +30,21 @@ Object.defineProperty(exports, "tablePaginationUnstyledClasses", {
 
 var _TablePaginationUnstyled = _interopRequireDefault(require("./TablePaginationUnstyled"));
 
-var _TablePaginationUnstyledProps = require("./TablePaginationUnstyledProps");
+var _TablePaginationUnstyled2 = require("./TablePaginationUnstyled.types");
 
-Object.keys(_TablePaginationUnstyledProps).forEach(function (key) {
+Object.keys(_TablePaginationUnstyled2).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
-  if (key in exports && exports[key] === _TablePaginationUnstyledProps[key]) return;
+  if (key in exports && exports[key] === _TablePaginationUnstyled2[key]) return;
   Object.defineProperty(exports, key, {
     enumerable: true,
     get: function () {
-      return _TablePaginationUnstyledProps[key];
+      return _TablePaginationUnstyled2[key];
     }
   });
 });
+
+var _TablePaginationActionsUnstyled = _interopRequireDefault(require("./TablePaginationActionsUnstyled"));
 
 var _tablePaginationUnstyledClasses = _interopRequireWildcard(require("./tablePaginationUnstyledClasses"));
 

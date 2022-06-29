@@ -43,7 +43,9 @@ function useSwitch(props) {
     state: 'checked'
   });
 
-  const handleInputChange = (event, otherHandler) => {
+  const createHandleInputChange = otherProps => event => {
+    var _otherProps$onChange;
+
     // Workaround for https://github.com/facebook/react/issues/9023
     if (event.nativeEvent.defaultPrevented) {
       return;
@@ -51,7 +53,7 @@ function useSwitch(props) {
 
     setCheckedState(event.target.checked);
     onChange == null ? void 0 : onChange(event);
-    otherHandler == null ? void 0 : otherHandler(event);
+    (_otherProps$onChange = otherProps.onChange) == null ? void 0 : _otherProps$onChange.call(otherProps, event);
   };
 
   const {
@@ -71,7 +73,9 @@ function useSwitch(props) {
   }, [focusVisible, isFocusVisibleRef]);
   const inputRef = React.useRef(null);
 
-  const handleFocus = (event, otherHandler) => {
+  const createHandleFocus = otherProps => event => {
+    var _otherProps$onFocus;
+
     // Fix for https://github.com/facebook/react/issues/7769
     if (!inputRef.current) {
       inputRef.current = event.currentTarget;
@@ -85,10 +89,12 @@ function useSwitch(props) {
     }
 
     onFocus == null ? void 0 : onFocus(event);
-    otherHandler == null ? void 0 : otherHandler(event);
+    (_otherProps$onFocus = otherProps.onFocus) == null ? void 0 : _otherProps$onFocus.call(otherProps, event);
   };
 
-  const handleBlur = (event, otherHandler) => {
+  const createHandleBlur = otherProps => event => {
+    var _otherProps$onBlur;
+
     handleBlurVisible(event);
 
     if (isFocusVisibleRef.current === false) {
@@ -96,7 +102,7 @@ function useSwitch(props) {
     }
 
     onBlur == null ? void 0 : onBlur(event);
-    otherHandler == null ? void 0 : otherHandler(event);
+    (_otherProps$onBlur = otherProps.onBlur) == null ? void 0 : _otherProps$onBlur.call(otherProps, event);
   };
 
   const handleRefChange = (0, _utils.unstable_useForkRef)(focusVisibleRef, inputRef);
@@ -106,13 +112,13 @@ function useSwitch(props) {
     defaultChecked,
     disabled,
     readOnly,
+    ref: handleRefChange,
     required,
     type: 'checkbox'
   }, otherProps, {
-    onChange: event => handleInputChange(event, otherProps.onChange),
-    onFocus: event => handleFocus(event, otherProps.onFocus),
-    onBlur: event => handleBlur(event, otherProps.onBlur),
-    ref: handleRefChange
+    onChange: createHandleInputChange(otherProps),
+    onFocus: createHandleFocus(otherProps),
+    onBlur: createHandleBlur(otherProps)
   });
 
   return {

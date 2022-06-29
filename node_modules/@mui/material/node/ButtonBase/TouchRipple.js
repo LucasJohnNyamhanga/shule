@@ -219,12 +219,12 @@ const TouchRipple = /*#__PURE__*/React.forwardRef(function TouchRipple(inProps, 
 
     } = options;
 
-    if (event.type === 'mousedown' && ignoringMouseDown.current) {
+    if ((event == null ? void 0 : event.type) === 'mousedown' && ignoringMouseDown.current) {
       ignoringMouseDown.current = false;
       return;
     }
 
-    if (event.type === 'touchstart') {
+    if ((event == null ? void 0 : event.type) === 'touchstart') {
       ignoringMouseDown.current = true;
     }
 
@@ -240,7 +240,7 @@ const TouchRipple = /*#__PURE__*/React.forwardRef(function TouchRipple(inProps, 
     let rippleY;
     let rippleSize;
 
-    if (center || event.clientX === 0 && event.clientY === 0 || !event.clientX && !event.touches) {
+    if (center || event === undefined || event.clientX === 0 && event.clientY === 0 || !event.clientX && !event.touches) {
       rippleX = Math.round(rect.width / 2);
       rippleY = Math.round(rect.height / 2);
     } else {
@@ -265,7 +265,7 @@ const TouchRipple = /*#__PURE__*/React.forwardRef(function TouchRipple(inProps, 
     } // Touche devices
 
 
-    if (event.touches) {
+    if (event != null && event.touches) {
       // check that this isn't another touchstart due to multitouch
       // otherwise we will only clear a single timer when unmounting while two
       // are running
@@ -308,7 +308,7 @@ const TouchRipple = /*#__PURE__*/React.forwardRef(function TouchRipple(inProps, 
     clearTimeout(startTimer.current); // The touch interaction occurs too quickly.
     // We still want to show ripple effect.
 
-    if (event.type === 'touchend' && startTimerCommit.current) {
+    if ((event == null ? void 0 : event.type) === 'touchend' && startTimerCommit.current) {
       startTimerCommit.current();
       startTimerCommit.current = null;
       startTimer.current = setTimeout(() => {

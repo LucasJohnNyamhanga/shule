@@ -1,5 +1,5 @@
 import { OverridableComponent } from '@mui/types';
-import { InputUnstyledTypeMap } from './InputUnstyledProps';
+import { InputUnstyledTypeMap } from './InputUnstyled.types';
 /**
  *
  * Demos:

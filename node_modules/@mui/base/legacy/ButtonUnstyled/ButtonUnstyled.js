@@ -2,12 +2,10 @@ import _extends from "@babel/runtime/helpers/esm/extends";
 import _objectWithoutProperties from "@babel/runtime/helpers/esm/objectWithoutProperties";
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { unstable_useForkRef as useForkRef } from '@mui/utils';
 import composeClasses from '../composeClasses';
 import { getButtonUnstyledUtilityClass } from './buttonUnstyledClasses';
 import useButton from './useButton';
-import appendOwnerState from '../utils/appendOwnerState';
+import { useSlotProps } from '../utils';
 import { jsx as _jsx } from "react/jsx-runtime";
 
 var useUtilityClasses = function useUtilityClasses(ownerState) {
@@ -33,11 +31,10 @@ var useUtilityClasses = function useUtilityClasses(ownerState) {
 
 
 var ButtonUnstyled = /*#__PURE__*/React.forwardRef(function ButtonUnstyled(props, forwardedRef) {
-  var _ref, _componentsProps$root;
+  var _ref;
 
   var action = props.action,
       children = props.children,
-      className = props.className,
       component = props.component,
       _props$components = props.components,
       components = _props$components === void 0 ? {} : _props$components,
@@ -53,16 +50,12 @@ var ButtonUnstyled = /*#__PURE__*/React.forwardRef(function ButtonUnstyled(props
       onKeyDown = props.onKeyDown,
       onKeyUp = props.onKeyUp,
       onMouseLeave = props.onMouseLeave,
-      other = _objectWithoutProperties(props, ["action", "children", "className", "component", "components", "componentsProps", "disabled", "focusableWhenDisabled", "onBlur", "onClick", "onFocus", "onFocusVisible", "onKeyDown", "onKeyUp", "onMouseLeave"]);
+      other = _objectWithoutProperties(props, ["action", "children", "component", "components", "componentsProps", "disabled", "focusableWhenDisabled", "onBlur", "onClick", "onFocus", "onFocusVisible", "onKeyDown", "onKeyUp", "onMouseLeave"]);
 
   var buttonRef = React.useRef();
-  var handleRef = useForkRef(buttonRef, forwardedRef);
-  var ButtonRoot = (_ref = component != null ? component : components.Root) != null ? _ref : 'button';
 
   var _useButton = useButton(_extends({}, props, {
-    component: ButtonRoot,
-    focusableWhenDisabled: focusableWhenDisabled,
-    ref: handleRef
+    focusableWhenDisabled: focusableWhenDisabled
   })),
       active = _useButton.active,
       focusVisible = _useButton.focusVisible,
@@ -85,10 +78,19 @@ var ButtonUnstyled = /*#__PURE__*/React.forwardRef(function ButtonUnstyled(props
   });
 
   var classes = useUtilityClasses(ownerState);
-  var buttonRootProps = appendOwnerState(ButtonRoot, _extends({}, getRootProps(), other, componentsProps.root, {
-    className: clsx(classes.root, className, (_componentsProps$root = componentsProps.root) == null ? void 0 : _componentsProps$root.className)
-  }), ownerState);
-  return /*#__PURE__*/_jsx(ButtonRoot, _extends({}, buttonRootProps, {
+  var Root = (_ref = component != null ? component : components.Root) != null ? _ref : 'button';
+  var rootProps = useSlotProps({
+    elementType: Root,
+    getSlotProps: getRootProps,
+    externalForwardedProps: other,
+    externalSlotProps: componentsProps.root,
+    additionalProps: {
+      ref: forwardedRef
+    },
+    ownerState: ownerState,
+    className: classes.root
+  });
+  return /*#__PURE__*/_jsx(Root, _extends({}, rootProps, {
     children: children
   }));
 });
@@ -115,16 +117,13 @@ process.env.NODE_ENV !== "production" ? ButtonUnstyled.propTypes
   children: PropTypes.node,
 
   /**
-   * @ignore
-   */
-  className: PropTypes.string,
-
-  /**
    * The component used for the Root slot.
    * Either a string to use a HTML element or a component.
-   * @default 'button'
+   * This is equivalent to `components.Root`. If both are provided, the `component` is used.
    */
-  component: PropTypes.elementType,
+  component: PropTypes
+  /* @typescript-to-proptypes-ignore */
+  .elementType,
 
   /**
    * The components used for each slot inside the Button.
@@ -140,7 +139,7 @@ process.env.NODE_ENV !== "production" ? ButtonUnstyled.propTypes
    * @default {}
    */
   componentsProps: PropTypes.shape({
-    root: PropTypes.object
+    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object])
   }),
 
   /**

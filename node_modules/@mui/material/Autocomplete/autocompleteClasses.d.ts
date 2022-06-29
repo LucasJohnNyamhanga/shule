@@ -19,7 +19,7 @@ export interface AutocompleteClasses {
     inputRoot: string;
     /** Styles applied to the input element. */
     input: string;
-    /** Styles applied to the input element if tag focused. */
+    /** Styles applied to the input element if the input is focused. */
     inputFocused: string;
     /** Styles applied to the endAdornment element. */
     endAdornment: string;

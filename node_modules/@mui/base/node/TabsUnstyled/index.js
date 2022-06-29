@@ -65,6 +65,20 @@ Object.keys(_tabsUnstyledClasses).forEach(function (key) {
   });
 });
 
+var _TabsUnstyled2 = require("./TabsUnstyled.types");
+
+Object.keys(_TabsUnstyled2).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  if (key in exports && exports[key] === _TabsUnstyled2[key]) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _TabsUnstyled2[key];
+    }
+  });
+});
+
 var _useTabs = _interopRequireWildcard(require("./useTabs"));
 
 Object.keys(_useTabs).forEach(function (key) {

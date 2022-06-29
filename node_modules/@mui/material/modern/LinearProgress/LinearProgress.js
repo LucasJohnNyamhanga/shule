@@ -84,6 +84,10 @@ const getColorShade = (theme, color) => {
     return 'currentColor';
   }
 
+  if (theme.vars) {
+    return theme.vars.palette.LinearProgress[`${color}Bg`];
+  }
+
   return theme.palette.mode === 'light' ? lighten(theme.palette[color].main, 0.62) : darken(theme.palette[color].main, 0.5);
 };
 
@@ -176,7 +180,7 @@ const LinearProgressBar1 = styled('span', {
   top: 0,
   transition: 'transform 0.2s linear',
   transformOrigin: 'left',
-  backgroundColor: ownerState.color === 'inherit' ? 'currentColor' : theme.palette[ownerState.color].main
+  backgroundColor: ownerState.color === 'inherit' ? 'currentColor' : (theme.vars || theme).palette[ownerState.color].main
 }, ownerState.variant === 'determinate' && {
   transition: `transform .${TRANSITION_DURATION}s linear`
 }, ownerState.variant === 'buffer' && {
@@ -209,7 +213,7 @@ const LinearProgressBar2 = styled('span', {
   transition: 'transform 0.2s linear',
   transformOrigin: 'left'
 }, ownerState.variant !== 'buffer' && {
-  backgroundColor: ownerState.color === 'inherit' ? 'currentColor' : theme.palette[ownerState.color].main
+  backgroundColor: ownerState.color === 'inherit' ? 'currentColor' : (theme.vars || theme).palette[ownerState.color].main
 }, ownerState.color === 'inherit' && {
   opacity: 0.3
 }, ownerState.variant === 'buffer' && {

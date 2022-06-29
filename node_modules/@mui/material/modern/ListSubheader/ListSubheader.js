@@ -41,12 +41,12 @@ const ListSubheaderRoot = styled('li', {
   boxSizing: 'border-box',
   lineHeight: '48px',
   listStyle: 'none',
-  color: theme.palette.text.secondary,
+  color: (theme.vars || theme).palette.text.secondary,
   fontFamily: theme.typography.fontFamily,
   fontWeight: theme.typography.fontWeightMedium,
   fontSize: theme.typography.pxToRem(14)
 }, ownerState.color === 'primary' && {
-  color: theme.palette.primary.main
+  color: (theme.vars || theme).palette.primary.main
 }, ownerState.color === 'inherit' && {
   color: 'inherit'
 }, !ownerState.disableGutters && {
@@ -58,7 +58,7 @@ const ListSubheaderRoot = styled('li', {
   position: 'sticky',
   top: 0,
   zIndex: 1,
-  backgroundColor: theme.palette.background.paper
+  backgroundColor: (theme.vars || theme).palette.background.paper
 }));
 const ListSubheader = /*#__PURE__*/React.forwardRef(function ListSubheader(inProps, ref) {
   const props = useThemeProps({

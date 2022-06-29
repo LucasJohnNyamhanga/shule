@@ -69,7 +69,7 @@ var SpeedDialRoot = styled('div', {
   var theme = _ref.theme,
       ownerState = _ref.ownerState;
   return _extends({
-    zIndex: theme.zIndex.speedDial,
+    zIndex: (theme.vars || theme).zIndex.speedDial,
     display: 'flex',
     alignItems: 'center',
     pointerEvents: 'none'

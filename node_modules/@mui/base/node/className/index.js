@@ -1,15 +1,13 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 Object.defineProperty(exports, "unstable_ClassNameGenerator", {
   enumerable: true,
   get: function () {
-    return _ClassNameGenerator.default;
+    return _utils.unstable_ClassNameGenerator;
   }
 });
 
-var _ClassNameGenerator = _interopRequireDefault(require("./ClassNameGenerator"));
+var _utils = require("@mui/utils");

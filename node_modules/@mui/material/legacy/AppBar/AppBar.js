@@ -19,6 +19,12 @@ var useUtilityClasses = function useUtilityClasses(ownerState) {
     root: ['root', "color".concat(capitalize(color)), "position".concat(capitalize(position))]
   };
   return composeClasses(slots, getAppBarUtilityClass, classes);
+}; // var2 is the fallback.
+// Ex. var1: 'var(--a)', var2: 'var(--b)'; return: 'var(--a, var(--b))'
+
+
+var joinVars = function joinVars(var1, var2) {
+  return "".concat(var1 == null ? void 0 : var1.replace(')', ''), ", ").concat(var2, ")");
 };
 
 var AppBarRoot = styled(Paper, {
@@ -41,7 +47,7 @@ var AppBarRoot = styled(Paper, {
     flexShrink: 0
   }, ownerState.position === 'fixed' && {
     position: 'fixed',
-    zIndex: theme.zIndex.appBar,
+    zIndex: (theme.vars || theme).zIndex.appBar,
     top: 0,
     left: 'auto',
     right: 0,
@@ -51,14 +57,14 @@ var AppBarRoot = styled(Paper, {
     }
   }, ownerState.position === 'absolute' && {
     position: 'absolute',
-    zIndex: theme.zIndex.appBar,
+    zIndex: (theme.vars || theme).zIndex.appBar,
     top: 0,
     left: 'auto',
     right: 0
   }, ownerState.position === 'sticky' && {
     // ⚠️ sticky is not supported by IE11.
     position: 'sticky',
-    zIndex: theme.zIndex.appBar,
+    zIndex: (theme.vars || theme).zIndex.appBar,
     top: 0,
     left: 'auto',
     right: 0
@@ -66,7 +72,7 @@ var AppBarRoot = styled(Paper, {
     position: 'static'
   }, ownerState.position === 'relative' && {
     position: 'relative'
-  }, ownerState.color === 'default' && {
+  }, !theme.vars && _extends({}, ownerState.color === 'default' && {
     backgroundColor: backgroundColorDefault,
     color: theme.palette.getContrastText(backgroundColorDefault)
   }, ownerState.color && ownerState.color !== 'default' && ownerState.color !== 'inherit' && ownerState.color !== 'transparent' && {
@@ -82,6 +88,19 @@ var AppBarRoot = styled(Paper, {
     color: 'inherit'
   }, theme.palette.mode === 'dark' && {
     backgroundImage: 'none'
+  })), theme.vars && _extends({}, ownerState.color === 'default' && {
+    '--AppBar-background': ownerState.enableColorOnDark ? theme.vars.palette.AppBar.defaultBg : joinVars(theme.vars.palette.AppBar.darkBg, theme.vars.palette.AppBar.defaultBg),
+    '--AppBar-color': ownerState.enableColorOnDark ? theme.vars.palette.text.primary : joinVars(theme.vars.palette.AppBar.darkColor, theme.vars.palette.text.primary)
+  }, ownerState.color && !ownerState.color.match(/^(default|inherit|transparent)$/) && {
+    '--AppBar-background': ownerState.enableColorOnDark ? theme.vars.palette[ownerState.color].main : joinVars(theme.vars.palette.AppBar.darkBg, theme.vars.palette[ownerState.color].main),
+    '--AppBar-color': ownerState.enableColorOnDark ? theme.vars.palette[ownerState.color].contrastText : joinVars(theme.vars.palette.AppBar.darkColor, theme.vars.palette[ownerState.color].contrastText)
+  }, {
+    backgroundColor: 'var(--AppBar-background)',
+    color: ownerState.color === 'inherit' ? 'inherit' : 'var(--AppBar-color)'
+  }, ownerState.color === 'transparent' && {
+    backgroundImage: 'none',
+    backgroundColor: 'transparent',
+    color: 'inherit'
   }));
 });
 var AppBar = /*#__PURE__*/React.forwardRef(function AppBar(inProps, ref) {

@@ -325,8 +325,8 @@ var SelectInput = /*#__PURE__*/React.forwardRef(function SelectInput(props, ref)
 
   var handleKeyDown = function handleKeyDown(event) {
     if (!readOnly) {
-      var validKeys = [' ', 'ArrowUp', 'ArrowDown', // The native select doesn't respond to enter on MacOS, but it's recommended by
-      // https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html
+      var validKeys = [' ', 'ArrowUp', 'ArrowDown', // The native select doesn't respond to enter on macOS, but it's recommended by
+      // https://www.w3.org/WAI/ARIA/apg/example-index/combobox/combobox-select-only.html
       'Enter'];
 
       if (validKeys.indexOf(event.key) !== -1) {

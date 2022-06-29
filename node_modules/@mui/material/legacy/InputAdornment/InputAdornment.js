@@ -50,7 +50,7 @@ var InputAdornmentRoot = styled('div', {
     maxHeight: '2em',
     alignItems: 'center',
     whiteSpace: 'nowrap',
-    color: theme.palette.action.active
+    color: (theme.vars || theme).palette.action.active
   }, ownerState.variant === 'filled' && _defineProperty({}, "&.".concat(inputAdornmentClasses.positionStart, "&:not(.").concat(inputAdornmentClasses.hiddenLabel, ")"), {
     marginTop: 16
   }), ownerState.position === 'start' && {

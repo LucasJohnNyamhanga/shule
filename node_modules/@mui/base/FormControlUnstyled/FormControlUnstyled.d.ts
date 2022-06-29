@@ -11,7 +11,7 @@ import { FormControlUnstyledTypeMap } from './FormControlUnstyled.types';
  * *   Input
  * *   InputLabel
  *
- * You can find one composition example below and more going to [the demos](https://mui.com/components/text-fields/#components).
+ * You can find one composition example below and more going to [the demos](https://mui.com/material-ui/react-text-field/#components).
  *
  * ```jsx
  * <FormControl>

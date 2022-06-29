@@ -5,6 +5,10 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+var _exportNames = {
+  useBadge: true,
+  badgeUnstyledClasses: true
+};
 Object.defineProperty(exports, "badgeUnstyledClasses", {
   enumerable: true,
   get: function () {
@@ -17,12 +21,6 @@ Object.defineProperty(exports, "default", {
     return _BadgeUnstyled.default;
   }
 });
-Object.defineProperty(exports, "getBadgeUnstyledUtilityClass", {
-  enumerable: true,
-  get: function () {
-    return _badgeUnstyledClasses.getBadgeUnstyledUtilityClass;
-  }
-});
 Object.defineProperty(exports, "useBadge", {
   enumerable: true,
   get: function () {
@@ -32,9 +30,47 @@ Object.defineProperty(exports, "useBadge", {
 
 var _BadgeUnstyled = _interopRequireDefault(require("./BadgeUnstyled"));
 
-var _useBadge = _interopRequireDefault(require("./useBadge"));
+var _useBadge = _interopRequireWildcard(require("./useBadge"));
+
+Object.keys(_useBadge).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  if (key in exports && exports[key] === _useBadge[key]) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _useBadge[key];
+    }
+  });
+});
+
+var _BadgeUnstyled2 = require("./BadgeUnstyled.types");
+
+Object.keys(_BadgeUnstyled2).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  if (key in exports && exports[key] === _BadgeUnstyled2[key]) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _BadgeUnstyled2[key];
+    }
+  });
+});
 
 var _badgeUnstyledClasses = _interopRequireWildcard(require("./badgeUnstyledClasses"));
+
+Object.keys(_badgeUnstyledClasses).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  if (key in exports && exports[key] === _badgeUnstyledClasses[key]) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _badgeUnstyledClasses[key];
+    }
+  });
+});
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 

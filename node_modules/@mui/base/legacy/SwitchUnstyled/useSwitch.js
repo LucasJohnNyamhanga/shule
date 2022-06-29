@@ -31,15 +31,19 @@ export default function useSwitch(props) {
       checked = _useControlled2[0],
       setCheckedState = _useControlled2[1];
 
-  var handleInputChange = function handleInputChange(event, otherHandler) {
-    // Workaround for https://github.com/facebook/react/issues/9023
-    if (event.nativeEvent.defaultPrevented) {
-      return;
-    }
+  var createHandleInputChange = function createHandleInputChange(otherProps) {
+    return function (event) {
+      var _otherProps$onChange;
 
-    setCheckedState(event.target.checked);
-    onChange == null ? void 0 : onChange(event);
-    otherHandler == null ? void 0 : otherHandler(event);
+      // Workaround for https://github.com/facebook/react/issues/9023
+      if (event.nativeEvent.defaultPrevented) {
+        return;
+      }
+
+      setCheckedState(event.target.checked);
+      onChange == null ? void 0 : onChange(event);
+      (_otherProps$onChange = otherProps.onChange) == null ? void 0 : _otherProps$onChange.call(otherProps, event);
+    };
   };
 
   var _useIsFocusVisible = useIsFocusVisible(),
@@ -61,32 +65,40 @@ export default function useSwitch(props) {
   }, [focusVisible, isFocusVisibleRef]);
   var inputRef = React.useRef(null);
 
-  var handleFocus = function handleFocus(event, otherHandler) {
-    // Fix for https://github.com/facebook/react/issues/7769
-    if (!inputRef.current) {
-      inputRef.current = event.currentTarget;
-    }
+  var createHandleFocus = function createHandleFocus(otherProps) {
+    return function (event) {
+      var _otherProps$onFocus;
 
-    handleFocusVisible(event);
+      // Fix for https://github.com/facebook/react/issues/7769
+      if (!inputRef.current) {
+        inputRef.current = event.currentTarget;
+      }
 
-    if (isFocusVisibleRef.current === true) {
-      setFocusVisible(true);
-      onFocusVisible == null ? void 0 : onFocusVisible(event);
-    }
+      handleFocusVisible(event);
 
-    onFocus == null ? void 0 : onFocus(event);
-    otherHandler == null ? void 0 : otherHandler(event);
+      if (isFocusVisibleRef.current === true) {
+        setFocusVisible(true);
+        onFocusVisible == null ? void 0 : onFocusVisible(event);
+      }
+
+      onFocus == null ? void 0 : onFocus(event);
+      (_otherProps$onFocus = otherProps.onFocus) == null ? void 0 : _otherProps$onFocus.call(otherProps, event);
+    };
   };
 
-  var handleBlur = function handleBlur(event, otherHandler) {
-    handleBlurVisible(event);
+  var createHandleBlur = function createHandleBlur(otherProps) {
+    return function (event) {
+      var _otherProps$onBlur;
 
-    if (isFocusVisibleRef.current === false) {
-      setFocusVisible(false);
-    }
+      handleBlurVisible(event);
 
-    onBlur == null ? void 0 : onBlur(event);
-    otherHandler == null ? void 0 : otherHandler(event);
+      if (isFocusVisibleRef.current === false) {
+        setFocusVisible(false);
+      }
+
+      onBlur == null ? void 0 : onBlur(event);
+      (_otherProps$onBlur = otherProps.onBlur) == null ? void 0 : _otherProps$onBlur.call(otherProps, event);
+    };
   };
 
   var handleRefChange = useForkRef(focusVisibleRef, inputRef);
@@ -98,19 +110,13 @@ export default function useSwitch(props) {
       defaultChecked: defaultChecked,
       disabled: disabled,
       readOnly: readOnly,
+      ref: handleRefChange,
       required: required,
       type: 'checkbox'
     }, otherProps, {
-      onChange: function onChange(event) {
-        return handleInputChange(event, otherProps.onChange);
-      },
-      onFocus: function onFocus(event) {
-        return handleFocus(event, otherProps.onFocus);
-      },
-      onBlur: function onBlur(event) {
-        return handleBlur(event, otherProps.onBlur);
-      },
-      ref: handleRefChange
+      onChange: createHandleInputChange(otherProps),
+      onFocus: createHandleFocus(otherProps),
+      onBlur: createHandleBlur(otherProps)
     });
   };
 

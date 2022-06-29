@@ -73,19 +73,19 @@ var TabRoot = styled(ButtonBase, {
   }, _defineProperty(_ref3, "&.".concat(tabClasses.selected), {
     opacity: 1
   }), _defineProperty(_ref3, "&.".concat(tabClasses.disabled), {
-    opacity: theme.palette.action.disabledOpacity
+    opacity: (theme.vars || theme).palette.action.disabledOpacity
   }), _ref3), ownerState.textColor === 'primary' && (_ref4 = {
-    color: theme.palette.text.secondary
+    color: (theme.vars || theme).palette.text.secondary
   }, _defineProperty(_ref4, "&.".concat(tabClasses.selected), {
-    color: theme.palette.primary.main
+    color: (theme.vars || theme).palette.primary.main
   }), _defineProperty(_ref4, "&.".concat(tabClasses.disabled), {
-    color: theme.palette.text.disabled
+    color: (theme.vars || theme).palette.text.disabled
   }), _ref4), ownerState.textColor === 'secondary' && (_ref5 = {
-    color: theme.palette.text.secondary
+    color: (theme.vars || theme).palette.text.secondary
   }, _defineProperty(_ref5, "&.".concat(tabClasses.selected), {
-    color: theme.palette.secondary.main
+    color: (theme.vars || theme).palette.secondary.main
   }), _defineProperty(_ref5, "&.".concat(tabClasses.disabled), {
-    color: theme.palette.text.disabled
+    color: (theme.vars || theme).palette.text.disabled
   }), _ref5), ownerState.fullWidth && {
     flexShrink: 1,
     flexGrow: 1,

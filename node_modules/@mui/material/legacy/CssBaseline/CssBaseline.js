@@ -22,12 +22,12 @@ export var html = function html(theme, enableColorScheme) {
 };
 export var body = function body(theme) {
   return _extends({
-    color: theme.palette.text.primary
+    color: (theme.vars || theme).palette.text.primary
   }, theme.typography.body1, {
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: (theme.vars || theme).palette.background.default,
     '@media print': {
       // Save printer ink.
-      backgroundColor: theme.palette.common.white
+      backgroundColor: (theme.vars || theme).palette.common.white
     }
   });
 };
@@ -50,7 +50,7 @@ var _styles = function styles(theme) {
       // Add support for document.body.requestFullScreen().
       // Other elements, if background transparent, are not supported.
       '&::backdrop': {
-        backgroundColor: theme.palette.background.default
+        backgroundColor: (theme.vars || theme).palette.background.default
       }
     })
   };

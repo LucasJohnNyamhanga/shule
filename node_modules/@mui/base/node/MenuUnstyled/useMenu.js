@@ -35,7 +35,7 @@ function stateReducer(state, action) {
   return newState;
 }
 
-function useMenu(parameters) {
+function useMenu(parameters = {}) {
   const {
     listboxRef: listboxRefProp,
     open = false,
@@ -102,7 +102,7 @@ function useMenu(parameters) {
   const createHandleKeyDown = otherHandlers => e => {
     var _otherHandlers$onKeyD;
 
-    otherHandlers == null ? void 0 : (_otherHandlers$onKeyD = otherHandlers.onKeyDown) == null ? void 0 : _otherHandlers$onKeyD.call(otherHandlers, e);
+    (_otherHandlers$onKeyD = otherHandlers.onKeyDown) == null ? void 0 : _otherHandlers$onKeyD.call(otherHandlers, e);
 
     if (e.defaultPrevented) {
       return;
@@ -114,9 +114,9 @@ function useMenu(parameters) {
   };
 
   const createHandleBlur = otherHandlers => e => {
-    var _listboxRef$current;
+    var _otherHandlers$onBlur, _listboxRef$current;
 
-    otherHandlers == null ? void 0 : otherHandlers.onBlur(e);
+    (_otherHandlers$onBlur = otherHandlers.onBlur) == null ? void 0 : _otherHandlers$onBlur.call(otherHandlers, e);
 
     if (!((_listboxRef$current = listboxRef.current) != null && _listboxRef$current.contains(e.relatedTarget))) {
       onClose == null ? void 0 : onClose();
@@ -134,12 +134,15 @@ function useMenu(parameters) {
     }
   }, [highlightedOption, menuItems]);
 
-  const getListboxProps = otherHandlers => (0, _extends2.default)({}, otherHandlers, getRootProps((0, _extends2.default)({}, otherHandlers, {
-    onBlur: createHandleBlur(otherHandlers),
-    onKeyDown: createHandleKeyDown(otherHandlers)
-  })), {
-    role: 'menu'
-  });
+  const getListboxProps = (otherHandlers = {}) => {
+    const rootProps = getRootProps((0, _extends2.default)({}, otherHandlers, {
+      onBlur: createHandleBlur(otherHandlers),
+      onKeyDown: createHandleKeyDown(otherHandlers)
+    }));
+    return (0, _extends2.default)({}, otherHandlers, rootProps, {
+      role: 'menu'
+    });
+  };
 
   const getItemState = id => {
     const {

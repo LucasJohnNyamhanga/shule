@@ -1,17 +1,31 @@
 import _extends from "@babel/runtime/helpers/esm/extends";
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/esm/objectWithoutPropertiesLoose";
-const _excluded = ["defaultValue", "children", "className", "component", "components", "componentsProps", "disabled", "error", "onChange", "required", "value"];
+const _excluded = ["defaultValue", "children", "component", "components", "componentsProps", "disabled", "error", "onChange", "required", "value"];
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import { unstable_useControlled as useControlled } from '@mui/utils';
 import FormControlUnstyledContext from './FormControlUnstyledContext';
-import appendOwnerState from '../utils/appendOwnerState';
-import classes from './formControlUnstyledClasses';
+import { getFormControlUnstyledUtilityClass } from './formControlUnstyledClasses';
+import { useSlotProps } from '../utils';
+import composeClasses from '../composeClasses';
 import { jsx as _jsx } from "react/jsx-runtime";
 
 function hasValue(value) {
   return value != null && !(Array.isArray(value) && value.length === 0) && value !== '';
+}
+
+function useUtilityClasses(ownerState) {
+  const {
+    disabled,
+    error,
+    filled,
+    focused,
+    required
+  } = ownerState;
+  const slots = {
+    root: ['root', disabled && 'disabled', focused && 'focused', error && 'error', filled && 'filled', required && 'required']
+  };
+  return composeClasses(slots, getFormControlUnstyledUtilityClass, {});
 }
 /**
  * Provides context such as filled/focused/error/required for form inputs.
@@ -24,7 +38,7 @@ function hasValue(value) {
  * *   Input
  * *   InputLabel
  *
- * You can find one composition example below and more going to [the demos](https://mui.com/components/text-fields/#components).
+ * You can find one composition example below and more going to [the demos](https://mui.com/material-ui/react-text-field/#components).
  *
  * ```jsx
  * <FormControl>
@@ -51,7 +65,6 @@ const FormControlUnstyled = /*#__PURE__*/React.forwardRef(function FormControlUn
   const {
     defaultValue,
     children,
-    className,
     component,
     components = {},
     componentsProps = {},
@@ -104,8 +117,7 @@ const FormControlUnstyled = /*#__PURE__*/React.forwardRef(function FormControlUn
     required,
     value: value ?? ''
   };
-  const Root = component ?? components.Root ?? 'div';
-  const rootProps = appendOwnerState(Root, _extends({}, other, componentsProps.root), ownerState);
+  const classes = useUtilityClasses(ownerState);
 
   const renderChildren = () => {
     if (typeof children === 'function') {
@@ -115,14 +127,21 @@ const FormControlUnstyled = /*#__PURE__*/React.forwardRef(function FormControlUn
     return children;
   };
 
+  const Root = component ?? components.Root ?? 'div';
+  const rootProps = useSlotProps({
+    elementType: Root,
+    externalSlotProps: componentsProps.root,
+    externalForwardedProps: other,
+    additionalProps: {
+      ref,
+      children: renderChildren()
+    },
+    ownerState,
+    className: classes.root
+  });
   return /*#__PURE__*/_jsx(FormControlUnstyledContext.Provider, {
     value: childContext,
-    children: /*#__PURE__*/_jsx(Root, _extends({
-      ref: ref
-    }, rootProps, {
-      className: clsx(classes.root, className, rootProps?.className, disabled && classes.disabled, error && classes.error, filled && classes.filled, focused && classes.focused, required && classes.required),
-      children: renderChildren()
-    }))
+    children: /*#__PURE__*/_jsx(Root, _extends({}, rootProps))
   });
 });
 process.env.NODE_ENV !== "production" ? FormControlUnstyled.propTypes
@@ -139,11 +158,6 @@ process.env.NODE_ENV !== "production" ? FormControlUnstyled.propTypes
   children: PropTypes
   /* @typescript-to-proptypes-ignore */
   .oneOfType([PropTypes.node, PropTypes.func]),
-
-  /**
-   * Class name applied to the root element.
-   */
-  className: PropTypes.string,
 
   /**
    * The component used for the root node.
@@ -164,7 +178,7 @@ process.env.NODE_ENV !== "production" ? FormControlUnstyled.propTypes
    * @ignore
    */
   componentsProps: PropTypes.shape({
-    root: PropTypes.object
+    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object])
   }),
 
   /**

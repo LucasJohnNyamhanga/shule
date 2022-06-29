@@ -1,12 +1,12 @@
 import { usePreviousProps } from '@mui/utils';
-export default function useBadge(props) {
-  var badgeContentProp = props.badgeContent,
-      _props$invisible = props.invisible,
-      invisibleProp = _props$invisible === void 0 ? false : _props$invisible,
-      _props$max = props.max,
-      maxProp = _props$max === void 0 ? 99 : _props$max,
-      _props$showZero = props.showZero,
-      showZero = _props$showZero === void 0 ? false : _props$showZero;
+export default function useBadge(parameters) {
+  var badgeContentProp = parameters.badgeContent,
+      _parameters$invisible = parameters.invisible,
+      invisibleProp = _parameters$invisible === void 0 ? false : _parameters$invisible,
+      _parameters$max = parameters.max,
+      maxProp = _parameters$max === void 0 ? 99 : _parameters$max,
+      _parameters$showZero = parameters.showZero,
+      showZero = _parameters$showZero === void 0 ? false : _parameters$showZero;
   var prevProps = usePreviousProps({
     badgeContent: badgeContentProp,
     max: maxProp
@@ -17,7 +17,7 @@ export default function useBadge(props) {
     invisible = true;
   }
 
-  var _ref = invisible ? prevProps : props,
+  var _ref = invisible ? prevProps : parameters,
       badgeContent = _ref.badgeContent,
       _ref$max = _ref.max,
       max = _ref$max === void 0 ? maxProp : _ref$max;

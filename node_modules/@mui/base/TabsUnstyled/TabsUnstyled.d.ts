@@ -1,5 +1,5 @@
 import { OverridableComponent } from '@mui/types';
-import { TabsUnstyledTypeMap } from './TabsUnstyledProps';
+import { TabsUnstyledTypeMap } from './TabsUnstyled.types';
 /**
  *
  * Demos:

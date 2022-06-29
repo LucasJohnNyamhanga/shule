@@ -23,16 +23,16 @@ Object.defineProperty(exports, "optionUnstyledClasses", {
 
 var _OptionUnstyled = _interopRequireDefault(require("./OptionUnstyled"));
 
-var _OptionUnstyledProps = require("./OptionUnstyledProps");
+var _OptionUnstyled2 = require("./OptionUnstyled.types");
 
-Object.keys(_OptionUnstyledProps).forEach(function (key) {
+Object.keys(_OptionUnstyled2).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
-  if (key in exports && exports[key] === _OptionUnstyledProps[key]) return;
+  if (key in exports && exports[key] === _OptionUnstyled2[key]) return;
   Object.defineProperty(exports, key, {
     enumerable: true,
     get: function () {
-      return _OptionUnstyledProps[key];
+      return _OptionUnstyled2[key];
     }
   });
 });

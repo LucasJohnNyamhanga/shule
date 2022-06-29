@@ -30,6 +30,20 @@ Object.defineProperty(exports, "useTabsList", {
 
 var _TabsListUnstyled = _interopRequireDefault(require("./TabsListUnstyled"));
 
+var _TabsListUnstyled2 = require("./TabsListUnstyled.types");
+
+Object.keys(_TabsListUnstyled2).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  if (key in exports && exports[key] === _TabsListUnstyled2[key]) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _TabsListUnstyled2[key];
+    }
+  });
+});
+
 var _tabsListUnstyledClasses = _interopRequireWildcard(require("./tabsListUnstyledClasses"));
 
 Object.keys(_tabsListUnstyledClasses).forEach(function (key) {
@@ -44,16 +58,18 @@ Object.keys(_tabsListUnstyledClasses).forEach(function (key) {
   });
 });
 
-var _useTabsList = _interopRequireWildcard(require("./useTabsList"));
+var _useTabsList = _interopRequireDefault(require("./useTabsList"));
 
-Object.keys(_useTabsList).forEach(function (key) {
+var _useTabsList2 = require("./useTabsList.types");
+
+Object.keys(_useTabsList2).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
-  if (key in exports && exports[key] === _useTabsList[key]) return;
+  if (key in exports && exports[key] === _useTabsList2[key]) return;
   Object.defineProperty(exports, key, {
     enumerable: true,
     get: function () {
-      return _useTabsList[key];
+      return _useTabsList2[key];
     }
   });
 });

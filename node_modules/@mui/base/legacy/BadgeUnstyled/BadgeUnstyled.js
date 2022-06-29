@@ -2,11 +2,10 @@ import _extends from "@babel/runtime/helpers/esm/extends";
 import _objectWithoutProperties from "@babel/runtime/helpers/esm/objectWithoutProperties";
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import composeClasses from '../composeClasses';
-import appendOwnerState from '../utils/appendOwnerState';
 import useBadge from './useBadge';
 import { getBadgeUnstyledUtilityClass } from './badgeUnstyledClasses';
+import { useSlotProps } from '../utils';
 import { jsx as _jsx } from "react/jsx-runtime";
 import { jsxs as _jsxs } from "react/jsx-runtime";
 
@@ -18,12 +17,22 @@ var useUtilityClasses = function useUtilityClasses(ownerState) {
   };
   return composeClasses(slots, getBadgeUnstyledUtilityClass, undefined);
 };
+/**
+ *
+ * Demos:
+ *
+ * - [Badge](https://mui.com/base/react-badge/)
+ *
+ * API:
+ *
+ * - [BadgeUnstyled API](https://mui.com/base/api/badge-unstyled/)
+ */
+
 
 var BadgeUnstyled = /*#__PURE__*/React.forwardRef(function BadgeUnstyled(props, ref) {
   var badgeContentProp = props.badgeContent,
       component = props.component,
       children = props.children,
-      className = props.className,
       _props$components = props.components,
       components = _props$components === void 0 ? {} : _props$components,
       _props$componentsProp = props.componentsProps,
@@ -33,7 +42,7 @@ var BadgeUnstyled = /*#__PURE__*/React.forwardRef(function BadgeUnstyled(props, 
       maxProp = _props$max === void 0 ? 99 : _props$max,
       _props$showZero = props.showZero,
       showZero = _props$showZero === void 0 ? false : _props$showZero,
-      other = _objectWithoutProperties(props, ["badgeContent", "component", "children", "className", "components", "componentsProps", "invisible", "max", "showZero"]);
+      other = _objectWithoutProperties(props, ["badgeContent", "component", "children", "components", "componentsProps", "invisible", "max", "showZero"]);
 
   var _useBadge = useBadge(_extends({}, props, {
     max: maxProp
@@ -52,15 +61,25 @@ var BadgeUnstyled = /*#__PURE__*/React.forwardRef(function BadgeUnstyled(props, 
 
   var classes = useUtilityClasses(ownerState);
   var Root = component || components.Root || 'span';
-  var rootProps = appendOwnerState(Root, _extends({}, other, componentsProps.root), ownerState);
+  var rootProps = useSlotProps({
+    elementType: Root,
+    externalSlotProps: componentsProps.root,
+    externalForwardedProps: other,
+    additionalProps: {
+      ref: ref
+    },
+    ownerState: ownerState,
+    className: classes.root
+  });
   var Badge = components.Badge || 'span';
-  var badgeProps = appendOwnerState(Badge, componentsProps.badge, ownerState);
+  var badgeProps = useSlotProps({
+    elementType: Badge,
+    externalSlotProps: componentsProps.badge,
+    ownerState: ownerState,
+    className: classes.badge
+  });
   return /*#__PURE__*/_jsxs(Root, _extends({}, rootProps, {
-    ref: ref
-  }, other, {
-    className: clsx(classes.root, rootProps.className, className),
     children: [children, /*#__PURE__*/_jsx(Badge, _extends({}, badgeProps, {
-      className: clsx(classes.badge, badgeProps.className),
       children: displayValue
     }))]
   }));
@@ -70,7 +89,7 @@ process.env.NODE_ENV !== "production" ? BadgeUnstyled.propTypes
 = {
   // ----------------------------- Warning --------------------------------
   // | These PropTypes are generated from the TypeScript type definitions |
-  // |     To update them edit the d.ts file and run "yarn proptypes"     |
+  // |     To update them edit TypeScript types and run "yarn proptypes"  |
   // ----------------------------------------------------------------------
 
   /**
@@ -82,11 +101,6 @@ process.env.NODE_ENV !== "production" ? BadgeUnstyled.propTypes
    * The badge will be added relative to this node.
    */
   children: PropTypes.node,
-
-  /**
-   * @ignore
-   */
-  className: PropTypes.string,
 
   /**
    * The component used for the root node.
@@ -109,8 +123,8 @@ process.env.NODE_ENV !== "production" ? BadgeUnstyled.propTypes
    * @default {}
    */
   componentsProps: PropTypes.shape({
-    badge: PropTypes.object,
-    root: PropTypes.object
+    badge: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+    root: PropTypes.oneOfType([PropTypes.func, PropTypes.object])
   }),
 
   /**

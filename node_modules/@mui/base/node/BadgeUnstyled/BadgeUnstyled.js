@@ -15,19 +15,17 @@ var React = _interopRequireWildcard(require("react"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
-var _clsx = _interopRequireDefault(require("clsx"));
-
 var _composeClasses = _interopRequireDefault(require("../composeClasses"));
-
-var _appendOwnerState = _interopRequireDefault(require("../utils/appendOwnerState"));
 
 var _useBadge = _interopRequireDefault(require("./useBadge"));
 
 var _badgeUnstyledClasses = require("./badgeUnstyledClasses");
 
+var _utils = require("../utils");
+
 var _jsxRuntime = require("react/jsx-runtime");
 
-const _excluded = ["badgeContent", "component", "children", "className", "components", "componentsProps", "invisible", "max", "showZero"];
+const _excluded = ["badgeContent", "component", "children", "components", "componentsProps", "invisible", "max", "showZero"];
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -43,12 +41,22 @@ const useUtilityClasses = ownerState => {
   };
   return (0, _composeClasses.default)(slots, _badgeUnstyledClasses.getBadgeUnstyledUtilityClass, undefined);
 };
+/**
+ *
+ * Demos:
+ *
+ * - [Badge](https://mui.com/base/react-badge/)
+ *
+ * API:
+ *
+ * - [BadgeUnstyled API](https://mui.com/base/api/badge-unstyled/)
+ */
+
 
 const BadgeUnstyled = /*#__PURE__*/React.forwardRef(function BadgeUnstyled(props, ref) {
   const {
     component,
     children,
-    className,
     components = {},
     componentsProps = {},
     max: maxProp = 99,
@@ -71,15 +79,25 @@ const BadgeUnstyled = /*#__PURE__*/React.forwardRef(function BadgeUnstyled(props
   });
   const classes = useUtilityClasses(ownerState);
   const Root = component || components.Root || 'span';
-  const rootProps = (0, _appendOwnerState.default)(Root, (0, _extends2.default)({}, other, componentsProps.root), ownerState);
+  const rootProps = (0, _utils.useSlotProps)({
+    elementType: Root,
+    externalSlotProps: componentsProps.root,
+    externalForwardedProps: other,
+    additionalProps: {
+      ref
+    },
+    ownerState,
+    className: classes.root
+  });
   const Badge = components.Badge || 'span';
-  const badgeProps = (0, _appendOwnerState.default)(Badge, componentsProps.badge, ownerState);
+  const badgeProps = (0, _utils.useSlotProps)({
+    elementType: Badge,
+    externalSlotProps: componentsProps.badge,
+    ownerState,
+    className: classes.badge
+  });
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(Root, (0, _extends2.default)({}, rootProps, {
-    ref: ref
-  }, other, {
-    className: (0, _clsx.default)(classes.root, rootProps.className, className),
     children: [children, /*#__PURE__*/(0, _jsxRuntime.jsx)(Badge, (0, _extends2.default)({}, badgeProps, {
-      className: (0, _clsx.default)(classes.badge, badgeProps.className),
       children: displayValue
     }))]
   }));
@@ -89,7 +107,7 @@ process.env.NODE_ENV !== "production" ? BadgeUnstyled.propTypes
 = {
   // ----------------------------- Warning --------------------------------
   // | These PropTypes are generated from the TypeScript type definitions |
-  // |     To update them edit the d.ts file and run "yarn proptypes"     |
+  // |     To update them edit TypeScript types and run "yarn proptypes"  |
   // ----------------------------------------------------------------------
 
   /**
@@ -101,11 +119,6 @@ process.env.NODE_ENV !== "production" ? BadgeUnstyled.propTypes
    * The badge will be added relative to this node.
    */
   children: _propTypes.default.node,
-
-  /**
-   * @ignore
-   */
-  className: _propTypes.default.string,
 
   /**
    * The component used for the root node.
@@ -128,8 +141,8 @@ process.env.NODE_ENV !== "production" ? BadgeUnstyled.propTypes
    * @default {}
    */
   componentsProps: _propTypes.default.shape({
-    badge: _propTypes.default.object,
-    root: _propTypes.default.object
+    badge: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object]),
+    root: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object])
   }),
 
   /**

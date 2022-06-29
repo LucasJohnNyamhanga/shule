@@ -69,7 +69,7 @@ const BottomNavigationActionRoot = (0, _styled.default)(_ButtonBase.default, {
   padding: '0px 12px',
   minWidth: 80,
   maxWidth: 168,
-  color: theme.palette.text.secondary,
+  color: (theme.vars || theme).palette.text.secondary,
   flexDirection: 'column',
   flex: '1'
 }, !ownerState.showLabel && !ownerState.selected && {
@@ -78,7 +78,7 @@ const BottomNavigationActionRoot = (0, _styled.default)(_ButtonBase.default, {
   paddingTop: 0
 }, {
   [`&.${_bottomNavigationActionClasses.default.selected}`]: {
-    color: theme.palette.primary.main
+    color: (theme.vars || theme).palette.primary.main
   }
 }));
 const BottomNavigationActionLabel = (0, _styled.default)('span', {

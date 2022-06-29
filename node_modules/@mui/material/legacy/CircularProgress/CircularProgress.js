@@ -47,7 +47,7 @@ var CircularProgressRoot = styled('span', {
   }, ownerState.variant === 'determinate' && {
     transition: theme.transitions.create('transform')
   }, ownerState.color !== 'inherit' && {
-    color: theme.palette[ownerState.color].main
+    color: (theme.vars || theme).palette[ownerState.color].main
   });
 }, function (_ref2) {
   var ownerState = _ref2.ownerState;

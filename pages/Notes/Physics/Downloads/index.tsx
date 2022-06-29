@@ -39,12 +39,13 @@ export const getStaticProps: GetStaticProps = async () => {
 		props: {
 			downloads,
 		},
+		revalidate: 15,
 	};
 };
 
 const Index = ({
-	downloads,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	downloads,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
