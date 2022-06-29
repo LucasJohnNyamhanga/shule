@@ -55,12 +55,13 @@ export const getStaticProps: GetStaticProps = async () => {
 		props: {
 			subjects,
 		},
+		revalidate: 15,
 	};
 };
 
 const References: NextPage = ({
-	subjects,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	subjects,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
