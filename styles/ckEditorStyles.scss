@@ -426,6 +426,7 @@ $checkmarksize: 16px;
 	}
 
 	.toc {
+		padding-bottom: 5px;
 		ol {
 			max-width: 100%;
 			counter-reset: my-awesome-counter;
@@ -455,6 +456,16 @@ $checkmarksize: 16px;
 			border-radius: 50%;
 			text-align: center;
 			box-shadow: 1px 1px 0 #999;
+		}
+
+		.horizontalLine {
+			margin-top: 10px;
+			display: block;
+			height: 1px;
+			border: 0;
+			border-top: 1px solid $answerBackground;
+			margin: 1em 0;
+			padding: 0;
 		}
 	}
 

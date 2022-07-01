@@ -1,0 +1,135 @@
+@import 'index';
+
+.container {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	justify-content: flex-start;
+	align-items: center;
+	padding: 10px;
+
+	.innerContainer {
+		width: 100%;
+		min-height: 70vh;
+		max-width: 1200px;
+		margin-top: 20px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+
+		.form {
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+			max-width: 350px;
+
+			.logInHeader {
+				width: 100%;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+
+				margin-bottom: 15px;
+
+				.icon {
+					font-size: 65px;
+					margin-bottom: 15px;
+					color: $lightblue;
+				}
+
+				.text {
+					font-family: $fontHeader;
+					font-weight: 600;
+					font-size: 25px;
+					color: $ugoro;
+					width: 100%;
+					align-self: flex-start;
+				}
+			}
+			.credential {
+				margin-bottom: 20px;
+
+				input {
+					border: 2px solid $ugoro;
+					padding: 12px;
+					font-size: 22px;
+					border-radius: 5px;
+					width: 100%;
+					height: 42px;
+					outline: none;
+					font-family: $fontBody;
+					margin-bottom: 10px;
+					color: $ugoro;
+				}
+
+				.check {
+					display: flex;
+					flex-direction: row;
+					font-size: 18px;
+					font-weight: 400;
+					justify-content: flex-start;
+					align-items: center;
+
+					input {
+						width: 20px;
+						height: 20px;
+						align-self: center;
+						margin: 0px;
+						margin-right: 10px;
+						margin-left: 5px;
+					}
+				}
+			}
+
+			.button {
+				width: 100%;
+				background-color: $ugoro;
+				color: $white;
+				border: 2px solid transparent;
+				padding: 10px 25px;
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+				align-items: center;
+				border-radius: 5px;
+				transition: 0.2s linear;
+				font-weight: 500;
+
+				.google {
+					margin-right: 10px;
+				}
+			}
+
+			.button:hover {
+				background-color: $lightkahawa;
+				color: $ugoro;
+				border: 2px solid $lightblue;
+				cursor: pointer;
+			}
+
+			.separator {
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+				margin: 15px 0px;
+			}
+
+			.line {
+				width: 35%;
+				background-color: $black;
+				height: 1px;
+			}
+
+			.or {
+				width: 15px;
+			}
+		}
+
+		.loader {
+			height: fit-content;
+			margin: 20px;
+		}
+	}
+}

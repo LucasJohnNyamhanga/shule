@@ -1,11 +1,29 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Styles from '../../styles/navigation.module.scss';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import Link from 'next/link';
 import { NavContext } from '../../components/context/StateContext';
+import { useSession, signIn, signOut } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 const Nav = () => {
 	const { setNavActive, navActive } = useContext(NavContext);
+	const { data: session } = useSession();
+
+	const { push, asPath } = useRouter();
+
+	let handleSignIn = () => {
+		push(`/Auth/SignIn?callbackUrl=${asPath}`);
+	};
+
+	let handleLogOut = async () => {
+		await signOut({ redirect: false }).then(() => {
+			push('/');
+		});
+	};
+
+	useEffect(() => {}, [session]);
+
 	return (
 		<div className={Styles.container}>
 			<div className={Styles.innerContainerTop}>
@@ -90,26 +108,38 @@ const Nav = () => {
 										</div>
 									</a>
 								</Link>
-								<Link href='/Admin'>
-									<a>
-										<div
-											onClick={() => {
-												setNavActive('Admin');
-											}}>
-											<li
-												className={
-													'Admin' == navActive ? Styles.active : Styles.links
-												}>
-												Admin
-											</li>
-										</div>
-									</a>
-								</Link>
+								{session && (
+									<Link href='/Admin'>
+										<a>
+											<div
+												onClick={() => {
+													setNavActive('Admin');
+												}}>
+												<li
+													className={
+														'Admin' == navActive ? Styles.active : Styles.links
+													}>
+													Admin
+												</li>
+											</div>
+										</a>
+									</Link>
+								)}
 							</ul>
 						</div>
 						<div className={Styles.buttonsNav}>
-							{/* <div className={Styles.Sign}></div> */}
-							<div className={Styles.Register}>Sign In</div>
+							{session ? (
+								<div onClick={handleLogOut} className={Styles.Register}>
+									Log Out
+								</div>
+							) : (
+								<>
+									<div onClick={handleSignIn} className={Styles.Sign}>
+										Sign In
+									</div>
+									<div className={Styles.Register}>Register</div>
+								</>
+							)}
 						</div>
 					</nav>
 				</div>

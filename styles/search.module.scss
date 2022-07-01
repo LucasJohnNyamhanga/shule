@@ -177,15 +177,15 @@
 			border: 2px solid rgba($color: $ugoro, $alpha: 0.4);
 		}
 
-		.horizontalLine {
-			margin-top: 10px;
-			display: block;
-			height: 1px;
-			border: 0;
-			border-top: 1px solid $answerBackground;
-			margin: 1em 0;
-			padding: 0;
-		}
+		// .horizontalLine {
+		// 	margin-top: 10px;
+		// 	display: block;
+		// 	height: 1px;
+		// 	border: 0;
+		// 	border-top: 1px solid $answerBackground;
+		// 	margin: 1em 0;
+		// 	padding: 0;
+		// }
 
 		.resultNotFound {
 			min-height: 76vh;

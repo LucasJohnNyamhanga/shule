@@ -6,7 +6,6 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { NavContext } from '../../components/context/StateContext';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import Exams from '../../pages/Exams';
 
 const Search = () => {
 	const router = useRouter();

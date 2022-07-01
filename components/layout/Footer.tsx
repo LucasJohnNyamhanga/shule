@@ -51,7 +51,7 @@ const Footer = () => {
 					<div className={Styles.body}>Facebook: </div>
 				</div>
 			</div>
-			<div className={Styles.copyrights}>www.shule.co.tz</div>
+			<div className={Styles.copyrights}>www.shule.co.tz &copy; 2022</div>
 		</div>
 	);
 };

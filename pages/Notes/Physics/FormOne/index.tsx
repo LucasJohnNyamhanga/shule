@@ -110,10 +110,10 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Index = ({
-    	topics,
-    	note,
-    	download,
-    }: InferGetStaticPropsType<typeof getStaticProps>) => {
+	topics,
+	note,
+	download,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {

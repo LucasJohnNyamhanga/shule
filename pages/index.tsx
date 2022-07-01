@@ -6,6 +6,7 @@ import { prisma } from '../db/prisma';
 import type { GetStaticProps } from 'next';
 import { useContext, useEffect } from 'react';
 import { NavContext } from '../components/context/StateContext';
+import { useSession, getSession, signIn, signOut } from 'next-auth/react';
 
 type userData = {
 	id: number;
@@ -60,14 +61,19 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Home: NextPage = ({
-    	subjects,
-    }: InferGetStaticPropsType<typeof getStaticProps>) => {
+	subjects,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
 		setNavActive('Notes');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [navActive]);
+
+	const { data: session, status } = useSession();
+	if (status === 'authenticated') {
+		console.log(session.user);
+	}
 
 	return (
 		<>
