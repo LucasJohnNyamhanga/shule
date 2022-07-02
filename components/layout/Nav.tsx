@@ -7,7 +7,8 @@ import { useSession, signIn, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 
 const Nav = () => {
-	const { setNavActive, navActive } = useContext(NavContext);
+	const { setNavActive, navActive, setUserData, userData } =
+		useContext(NavContext);
 	const { data: session } = useSession();
 
 	const { push, asPath } = useRouter();
@@ -22,7 +23,18 @@ const Nav = () => {
 		});
 	};
 
-	useEffect(() => {}, [session]);
+	let checkUserData = async () => {
+		if (session) {
+			//getuserData
+			setUserData({ id: '', isAdmin: true });
+		} else {
+			setUserData({ id: '', isAdmin: false });
+		}
+	};
+
+	useEffect(() => {
+		checkUserData();
+	}, [session]);
 
 	return (
 		<div className={Styles.container}>
@@ -108,7 +120,7 @@ const Nav = () => {
 										</div>
 									</a>
 								</Link>
-								{session && (
+								{session && userData.isAdmin && (
 									<Link href='/Admin'>
 										<a>
 											<div

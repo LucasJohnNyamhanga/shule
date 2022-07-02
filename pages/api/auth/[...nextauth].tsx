@@ -32,7 +32,6 @@ export default NextAuth({
 						firstName: true,
 						lastName: true,
 						username: true,
-						isAdmin: true,
 					},
 				});
 				const userfound = await JSON.parse(JSON.stringify(userFromServer));
@@ -41,7 +40,7 @@ export default NextAuth({
 					id: userfound.id,
 					name: `${userfound.firstName} ${userfound.lastName}`,
 					email: userfound.username,
-					admin: userfound.isAdmin,
+					image: '',
 				};
 
 				if (user) {
@@ -65,6 +64,21 @@ export default NextAuth({
 			return session;
 		},
 		async jwt({ token, user, account, profile, isNewUser }) {
+			const userFromServer = await prisma.users.findFirst({
+				where: {
+					username: token.email,
+				},
+				select: {
+					id: true,
+				},
+			});
+			const userfound = await JSON.parse(JSON.stringify(userFromServer));
+			if (userfound) {
+				console.log('User Exist', { userfound });
+			} else {
+				console.log('User does not Exist');
+				//create user
+			}
 			console.log('jwt', { user, token });
 			return token;
 		},

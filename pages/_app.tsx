@@ -30,6 +30,10 @@ function MyApp({ Component, pageProps }: dataProps) {
 	const matches = useMediaQuery('(min-width:958px)');
 
 	const [navActive, setNavActive] = useState('Notes');
+	const [userData, setUserData] = useState({
+		id: '',
+		isAdmin: false,
+	});
 
 	//*progress router
 	const setIsAnimating = useProgressStore(
@@ -76,6 +80,8 @@ function MyApp({ Component, pageProps }: dataProps) {
 						value={{
 							setNavActive,
 							navActive,
+							setUserData,
+							userData,
 						}}>
 						{matches ? <Navigator /> : <NavMobile />}
 						<Component {...pageProps} />
@@ -94,6 +100,8 @@ function MyApp({ Component, pageProps }: dataProps) {
 					value={{
 						setNavActive,
 						navActive,
+						setUserData,
+						userData,
 					}}>
 					{matches ? <Navigator /> : <NavMobile />}
 					<Search />

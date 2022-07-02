@@ -1,4 +1,11 @@
-import { ChangeEvent, ReactNode, useEffect, useRef, useState } from 'react';
+import {
+	ChangeEvent,
+	ReactNode,
+	useContext,
+	useEffect,
+	useRef,
+	useState,
+} from 'react';
 import Styles from '../../styles/auth.module.scss';
 import { useSession, getSession, signIn, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
@@ -6,6 +13,7 @@ import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import { BsGoogle } from 'react-icons/bs';
 import Loader from '../../components/tools/loader';
 import toast, { Toaster } from 'react-hot-toast';
+import { NavContext } from '../../components/context/StateContext';
 
 const SignIn = ({}) => {
 	const { status, data } = useSession();
@@ -14,6 +22,7 @@ const SignIn = ({}) => {
 		password: '',
 	});
 	const [loading, setLoading] = useState(false);
+	const { setUserData } = useContext(NavContext);
 
 	const password = useRef<HTMLInputElement>(null!);
 
@@ -44,6 +53,8 @@ const SignIn = ({}) => {
 					notifyError('Oops, something went wrong. Please try again');
 				}
 			} else {
+				//getuserData
+				//set userData
 				setLoading(false);
 				// console.log(result);
 				// router.push(result.url);
@@ -65,6 +76,7 @@ const SignIn = ({}) => {
 					setLoading(false);
 				} else {
 					setLoading(false);
+
 					// console.log(result);
 					// router.push(result.url);
 				}
@@ -79,10 +91,6 @@ const SignIn = ({}) => {
 			? (password.current.type = 'text')
 			: (password.current.type = 'password');
 	};
-
-	useEffect(() => {
-		status === 'loading' ? setLoading(true) : setLoading(false);
-	}, [status]);
 
 	return (
 		<div className={Styles.container}>
