@@ -21,10 +21,22 @@ const SignIn = ({}) => {
 		username: '',
 		password: '',
 	});
+
+	const [register, setRegister] = useState({
+		firstName: '',
+		lastName: '',
+		username: '',
+		password: '',
+		password2: '',
+	});
 	const [loading, setLoading] = useState(false);
+	const [signUpAccount, setSignUpAccount] = useState(false);
+	const [signInAccount, setSignInAccount] = useState(true);
 	const { setUserData } = useContext(NavContext);
 
 	const password = useRef<HTMLInputElement>(null!);
+	const password1 = useRef<HTMLInputElement>(null!);
+	const password2 = useRef<HTMLInputElement>(null!);
 
 	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
@@ -32,12 +44,14 @@ const SignIn = ({}) => {
 
 	let handletext = (e: React.ChangeEvent<HTMLInputElement>) => {
 		let value = e.target.value;
-		setFormData({ ...formData, username: value });
+		let name = e.target.name;
+		setFormData({ ...formData, [name]: value });
 	};
 
-	let handletextPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+	let handletextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		let value = e.target.value;
-		setFormData({ ...formData, password: value });
+		let name = e.target.name;
+		setRegister({ ...register, [name]: value });
 	};
 
 	const { query } = useRouter();
@@ -46,6 +60,7 @@ const SignIn = ({}) => {
 	let signInWithGoogle = () => {
 		setLoading(true);
 		signIn('google', { callbackUrl: `${callback}` }).then(function (result) {
+			console.log(result);
 			if (result?.error !== null) {
 				if (result?.status === 401) {
 					notifyError('Incorrect Credentials');
@@ -92,66 +107,190 @@ const SignIn = ({}) => {
 			: (password.current.type = 'password');
 	};
 
+	let togglePasswordSignUp = (e: ChangeEvent<HTMLInputElement>) => {
+		if (e.target.checked) {
+			password1.current.type = 'text';
+			password2.current.type = 'text';
+		} else {
+			password1.current.type = 'password';
+			password2.current.type = 'password';
+		}
+	};
+
+	let signTo = () => {
+		setSignInAccount(!signInAccount);
+		setSignUpAccount(!signUpAccount);
+	};
+
 	return (
 		<div className={Styles.container}>
 			<Toaster position='bottom-left' />
 			<div className={Styles.innerContainer}>
-				<form className={Styles.form}>
-					<div className={Styles.logInHeader}>
-						<div>
-							<AutoStoriesIcon className={Styles.icon} />
-						</div>
-						<div className={Styles.text}>Shule Account.</div>
-					</div>
-					<div className={Styles.credential}>
-						<input
-							type='text'
-							value={formData.username}
-							placeholder={`Username`}
-							name={'username'}
-							onChange={(event) => {
-								handletext(event);
-							}}
-							autoComplete='off'
-							autoCorrect='off'
-							spellCheck={false}
-						/>
-						<input
-							ref={password}
-							type='password'
-							value={formData.password}
-							placeholder={`Password`}
-							name={`password`}
-							onChange={(event) => {
-								handletextPassword(event);
-							}}
-							autoComplete='off'
-							autoCorrect='off'
-							spellCheck={false}
-						/>
-						<div className={Styles.check}>
-							<input
-								type='checkbox'
-								onChange={(e) => {
-									togglePassword(e);
-								}}
-							/>
-							Show Password
-						</div>
-					</div>
-					<div onClick={signInWithCredentials} className={Styles.button}>
-						Sign In
-					</div>
-					<div className={Styles.separator}>
-						<hr className={Styles.line} />
-						<div className={Styles.or}>Or</div>
-						<hr className={Styles.line} />
-					</div>
-					<div className={Styles.button} onClick={signInWithGoogle}>
-						<BsGoogle className={Styles.google} />
-						<div>Sign in with Google</div>
-					</div>
-				</form>
+				<div>
+					{signInAccount && (
+						<form className={Styles.form}>
+							<div className={Styles.logInHeader}>
+								<div>
+									<AutoStoriesIcon className={Styles.icon} />
+								</div>
+								<div className={Styles.text}>Shule Account</div>
+							</div>
+							<div className={Styles.credential}>
+								<input
+									type='text'
+									value={formData.username}
+									placeholder={`Username`}
+									name={'username'}
+									onChange={(event) => {
+										handletext(event);
+									}}
+									autoComplete='off'
+									autoCorrect='off'
+									spellCheck={false}
+								/>
+								<input
+									ref={password}
+									type='password'
+									value={formData.password}
+									placeholder={`Password`}
+									name={`password`}
+									onChange={(event) => {
+										handletext(event);
+									}}
+									autoComplete='off'
+									autoCorrect='off'
+									spellCheck={false}
+								/>
+								<div className={Styles.check}>
+									<input
+										type='checkbox'
+										onChange={(e) => {
+											togglePassword(e);
+										}}
+									/>
+									Show Password
+								</div>
+							</div>
+							<div onClick={signInWithCredentials} className={Styles.button}>
+								Sign In
+							</div>
+							<div className={Styles.separator}>
+								<hr className={Styles.line} />
+								<div className={Styles.or}>Or</div>
+								<hr className={Styles.line} />
+							</div>
+							<div className={Styles.button} onClick={signInWithGoogle}>
+								<BsGoogle className={Styles.google} />
+								<div>Sign in with Google</div>
+							</div>
+							<div className={Styles.separator}>
+								<hr className={Styles.line} />
+								<div className={Styles.or}>New User</div>
+								<hr className={Styles.line} />
+							</div>
+							<div className={Styles.buttonSignUp} onClick={signTo}>
+								<div>Sign Up</div>
+							</div>
+						</form>
+					)}
+				</div>
+				<div>
+					{signUpAccount && (
+						<form className={Styles.form}>
+							<div className={Styles.logInHeader}>
+								<div>
+									<AutoStoriesIcon className={Styles.icon} />
+								</div>
+								<div className={Styles.text}>Register to Shule</div>
+							</div>
+							<div className={Styles.credential}>
+								<input
+									type='text'
+									value={register.firstName}
+									placeholder={`First Name`}
+									name={'firstName'}
+									onChange={(event) => {
+										handletextChange(event);
+									}}
+									autoComplete='off'
+									autoCorrect='off'
+									spellCheck={false}
+								/>
+								<input
+									type='text'
+									value={register.lastName}
+									placeholder={`Last Name`}
+									name={'lastName'}
+									onChange={(event) => {
+										handletextChange(event);
+									}}
+									autoComplete='off'
+									autoCorrect='off'
+									spellCheck={false}
+								/>
+								<input
+									type='text'
+									value={register.username}
+									placeholder={`Username`}
+									name={'username'}
+									onChange={(event) => {
+										handletextChange(event);
+									}}
+									autoComplete='off'
+									autoCorrect='off'
+									spellCheck={false}
+								/>
+								<input
+									ref={password1}
+									type='password'
+									value={register.password}
+									placeholder={`Password`}
+									name={`password`}
+									onChange={(event) => {
+										handletextChange(event);
+									}}
+									autoComplete='off'
+									autoCorrect='off'
+									spellCheck={false}
+								/>
+								<input
+									ref={password2}
+									type='password'
+									value={register.password2}
+									placeholder={`Retype Password`}
+									name={`password2`}
+									onChange={(event) => {
+										handletextChange(event);
+									}}
+									autoComplete='off'
+									autoCorrect='off'
+									spellCheck={false}
+								/>
+								<div className={Styles.check}>
+									<input
+										type='checkbox'
+										onChange={(e) => {
+											togglePasswordSignUp(e);
+										}}
+									/>
+									Show Password
+								</div>
+							</div>
+							<div onClick={signInWithCredentials} className={Styles.button}>
+								Sign Up
+							</div>
+
+							<div className={Styles.separator}>
+								<hr className={Styles.line} />
+								<div className={Styles.or}>Already User</div>
+								<hr className={Styles.line} />
+							</div>
+							<div className={Styles.buttonSignUp} onClick={signTo}>
+								<div>Sign In</div>
+							</div>
+						</form>
+					)}
+				</div>
 				<div className={Styles.loader}>{loading && <Loader />}</div>
 			</div>
 		</div>

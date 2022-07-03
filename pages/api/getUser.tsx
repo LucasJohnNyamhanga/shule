@@ -6,17 +6,15 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	const { username, password } = req.body;
+	const { username } = req.body;
 	try {
 		const userFromServer = await prisma.users.findFirst({
 			where: {
 				username,
-				password,
 			},
 			select: {
 				id: true,
-				firstName: true,
-				lastName: true,
+				name: true,
 				isAdmin: true,
 			},
 		});

@@ -146,10 +146,12 @@ const Nav = () => {
 								</div>
 							) : (
 								<>
-									<div onClick={handleSignIn} className={Styles.Sign}>
+									{/* <div className={Styles.Sign}>
+										Sign In
+									</div> */}
+									<div onClick={handleSignIn} className={Styles.Register}>
 										Sign In
 									</div>
-									<div className={Styles.Register}>Register</div>
 								</>
 							)}
 						</div>

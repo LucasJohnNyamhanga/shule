@@ -29,8 +29,7 @@ export default NextAuth({
 					},
 					select: {
 						id: true,
-						firstName: true,
-						lastName: true,
+						name: true,
 						username: true,
 					},
 				});
@@ -78,6 +77,14 @@ export default NextAuth({
 			} else {
 				console.log('User does not Exist');
 				//create user
+				await prisma.users.create({
+					data: {
+						name: token.name!,
+						image: token.picture,
+						username: token.email,
+						password: `googleHasIt`,
+					},
+				});
 			}
 			console.log('jwt', { user, token });
 			return token;

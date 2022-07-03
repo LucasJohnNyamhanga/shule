@@ -10,14 +10,14 @@ datasource db {
 
 model users {
   id                Int                 @id @default(autoincrement())
-  firstName         String
-  lastName          String
+  name              String
   image             String?
   username          String?
   password          String?
   isAdmin           Boolean             @default(false)
   isSuperUser       Boolean             @default(false)
   dateJoined        DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
   subject           subject[]
   form              form[]
   topic             topic[]

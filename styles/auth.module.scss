@@ -12,7 +12,7 @@
 		width: 100%;
 		min-height: 70vh;
 		max-width: 1200px;
-		margin-top: 20px;
+		margin-top: 10px;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -44,20 +44,19 @@
 					font-weight: 600;
 					font-size: 25px;
 					color: $ugoro;
-					width: 100%;
-					align-self: flex-start;
+					width: fit-content;
+					align-self: center;
 				}
 			}
 			.credential {
-				margin-bottom: 20px;
+				margin-bottom: 15px;
 
 				input {
 					border: 2px solid $ugoro;
-					padding: 12px;
-					font-size: 22px;
+					padding: 10px;
+					font-size: 18px;
 					border-radius: 5px;
 					width: 100%;
-					height: 42px;
 					outline: none;
 					font-family: $fontBody;
 					margin-bottom: 10px;
@@ -109,6 +108,29 @@
 				cursor: pointer;
 			}
 
+			.buttonSignUp {
+				width: 100%;
+				background-color: $answerBackground;
+				margin-top: 5px;
+				color: $ugoro;
+				border: 1px solid $ugoro;
+				padding: 10px 25px;
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+				align-items: center;
+				border-radius: 3px;
+				transition: 0.2s linear;
+				font-weight: 500;
+			}
+
+			.buttonSignUp:hover {
+				background-color: $lightblue;
+				color: $white;
+				border: 2px solid $lightblue;
+				cursor: pointer;
+			}
+
 			.separator {
 				display: flex;
 				flex-direction: row;
@@ -117,19 +139,97 @@
 			}
 
 			.line {
-				width: 35%;
+				display: flex;
+				flex: 1;
 				background-color: $black;
 				height: 1px;
 			}
 
+			.line:first-child {
+				margin-left: 15px;
+			}
+
+			.line:last-child {
+				margin-right: 15px;
+			}
+
 			.or {
-				width: 15px;
+				width: fit-content;
+				margin-left: 10px;
+				margin-right: 10px;
 			}
 		}
 
 		.loader {
 			height: fit-content;
 			margin: 20px;
+			height: 80px;
+		}
+
+		@media only screen and (max-width: 848px) {
+			.form {
+				.logInHeader {
+					margin-bottom: 10px;
+
+					.icon {
+						font-size: 45px;
+						margin-bottom: 10px;
+					}
+
+					.text {
+						font-size: 20px;
+					}
+				}
+				.credential {
+					margin-bottom: 10px;
+
+					input {
+						font-size: 16px;
+					}
+
+					.check {
+						font-size: 16px;
+						font-weight: 400;
+
+						input {
+							width: 15px;
+							height: 15px;
+						}
+					}
+				}
+
+				.button {
+					padding: 10px 20px;
+
+					.google {
+						margin-right: 10px;
+					}
+				}
+
+				.buttonSignUp {
+					padding: 10px 20px;
+				}
+
+				.separator {
+					margin: 10px 0px;
+				}
+				.line:first-child {
+					margin-left: 10px;
+				}
+
+				.line:last-child {
+					margin-right: 10px;
+				}
+
+				.or {
+					margin-left: 10px;
+					margin-right: 10px;
+				}
+			}
+			.loader {
+				height: fit-content;
+				height: 40px;
+			}
 		}
 	}
 }
