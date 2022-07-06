@@ -266,7 +266,7 @@ const Notes = ({
 							description: '',
 							year: '',
 							hasAnswers: '',
-							userId: '',
+							userId: userData.id,
 						});
 
 						setExamDetails({

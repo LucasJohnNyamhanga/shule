@@ -33,7 +33,7 @@ const Nav = () => {
 
 	let checkUser = async () => {
 		const session = await getSession();
-		if (limt <= 5) {
+		if (limt <= 6) {
 			let data = session.user.email;
 			axios
 				.post('http://localhost:3000/api/getUser', { username: data })
@@ -51,7 +51,6 @@ const Nav = () => {
 					// handle error
 					console.log('Something went wrong');
 				});
-			console.log('am virus');
 			setLimit(limt + 1);
 		}
 	};

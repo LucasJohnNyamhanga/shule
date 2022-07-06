@@ -27,6 +27,11 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			year: true,
 			hasAnswers: true,
 			exam: true,
+			examType: {
+				select: {
+					name: true,
+				},
+			},
 			examDownloadable: {
 				where: {
 					published: true,
@@ -143,8 +148,8 @@ const Index = ({
 							{subjectLocator} <ChevronRightOutlinedIcon /> {formLocator}{' '}
 							<ChevronRightOutlinedIcon />{' '}
 							{matches300
-								? truncate(thisexam.description)
-								: truncateCustom(thisexam.description, 10)}
+								? truncate(thisexam.examType.name)
+								: truncateCustom(thisexam.examType.name, 10)}
 						</div>
 						{thisexam.examDownloadable.length > 0 ? (
 							<div className={Styles.download}>Download Exam</div>

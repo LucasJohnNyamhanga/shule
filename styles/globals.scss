@@ -9,6 +9,9 @@ body {
 	max-width: 1920px;
 	background-color: $white;
 	scroll-behavior: smooth;
+	@media (prefers-color-scheme: dark) {
+		color: $black;
+	}
 }
 
 a {

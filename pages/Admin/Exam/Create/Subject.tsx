@@ -82,9 +82,9 @@ type dataTypeSelect = {
 }[];
 
 const CreateNotes = ({
-    	forms,
-    	deactiveteImage,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	forms,
+	deactiveteImage,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive, userData } = useContext(NavContext);
 
 	const [selectOption, setSelectOption] = useState<dataTypeSelect>([]);
@@ -213,6 +213,7 @@ const CreateNotes = ({
 			subjectDefinition: subjectDetails.subjectDefinition,
 			imageLocation: location,
 			forms,
+			userId: userData.id,
 		};
 
 		axios({
@@ -229,7 +230,7 @@ const CreateNotes = ({
 				setsubjectDetails({
 					subjectName: '',
 					subjectDefinition: '',
-					userId: '',
+					userId: userData.id,
 				});
 				setImage('');
 				setShowUpload(false);
