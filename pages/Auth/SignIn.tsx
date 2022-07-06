@@ -1,11 +1,4 @@
-import {
-	ChangeEvent,
-	ReactNode,
-	useContext,
-	useEffect,
-	useRef,
-	useState,
-} from 'react';
+import { ChangeEvent, ReactNode, useRef, useState } from 'react';
 import Styles from '../../styles/auth.module.scss';
 import { useSession, getSession, signIn, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';

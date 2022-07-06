@@ -305,7 +305,7 @@ const Notes = ({
 					link: '',
 					fileExtension: '',
 					examId: '',
-					userId: '',
+					userId: userData.id,
 				});
 
 				setImage('');

@@ -56,7 +56,7 @@ const Form = (
 			userId: userData.id,
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [userData]);
 
 	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
@@ -88,7 +88,7 @@ const Form = (
 				// handle success
 				setFormData({
 					formName: '',
-					userId: '',
+					userId: userData.id,
 				});
 				let jibu: string = response.data.message;
 				let type: string = response.data.type;

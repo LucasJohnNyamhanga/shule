@@ -14,7 +14,6 @@ export default async function handler(
 ) {
 	const { formName, userId } = req.body;
 	let userIdNumber = parseInt(userId);
-	console.log(userId);
 	try {
 		await prisma.formExams.create({
 			data: {

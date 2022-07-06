@@ -18,6 +18,7 @@ const Nav = () => {
 	const { setNavActive, navActive, userData, setUserData } =
 		useContext(NavContext);
 	const { data: session, status } = useSession();
+	const [limt, setLimit] = useState(0);
 
 	const { push, asPath } = useRouter();
 
@@ -32,7 +33,7 @@ const Nav = () => {
 
 	let checkUser = async () => {
 		const session = await getSession();
-		if (session) {
+		if (limt <= 5) {
 			let data = session.user.email;
 			axios
 				.post('http://localhost:3000/api/getUser', { username: data })
@@ -50,14 +51,20 @@ const Nav = () => {
 					// handle error
 					console.log('Something went wrong');
 				});
+			console.log('am virus');
+			setLimit(limt + 1);
 		}
 	};
 
 	useEffect(() => {
-		if (status === 'authenticated') {
-			checkUser();
+		if (session) {
+			if (status === 'authenticated') {
+				checkUser();
+			} else {
+				setLimit(0);
+			}
 		}
-	}, [status, userData]);
+	}, [status]);
 
 	return (
 		<div className={Styles.container}>
