@@ -10,10 +10,17 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse<userData>
 ) {
-	const { id, name, description, data, formReference, subjectId, isPdf } =
-		req.body;
-
-	console.log(data);
+	const {
+		id,
+		name,
+		description,
+		data,
+		formReference,
+		subjectId,
+		isPdf,
+		userId,
+	} = req.body;
+	let userIdNumber = parseInt(userId);
 
 	try {
 		await prisma.reference.update({
@@ -27,6 +34,7 @@ export default async function handler(
 				},
 				subjectId,
 				isPdf: isPdf == 'True' ? true : false,
+				usersId: userIdNumber,
 			},
 		});
 		res.status(200).json({ message: 'Update successful', type: 'success' });

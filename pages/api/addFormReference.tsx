@@ -12,11 +12,14 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	const { formName } = req.body;
+	const { formName, userId } = req.body;
+	let userIdNumber = parseInt(userId);
+
 	try {
 		await prisma.formReference.create({
 			data: {
 				formName,
+				usersId: userIdNumber,
 			},
 		});
 		res.status(200).json({

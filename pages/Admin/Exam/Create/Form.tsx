@@ -4,18 +4,59 @@ import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import InputTextMui from '../../../../components/tools/InputTextMui';
 import { NavContext } from '../../../../components/context/StateContext';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 
-const Form = () => {
-	const { navActive, setNavActive } = useContext(NavContext);
+import { getSession } from 'next-auth/react';
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const session = await getSession(context);
+	if (!session) {
+		return {
+			redirect: {
+				destination: `/Auth/SignIn?callbackUr=/`,
+				permanent: false,
+			},
+		};
+	} else {
+		const userFromServer = await prisma.users.findFirst({
+			where: {
+				username: session.user.email,
+			},
+			select: {
+				isAdmin: true,
+			},
+		});
+		const userfound = await JSON.parse(JSON.stringify(userFromServer));
 
-	useEffect(() => {
-		setNavActive('Admin');
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [navActive]);
+		if (!userfound.isAdmin) {
+			return {
+				redirect: {
+					destination: '/',
+					permanent: false,
+				},
+			};
+		}
+	}
+	return {
+		props: {},
+	};
+};
 
+const Form = (
+	props: InferGetServerSidePropsType<typeof getServerSideProps>
+) => {
+	const { navActive, setNavActive, userData } = useContext(NavContext);
 	const [formData, setFormData] = useState({
 		formName: '',
+		userId: '',
 	});
+	useEffect(() => {
+		setNavActive('Admin');
+		setFormData({
+			formName: '',
+			userId: userData.id,
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
@@ -26,7 +67,7 @@ const Form = () => {
 		name: string
 	) => {
 		let value = event.currentTarget.value;
-		setFormData({ formName: value });
+		setFormData({ ...formData, formName: value });
 	};
 
 	let handleCreateNotes = () => {
@@ -47,6 +88,7 @@ const Form = () => {
 				// handle success
 				setFormData({
 					formName: '',
+					userId: '',
 				});
 				let jibu: string = response.data.message;
 				let type: string = response.data.type;

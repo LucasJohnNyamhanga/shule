@@ -21,7 +21,37 @@ const CkEditor = dynamic(() => import('../../../../components/tools/Ck'), {
 	ssr: false,
 });
 
-export const getServerSideProps: GetServerSideProps = async () => {
+import { getSession } from 'next-auth/react';
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const session = await getSession(context);
+	if (!session) {
+		return {
+			redirect: {
+				destination: `/Auth/SignIn?callbackUr=/`,
+				permanent: false,
+			},
+		};
+	} else {
+		const userFromServer = await prisma.users.findFirst({
+			where: {
+				username: session.user.email,
+			},
+			select: {
+				isAdmin: true,
+			},
+		});
+		const userfound = await JSON.parse(JSON.stringify(userFromServer));
+
+		if (!userfound.isAdmin) {
+			return {
+				redirect: {
+					destination: '/',
+					permanent: false,
+				},
+			};
+		}
+	}
+
 	const formsFromServer: userData = await prisma.formExams.findMany({
 		select: {
 			id: true,
@@ -71,7 +101,7 @@ const Notes = ({
 	subjects,
 	examType,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-	const { navActive, setNavActive } = useContext(NavContext);
+	const { navActive, setNavActive, userData } = useContext(NavContext);
 
 	const [formOptions, setFormOptions] = useState<formData>([]);
 	const [subjectOptions, setSubjectOptions] = useState<formData>([]);
@@ -89,6 +119,7 @@ const Notes = ({
 		description: '',
 		year: '',
 		hasAnswers: '',
+		userId: '',
 	});
 
 	const notify = (message: string) => toast(message);
@@ -96,6 +127,15 @@ const Notes = ({
 	const notifyError = (message: string) => toast.error(message);
 
 	useEffect(() => {
+		setExamSelectValue({
+			examTypeId: '',
+			exam: '',
+			description: '',
+			year: '',
+			hasAnswers: '',
+			userId: userData.id,
+		});
+
 		setNavActive('Admin');
 		let subjectFromServer: formData = [];
 		subjects.map((subject: subject) => {
@@ -120,7 +160,7 @@ const Notes = ({
 		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [change, navActive]);
+	}, [change, navActive, userData]);
 
 	let retriaveExamTypeData = () => {
 		setHideShow(false);
@@ -226,6 +266,7 @@ const Notes = ({
 							description: '',
 							year: '',
 							hasAnswers: '',
+							userId: '',
 						});
 
 						setExamDetails({

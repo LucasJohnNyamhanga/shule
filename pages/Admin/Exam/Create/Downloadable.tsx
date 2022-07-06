@@ -23,7 +23,37 @@ const CkEditor = dynamic(() => import('../../../../components/tools/Ck'), {
 	ssr: false,
 });
 
-export const getServerSideProps: GetServerSideProps = async () => {
+import { getSession } from 'next-auth/react';
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const session = await getSession(context);
+	if (!session) {
+		return {
+			redirect: {
+				destination: `/Auth/SignIn?callbackUr=/`,
+				permanent: false,
+			},
+		};
+	} else {
+		const userFromServer = await prisma.users.findFirst({
+			where: {
+				username: session.user.email,
+			},
+			select: {
+				isAdmin: true,
+			},
+		});
+		const userfound = await JSON.parse(JSON.stringify(userFromServer));
+
+		if (!userfound.isAdmin) {
+			return {
+				redirect: {
+					destination: '/',
+					permanent: false,
+				},
+			};
+		}
+	}
+
 	const formsFromServer: userData = await prisma.formExams.findMany({
 		select: {
 			id: true,
@@ -40,20 +70,19 @@ export const getServerSideProps: GetServerSideProps = async () => {
 	});
 	const subjects = JSON.parse(JSON.stringify(subjectsFromServer));
 
-	const examTypeFromServer = await prisma.examType.findMany({
-		select: {
-			id: true,
-			name: true,
-		},
-	});
-	const examType = JSON.parse(JSON.stringify(examTypeFromServer));
+	// const examTypeFromServer = await prisma.examType.findMany({
+	// 	select: {
+	// 		id: true,
+	// 		name: true,
+	// 	},
+	// });
+	// const examType = JSON.parse(JSON.stringify(examTypeFromServer));
 
 	await prisma.$disconnect();
 	return {
 		props: {
 			forms,
 			subjects,
-			examType,
 		},
 	};
 };
@@ -71,10 +100,8 @@ type formData = {
 const Notes = ({
     	forms,
     	subjects,
-    	examType,
     }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-	const { navActive, setNavActive } = useContext(NavContext);
-
+	const { navActive, setNavActive, userData } = useContext(NavContext);
 	useEffect(() => {
 		setNavActive('Admin');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -103,13 +130,23 @@ const Notes = ({
 		link: '',
 		fileExtension: '',
 		examId: '',
+		userId: '',
 	});
 
 	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
 
+	console.log(userData.id);
+
 	useEffect(() => {
+		setExamSelectValue({
+			name: '',
+			link: '',
+			fileExtension: '',
+			examId: '',
+			userId: userData.id,
+		});
 		let subjectFromServer: formData = [];
 		subjects.map((subject: subject) => {
 			subjectFromServer.push({
@@ -268,6 +305,7 @@ const Notes = ({
 					link: '',
 					fileExtension: '',
 					examId: '',
+					userId: '',
 				});
 
 				setImage('');

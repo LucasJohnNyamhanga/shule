@@ -20,7 +20,36 @@ import FileUpload from '../../../../../components/tools/FileUpload';
 import { type } from 'os';
 import DisplayChip from '../../../../../components/tools/displayChip';
 import SnackBar from '../../../../../components/tools/SnackBar';
+import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
+	const session = await getSession(context);
+	if (!session) {
+		return {
+			redirect: {
+				destination: `/Auth/SignIn?callbackUr=/`,
+				permanent: false,
+			},
+		};
+	} else {
+		const userFromServer = await prisma.users.findFirst({
+			where: {
+				username: session.user.email,
+			},
+			select: {
+				isAdmin: true,
+			},
+		});
+		const userfound = await JSON.parse(JSON.stringify(userFromServer));
+
+		if (!userfound.isAdmin) {
+			return {
+				redirect: {
+					destination: '/',
+					permanent: false,
+				},
+			};
+		}
+	}
 	let id = context.params?.id as string;
 	let Id = parseInt(id);
 
@@ -88,10 +117,10 @@ type selectFormType = {
 }[];
 
 const Reference = ({
-	reference,
-	subjects,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-	const { navActive, setNavActive } = useContext(NavContext);
+    	reference,
+    	subjects,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	const { navActive, setNavActive, userData } = useContext(NavContext);
 
 	const [selectOption, setSelectOption] = useState<dataTypeSelect>([]);
 	const [subjectOptions, setSubjectOptions] = useState<formData>([]);
@@ -311,6 +340,7 @@ const Reference = ({
 			subjectId: referenceDetails.subjectId,
 			isPdf: referenceDetails.isPdf,
 			id: reference.id,
+			userId: userData.id,
 		};
 		console.log(databaseData);
 

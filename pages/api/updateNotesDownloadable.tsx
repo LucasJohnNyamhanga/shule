@@ -10,7 +10,8 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse<userData>
 ) {
-	const { id, name, link, fileExtension, formId, subjectId } = req.body;
+	const { id, name, link, fileExtension, formId, subjectId, userId } = req.body;
+	let userIdNumber = parseInt(userId);
 
 	try {
 		await prisma.notesDownloadable.update({
@@ -21,6 +22,7 @@ export default async function handler(
 				fileExtension,
 				formId,
 				subjectId,
+				usersId: userIdNumber,
 			},
 		});
 		res.status(200).json({ message: 'Update successful', type: 'success' });

@@ -13,7 +13,36 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Progress from '../../../../components/tools/progressFileUpload';
 import { NavContext } from '../../../../components/context/StateContext';
 
-export const getServerSideProps: GetServerSideProps = async () => {
+import { getSession } from 'next-auth/react';
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const session = await getSession(context);
+	if (!session) {
+		return {
+			redirect: {
+				destination: `/Auth/SignIn?callbackUr=/`,
+				permanent: false,
+			},
+		};
+	} else {
+		const userFromServer = await prisma.users.findFirst({
+			where: {
+				username: session.user.email,
+			},
+			select: {
+				isAdmin: true,
+			},
+		});
+		const userfound = await JSON.parse(JSON.stringify(userFromServer));
+
+		if (!userfound.isAdmin) {
+			return {
+				redirect: {
+					destination: '/',
+					permanent: false,
+				},
+			};
+		}
+	}
 	const formsFromServer: userData = await prisma.form.findMany({
 		select: {
 			id: true,
@@ -58,10 +87,10 @@ type dataTypeSelect = {
 }[];
 
 const CreateNotes = ({
-    	forms,
-    	deactiveteImage,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-	const { navActive, setNavActive } = useContext(NavContext);
+        	forms,
+        	deactiveteImage,
+        }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	const { navActive, setNavActive, userData } = useContext(NavContext);
 
 	useEffect(() => {
 		setNavActive('Admin');
@@ -183,6 +212,7 @@ const CreateNotes = ({
 			subjectDefinition: subjectDetails.subjectDefinition,
 			imageLocation: location,
 			forms,
+			userId: userData.id,
 		};
 
 		axios({

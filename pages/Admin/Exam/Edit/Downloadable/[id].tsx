@@ -18,7 +18,36 @@ const CkEditor = dynamic(() => import('../../../../../components/tools/Ck'), {
 	ssr: false,
 });
 
+import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
+	const session = await getSession(context);
+	if (!session) {
+		return {
+			redirect: {
+				destination: `/Auth/SignIn?callbackUr=/`,
+				permanent: false,
+			},
+		};
+	} else {
+		const userFromServer = await prisma.users.findFirst({
+			where: {
+				username: session.user.email,
+			},
+			select: {
+				isAdmin: true,
+			},
+		});
+		const userfound = await JSON.parse(JSON.stringify(userFromServer));
+
+		if (!userfound.isAdmin) {
+			return {
+				redirect: {
+					destination: '/',
+					permanent: false,
+				},
+			};
+		}
+	}
 	let id = context.params?.id as string;
 	let Id = parseInt(id);
 
@@ -83,11 +112,11 @@ type formData = {
 }[];
 
 const Notes = ({
-	exam,
-	forms,
-	subjects,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-	const { navActive, setNavActive } = useContext(NavContext);
+    	exam,
+    	forms,
+    	subjects,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	const { navActive, setNavActive, userData } = useContext(NavContext);
 
 	const router = useRouter();
 
@@ -137,6 +166,12 @@ const Notes = ({
 	useEffect(() => {
 		setNavActive('Admin');
 
+		setExamDetails({
+			formId: '',
+			subjectId: '',
+			examTypeId: '',
+		});
+
 		let subjectFromServer: formData = [];
 		subjects.map((subject: subject) => {
 			subjectFromServer.push({
@@ -157,6 +192,7 @@ const Notes = ({
 
 		if (check) {
 			setExamDetails({
+				...examDetails,
 				formId: exam.exam.examType.formId,
 				subjectId: exam.exam.examType.subjectId,
 				examTypeId: exam.exam.examType.id,
@@ -373,6 +409,7 @@ const Notes = ({
 			link: location != '' ? location : exam.link,
 			fileExtension: location != '' ? ext : exam.fileExtension,
 			examId: examSelectValue.examId,
+			userId: userData.id,
 		};
 
 		axios({

@@ -16,7 +16,9 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	const { subjectName, subjectDefinition, imageLocation, forms } = req.body;
+	const { subjectName, subjectDefinition, imageLocation, forms, userId } =
+		req.body;
+	let userIdNumber = parseInt(userId);
 	try {
 		await prisma.subject.create({
 			data: {
@@ -26,6 +28,7 @@ export default async function handler(
 				forms: {
 					connect: forms,
 				},
+				usersId: userIdNumber,
 			},
 		});
 		res.status(200).json({

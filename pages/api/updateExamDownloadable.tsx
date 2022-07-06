@@ -10,7 +10,8 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse<userData>
 ) {
-	const { id, name, link, fileExtension, examId } = req.body;
+	const { id, name, link, fileExtension, examId, userId } = req.body;
+	let userIdNumber = parseInt(userId);
 
 	try {
 		await prisma.examDownloadable.update({
@@ -20,6 +21,7 @@ export default async function handler(
 				link,
 				fileExtension,
 				examId,
+				usersId: userIdNumber,
 			},
 		});
 		res.status(200).json({ message: 'Update successful', type: 'success' });

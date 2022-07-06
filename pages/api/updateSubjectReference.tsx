@@ -9,7 +9,9 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse<userData>
 ) {
-	const { id, subjectName, subjectDefinition, imageLocation, forms } = req.body;
+	const { id, subjectName, subjectDefinition, imageLocation, forms, userId } =
+		req.body;
+	let userIdNumber = parseInt(userId);
 
 	try {
 		await prisma.subjectReference.update({
@@ -21,6 +23,7 @@ export default async function handler(
 				forms: {
 					set: forms,
 				},
+				usersId: userIdNumber,
 			},
 		});
 		res.status(200).json({ message: 'Update successful' });

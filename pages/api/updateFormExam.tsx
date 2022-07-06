@@ -9,13 +9,15 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse<userData>
 ) {
-	const { id, formName } = req.body;
+	const { id, formName, userId } = req.body;
+	let userIdNumber = parseInt(userId);
 
 	try {
 		await prisma.formExams.update({
 			where: { id: parseInt(id) },
 			data: {
 				formName,
+				usersId: userIdNumber,
 			},
 		});
 		res.status(200).json({ message: 'Update successful' });

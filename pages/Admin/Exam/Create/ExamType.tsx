@@ -13,7 +13,37 @@ import { Topic } from '@mui/icons-material';
 import toast, { Toaster } from 'react-hot-toast';
 import { NavContext } from '../../../../components/context/StateContext';
 
-export const getServerSideProps: GetServerSideProps = async () => {
+import { getSession } from 'next-auth/react';
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const session = await getSession(context);
+	if (!session) {
+		return {
+			redirect: {
+				destination: `/Auth/SignIn?callbackUr=/`,
+				permanent: false,
+			},
+		};
+	} else {
+		const userFromServer = await prisma.users.findFirst({
+			where: {
+				username: session.user.email,
+			},
+			select: {
+				isAdmin: true,
+			},
+		});
+		const userfound = await JSON.parse(JSON.stringify(userFromServer));
+
+		if (!userfound.isAdmin) {
+			return {
+				redirect: {
+					destination: '/',
+					permanent: false,
+				},
+			};
+		}
+	}
+
 	const formsFromServer: userData = await prisma.formExams.findMany({
 		select: {
 			id: true,
@@ -48,9 +78,9 @@ type formData = {
 }[];
 
 const Create = ({
-    	forms,
-    	subjects,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+        	forms,
+        	subjects,
+        }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {

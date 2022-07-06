@@ -19,7 +19,36 @@ const CkEditor = dynamic(() => import('../../../../components/tools/Ck'), {
 	ssr: false,
 });
 
-export const getServerSideProps: GetServerSideProps = async () => {
+import { getSession } from 'next-auth/react';
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const session = await getSession(context);
+	if (!session) {
+		return {
+			redirect: {
+				destination: `/Auth/SignIn?callbackUr=/`,
+				permanent: false,
+			},
+		};
+	} else {
+		const userFromServer = await prisma.users.findFirst({
+			where: {
+				username: session.user.email,
+			},
+			select: {
+				isAdmin: true,
+			},
+		});
+		const userfound = await JSON.parse(JSON.stringify(userFromServer));
+
+		if (!userfound.isAdmin) {
+			return {
+				redirect: {
+					destination: '/',
+					permanent: false,
+				},
+			};
+		}
+	}
 	const formsFromServer = await prisma.formReference.findMany({
 		select: {
 			id: true,
@@ -74,11 +103,11 @@ type selectFormType = {
 }[];
 
 const CreateNotes = ({
-    	forms,
-    	deactiveteImage,
-    	subjects,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-	const { navActive, setNavActive } = useContext(NavContext);
+        	forms,
+        	deactiveteImage,
+        	subjects,
+        }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	const { navActive, setNavActive, userData } = useContext(NavContext);
 
 	const [selectOption, setSelectOption] = useState<dataTypeSelect>([]);
 	const [subjectOptions, setSubjectOptions] = useState<formData>([]);
@@ -245,6 +274,7 @@ const CreateNotes = ({
 			formReference: forms,
 			subjectId: referenceDetails.subjectId,
 			isPdf: referenceDetails.isPdf,
+			userId: userData.id,
 		};
 
 		axios({

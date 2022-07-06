@@ -16,10 +16,10 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	const { subjectName, subjectDefinition, imageLocation, forms } = req.body;
-	console.log('image location:' + imageLocation);
-	console.log('subject name:' + subjectName);
-	console.log('forms level:' + forms);
+	const { subjectName, subjectDefinition, imageLocation, forms, userId } =
+		req.body;
+	let userIdNumber = parseInt(userId);
+
 	try {
 		await prisma.subjectReference.create({
 			data: {
@@ -29,6 +29,7 @@ export default async function handler(
 				forms: {
 					connect: forms,
 				},
+				usersId: userIdNumber,
 			},
 		});
 		res.status(200).json({

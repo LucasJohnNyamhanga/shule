@@ -12,8 +12,9 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	const { name, link, fileExtension, examId } = req.body;
+	const { name, link, fileExtension, examId, userId } = req.body;
 	let examIdNumber = parseInt(examId);
+	let userIdNumber = parseInt(userId);
 
 	try {
 		await prisma.examDownloadable.create({
@@ -21,7 +22,8 @@ export default async function handler(
 				name,
 				fileExtension,
 				link,
-				examId,
+				examId: examIdNumber,
+				usersId: userIdNumber,
 			},
 		});
 		res.status(200).json({

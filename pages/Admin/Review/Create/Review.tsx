@@ -12,7 +12,36 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import toast, { Toaster } from 'react-hot-toast';
 import { NavContext } from '../../../../components/context/StateContext';
 
-export const getServerSideProps: GetServerSideProps = async () => {
+import { getSession } from 'next-auth/react';
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const session = await getSession(context);
+	if (!session) {
+		return {
+			redirect: {
+				destination: `/Auth/SignIn?callbackUr=/`,
+				permanent: false,
+			},
+		};
+	} else {
+		const userFromServer = await prisma.users.findFirst({
+			where: {
+				username: session.user.email,
+			},
+			select: {
+				isAdmin: true,
+			},
+		});
+		const userfound = await JSON.parse(JSON.stringify(userFromServer));
+
+		if (!userfound.isAdmin) {
+			return {
+				redirect: {
+					destination: '/',
+					permanent: false,
+				},
+			};
+		}
+	}
 	const formsFromServer: userData = await prisma.formReview.findMany({
 		select: {
 			id: true,
@@ -47,10 +76,10 @@ type formData = {
 }[];
 
 const Create = ({
-    	forms,
-    	subjects,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-	const { navActive, setNavActive } = useContext(NavContext);
+        	forms,
+        	subjects,
+        }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	const { navActive, setNavActive, userData } = useContext(NavContext);
 
 	useEffect(() => {
 		setNavActive('Admin');
@@ -62,6 +91,7 @@ const Create = ({
 		name: '',
 		subjectId: '',
 		formId: '',
+		userId: '',
 	});
 
 	const [formOptions, setFormOptions] = useState<formData>([]);
@@ -115,7 +145,11 @@ const Create = ({
 	};
 
 	let handleSelectTopic = (value: string) => {
-		setsubjectDetails({ ...subjectDetails, topicId: value });
+		setsubjectDetails({
+			...subjectDetails,
+			topicId: value,
+			userId: userData.id,
+		});
 	};
 
 	let retriaveTopicsData = () => {
@@ -166,6 +200,7 @@ const Create = ({
 					topicId: '',
 					subjectId: '',
 					formId: '',
+					userId: '',
 				});
 				let jibu: string = response.data.message;
 				let type: string = response.data.type;

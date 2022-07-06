@@ -16,7 +16,9 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	const { name, description, data, formReference, subjectId, isPdf } = req.body;
+	const { name, description, data, formReference, subjectId, isPdf, userId } =
+		req.body;
+	let userIdNumber = parseInt(userId);
 
 	try {
 		await prisma.reference.create({
@@ -29,6 +31,7 @@ export default async function handler(
 				},
 				subjectId,
 				isPdf: isPdf == 'True' ? true : false,
+				usersId: userIdNumber,
 			},
 		});
 		res.status(200).json({

@@ -18,7 +18,36 @@ const CkEditor = dynamic(() => import('../../../../components/tools/Ck'), {
 	ssr: false,
 });
 
-export const getServerSideProps: GetServerSideProps = async () => {
+import { getSession } from 'next-auth/react';
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const session = await getSession(context);
+	if (!session) {
+		return {
+			redirect: {
+				destination: `/Auth/SignIn?callbackUr=/`,
+				permanent: false,
+			},
+		};
+	} else {
+		const userFromServer = await prisma.users.findFirst({
+			where: {
+				username: session.user.email,
+			},
+			select: {
+				isAdmin: true,
+			},
+		});
+		const userfound = await JSON.parse(JSON.stringify(userFromServer));
+
+		if (!userfound.isAdmin) {
+			return {
+				redirect: {
+					destination: '/',
+					permanent: false,
+				},
+			};
+		}
+	}
 	const formsFromServer: userData = await prisma.formReview.findMany({
 		select: {
 			id: true,
@@ -74,11 +103,11 @@ type answerDataType = {
 };
 
 const Create = ({
-	forms,
-	subjects,
-	questionFormat,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-	const { navActive, setNavActive } = useContext(NavContext);
+    	forms,
+    	subjects,
+    	questionFormat,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	const { navActive, setNavActive, userData } = useContext(NavContext);
 
 	useEffect(() => {
 		setNavActive('Admin');
@@ -397,6 +426,7 @@ const Create = ({
 			questionFormatId: questionDetails.questionFormatId,
 			reviewId: questionDetails.reviewId,
 			answerDetails: questionDetails.answerDetails,
+			userId: userData.id,
 		};
 		axios({
 			method: 'post',

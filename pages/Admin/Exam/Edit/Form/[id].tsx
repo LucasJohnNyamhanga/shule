@@ -10,7 +10,36 @@ import { useRouter } from 'next/router';
 import toast, { Toaster } from 'react-hot-toast';
 import { NavContext } from '../../../../../components/context/StateContext';
 
+import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
+	const session = await getSession(context);
+	if (!session) {
+		return {
+			redirect: {
+				destination: `/Auth/SignIn?callbackUr=/`,
+				permanent: false,
+			},
+		};
+	} else {
+		const userFromServer = await prisma.users.findFirst({
+			where: {
+				username: session.user.email,
+			},
+			select: {
+				isAdmin: true,
+			},
+		});
+		const userfound = await JSON.parse(JSON.stringify(userFromServer));
+
+		if (!userfound.isAdmin) {
+			return {
+				redirect: {
+					destination: '/',
+					permanent: false,
+				},
+			};
+		}
+	}
 	let id = context.params?.id as string;
 	let Id = parseInt(id);
 
@@ -45,21 +74,23 @@ type formData = {
 }[];
 
 const EditForm = ({
-	form,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+        	form,
+        }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const [formData, setFormData] = useState({
 		formName: '',
 		id: '',
+		userId: '',
 	});
 	const router = useRouter();
 
-	const { navActive, setNavActive } = useContext(NavContext);
+	const { navActive, setNavActive, userData } = useContext(NavContext);
 
 	useEffect(() => {
 		setNavActive('Admin');
 		setFormData({
 			formName: form.formName,
 			id: form.id,
+			userId: userData.id,
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [navActive]);
@@ -94,6 +125,7 @@ const EditForm = ({
 				setFormData({
 					formName: '',
 					id: '',
+					userId: '',
 				});
 				let jibu: string = response.data.message;
 				notifySuccess(jibu);

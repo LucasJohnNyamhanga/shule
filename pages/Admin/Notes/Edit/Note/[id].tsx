@@ -15,7 +15,36 @@ const CkEditor = dynamic(() => import('../../../../../components/tools/Ck'), {
 	ssr: false,
 });
 
+import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
+	const session = await getSession(context);
+	if (!session) {
+		return {
+			redirect: {
+				destination: `/Auth/SignIn?callbackUr=/`,
+				permanent: false,
+			},
+		};
+	} else {
+		const userFromServer = await prisma.users.findFirst({
+			where: {
+				username: session.user.email,
+			},
+			select: {
+				isAdmin: true,
+			},
+		});
+		const userfound = await JSON.parse(JSON.stringify(userFromServer));
+
+		if (!userfound.isAdmin) {
+			return {
+				redirect: {
+					destination: '/',
+					permanent: false,
+				},
+			};
+		}
+	}
 	let id = context.params?.id as string;
 	let Id = parseInt(id);
 
@@ -74,7 +103,7 @@ const EditNotes = ({
     	formsList,
     	subjects,
     }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-	const { navActive, setNavActive } = useContext(NavContext);
+	const { navActive, setNavActive, userData } = useContext(NavContext);
 
 	useEffect(() => {
 		setNavActive('Admin');
@@ -97,6 +126,7 @@ const EditNotes = ({
 		topicId: '',
 		content: '',
 		id: '',
+		userId: '',
 	});
 
 	const notify = (message: string) => toast(message);
@@ -124,6 +154,7 @@ const EditNotes = ({
 			topicId: notesData.topicId,
 			content: notesData.content,
 			id: notesData.id,
+			userId: userData.id,
 		});
 
 		let subjectFromServer: formData = [];
@@ -240,6 +271,7 @@ const EditNotes = ({
 					topicId: '',
 					content: '',
 					id: '',
+					userId: '',
 				});
 				delayRedirect();
 			})

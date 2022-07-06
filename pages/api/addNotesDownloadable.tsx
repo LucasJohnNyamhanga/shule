@@ -12,9 +12,10 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	const { name, link, fileExtension, subjectId, formId } = req.body;
+	const { name, link, fileExtension, subjectId, formId, userId } = req.body;
 	let formIdNumber = parseInt(formId);
 	let subjectIdNumber = parseInt(subjectId);
+	let userIdNumber = parseInt(userId);
 
 	try {
 		await prisma.notesDownloadable.create({
@@ -24,6 +25,7 @@ export default async function handler(
 				formId: formIdNumber,
 				fileExtension,
 				link,
+				usersId: userIdNumber,
 			},
 		});
 		res.status(200).json({

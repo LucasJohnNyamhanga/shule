@@ -125,7 +125,7 @@ const Index = ({
 		return <Error statusCode={404} />;
 	}
 
-	let htmlServer;
+	let htmlServer: string;
 	let toc: {
 		id: string;
 		title: string;
@@ -238,16 +238,18 @@ const Index = ({
 					</div>
 					<div className={Styles.BodyContent}>
 						<div className='ckContent'>
-							<div className='toc'>
-								<h2>INSIDE THIS TOPIC 🧐</h2>
-								<ol>
-									{toc.map(({ id, title }) => (
-										<a href={`#${id}`} key={id}>
-											<li>{title}</li>
-										</a>
-									))}
-								</ol>
-							</div>
+							{toc.length > 0 && (
+								<div className='toc'>
+									<h2>INSIDE THIS TOPIC 🧐</h2>
+									<ol>
+										{toc.map(({ id, title }) => (
+											<a href={`#${id}`} key={id}>
+												<li>{title}</li>
+											</a>
+										))}
+									</ol>
+								</div>
+							)}
 
 							<div dangerouslySetInnerHTML={{ __html: htmlServer }} />
 						</div>

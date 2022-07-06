@@ -25,6 +25,8 @@ import Loader from '../../components/tools/loader';
 import Drawer from '../../components/tools/DrawerMobileAdmin';
 import { BsDownload as Downloads } from 'react-icons/bs';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 
 type dataTypeSelect = {
 	value: string;
@@ -33,8 +35,9 @@ type dataTypeSelect = {
 
 const Index = ({}) => {
 	const matches300 = useMediaQuery('(min-width:325px)');
-
-	const { navActive, setNavActive } = useContext(NavContext);
+	const { push } = useRouter();
+	const { status } = useSession();
+	const { navActive, setNavActive, userData } = useContext(NavContext);
 
 	const [navValue, setNavValue] = useState('');
 	const [subjects, setSubjects] = useState([]);
@@ -1956,8 +1959,17 @@ const Index = ({}) => {
 		retriaveDataForExam();
 		retriaveDataForExamList();
 		setNavActive('Admin');
+
+		if (status === 'unauthenticated' || !userData.isAdmin) {
+			checkUser();
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [changerNotes, navActive, matches300]);
+	}, [changerNotes, navActive, matches300, status, userData]);
+
+	let checkUser = () => {
+		push('/');
+		return null;
+	};
 
 	let truncateLimit = 20;
 	function truncate(str: string) {
@@ -1968,6 +1980,14 @@ const Index = ({}) => {
 
 	function truncateCustom(str: string, size: number) {
 		return str.length > size ? str.slice(0, size) + '...' : str;
+	}
+
+	if (status !== 'authenticated') {
+		return <div className={Styles.error}>Unathorized</div>;
+	}
+
+	if (!userData.isAdmin) {
+		return <div className={Styles.error}>Unvalidated Admin</div>;
 	}
 
 	return (

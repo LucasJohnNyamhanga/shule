@@ -33,6 +33,8 @@ function MyApp({ Component, pageProps }: dataProps) {
 	const [userData, setUserData] = useState({
 		id: '',
 		isAdmin: false,
+		userName: '',
+		image: '',
 	});
 
 	//*progress router
@@ -95,7 +97,10 @@ function MyApp({ Component, pageProps }: dataProps) {
 	return (
 		<div className='container'>
 			<Progress isAnimating={isAnimating} />
-			<SessionProvider session={pageProps.session} refetchInterval={0}>
+			<SessionProvider
+				session={pageProps.session}
+				refetchInterval={5 * 60}
+				refetchOnWindowFocus={true}>
 				<NavContext.Provider
 					value={{
 						setNavActive,

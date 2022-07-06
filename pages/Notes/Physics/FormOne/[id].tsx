@@ -131,10 +131,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const Index = ({
-	topics,
-	thisTopicData,
-	download,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	topics,
+    	thisTopicData,
+    	download,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -269,16 +269,18 @@ const Index = ({
 					</div>
 					<div className={Styles.BodyContent}>
 						<div className='ckContent'>
-							<div className='toc'>
-								<h2>INSIDE THIS TOPIC 🧐</h2>
-								<ol>
-									{toc.map(({ id, title }) => (
-										<a href={`#${id}`} key={id}>
-											<li>{title}</li>
-										</a>
-									))}
-								</ol>
-							</div>
+							{toc.length > 0 && (
+								<div className='toc'>
+									<h2>INSIDE THIS TOPIC 🧐</h2>
+									<ol>
+										{toc.map(({ id, title }) => (
+											<a href={`#${id}`} key={id}>
+												<li>{title}</li>
+											</a>
+										))}
+									</ol>
+								</div>
+							)}
 
 							<div dangerouslySetInnerHTML={{ __html: htmlServer }} />
 						</div>

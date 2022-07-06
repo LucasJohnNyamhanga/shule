@@ -1,15 +1,23 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Styles from '../../styles/navigation.module.scss';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import Link from 'next/link';
 import { NavContext } from '../../components/context/StateContext';
-import { useSession, signIn, signOut } from 'next-auth/react';
+import { useSession, getSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import axios from 'axios';
+
+type userData = {
+	id: number;
+	isAdmin: boolean;
+	userName: string;
+	image: string;
+};
 
 const Nav = () => {
-	const { setNavActive, navActive, setUserData, userData } =
+	const { setNavActive, navActive, userData, setUserData } =
 		useContext(NavContext);
-	const { data: session } = useSession();
+	const { data: session, status } = useSession();
 
 	const { push, asPath } = useRouter();
 
@@ -17,24 +25,39 @@ const Nav = () => {
 		push(`/Auth/SignIn?callbackUrl=${asPath}`);
 	};
 
-	let handleLogOut = async () => {
-		await signOut({ redirect: false }).then(() => {
-			push('/');
-		});
+	let handleLogOut = () => {
+		signOut({ redirect: false });
+		push('/');
 	};
 
-	let checkUserData = async () => {
+	let checkUser = async () => {
+		const session = await getSession();
 		if (session) {
-			//getuserData
-			setUserData({ id: '', isAdmin: true });
-		} else {
-			setUserData({ id: '', isAdmin: false });
+			let data = session.user.email;
+			axios
+				.post('http://localhost:3000/api/getUser', { username: data })
+				.then(function (response) {
+					//responce
+					const userData = JSON.parse(JSON.stringify(response.data));
+					setUserData({
+						id: userData.id,
+						isAdmin: userData.isAdmin,
+						userName: userData.userName,
+						image: userData.image,
+					});
+				})
+				.catch(function (error) {
+					// handle error
+					console.log('Something went wrong');
+				});
 		}
 	};
 
 	useEffect(() => {
-		checkUserData();
-	}, [session]);
+		if (status === 'authenticated') {
+			checkUser();
+		}
+	}, [status, userData]);
 
 	return (
 		<div className={Styles.container}>

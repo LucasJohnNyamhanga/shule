@@ -12,11 +12,14 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	const { formName } = req.body;
+	const { formName, userId } = req.body;
+	let userIdNumber = parseInt(userId);
+	console.log(userId);
 	try {
 		await prisma.formExams.create({
 			data: {
 				formName,
+				usersId: userIdNumber,
 			},
 		});
 		res.status(200).json({
@@ -28,6 +31,7 @@ export default async function handler(
 			message: 'Error writting to database',
 			type: 'error',
 		});
+		console.log(error);
 	} finally {
 		await prisma.$disconnect();
 	}

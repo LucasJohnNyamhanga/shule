@@ -13,10 +13,10 @@ import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import { BsGoogle } from 'react-icons/bs';
 import Loader from '../../components/tools/loader';
 import toast, { Toaster } from 'react-hot-toast';
-import { NavContext } from '../../components/context/StateContext';
+import axios from 'axios';
+import bcrypt from 'bcryptjs';
 
 const SignIn = ({}) => {
-	const { status, data } = useSession();
 	const [formData, setFormData] = useState({
 		username: '',
 		password: '',
@@ -29,14 +29,14 @@ const SignIn = ({}) => {
 		password: '',
 		password2: '',
 	});
-	const [loading, setLoading] = useState(false);
+	const [loadingDisplay, setLoadingDisplay] = useState(false);
 	const [signUpAccount, setSignUpAccount] = useState(false);
 	const [signInAccount, setSignInAccount] = useState(true);
-	const { setUserData } = useContext(NavContext);
 
 	const password = useRef<HTMLInputElement>(null!);
 	const password1 = useRef<HTMLInputElement>(null!);
 	const password2 = useRef<HTMLInputElement>(null!);
+	const username = useRef<HTMLInputElement>(null!);
 
 	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
@@ -52,48 +52,51 @@ const SignIn = ({}) => {
 		let value = e.target.value;
 		let name = e.target.name;
 		setRegister({ ...register, [name]: value });
+		username.current.style.color = 'black';
+		password1.current.style.color = 'black';
+		password2.current.style.color = 'black';
 	};
 
-	const { query } = useRouter();
-	const callback = query.callbackUrl;
+	const { query, push } = useRouter();
+	let callback = query.callbackUrl;
 
-	let signInWithGoogle = () => {
-		setLoading(true);
-		signIn('google', { callbackUrl: `${callback}` }).then(function (result) {
-			console.log(result);
-			if (result?.error !== null) {
-				if (result?.status === 401) {
-					notifyError('Incorrect Credentials');
+	let signInWithGoogle = async () => {
+		setLoadingDisplay(true);
+		//! use data to proceed
+		const data = await signIn('google', { callbackUrl: `${callback}` }).then(
+			(responce) => {
+				if (responce?.status === 401) {
+					notifyError('Incorrect Username Or Password');
+					setLoadingDisplay(false);
 				} else {
-					notifyError('Oops, something went wrong. Please try again');
+					setLoadingDisplay(false);
 				}
-			} else {
-				//getuserData
-				//set userData
-				setLoading(false);
-				// console.log(result);
-				// router.push(result.url);
 			}
-		});
+		);
 	};
-
 	let signInWithCredentials = async () => {
 		if (formData.password != '' && formData.username != '') {
-			setLoading(true);
+			setLoadingDisplay(true);
+			console.log(callback);
+			//!use data to proceed
 			const data = await signIn('credentials', {
 				redirect: false,
 				...formData,
-			}).then(function (result) {
-				if (result?.error !== null) {
-					if (result?.status === 401) {
-						notifyError('Incorrect Credentials');
+			}).then((responce) => {
+				if (responce?.status === 401) {
+					notifyError('Incorrect Username Or Password');
+					setLoadingDisplay(false);
+				} else if (responce?.status === 200) {
+					setLoadingDisplay(false);
+					if (typeof callback != 'undefined') {
+						if (callback.includes('/Auth')) {
+							push(`/`);
+						} else {
+							push(`${callback}`);
+						}
+					} else {
+						push('/');
 					}
-					setLoading(false);
-				} else {
-					setLoading(false);
-
-					// console.log(result);
-					// router.push(result.url);
 				}
 			});
 		} else {
@@ -122,13 +125,96 @@ const SignIn = ({}) => {
 		setSignUpAccount(!signUpAccount);
 	};
 
+	let createAccount = () => {
+		if (
+			register.firstName != '' &&
+			register.lastName != '' &&
+			register.password != '' &&
+			register.password2 != '' &&
+			register.username != ''
+		) {
+			if (register.password === register.password2) {
+				if (register.password.length > 6 && register.password2.length > 6) {
+					checkUser({ username: register.username });
+				} else {
+					notifyError('Password should exceed 6 characters.');
+					password1.current.focus();
+					password1.current.style.color = 'red';
+					password2.current.style.color = 'red';
+				}
+			} else {
+				notifyError('Password does not match');
+				password1.current.focus();
+				password1.current.style.color = 'red';
+				password2.current.style.color = 'red';
+			}
+		} else {
+			notifyError(`Fill In All Fields`);
+		}
+	};
+
+	let checkUser = (data: {}) => {
+		setLoadingDisplay(true);
+		axios
+			.post('http://localhost:3000/api/getUser', data)
+			.then(function (response) {
+				//responce
+				const userData = JSON.parse(JSON.stringify(response.data));
+				console.log(userData);
+				setLoadingDisplay(false);
+				if (Object.keys(userData).length > 0) {
+					notifyError('Username already taken');
+					username.current.focus();
+					username.current.style.color = 'red';
+				}
+			})
+			.catch(function (error) {
+				// handle error
+
+				bcrypt.hash(register.password, 10, function (err, hash) {
+					registration(hash);
+				});
+			});
+	};
+
+	let registration = (password: string) => {
+		let dataUser = {
+			name: `${register.firstName} ${register.lastName}`,
+			image: null,
+			username: register.username,
+			password,
+		};
+
+		axios
+			.post('http://localhost:3000/api/createUser', dataUser)
+			.then(function (response) {
+				//responce
+				if (response.data.type == 'success') {
+					notifySuccess(response.data.message);
+					setLoadingDisplay(false);
+					signTo();
+				} else {
+					notifyError(response.data.message);
+					setLoadingDisplay(false);
+				}
+			})
+			.catch(function (error) {
+				// handle error
+			});
+	};
+
 	return (
 		<div className={Styles.container}>
 			<Toaster position='bottom-left' />
 			<div className={Styles.innerContainer}>
 				<div>
 					{signInAccount && (
-						<form className={Styles.form}>
+						<form
+							className={Styles.form}
+							onSubmit={(e) => {
+								e.preventDefault();
+								signInWithCredentials();
+							}}>
 							<div className={Styles.logInHeader}>
 								<div>
 									<AutoStoriesIcon className={Styles.icon} />
@@ -189,14 +275,19 @@ const SignIn = ({}) => {
 								<hr className={Styles.line} />
 							</div>
 							<div className={Styles.buttonSignUp} onClick={signTo}>
-								<div>Sign Up</div>
+								<div>Create Account</div>
 							</div>
 						</form>
 					)}
 				</div>
 				<div>
 					{signUpAccount && (
-						<form className={Styles.form}>
+						<form
+							className={Styles.form}
+							onSubmit={(e) => {
+								e.preventDefault();
+								createAccount();
+							}}>
 							<div className={Styles.logInHeader}>
 								<div>
 									<AutoStoriesIcon className={Styles.icon} />
@@ -229,6 +320,7 @@ const SignIn = ({}) => {
 									spellCheck={false}
 								/>
 								<input
+									ref={username}
 									type='text'
 									value={register.username}
 									placeholder={`Username`}
@@ -276,8 +368,8 @@ const SignIn = ({}) => {
 									Show Password
 								</div>
 							</div>
-							<div onClick={signInWithCredentials} className={Styles.button}>
-								Sign Up
+							<div onClick={createAccount} className={Styles.button}>
+								Create Account
 							</div>
 
 							<div className={Styles.separator}>
@@ -291,7 +383,7 @@ const SignIn = ({}) => {
 						</form>
 					)}
 				</div>
-				<div className={Styles.loader}>{loading && <Loader />}</div>
+				<div className={Styles.loader}>{loadingDisplay && <Loader />}</div>
 			</div>
 		</div>
 	);

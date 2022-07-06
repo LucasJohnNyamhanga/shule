@@ -14,12 +14,17 @@ export default async function handler(
 			},
 			select: {
 				id: true,
-				name: true,
+				username: true,
 				isAdmin: true,
+				image: true,
 			},
 		});
 		const user = JSON.parse(JSON.stringify(userFromServer));
-		res.status(200).json(user);
+		if (user) {
+			res.status(200).json(user);
+		} else {
+			res.status(404).json('Not Found');
+		}
 	} catch (error) {
 	} finally {
 		await prisma.$disconnect();

@@ -287,3 +287,15 @@
 		}
 	}
 }
+
+.error {
+	height: 70vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	font-family: $fontHeader;
+	font-size: 20px;
+	font-weight: 500;
+	color: red;
+}

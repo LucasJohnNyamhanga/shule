@@ -2,6 +2,7 @@ import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { prisma } from '../../../db/prisma';
+import bcrypt from 'bcryptjs';
 
 export default NextAuth({
 	providers: [
@@ -25,24 +26,29 @@ export default NextAuth({
 				const userFromServer = await prisma.users.findFirst({
 					where: {
 						username: credentials?.username,
-						password: credentials?.password,
 					},
 					select: {
 						id: true,
 						name: true,
 						username: true,
+						password: true,
 					},
 				});
 				const userfound = await JSON.parse(JSON.stringify(userFromServer));
 
-				const user = {
-					id: userfound.id,
-					name: `${userfound.firstName} ${userfound.lastName}`,
-					email: userfound.username,
-					image: '',
-				};
+				let comaparison = await bcrypt.compare(
+					credentials!.password,
+					userfound.password
+				);
 
-				if (user) {
+				if (comaparison) {
+					const user = {
+						id: userfound.id,
+						name: `${userfound.name}`,
+						email: userfound.username,
+						image: '',
+					};
+
 					// Any object returned will be saved in `user` property of the JWT
 					return user;
 				} else {
@@ -59,7 +65,6 @@ export default NextAuth({
 	},
 	callbacks: {
 		async session({ session, user, token }) {
-			console.log('session', { session, user });
 			return session;
 		},
 		async jwt({ token, user, account, profile, isNewUser }) {
@@ -73,9 +78,8 @@ export default NextAuth({
 			});
 			const userfound = await JSON.parse(JSON.stringify(userFromServer));
 			if (userfound) {
-				console.log('User Exist', { userfound });
+				//userfound
 			} else {
-				console.log('User does not Exist');
 				//create user
 				await prisma.users.create({
 					data: {
@@ -86,7 +90,6 @@ export default NextAuth({
 					},
 				});
 			}
-			console.log('jwt', { user, token });
 			return token;
 		},
 	},

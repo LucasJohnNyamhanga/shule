@@ -13,7 +13,36 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Progress from '../../../../components/tools/progressFileUpload';
 import { NavContext } from '../../../../components/context/StateContext';
 
-export const getServerSideProps: GetServerSideProps = async () => {
+import { getSession } from 'next-auth/react';
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const session = await getSession(context);
+	if (!session) {
+		return {
+			redirect: {
+				destination: `/Auth/SignIn?callbackUr=/`,
+				permanent: false,
+			},
+		};
+	} else {
+		const userFromServer = await prisma.users.findFirst({
+			where: {
+				username: session.user.email,
+			},
+			select: {
+				isAdmin: true,
+			},
+		});
+		const userfound = await JSON.parse(JSON.stringify(userFromServer));
+
+		if (!userfound.isAdmin) {
+			return {
+				redirect: {
+					destination: '/',
+					permanent: false,
+				},
+			};
+		}
+	}
 	const formsFromServer = await prisma.formExams.findMany({
 		select: {
 			id: true,
@@ -56,12 +85,7 @@ const CreateNotes = ({
     	forms,
     	deactiveteImage,
     }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-	const { navActive, setNavActive } = useContext(NavContext);
-
-	useEffect(() => {
-		setNavActive('Admin');
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [navActive]);
+	const { navActive, setNavActive, userData } = useContext(NavContext);
 
 	const [selectOption, setSelectOption] = useState<dataTypeSelect>([]);
 	const [open, setOpen] = useState(false);
@@ -74,7 +98,18 @@ const CreateNotes = ({
 	const [subjectDetails, setsubjectDetails] = useState({
 		subjectName: '',
 		subjectDefinition: '',
+		userId: '',
 	});
+
+	useEffect(() => {
+		setsubjectDetails({
+			subjectName: '',
+			subjectDefinition: '',
+			userId: userData.id,
+		});
+		setNavActive('Admin');
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	let handleTextInput = (
 		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -194,6 +229,7 @@ const CreateNotes = ({
 				setsubjectDetails({
 					subjectName: '',
 					subjectDefinition: '',
+					userId: '',
 				});
 				setImage('');
 				setShowUpload(false);

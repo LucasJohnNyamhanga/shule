@@ -4,9 +4,50 @@ import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import InputTextMui from '../../../../components/tools/InputTextMui';
 import { NavContext } from '../../../../components/context/StateContext';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 
-const Form = () => {
-	const { navActive, setNavActive } = useContext(NavContext);
+import { getSession } from 'next-auth/react';
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const session = await getSession(context);
+	if (!session) {
+		return {
+			redirect: {
+				destination: `/Auth/SignIn?callbackUr=/`,
+				permanent: false,
+			},
+		};
+	} else {
+		const userFromServer = await prisma.users.findFirst({
+			where: {
+				username: session.user.email,
+			},
+			select: {
+				isAdmin: true,
+			},
+		});
+		const userfound = await JSON.parse(JSON.stringify(userFromServer));
+
+		if (!userfound.isAdmin) {
+			return {
+				redirect: {
+					destination: '/',
+					permanent: false,
+				},
+			};
+		}
+	}
+
+	return {
+		props: {
+			
+		},
+	};
+};
+
+const Form = (
+	props: InferGetServerSidePropsType<typeof getServerSideProps>
+) => {
+	const { navActive, setNavActive, userData } = useContext(NavContext);
 
 	useEffect(() => {
 		setNavActive('Admin');
@@ -15,6 +56,7 @@ const Form = () => {
 
 	const [formData, setFormData] = useState({
 		formName: '',
+		userId: '',
 	});
 
 	const notify = (message: string) => toast(message);
@@ -26,7 +68,7 @@ const Form = () => {
 		name: string
 	) => {
 		let value = event.currentTarget.value;
-		setFormData({ formName: value });
+		setFormData({ formName: value, userId: userData.id });
 	};
 
 	let handleCreateNotes = () => {
@@ -47,6 +89,7 @@ const Form = () => {
 				// handle success
 				setFormData({
 					formName: '',
+					userId: '',
 				});
 				let jibu: string = response.data.message;
 				let type: string = response.data.type;

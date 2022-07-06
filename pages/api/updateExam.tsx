@@ -10,7 +10,9 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse<userData>
 ) {
-	const { id, examTypeId, exam, description, year, hasAnswers } = req.body;
+	const { id, examTypeId, exam, description, year, hasAnswers, userId } =
+		req.body;
+	let userIdNumber = parseInt(userId);
 	let hasAnswer = hasAnswers == 'true' ? true : false;
 
 	try {
@@ -22,6 +24,7 @@ export default async function handler(
 				description,
 				year: parseInt(year),
 				hasAnswers: hasAnswer,
+				usersId: userIdNumber,
 			},
 		});
 		res.status(200).json({ message: 'Update successful', type: 'success' });

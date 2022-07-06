@@ -12,10 +12,11 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	const { examTypeId, exam, description, year, hasAnswers } = req.body;
+	const { examTypeId, exam, description, year, hasAnswers, userId } = req.body;
 	let hasAnswer = hasAnswers == 'true' ? true : false;
 	let typeId = parseInt(examTypeId);
 	let yearDone = parseInt(year);
+	let userIdNumber = parseInt(userId);
 	try {
 		await prisma.exam.create({
 			data: {
@@ -24,6 +25,7 @@ export default async function handler(
 				exam,
 				year: yearDone,
 				hasAnswers: hasAnswer,
+				usersId: userIdNumber,
 			},
 		});
 		res.status(200).json({
