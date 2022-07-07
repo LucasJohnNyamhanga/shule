@@ -7,13 +7,6 @@ import { useSession, getSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 
-type userData = {
-	id: number;
-	isAdmin: boolean;
-	userName: string;
-	image: string;
-};
-
 const Nav = () => {
 	const { setNavActive, navActive, userData, setUserData } =
 		useContext(NavContext);
@@ -27,31 +20,35 @@ const Nav = () => {
 	};
 
 	let handleLogOut = () => {
-		signOut({ redirect: false });
-		push('/');
+		signOut({ redirect: false }).then(() => {
+			setLimit(0);
+			push('/');
+		});
 	};
 
 	let checkUser = async () => {
 		const session = await getSession();
-		if (limt <= 6) {
-			let data = session.user.email;
-			axios
-				.post('http://localhost:3000/api/getUser', { username: data })
-				.then(function (response) {
-					//responce
-					const userData = JSON.parse(JSON.stringify(response.data));
-					setUserData({
-						id: userData.id,
-						isAdmin: userData.isAdmin,
-						userName: userData.userName,
-						image: userData.image,
+		if (session) {
+			if (limt <= 6) {
+				let data = session.user.email;
+				axios
+					.post('http://localhost:3000/api/getUser', { username: data })
+					.then(function (response) {
+						//responce
+						const userData = JSON.parse(JSON.stringify(response.data));
+						setUserData({
+							id: userData.id,
+							isAdmin: userData.isAdmin,
+							userName: userData.userName,
+							image: userData.image,
+						});
+					})
+					.catch(function (error) {
+						// handle error
+						console.log('Something went wrong');
 					});
-				})
-				.catch(function (error) {
-					// handle error
-					console.log('Something went wrong');
-				});
-			setLimit(limt + 1);
+				setLimit(limt + 1);
+			}
 		}
 	};
 
@@ -62,8 +59,15 @@ const Nav = () => {
 			} else {
 				setLimit(0);
 			}
+		} else {
+			setUserData({
+				id: '',
+				isAdmin: false,
+				userName: '',
+				image: '',
+			});
 		}
-	}, [status]);
+	}, [status, limt, session]);
 
 	return (
 		<div className={Styles.container}>
@@ -149,7 +153,7 @@ const Nav = () => {
 										</div>
 									</a>
 								</Link>
-								{session && userData.isAdmin && (
+								{userData.isAdmin && (
 									<Link href='/Admin'>
 										<a>
 											<div
@@ -169,7 +173,7 @@ const Nav = () => {
 							</ul>
 						</div>
 						<div className={Styles.buttonsNav}>
-							{session ? (
+							{userData.id != '' ? (
 								<div onClick={handleLogOut} className={Styles.Register}>
 									Log Out
 								</div>

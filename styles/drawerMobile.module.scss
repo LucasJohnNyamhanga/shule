@@ -36,6 +36,19 @@
 	color: $white !important;
 }
 
+.activeCredential {
+	display: flex;
+	width: 100%;
+	align-items: center;
+	justify-content: flex-start;
+	padding: 15px;
+	font-family: $fontHeader;
+	font-weight: 500;
+	color: $lightblue;
+	cursor: pointer;
+	background-color: $white;
+}
+
 .buttonsNav {
 	display: block;
 	position: relative;

@@ -13,14 +13,30 @@ import Styles from '../../styles/drawerMobile.module.scss';
 
 type dataType = {
 	handleMenu: (linkValue: string) => void;
+	handleSignOut: () => void;
+	handleSighIn: () => void;
 	navActive: string;
+	userData: {
+		id: string;
+		isAdmin: boolean;
+		userName: string;
+		image: string;
+	};
 };
 
-export const MuiDrawer = ({ handleMenu, navActive }: dataType) => {
+export const MuiDrawer = ({
+	handleMenu,
+	navActive,
+	userData,
+	handleSignOut,
+	handleSighIn,
+}: dataType) => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const humberger = useRef<HTMLDivElement>(null!);
 
-	useEffect(() => {}, [navActive]);
+	useEffect(() => {
+		console.log(userData);
+	}, [navActive, userData]);
 
 	let handleMenuClick = (linkValue: string) => {
 		humberger.current.classList.toggle(Styles.isActive);
@@ -120,21 +136,50 @@ export const MuiDrawer = ({ handleMenu, navActive }: dataType) => {
 							</a>
 						</Link>
 						<Divider />
-						<Link href={'/Admin'}>
-							<a>
+						{userData.isAdmin && (
+							<>
+								<Link href={'/Admin'}>
+									<a>
+										<div
+											ref={admin}
+											className={
+												'Admin' == navActive ? Styles.active : Styles.setCenter
+											}
+											onClick={() => {
+												handleMenuClick('Admin');
+											}}>
+											Admin
+										</div>
+									</a>
+								</Link>
+								<Divider />
+							</>
+						)}
+						{userData.id == '' ? (
+							<>
 								<div
-									ref={admin}
-									className={
-										'Admin' == navActive ? Styles.active : Styles.setCenter
-									}
+									className={Styles.activeCredential}
 									onClick={() => {
-										handleMenuClick('Admin');
+										handleSighIn();
+										handleMenuClick('');
 									}}>
-									Admin
+									Sign In
 								</div>
-							</a>
-						</Link>
-						<Divider />
+								<Divider />
+							</>
+						) : (
+							<>
+								<div
+									className={Styles.activeCredential}
+									onClick={() => {
+										handleSignOut();
+										handleMenuClick('');
+									}}>
+									Sign Out
+								</div>
+								<Divider />
+							</>
+						)}
 					</List>
 				</Box>
 			</Drawer>
