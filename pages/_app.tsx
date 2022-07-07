@@ -26,7 +26,7 @@ type dataProps = AppProps & {
 	Component: Page;
 };
 
-function MyApp({ Component, pageProps }: dataProps) {
+function MyApp({ Component, pageProps }) {
 	const matches = useMediaQuery('(min-width:958px)');
 
 	const [navActive, setNavActive] = useState('Notes');
@@ -65,7 +65,7 @@ function MyApp({ Component, pageProps }: dataProps) {
 
 	if (Component.getLayout) {
 		return Component.getLayout(
-			<div>
+			<div className='container'>
 				{/* <style global jsx>{`
       html,
       body,
