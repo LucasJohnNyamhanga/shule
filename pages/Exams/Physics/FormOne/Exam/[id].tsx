@@ -7,6 +7,7 @@ import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import Head from 'next/head';
 import { NavContext } from '../../../../../components/context/StateContext';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import Link from 'next/link';
 
 const subjectLocator = 'Physics';
 const formLocator = 'Form One';
@@ -82,7 +83,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 	});
 	return {
 		paths,
-		fallback: false,
+		fallback: 'blocking',
 	};
 };
 
@@ -152,7 +153,11 @@ const Index = ({
 								: truncateCustom(thisexam.examType.name, 10)}
 						</div>
 						{thisexam.examDownloadable.length > 0 ? (
-							<div className={Styles.download}>Download Exam</div>
+							<Link href={`/Exams/Download/${thisexam.id}`} passHref>
+								<a>
+									<div className={Styles.download}>Download Notes</div>
+								</a>
+							</Link>
 						) : (
 							''
 						)}

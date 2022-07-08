@@ -7,7 +7,8 @@ import Head from 'next/head';
 import { NavContext } from '../../../../components/context/StateContext';
 import { notesDownloadable } from '@prisma/client';
 import FileSaver from 'file-saver';
-import InputTextMui from '../../../../components/tools/InputTextMui';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import toast, { Toaster } from 'react-hot-toast';
 
 const subjectLocator = 'Physics';
@@ -44,13 +45,14 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Index = ({
-    	downloads,
-    }: InferGetStaticPropsType<typeof getStaticProps>) => {
+	downloads,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
-	const { navActive, setNavActive } = useContext(NavContext);
-	const [PIN, setPIN] = useState('');
+	const { navActive, setNavActive, userData } = useContext(NavContext);
+	const { data: session, status } = useSession();
+	const { push, asPath } = useRouter();
 
 	useEffect(() => {
 		setNavActive('Notes');
@@ -58,20 +60,12 @@ const Index = ({
 	}, [navActive]);
 
 	let handleDownload = (link: string) => {
-		if (PIN == '1987') {
-			FileSaver.saveAs(link, link.replace(/(.*)\//g, ''));
-			setPIN('');
+		if (session) {
+			push(`/Pricing?callbackUrl=${asPath}`);
+			//FileSaver.saveAs(link, link.replace(/(.*)\//g, ''));
 		} else {
-			notifyError('Please provide valid PIN to download.');
+			push(`/Auth/SignIn?callbackUrl=${asPath}`);
 		}
-	};
-
-	let handleTextInput = (
-		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-		name: string
-	) => {
-		let value = event.currentTarget.value;
-		setPIN(value);
 	};
 
 	//!mambo yanaanza
@@ -107,18 +101,6 @@ const Index = ({
 						<div>
 							{`Following ${downloads.length > 1 ? `Files  are` : `File is`}
 							available for download.`}
-						</div>
-						<div className={Styles.info}>
-							To download send 1000Tsh to 0784477999 and you will receive a
-							download PIN through SMS.
-						</div>
-						<div className={Styles.code}>
-							<InputTextMui
-								label='Enter Download PIN'
-								content={PIN}
-								name='DownloadPIN'
-								handleChange={handleTextInput}
-							/>
 						</div>
 						<div>
 							{downloads.map((download: notesDownloadable) => (

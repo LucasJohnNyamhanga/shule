@@ -120,14 +120,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
 	});
 	return {
 		paths,
-		fallback: false,
+		fallback: 'blocking',
 	};
 };
 
 const Index = ({
-    	topics,
-    	thisTopicData,
-    }: InferGetStaticPropsType<typeof getStaticProps>) => {
+	topics,
+	thisTopicData,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {

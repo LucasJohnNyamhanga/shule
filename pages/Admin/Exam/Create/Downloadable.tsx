@@ -285,6 +285,7 @@ const Notes = ({
 			link: location,
 			fileExtension: ext,
 			examId: examSelectValue.examId,
+			userId: userData.id,
 		};
 
 		axios({

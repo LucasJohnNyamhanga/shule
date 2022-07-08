@@ -126,7 +126,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 	});
 	return {
 		paths,
-		fallback: false,
+		fallback: 'blocking',
 	};
 };
 
@@ -135,9 +135,9 @@ type tableKey = {
 };
 
 const Index = ({
-    	examTypeAll,
-    	thisexamType,
-    }: InferGetStaticPropsType<typeof getStaticProps>) => {
+	examTypeAll,
+	thisexamType,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	const [keyInTable, setKeyInTable] = useState<tableKey>({

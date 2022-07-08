@@ -29,7 +29,7 @@ const Nav = () => {
 	let checkUser = async () => {
 		const session = await getSession();
 		if (session) {
-			if (limt <= 6) {
+			if (limt <= 5) {
 				let data = session.user.email;
 				axios
 					.post('http://localhost:3000/api/getUser', { username: data })
@@ -39,7 +39,7 @@ const Nav = () => {
 						setUserData({
 							id: userData.id,
 							isAdmin: userData.isAdmin,
-							userName: userData.userName,
+							userName: userData.username,
 							image: userData.image,
 						});
 					})

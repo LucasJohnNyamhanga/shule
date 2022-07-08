@@ -80,13 +80,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
 	});
 	return {
 		paths,
-		fallback: false,
+		fallback: 'blocking',
 	};
 };
 
 const Index = ({
-    	reference,
-    }: InferGetStaticPropsType<typeof getStaticProps>) => {
+	reference,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {

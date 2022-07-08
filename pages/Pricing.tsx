@@ -1,7 +1,20 @@
-import { ReactNode } from 'react';
+import { ReactNode, useContext } from 'react';
 import Styles from '../styles/pricing.module.scss';
+import { useRouter } from 'next/router';
+import { NavContext } from '../components/context/StateContext';
 
 function Pricing(props) {
+	const { navActive, setNavActive, userData } = useContext(NavContext);
+	const { query, push } = useRouter();
+	let callback = query.callbackUrl;
+	let handleNotes = () => {
+		console.log(userData);
+		if (userData.id != '') {
+			push(`${callback}`);
+		} else {
+			console.log('Please wait..');
+		}
+	};
 	return (
 		<div className={Styles.container}>
 			<div className={Styles.innerContainer}>
@@ -17,96 +30,132 @@ function Pricing(props) {
 						<div className={Styles.pricing}>
 							<div className={Styles.price}>
 								{/* <sup>Tsh</sup> */}
-								<span>500</span>
+								<span>1000</span>
 							</div>
-							<p>Per Day</p>
-							<span className={Styles.type}>Basic</span>
+							<p>Per Month</p>
+							<span className={Styles.type}>Notes</span>
 						</div>
 						<div className={Styles.cardBody}>
 							<div className={Styles.topShape1}></div>
 							<div className={Styles.cardContent}>
 								<ul>
 									<li>
-										Downloads <div className={Styles.icon}>3</div>
+										Notes Download <div className={Styles.icon}>1</div>
+									</li>
+
+									<li>
+										Reviews <div className={Styles.icon}>3 Excercises</div>
 									</li>
 									<li>
-										Examinations <div className={Styles.icon}>3</div>
+										Examinations Download <div className={Styles.icon}>0</div>
 									</li>
 									<li>
-										Reviews <div className={Styles.icon}>10 Excercise</div>
-									</li>
-									<li>
-										Notes <div className={Styles.icon}>Unlimited</div>
+										Books Download <div className={Styles.icon}>0</div>
 									</li>
 								</ul>
-								<button className={Styles.btn1}>START</button>
+								<button className={Styles.btn1} onClick={handleNotes}>
+									START
+								</button>
 							</div>
 						</div>
-						{/* <div className={Styles.ribbon1}></div> */}
+						<div className={Styles.ribbon1}></div>
 					</div>
 					{/* //two */}
-					<div className={Styles.pricingCard}>
-						<div className={Styles.pricing}>
-							<div className={Styles.price}>
-								{/* <sup>Tsh</sup> */}
-								<span>1500</span>
-							</div>
-							<p>Per Week</p>
-							<span className={Styles.type}>Medium</span>
-						</div>
-						<div className={Styles.cardBody}>
-							<div className={Styles.topShape2}></div>
-							<div className={Styles.cardContent}>
-								<ul>
-									<li>
-										Downloads <div className={Styles.icon}>8</div>
-									</li>
-									<li>
-										Examinations <div className={Styles.icon}>5</div>
-									</li>
-									<li>
-										Reviews <div className={Styles.icon}>20 Excercise</div>
-									</li>
-									<li>
-										Notes <div className={Styles.icon}>Unlimited</div>
-									</li>
-								</ul>
-								<button className={Styles.btn2}>START</button>
-							</div>
-						</div>
-						<div className={Styles.ribbon2}></div>
-					</div>
+
 					{/* //three */}
 					<div className={Styles.pricingCard}>
 						<div className={Styles.pricing}>
 							<div className={Styles.price}>
 								{/* <sup>Tsh</sup> */}
-								<span>5000</span>
+								<span>1000</span>
 							</div>
 							<p>Per Month</p>
-							<span className={Styles.type}>Large</span>
+							<span className={Styles.type}>Exams</span>
 						</div>
 						<div className={Styles.cardBody}>
 							<div className={Styles.topShape3}></div>
 							<div className={Styles.cardContent}>
 								<ul>
 									<li>
-										Downloads <div className={Styles.icon}>15</div>
+										Examinations Download <div className={Styles.icon}>1</div>
 									</li>
 									<li>
-										Examinations <div className={Styles.icon}>10</div>
+										Reviews <div className={Styles.icon}>3 Excercises</div>
 									</li>
 									<li>
-										Reviews <div className={Styles.icon}>30 Excercise</div>
+										Notes Download <div className={Styles.icon}>0</div>
 									</li>
 									<li>
-										Notes <div className={Styles.icon}>Unlimited</div>
+										Books Download <div className={Styles.icon}>0</div>
 									</li>
 								</ul>
 								<button className={Styles.btn3}>START</button>
 							</div>
 						</div>
 						<div className={Styles.ribbon3}></div>
+					</div>
+					<div className={Styles.pricingCard}>
+						<div className={Styles.pricing}>
+							<div className={Styles.price}>
+								{/* <sup>Tsh</sup> */}
+								<span>1000</span>
+							</div>
+							<p>Per Month</p>
+							<span className={Styles.type}>Books</span>
+						</div>
+						<div className={Styles.cardBody}>
+							<div className={Styles.topShape4}></div>
+							<div className={Styles.cardContent}>
+								<ul>
+									<li>
+										Books Download <div className={Styles.icon}>1</div>
+									</li>
+									<li>
+										Reviews <div className={Styles.icon}>3 Excercises</div>
+									</li>
+									<li>
+										Examinations Download <div className={Styles.icon}>0</div>
+									</li>
+
+									<li>
+										Notes Download <div className={Styles.icon}>0</div>
+									</li>
+								</ul>
+								<button className={Styles.btn4}>START</button>
+							</div>
+						</div>
+						<div className={Styles.ribbon4}></div>
+					</div>
+					<div className={Styles.pricingCard}>
+						<div className={Styles.pricing}>
+							<div className={Styles.price}>
+								{/* <sup>Tsh</sup> */}
+								<span>3000</span>
+							</div>
+							<p>Per Month</p>
+							<span className={Styles.type}>COMBO</span>
+						</div>
+						<div className={Styles.cardBody}>
+							<div className={Styles.topShape2}></div>
+							<div className={Styles.cardContent}>
+								<ul>
+									<li>
+										Reviews <div className={Styles.icon}>15 Excercises</div>
+									</li>
+									<li>
+										Notes Download <div className={Styles.icon}>1</div>
+									</li>
+									<li>
+										Examinations Download <div className={Styles.icon}>1</div>
+									</li>
+									<li>
+										Books Download <div className={Styles.icon}>1</div>
+									</li>
+								</ul>
+								<button className={Styles.btn2}>START</button>
+							</div>
+						</div>
+						<div className={Styles.ribbon2}></div>
 					</div>
 				</div>
 			</div>

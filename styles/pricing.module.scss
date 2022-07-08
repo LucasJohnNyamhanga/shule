@@ -51,7 +51,7 @@
 			align-items: center;
 			margin-bottom: 45px;
 
-			grid-template-columns: repeat(auto-fill, minmax(250px, 300px));
+			grid-template-columns: repeat(auto-fill, minmax(230px, 250px));
 			justify-content: center;
 			align-items: center;
 
@@ -84,7 +84,7 @@
 						margin-bottom: 1px;
 
 						span {
-							font-size: 6em;
+							font-size: 5em;
 							line-height: 140px;
 						}
 					}
@@ -96,13 +96,15 @@
 
 					p {
 						font-family: $fontHeader;
-						font-weight: 500;
+						font-weight: 600;
 						margin-bottom: 10px;
 					}
 
 					.type {
 						text-transform: uppercase;
 						font-size: 2.5em;
+						font-family: $fontHeader;
+						font-weight: 500;
 					}
 				}
 
@@ -132,6 +134,12 @@
 						background-color: $cardColor5;
 					}
 
+					.topShape4 {
+						clip-path: polygon(0 0, 100% 0%, 100% 50%, 50% 75%, 0 50%);
+						height: 200px;
+						background-color: $cardColor7;
+					}
+
 					.topShape1::before {
 						content: '';
 						position: absolute;
@@ -155,6 +163,14 @@
 						width: 100%;
 						height: 200px;
 						background-color: $cardColor6;
+					}
+					.topShape4::before {
+						content: '';
+						position: absolute;
+						clip-path: polygon(0 0, 100% 0%, 100% 25%, 50% 50%, 0 25%);
+						width: 100%;
+						height: 200px;
+						background-color: $cardColor8;
 					}
 
 					.cardContent {
@@ -245,6 +261,25 @@
 						.btn3:hover {
 							background: linear-gradient($cardColor6 50%, $cardColor5 50%);
 						}
+
+						.btn4 {
+							font-family: $fontHeader;
+							border: none;
+							outline: none;
+							width: 120px;
+							height: 40px;
+							border-radius: 5px;
+							text-transform: uppercase;
+							font-size: 1.2em;
+							font-weight: 500;
+							cursor: pointer;
+							margin-bottom: 40px;
+							background: linear-gradient($cardColor7 50%, $cardColor8 50%);
+						}
+
+						.btn4:hover {
+							background: linear-gradient($cardColor8 50%, $cardColor7 50%);
+						}
 					}
 				}
 
@@ -264,7 +299,7 @@
 						position: absolute;
 						display: flex;
 						justify-content: center;
-						font-family: $fontBody;
+						font-family: $fontHeader;
 						font-size: 0.8em;
 						font-weight: 600;
 						align-items: center;
@@ -297,7 +332,7 @@
 					overflow: hidden;
 
 					&::before {
-						content: 'OFFER';
+						content: 'BEST OFFER';
 						position: absolute;
 						display: flex;
 						justify-content: center;
@@ -354,6 +389,42 @@
 						width: 150%;
 						height: 30px;
 						background: $cardColor6;
+						transform: rotate(225deg) translateY(15px);
+						z-index: -1;
+					}
+				}
+				.ribbon4 {
+					width: 110px;
+					height: 110px;
+					position: absolute;
+					bottom: -10px;
+					left: -10px;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					overflow: hidden;
+
+					&::before {
+						content: 'OFFER';
+						position: absolute;
+						display: flex;
+						justify-content: center;
+						font-family: $fontBody;
+						font-size: 0.8em;
+						font-weight: 600;
+						align-items: center;
+						width: 150%;
+						height: 30px;
+						background-color: $cardColor7;
+						transform: rotate(45deg) translateY(15px);
+					}
+
+					&::after {
+						content: '';
+						position: absolute;
+						width: 150%;
+						height: 30px;
+						background: $cardColor8;
 						transform: rotate(225deg) translateY(15px);
 						z-index: -1;
 					}
