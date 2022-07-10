@@ -2047,7 +2047,7 @@ const Index = ({}) => {
 								</div>
 							</div>
 							<div>
-								<div className={Styles.TopicHeaderNotes}>Review</div>
+								<div className={Styles.TopicHeaderNotes}>Quiz</div>
 							</div>
 							<div className={Styles.containerBody}>
 								<div
@@ -2080,7 +2080,7 @@ const Index = ({}) => {
 									onClick={(e) => handleNav(e.currentTarget.id)}
 									className={Styles.topicTittle}>
 									<AlignVerticalBottomIcon />
-									<div className={Styles.text}>Review</div>
+									<div className={Styles.text}>Quiz</div>
 								</div>
 								<div
 									ref={questions}
@@ -2137,7 +2137,7 @@ const Index = ({}) => {
 								</div>
 							</div>
 							<div>
-								<div className={Styles.TopicHeaderNotes}>References</div>
+								<div className={Styles.TopicHeaderNotes}>Library</div>
 							</div>
 							<div className={Styles.containerBody}>
 								<div
@@ -2387,7 +2387,7 @@ const Index = ({}) => {
 										<div className={Styles.subject}>
 											<div className={Styles.subjectHeader}>
 												<div className={Styles.subjectHeaderText}>
-													Subjects In Review Management
+													Subjects In Quiz Management
 												</div>
 												<Link passHref href='/Admin/Review/Create/Subject'>
 													<div className={Styles.subjectHeaderButton}>
@@ -2477,7 +2477,7 @@ const Index = ({}) => {
 										<div className={Styles.subject}>
 											<div className={Styles.subjectHeader}>
 												<div className={Styles.subjectHeaderText}>
-													Topics In Review Management
+													Topics In Quiz Management
 												</div>
 												<Link passHref href='/Admin/Review/Create/Topic'>
 													<div className={Styles.subjectHeaderButton}>
@@ -2535,7 +2535,7 @@ const Index = ({}) => {
 										<div className={Styles.subject}>
 											<div className={Styles.subjectHeader}>
 												<div className={Styles.subjectHeaderText}>
-													Forms In Review Management
+													Forms In Quiz Management
 												</div>
 												<Link passHref href='/Admin/Review/Create/Form'>
 													<div className={Styles.subjectHeaderButton}>
@@ -2567,11 +2567,11 @@ const Index = ({}) => {
 										<div className={Styles.subject}>
 											<div className={Styles.subjectHeader}>
 												<div className={Styles.subjectHeaderText}>
-													Review Management
+													Quiz Management
 												</div>
 												<Link passHref href='/Admin/Review/Create/Review'>
 													<div className={Styles.subjectHeaderButton}>
-														Create Review
+														Create Quiz
 													</div>
 												</Link>
 											</div>
@@ -2603,7 +2603,7 @@ const Index = ({}) => {
 											<div
 												onClick={retriaveReviewDataNow}
 												className={Styles.subjectHeaderButton}>
-												Retrieve Notes
+												Retrieve Quiz
 											</div>
 											<div className={Styles.subjectBody}>
 												{activateNotesDisplay &&
@@ -2959,7 +2959,7 @@ const Index = ({}) => {
 										<div className={Styles.subject}>
 											<div className={Styles.subjectHeader}>
 												<div className={Styles.subjectHeaderText}>
-													Subjects In Reference Management
+													Subjects In Library Management
 												</div>
 												<Link passHref href='/Admin/Reference/Create/Subject'>
 													<div className={Styles.subjectHeaderButton}>
@@ -2998,7 +2998,7 @@ const Index = ({}) => {
 										<div className={Styles.subject}>
 											<div className={Styles.subjectHeader}>
 												<div className={Styles.subjectHeaderText}>
-													Forms In Reference Management
+													Forms In Library Management
 												</div>
 												<Link passHref href='/Admin/Reference/Create/Form'>
 													<div className={Styles.subjectHeaderButton}>

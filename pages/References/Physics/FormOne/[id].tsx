@@ -9,6 +9,7 @@ import { NavContext } from '../../../../components/context/StateContext';
 
 const subjectLocator = 'Physics';
 import PdfViewer from '../../../../components/tools/PdfViewer';
+import Link from 'next/link';
 const formLocator = 'Form One';
 const subjectLocatorLink = 'Physics';
 const formLocatorLink = 'FormOne';
@@ -113,17 +114,35 @@ const Index = ({
 							{reference.subjectReference.subjectName}{' '}
 							<ChevronRightOutlinedIcon /> {reference.name}
 						</div>
-						<div className={Styles.download}>Download</div>
+						{reference.isPdf && (
+							<>
+								<Link href={`/References/Download/${reference.id}`} passHref>
+									<a>
+										<div className={Styles.download}>Download</div>
+									</a>
+								</Link>
+							</>
+						)}
 					</div>
 					<div className={Styles.BodyContent}>
-						{reference.isPdf ? (
-							<PdfViewer url={reference.data} />
-						) : (
-							<div
-								className='ckContent'
-								dangerouslySetInnerHTML={{ __html: reference.data }}
-							/>
+						{reference.isPdf && (
+							<div className={Styles.headerHead}>
+								<div className={Styles.header}>Book Description</div>
+								<div className={Styles.description}>
+									{reference.description}
+								</div>
+							</div>
 						)}
+						<div>
+							{reference.isPdf ? (
+								<PdfViewer url={`/min.pdf`} />
+							) : (
+								<div
+									className='ckContent'
+									dangerouslySetInnerHTML={{ __html: reference.data }}
+								/>
+							)}
+						</div>
 					</div>
 				</div>
 			</div>

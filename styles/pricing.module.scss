@@ -332,7 +332,7 @@
 					overflow: hidden;
 
 					&::before {
-						content: 'BEST OFFER';
+						content: 'OFFER';
 						position: absolute;
 						display: flex;
 						justify-content: center;
@@ -457,6 +457,7 @@
 	@media only screen and (max-width: 548px) {
 		.innerContainer {
 			margin: 10px;
+
 			.intro {
 				margin-top: 15px;
 				font-size: 25px;
@@ -476,9 +477,36 @@
 		}
 	}
 
-	@media only screen and (max-width: 258px) {
+	@media only screen and (max-width: 268px) {
 		.innerContainer {
 			margin: 10px;
+			.cardContainer {
+				.pricingCard {
+					.pricing {
+						.price {
+							span {
+								font-size: 4em;
+							}
+						}
+						.type {
+							font-size: 2em;
+						}
+
+						p {
+							font-size: 14px;
+						}
+					}
+					.cardBody {
+						.cardContent {
+							ul {
+								li {
+									font-size: 0.8em;
+								}
+							}
+						}
+					}
+				}
+			}
 			.intro {
 				margin-top: 15px;
 				font-size: 25px;

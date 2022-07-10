@@ -1,26 +1,11 @@
-import React, { ReactNode, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Styles from '../../../../styles/reviewDisplay.module.scss';
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
-import { type } from 'os';
-import {
-	exam,
-	examType,
-	formExams,
-	reference,
-	review,
-	topic,
-	topicReview,
-} from '@prisma/client';
 import { prisma } from '../../../../db/prisma';
 import type { GetStaticProps, InferGetStaticPropsType } from 'next';
-import parse from 'html-react-parser';
 import Head from 'next/head';
-import Link from 'next/link';
 import Error from 'next/error';
-import Drawer from '../../../../components/tools/DrawerExam';
 import { NavContext } from '../../../../components/context/StateContext';
-import Modal from '../../../../components/tools/modal';
-import Table from '../../../../components/tools/Table';
 import Book from '../../../../components/tools/Book';
 
 const subjectLocator = 'Physics';
@@ -40,6 +25,9 @@ export const getStaticProps: GetStaticProps = async () => {
 					formName: formLocator,
 				},
 			},
+		},
+		orderBy: {
+			createdAt: 'desc',
 		},
 		select: {
 			id: true,
@@ -73,8 +61,8 @@ type tableKey = {
 };
 
 const Index = ({
-    	reference,
-    }: InferGetStaticPropsType<typeof getStaticProps>) => {
+	reference,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {

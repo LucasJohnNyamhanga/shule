@@ -116,7 +116,7 @@ const Nav = () => {
 												className={
 													'Review' == navActive ? Styles.active : Styles.links
 												}>
-												Review
+												Quiz
 											</li>
 										</div>
 									</a>
@@ -148,7 +148,7 @@ const Nav = () => {
 														? Styles.active
 														: Styles.links
 												}>
-												References
+												Library
 											</li>
 										</div>
 									</a>

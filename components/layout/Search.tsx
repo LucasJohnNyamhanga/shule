@@ -27,6 +27,7 @@ const Search = () => {
 
 	let handletext = (e: React.ChangeEvent<HTMLInputElement>) => {
 		let value = e.target.value;
+
 		setFormData({ searchText: value });
 	};
 
@@ -76,11 +77,23 @@ const Search = () => {
 					e.preventDefault();
 					handleSearch();
 				}}>
-				<div className={Styles.category}>{navActive}</div>
+				<div className={Styles.category}>
+					{navActive == 'References'
+						? `Library`
+						: navActive == 'Review'
+						? `Quiz`
+						: navActive}
+				</div>
 				<InputText
 					name='firstName'
 					value={formData.searchText}
-					textHolder={`Search in ${navActive}`}
+					textHolder={`Search in ${
+						navActive == 'References'
+							? `Library`
+							: navActive == 'Review'
+							? `Quiz`
+							: navActive
+					}`}
 					handletext={handletext}
 				/>
 				<div className={Styles.clearContainer}>

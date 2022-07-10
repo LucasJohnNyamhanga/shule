@@ -34,9 +34,7 @@ export const MuiDrawer = ({
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const humberger = useRef<HTMLDivElement>(null!);
 
-	useEffect(() => {
-		console.log(userData);
-	}, [navActive, userData]);
+	useEffect(() => {}, [navActive, userData]);
 
 	let handleMenuClick = (linkValue: string) => {
 		humberger.current.classList.toggle(Styles.isActive);
@@ -101,7 +99,7 @@ export const MuiDrawer = ({
 									onClick={() => {
 										handleMenuClick('Review');
 									}}>
-									Review
+									Quiz
 								</div>
 							</a>
 						</Link>
@@ -131,7 +129,7 @@ export const MuiDrawer = ({
 									onClick={() => {
 										handleMenuClick('References');
 									}}>
-									Reference
+									Library
 								</div>
 							</a>
 						</Link>
