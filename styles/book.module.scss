@@ -995,9 +995,10 @@ Table of Contents
 
 	figcaption h1 {
 		width: 100%;
-		line-height: 2rem;
+		line-height: 1.6rem;
 		word-wrap: break-word;
 		overflow-wrap: break-word;
+		font-size: 25px;
 		padding: 0px 15px;
 	}
 
@@ -1068,8 +1069,8 @@ Table of Contents
 				h1 {
 					align-self: center;
 					width: 70%;
-					font-size: 18px;
-					line-height: 1.5rem;
+					font-size: 16px;
+					line-height: 1rem;
 				}
 
 				span {

@@ -100,6 +100,8 @@ const Index = ({
 		keys: [],
 	});
 
+	const [hideContent, setHideContent] = useState(false);
+
 	useEffect(() => {
 		setNavActive('Exams');
 	}, [navActive]);
@@ -114,6 +116,10 @@ const Index = ({
 
 	useEffect(() => {
 		setNavActive('Exams');
+		console.log(thisexam.hasAnswers);
+		if (thisexam.hasAnswers) {
+			setHideContent(true);
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [navActive]);
 
@@ -129,6 +135,10 @@ const Index = ({
 			? str.slice(0, truncateLimit) + '...'
 			: str;
 	}
+
+	let showMore = () => {
+		setHideContent(!hideContent);
+	};
 
 	return (
 		<div className={Styles.container}>
@@ -163,10 +173,19 @@ const Index = ({
 						)}
 					</div>
 					<div className={Styles.BodyContent}>
-						<div
-							className='ckContent'
-							dangerouslySetInnerHTML={{ __html: thisexam.exam }}
-						/>
+						<div className={hideContent ? Styles.hiddenExam : ''}>
+							<div
+								className='ckContent'
+								dangerouslySetInnerHTML={{ __html: thisexam.exam }}
+							/>
+						</div>
+						{hideContent && (
+							<div className={Styles.showMoreContainer}>
+								<div onClick={showMore} className={Styles.more}>
+									Show More
+								</div>
+							</div>
+						)}
 					</div>
 				</div>
 			</div>

@@ -12,21 +12,25 @@ type dataContent = {
 const Ck = ({ content, dataCk, onReadyToStart }: dataContent) => {
 	const [data, setData] = useState(dataCk);
 
+	useEffect(() => {
+		setData(dataCk);
+	}, []);
+
 	return (
 		<div className={Styles.container}>
 			<CKEditor
 				editor={ClassicEditor}
-				data={dataCk}
+				data={data}
 				onReady={onReadyToStart}
 				onChange={(event: any, editor: any) => {
 					const data = editor.getData();
 					content(data);
 				}}
 				onBlur={(event: any, editor: any) => {
-					//console.log('Blur.', editor);
+					console.log('Blur.', editor);
 				}}
 				onFocus={(event: any, editor: any) => {
-					//console.log('Focus.', editor);
+					console.log('Focus.', editor);
 				}}
 				config={{
 					toolbar: {

@@ -164,11 +164,11 @@ type typePrisma = {
 };
 
 const EditNotes = ({
-    	question,
-    	forms,
-    	subjects,
-    	questionFormat,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	question,
+	forms,
+	subjects,
+	questionFormat,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive, userData } = useContext(NavContext);
 	let formatName = (id: number) => {
 		for (let format of questionFormat) {
@@ -203,6 +203,7 @@ const EditNotes = ({
 			reviewId: question.reviewId,
 			answerDetails: question.answerDetails,
 		});
+		setShowQuestion(true);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [navActive]);
 

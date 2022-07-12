@@ -31,7 +31,7 @@ a {
 	background-size: cover;
 	-webkit-animation: backgroundScroll 30s linear infinite;
 	-webkit-animation-fill-mode: forwards;
-	animation: backgroundScroll 30s linear infinite;
+	animation: backgroundScroll 60s linear infinite;
 	animation-fill-mode: forwards;
 }
 
@@ -39,8 +39,14 @@ a {
 	0% {
 		background-position: 0 0;
 	}
-	50% {
+	25% {
 		background-position: -360px -180px;
+	}
+	50% {
+		background-position: 0 0;
+	}
+	75% {
+		background-position: 360px 180px;
 	}
 	100% {
 		background-position: 0 0;
@@ -51,8 +57,14 @@ a {
 	0% {
 		background-position: 0 0;
 	}
-	50% {
+	25% {
 		background-position: -360px -180px;
+	}
+	50% {
+		background-position: 0 0;
+	}
+	75% {
+		background-position: 360px 180px;
 	}
 	100% {
 		background-position: 0 0;

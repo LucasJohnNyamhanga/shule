@@ -149,6 +149,55 @@
 						font-size: 16px;
 					}
 				}
+
+				.hiddenExam {
+					position: relative;
+					height: 700px;
+					overflow: hidden;
+				}
+
+				.hiddenExam::before {
+					content: '';
+					position: absolute;
+					bottom: 0;
+					left: 0;
+					width: 100%;
+					height: 400px;
+					background: linear-gradient(transparent, $white);
+				}
+
+				.showMoreContainer {
+					display: flex;
+					flex-direction: column;
+					width: 100%;
+					justify-content: center;
+					align-items: center;
+					margin-bottom: 70px;
+
+					.more {
+						width: fit-content;
+						height: 40px;
+						background-color: $ugoro;
+						color: $white;
+						border: 2px solid transparent;
+						margin: 15px 15px;
+						padding: 0px 15px;
+						display: flex;
+						flex-direction: row;
+						justify-content: center;
+						align-items: center;
+						border-radius: 5px;
+						transition: 0.2s linear;
+						font-weight: 500;
+					}
+
+					.more:hover {
+						background-color: $lightkahawa;
+						color: $ugoro;
+						border: 2px solid $lightblue;
+						cursor: pointer;
+					}
+				}
 			}
 
 			@media only screen and (max-width: 908px) {
@@ -157,6 +206,8 @@
 					flex-direction: column;
 					width: 100%;
 					height: fit-content;
+					justify-content: center;
+					align-items: center;
 
 					.statusBar {
 						width: 100%;
@@ -167,6 +218,18 @@
 
 					.download {
 						width: 100%;
+						margin: 0px;
+						margin-top: 10px;
+						padding: 10px;
+					}
+				}
+				.BodyContent {
+					.showMoreContainer {
+						.more {
+							margin: 0px;
+							margin-top: 10px;
+							padding: 10px;
+						}
 					}
 				}
 			}
