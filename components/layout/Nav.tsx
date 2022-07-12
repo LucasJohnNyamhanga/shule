@@ -6,6 +6,7 @@ import { NavContext } from '../../components/context/StateContext';
 import { useSession, getSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import User from '../layout/User';
 
 const Nav = () => {
 	const { setNavActive, navActive, userData, setUserData } =
@@ -174,9 +175,9 @@ const Nav = () => {
 						</div>
 						<div className={Styles.buttonsNav}>
 							{userData.id != '' ? (
-								<div onClick={handleLogOut} className={Styles.Register}>
-									Log Out
-								</div>
+								<>
+									<User signOut={handleLogOut} />
+								</>
 							) : (
 								<>
 									{/* <div className={Styles.Sign}>

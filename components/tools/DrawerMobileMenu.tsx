@@ -1,14 +1,6 @@
-import {
-	Drawer,
-	Box,
-	List,
-	ListItem,
-	ListItemText,
-	Divider,
-} from '@mui/material';
+import { Drawer, Box, List, ListItemText, Divider } from '@mui/material';
 import Link from 'next/link';
-import { type } from 'os';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Styles from '../../styles/drawerMobile.module.scss';
 
 type dataType = {
@@ -153,6 +145,10 @@ export const MuiDrawer = ({
 								<Divider />
 							</>
 						)}
+					</List>
+					<ListItemText primary={`ACCOUNT`} />
+					<Divider />
+					<List>
 						{userData.id == '' ? (
 							<>
 								<div
@@ -167,6 +163,30 @@ export const MuiDrawer = ({
 							</>
 						) : (
 							<>
+								<Link href={'#'}>
+									<a>
+										<div
+											onClick={() => {
+												handleMenuClick('');
+											}}
+											className={Styles.setCenter}>
+											My Account
+										</div>
+									</a>
+								</Link>
+								<Divider />
+								<Link href={'/Pricing'}>
+									<a>
+										<div
+											onClick={() => {
+												handleMenuClick('');
+											}}
+											className={Styles.setCenter}>
+											Pricing
+										</div>
+									</a>
+								</Link>
+								<Divider />
 								<div
 									className={Styles.activeCredential}
 									onClick={() => {
@@ -178,6 +198,7 @@ export const MuiDrawer = ({
 								<Divider />
 							</>
 						)}
+						<Divider />
 					</List>
 				</Box>
 			</Drawer>
