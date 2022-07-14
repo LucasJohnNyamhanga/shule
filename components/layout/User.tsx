@@ -72,9 +72,13 @@ export default function AccountMenu({ signOut }: dataUser) {
 				}}
 				transformOrigin={{ horizontal: 'right', vertical: 'top' }}
 				anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}>
-				<MenuItem>
-					<Avatar /> My account
-				</MenuItem>
+				<Link href='/Account'>
+					<a>
+						<MenuItem>
+							<Avatar /> My account
+						</MenuItem>
+					</a>
+				</Link>
 				<Link href='/Pricing'>
 					<a>
 						<MenuItem>

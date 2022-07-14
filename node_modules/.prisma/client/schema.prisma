@@ -36,6 +36,15 @@ model users {
   notesDownloadable notesDownloadable[]
   examDownloadable  examDownloadable[]
   review            review[]
+  vifurushi         vifurushi[]
+}
+
+model vifurushi {
+  id      Int    @id @default(autoincrement())
+  name    String
+  value   Int
+  usersId Int
+  users   users  @relation(fields: [usersId], references: [id])
 }
 
 model pin {
