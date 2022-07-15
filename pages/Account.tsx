@@ -234,7 +234,7 @@ function Pricing({
 												<td>{kifurushi.examsSolvedDownload}</td>
 											</tr>
 											<tr>
-												<td>Books Download </td>
+												<td>Book Download </td>
 												<td>{kifurushi.booksDownload}</td>
 											</tr>
 										</tbody>

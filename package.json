@@ -20,7 +20,7 @@
     "@mui/material": "^5.5.2",
     "@mui/styled-engine-sc": "^5.5.2",
     "@mui/styles": "^5.5.1",
-    "@prisma/client": "^3.14.0",
+    "@prisma/client": "^4.0.0",
     "@react-pdf-viewer/core": "^3.6.0",
     "@react-pdf-viewer/default-layout": "^3.6.0",
     "@tanem/react-nprogress": "^5.0.0",
@@ -68,7 +68,7 @@
     "@types/string-similarity": "^4.0.0",
     "eslint": "^8.15.0",
     "eslint-config-next": "^12.1.6",
-    "prisma": "^3.14.0",
+    "prisma": "^4.0.0",
     "typescript": "^4.6.4"
   }
 }

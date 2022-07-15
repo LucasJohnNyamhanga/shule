@@ -7,14 +7,47 @@ function Pricing(props) {
 	const { navActive, setNavActive, userData } = useContext(NavContext);
 	const { query, push } = useRouter();
 	let callback = query.callbackUrl;
+
 	let handleNotes = () => {
-		console.log(userData);
-		if (userData.id != '') {
-			push(`${callback}`);
-		} else {
-			console.log('Please wait..');
-		}
+		let note = {
+			notesDownload: 1,
+			quizExcercises: 5,
+		};
+		console.log(note);
 	};
+
+	let handleQuiz = () => {
+		let quiz = {
+			quizExcercises: 10,
+		};
+		console.log(quiz);
+	};
+
+	let handleExamUnsolved = () => {
+		let examUnsolved = {
+			examsUnsolvedDownload: 1,
+			quizExcercises: 3,
+		};
+		console.log(examUnsolved);
+	};
+
+	let handleExamSolved = () => {
+		let examSolved = {
+			examsSolvedDownload: 1,
+			examAccess: 1,
+			quizExcercises: 5,
+		};
+		console.log(examSolved);
+	};
+
+	let handleBooks = () => {
+		let books = {
+			quizExcercises: 5,
+			booksDownload: 1,
+		};
+		console.log(books);
+	};
+
 	return (
 		<div className={Styles.container}>
 			<div className={Styles.innerContainer}>
@@ -43,7 +76,9 @@ function Pricing(props) {
 										Quiz <div className={Styles.icon}>10 Excercises</div>
 									</li>
 								</ul>
-								<button className={Styles.btn2}>START</button>
+								<button onClick={handleQuiz} className={Styles.btn2}>
+									START
+								</button>
 							</div>
 						</div>
 						<div className={Styles.ribbon2}></div>
@@ -69,7 +104,9 @@ function Pricing(props) {
 										Quiz <div className={Styles.icon}>3 Excercises</div>
 									</li>
 								</ul>
-								<button className={Styles.btn3}>START</button>
+								<button onClick={handleExamUnsolved} className={Styles.btn3}>
+									START
+								</button>
 							</div>
 						</div>
 						<div className={Styles.ribbon3}></div>
@@ -98,7 +135,9 @@ function Pricing(props) {
 										Quiz <div className={Styles.icon}>5 Excercises</div>
 									</li>
 								</ul>
-								<button className={Styles.btn3}>START</button>
+								<button onClick={handleExamSolved} className={Styles.btn3}>
+									START
+								</button>
 							</div>
 						</div>
 						<div className={Styles.ribbon3}></div>
@@ -124,7 +163,7 @@ function Pricing(props) {
 										Quiz <div className={Styles.icon}>5 Excercises</div>
 									</li>
 								</ul>
-								<button className={Styles.btn1} onClick={handleNotes}>
+								<button onClick={handleNotes} className={Styles.btn1}>
 									START
 								</button>
 							</div>
@@ -151,7 +190,9 @@ function Pricing(props) {
 										Quiz <div className={Styles.icon}>5 Excercises</div>
 									</li>
 								</ul>
-								<button className={Styles.btn4}>START</button>
+								<button onClick={handleBooks} className={Styles.btn4}>
+									START
+								</button>
 							</div>
 						</div>
 						<div className={Styles.ribbon4}></div>

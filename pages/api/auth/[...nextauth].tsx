@@ -94,6 +94,7 @@ export default NextAuth({
 								{ name: 'examsUnsolvedDownload', value: 0 },
 								{ name: 'quizExcercises', value: 0 },
 								{ name: 'booksDownload', value: 0 },
+								{ name: 'examAccess', value: 0 },
 							],
 						},
 					},

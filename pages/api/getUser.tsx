@@ -17,6 +17,12 @@ export default async function handler(
 				username: true,
 				isAdmin: true,
 				image: true,
+				vifurushi: {
+					select: {
+						name: true,
+						value: true,
+					},
+				},
 			},
 		});
 		const user = JSON.parse(JSON.stringify(userFromServer));

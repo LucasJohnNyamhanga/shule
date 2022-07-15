@@ -10,6 +10,7 @@ import FileSaver from 'file-saver';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import toast, { Toaster } from 'react-hot-toast';
+import axios from 'axios';
 
 const subjectLocator = 'Physics';
 const formLocator = 'Form One';
@@ -53,6 +54,13 @@ const Index = ({
 	const { navActive, setNavActive, userData } = useContext(NavContext);
 	const { data: session, status } = useSession();
 	const { push, asPath } = useRouter();
+	const [salio, setSalio] = useState({
+		notesDownload: 0,
+		examsSolvedDownload: 0,
+		examsUnsolvedDownload: 0,
+		quizExcercises: 0,
+		booksDownload: 0,
+	});
 
 	useEffect(() => {
 		setNavActive('Notes');
@@ -61,18 +69,49 @@ const Index = ({
 
 	let handleDownload = (link: string) => {
 		if (session) {
-			push(`/Pricing?callbackUrl=${asPath}`);
+			notify('Checking Account Balance..');
+			checkUser(link);
+			// push(`/Pricing?callbackUrl=${asPath}`);
 			//FileSaver.saveAs(link, link.replace(/(.*)\//g, ''));
 		} else {
 			push(`/Auth/SignIn?callbackUrl=${asPath}`);
 		}
 	};
 
+	let checkUser = async (link: string) => {
+		let data = { username: userData.userName };
+		axios
+			.post('http://localhost:3000/api/getUser', data)
+			.then(function (response) {
+				//responce
+				const userData = JSON.parse(JSON.stringify(response.data));
+				userData.vifurushi.find((furushi: { name: string; value: number }) => {
+					Object.keys(salio).find((key) => {
+						if (key == furushi.name) {
+							setSalio({ ...salio, [key]: furushi.value });
+						}
+					});
+				});
+				if (salio.notesDownload > 0) {
+					notifySuccess('Download has started.');
+					FileSaver.saveAs(link, link.replace(/(.*)\//g, ''));
+
+					//!call decrement code
+				} else {
+					push(`/Pricing?callbackUrl=${asPath}`);
+				}
+			})
+			.catch(function (error) {
+				// handle error
+				console.log('Something went wrong');
+			});
+	};
+
 	//!mambo yanaanza
 
 	return (
 		<div className={Styles.container}>
-			<Toaster position='bottom-left' />
+			<Toaster position='bottom-left' reverseOrder={false} />
 			<Head>
 				<title>{`${subjectLocator} ${formLocator} Notes Download`}</title>
 				<meta name='viewport' content='initial-scale=1.0, width=device-width' />
