@@ -7,6 +7,8 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { getSession } from 'next-auth/react';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import Loader from '../components/tools/loader';
+import toast, { Toaster } from 'react-hot-toast';
+import bcrypt from 'bcryptjs';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
@@ -26,6 +28,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 				isAdmin: true,
 				username: true,
 				name: true,
+				password: true,
 				vifurushi: {},
 			},
 		});
@@ -49,19 +52,34 @@ function Pricing({
 	const password2 = useRef<HTMLInputElement>(null!);
 	const [resetPassword, setResetPassword] = useState(false);
 	const [loadingDisplay, setLoadingDisplay] = useState(false);
+	const [passChange, setPassChange] = useState({
+		password: '',
+		password1: '',
+		password2: '',
+	});
+
+	const notify = (message: string) => toast(message);
+	const notifySuccess = (message: string) => toast.success(message);
+	const notifyError = (message: string) => toast.error(message);
 
 	let handletextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		let value = e.target.value;
 		let name = e.target.name;
+		setPassChange({ ...passChange, [name]: value });
+		password.current.style.color = 'black';
+		password1.current.style.color = 'black';
+		password2.current.style.color = 'black';
 	};
 
 	let togglePasswordSignUp = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.checked) {
 			password1.current.type = 'text';
 			password2.current.type = 'text';
+			password.current.type = 'text';
 		} else {
 			password1.current.type = 'password';
 			password2.current.type = 'password';
+			password.current.type = 'password';
 		}
 	};
 
@@ -70,10 +88,40 @@ function Pricing({
 		setResetPassword(!resetPassword);
 	};
 
-	let resetPasswordNow = () => {};
+	let resetPasswordNow = async () => {
+		if (
+			passChange.password1 != '' &&
+			passChange.password2 != '' &&
+			passChange.password != ''
+		) {
+			//
+			let comaparison = await bcrypt.compare(
+				passChange.password,
+				userfound.password
+			);
+
+			if (comaparison) {
+				if (passChange.password1 == passChange.password2) {
+					console.log('Lets change this');
+				} else {
+					password1.current.focus();
+					password1.current.style.color = 'red';
+					password2.current.style.color = 'red';
+					notifyError('Password does not match.');
+				}
+			} else {
+				notifyError('Enter Correct Password');
+				password.current.focus();
+				password.current.style.color = 'red';
+			}
+		} else {
+			notifyError('Enter all details.');
+		}
+	};
 
 	return (
 		<div className={Styles.container}>
+			<Toaster position='bottom-left' reverseOrder={false} />
 			<div className={Styles.innerContainer}>
 				{!resetPassword && (
 					<>
@@ -83,8 +131,8 @@ function Pricing({
 							</Avatar>
 							<div className={Styles.list}>
 								<ul>
+									<li className={Styles.userName}>{userfound.username}</li>
 									<li>{userfound.name}</li>
-									<li>{userfound.username}</li>
 									<li>{userfound.isAdmin ? 'Administrator' : ''}</li>
 									<li className={Styles.edit} onClick={reset}>
 										Edit Password
@@ -145,9 +193,9 @@ function Pricing({
 								<input
 									ref={password}
 									type='password'
-									value={''}
+									value={passChange.password}
 									placeholder={`Current Password`}
-									name={'firstName'}
+									name={'password'}
 									onChange={(event) => {
 										handletextChange(event);
 									}}
@@ -158,9 +206,9 @@ function Pricing({
 								<input
 									ref={password1}
 									type='password'
-									value={''}
+									value={passChange.password1}
 									placeholder={`New Password`}
-									name={'lastName'}
+									name={'password1'}
 									onChange={(event) => {
 										handletextChange(event);
 									}}
@@ -171,9 +219,9 @@ function Pricing({
 								<input
 									ref={password2}
 									type='password'
-									value={''}
+									value={passChange.password2}
 									placeholder={`Retype New Password`}
-									name={'username'}
+									name={'password2'}
 									onChange={(event) => {
 										handletextChange(event);
 									}}

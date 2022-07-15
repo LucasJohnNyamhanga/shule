@@ -1,5 +1,4 @@
 import InputTextMui from '../../../../components/tools/InputTextMui';
-import { type } from 'os';
 import { form, subject } from '@prisma/client';
 import { prisma } from '../../../../db/prisma';
 import SelectMiu from '../../../../components/tools/SelectMui';
@@ -7,7 +6,6 @@ import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import Styles from '../../../../styles/topic.module.scss';
 import { ReactNode } from 'react';
-import SnackBar from '../../../../components/tools/SnackBar';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import FileUpload from '../../../../components/tools/FileUploadAny';
 import toast, { Toaster } from 'react-hot-toast';
@@ -79,10 +77,10 @@ type formData = {
 }[];
 
 const Create = ({
-    	forms,
-    	subjects,
-    	deactiveteImage,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	forms,
+	subjects,
+	deactiveteImage,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive, userData } = useContext(NavContext);
 
 	useEffect(() => {
