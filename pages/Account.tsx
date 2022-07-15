@@ -1,4 +1,11 @@
-import { ChangeEvent, ReactNode, useContext, useRef, useState } from 'react';
+import {
+	ChangeEvent,
+	ReactNode,
+	useContext,
+	useEffect,
+	useRef,
+	useState,
+} from 'react';
 import Styles from '../styles/account.module.scss';
 import { useRouter } from 'next/router';
 import { NavContext } from '../components/context/StateContext';
@@ -10,6 +17,7 @@ import Loader from '../components/tools/loader';
 import toast, { Toaster } from 'react-hot-toast';
 import bcrypt from 'bcryptjs';
 import axios from 'axios';
+import { vifurushi } from '@prisma/client';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
@@ -45,10 +53,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 function Pricing({
-    	userfound,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-	console.log(userfound.vifurushi);
-
+	userfound,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
 	const password = useRef<HTMLInputElement>(null!);
 	const password1 = useRef<HTMLInputElement>(null!);
 	const password2 = useRef<HTMLInputElement>(null!);
@@ -59,6 +65,13 @@ function Pricing({
 		password1: '',
 		password2: '',
 		id: userfound.id,
+	});
+	const [kifurushi, setKifurushi] = useState({
+		notesDownload: 0,
+		examsSolvedDownload: 0,
+		examsUnsolvedDownload: 0,
+		quizExcercises: 0,
+		booksDownload: 0,
 	});
 
 	const notify = (message: string) => toast(message);
@@ -160,6 +173,16 @@ function Pricing({
 		}
 	};
 
+	useEffect(() => {
+		userfound.vifurushi.find((furushi: { name: string; value: number }) => {
+			Object.keys(kifurushi).find((key) => {
+				if (key == furushi.name) {
+					setKifurushi({ ...kifurushi, [key]: furushi.value });
+				}
+			});
+		});
+	}, []);
+
 	return (
 		<div className={Styles.container}>
 			<Toaster position='bottom-left' reverseOrder={false} />
@@ -196,23 +219,23 @@ function Pricing({
 										<tbody>
 											<tr>
 												<td>Notes Download </td>
-												<td>0</td>
+												<td>{kifurushi.notesDownload}</td>
 											</tr>
 											<tr>
 												<td>Quiz Exercise </td>
-												<td>0</td>
+												<td>{kifurushi.quizExcercises}</td>
 											</tr>
 											<tr>
 												<td>UnSolved Exam Download </td>
-												<td>0</td>
+												<td>{kifurushi.examsUnsolvedDownload}</td>
 											</tr>
 											<tr>
 												<td>Solved Exam Download </td>
-												<td>0</td>
+												<td>{kifurushi.examsSolvedDownload}</td>
 											</tr>
 											<tr>
 												<td>Books Download </td>
-												<td>0</td>
+												<td>{kifurushi.booksDownload}</td>
 											</tr>
 										</tbody>
 									</table>

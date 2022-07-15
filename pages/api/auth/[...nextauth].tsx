@@ -87,6 +87,15 @@ export default NextAuth({
 						image: token.picture,
 						username: token.email,
 						password: `googleHasIt`,
+						vifurushi: {
+							create: [
+								{ name: 'notesDownload', value: 0 },
+								{ name: 'examsSolvedDownload', value: 0 },
+								{ name: 'examsUnsolvedDownload', value: 0 },
+								{ name: 'quizExcercises', value: 0 },
+								{ name: 'booksDownload', value: 0 },
+							],
+						},
 					},
 				});
 			}

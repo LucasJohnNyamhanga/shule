@@ -14,6 +14,15 @@ export default async function handler(
 				image,
 				username,
 				password,
+				vifurushi: {
+					create: [
+						{ name: 'notesDownload', value: 0 },
+						{ name: 'examsSolvedDownload', value: 0 },
+						{ name: 'examsUnsolvedDownload', value: 0 },
+						{ name: 'quizExcercises', value: 0 },
+						{ name: 'booksDownload', value: 0 },
+					],
+				},
 			},
 		});
 		res.status(200).json({

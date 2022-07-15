@@ -47,6 +47,12 @@ const Nav = () => {
 					.catch(function (error) {
 						// handle error
 						console.log('Something went wrong');
+						setUserData({
+							id: '',
+							isAdmin: false,
+							userName: '',
+							image: '',
+						});
 					});
 				setLimit(limt + 1);
 			}
