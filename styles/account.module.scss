@@ -269,11 +269,14 @@
 					margin-right: 10px;
 				}
 			}
-			.loader {
-				height: fit-content;
-				margin: 20px;
-				height: 80px;
-			}
+		}
+		.loader {
+			width: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 80px;
+			margin-top: 15px;
 		}
 	}
 
@@ -371,10 +374,10 @@
 						margin-right: 10px;
 					}
 				}
-				.loader {
-					height: fit-content;
-					height: 40px;
-				}
+			}
+			.loader {
+				height: fit-content;
+				height: 40px;
 			}
 		}
 	}

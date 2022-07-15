@@ -9,6 +9,7 @@ import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import Loader from '../components/tools/loader';
 import toast, { Toaster } from 'react-hot-toast';
 import bcrypt from 'bcryptjs';
+import axios from 'axios';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
@@ -25,6 +26,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 				username: session.user.email,
 			},
 			select: {
+				id: true,
 				isAdmin: true,
 				username: true,
 				name: true,
@@ -43,8 +45,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 function Pricing({
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+    	userfound,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) {
 	console.log(userfound.vifurushi);
 
 	const password = useRef<HTMLInputElement>(null!);
@@ -56,6 +58,7 @@ function Pricing({
 		password: '',
 		password1: '',
 		password2: '',
+		id: userfound.id,
 	});
 
 	const notify = (message: string) => toast(message);
@@ -88,6 +91,41 @@ function Pricing({
 		setResetPassword(!resetPassword);
 	};
 
+	let sendToDatabase = (hash: string) => {
+		let database = {
+			password: hash,
+			id: userfound.id,
+		};
+		axios({
+			method: 'post',
+			url: 'http://localhost:3000/api/updatePassword',
+			data: database,
+		})
+			.then(function (response) {
+				// handle success
+				setPassChange({
+					password: '',
+					password1: '',
+					password2: '',
+					id: userfound.id,
+				});
+				setLoadingDisplay(false);
+
+				if (response.data.type == 'success') {
+					notifySuccess(response.data.message);
+				} else {
+					notifyError(response.data.message);
+				}
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+			})
+			.then(function () {
+				// always executed
+			});
+	};
+
 	let resetPasswordNow = async () => {
 		if (
 			passChange.password1 != '' &&
@@ -102,7 +140,10 @@ function Pricing({
 
 			if (comaparison) {
 				if (passChange.password1 == passChange.password2) {
-					console.log('Lets change this');
+					setLoadingDisplay(true);
+					bcrypt.hash(passChange.password1, 10, function (err, hash) {
+						sendToDatabase(hash);
+					});
 				} else {
 					password1.current.focus();
 					password1.current.style.color = 'red';
