@@ -39,7 +39,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 				username: true,
 				name: true,
 				password: true,
-				vifurushi: {},
+				vifurushi: {
+					select: {
+						name: true,
+						value: true,
+					},
+				},
 			},
 		});
 		const userfound = await JSON.parse(JSON.stringify(userFromServer));
@@ -72,6 +77,7 @@ function Pricing({
 		examsUnsolvedDownload: 0,
 		quizExcercises: 0,
 		booksDownload: 0,
+		examAccess: 0,
 	});
 
 	const notify = (message: string) => toast(message);
@@ -173,16 +179,6 @@ function Pricing({
 		}
 	};
 
-	useEffect(() => {
-		userfound.vifurushi.find((furushi: { name: string; value: number }) => {
-			Object.keys(kifurushi).find((key) => {
-				if (key == furushi.name) {
-					setKifurushi({ ...kifurushi, [key]: furushi.value });
-				}
-			});
-		});
-	}, []);
-
 	return (
 		<div className={Styles.container}>
 			<Toaster position='bottom-left' reverseOrder={false} />
@@ -217,26 +213,21 @@ function Pricing({
 											</tr>
 										</thead>
 										<tbody>
-											<tr>
-												<td>Notes Download </td>
-												<td>{kifurushi.notesDownload}</td>
-											</tr>
-											<tr>
-												<td>Quiz Exercise </td>
-												<td>{kifurushi.quizExcercises}</td>
-											</tr>
-											<tr>
-												<td>UnSolved Exam Download </td>
-												<td>{kifurushi.examsUnsolvedDownload}</td>
-											</tr>
-											<tr>
-												<td>Solved Exam Download </td>
-												<td>{kifurushi.examsSolvedDownload}</td>
-											</tr>
-											<tr>
-												<td>Book Download </td>
-												<td>{kifurushi.booksDownload}</td>
-											</tr>
+											{userfound.vifurushi.map(
+												(furushi: { name: string; value: number }) => (
+													<tr key={furushi.name}>
+														<td>
+															{furushi.name
+																.replace(/([A-Z])/g, ' $1')
+																// uppercase the first character
+																.replace(/^./, function (str) {
+																	return str.toUpperCase();
+																})}
+														</td>
+														<td>{furushi.value}</td>
+													</tr>
+												)
+											)}
 										</tbody>
 									</table>
 								</div>

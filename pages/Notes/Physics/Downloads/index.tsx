@@ -69,10 +69,7 @@ const Index = ({
 
 	let handleDownload = (link: string) => {
 		if (session) {
-			notify('Checking Account Balance..');
 			checkUser(link);
-			// push(`/Pricing?callbackUrl=${asPath}`);
-			//FileSaver.saveAs(link, link.replace(/(.*)\//g, ''));
 		} else {
 			push(`/Auth/SignIn?callbackUrl=${asPath}`);
 		}
@@ -85,25 +82,49 @@ const Index = ({
 			.then(function (response) {
 				//responce
 				const userData = JSON.parse(JSON.stringify(response.data));
-				userData.vifurushi.find((furushi: { name: string; value: number }) => {
-					Object.keys(salio).find((key) => {
-						if (key == furushi.name) {
-							setSalio({ ...salio, [key]: furushi.value });
-						}
-					});
-				});
-				if (salio.notesDownload > 0) {
-					notifySuccess('Download has started.');
-					FileSaver.saveAs(link, link.replace(/(.*)\//g, ''));
 
-					//!call decrement code
-				} else {
-					push(`/Pricing?callbackUrl=${asPath}`);
-				}
+				userData.vifurushi.find(
+					({ name, value }: { name: string; value: number }) => {
+						if (name === 'notesDownload') {
+							if (value > 0) {
+								FileSaver.saveAs(link, link.replace(/(.*)\//g, ''));
+
+								//!call decrement code
+								decrementData({ name: 'notesDownload', id: userData.id });
+							} else {
+								push(`/Pricing?callbackUrl=${asPath}`);
+							}
+						}
+					}
+				);
 			})
 			.catch(function (error) {
 				// handle error
 				console.log('Something went wrong');
+			});
+	};
+
+	let decrementData = (databaseData: { name: string; id: string }) => {
+		axios({
+			method: 'post',
+			url: 'http://localhost:3000/api/updateKifurushiUse',
+			data: databaseData,
+		})
+			.then(function (response) {
+				// handle success
+
+				if (response.data.type == 'success') {
+					notifySuccess(response.data.message);
+				} else {
+					notifyError(response.data.message);
+				}
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+			})
+			.then(function () {
+				// always executed
 			});
 	};
 

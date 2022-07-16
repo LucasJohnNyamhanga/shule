@@ -2,33 +2,41 @@ import { ReactNode, useContext } from 'react';
 import Styles from '../styles/pricing.module.scss';
 import { useRouter } from 'next/router';
 import { NavContext } from '../components/context/StateContext';
+import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
 
 function Pricing(props) {
 	const { navActive, setNavActive, userData } = useContext(NavContext);
 	const { query, push } = useRouter();
 	let callback = query.callbackUrl;
+	const notify = (message: string) => toast(message);
+	const notifySuccess = (message: string) => toast.success(message);
+	const notifyError = (message: string) => toast.error(message);
 
 	let handleNotes = () => {
 		let note = {
 			notesDownload: 1,
 			quizExcercises: 5,
+			key: 'Notes',
 		};
-		console.log(note);
+		sendToDatabase(note);
 	};
 
 	let handleQuiz = () => {
 		let quiz = {
 			quizExcercises: 10,
+			key: 'Quiz',
 		};
-		console.log(quiz);
+		sendToDatabase(quiz);
 	};
 
 	let handleExamUnsolved = () => {
 		let examUnsolved = {
 			examsUnsolvedDownload: 1,
 			quizExcercises: 3,
+			key: 'Unsolved Exam',
 		};
-		console.log(examUnsolved);
+		sendToDatabase(examUnsolved);
 	};
 
 	let handleExamSolved = () => {
@@ -36,20 +44,47 @@ function Pricing(props) {
 			examsSolvedDownload: 1,
 			examAccess: 1,
 			quizExcercises: 5,
+			key: 'Solved Exam',
 		};
-		console.log(examSolved);
+		sendToDatabase(examSolved);
 	};
 
 	let handleBooks = () => {
 		let books = {
 			quizExcercises: 5,
 			booksDownload: 1,
+			key: 'Books',
 		};
-		console.log(books);
+		sendToDatabase(books);
+	};
+
+	let sendToDatabase = (databaseData: {}) => {
+		let database = { ...databaseData, id: userData.id };
+		axios({
+			method: 'post',
+			url: 'http://localhost:3000/api/updateKifurushi',
+			data: database,
+		})
+			.then(function (response) {
+				// handle success
+				if (response.data.type == 'success') {
+					notifySuccess(response.data.message);
+				} else {
+					notifyError(response.data.message);
+				}
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+			})
+			.then(function () {
+				// always executed
+			});
 	};
 
 	return (
 		<div className={Styles.container}>
+			<Toaster position='bottom-left' reverseOrder={false} />
 			<div className={Styles.innerContainer}>
 				<div className={Styles.intro}>
 					Find the right package to power your learning.

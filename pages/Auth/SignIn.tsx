@@ -70,7 +70,6 @@ const SignIn = ({}) => {
 	let signInWithCredentials = async () => {
 		if (formData.password != '' && formData.username != '') {
 			setLoadingDisplay(true);
-			console.log(callback);
 			//!use data to proceed
 			const data = await signIn('credentials', {
 				redirect: false,

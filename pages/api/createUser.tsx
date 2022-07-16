@@ -17,11 +17,11 @@ export default async function handler(
 				vifurushi: {
 					create: [
 						{ name: 'notesDownload', value: 0 },
-						{ name: 'examsSolvedDownload', value: 0 },
-						{ name: 'examsUnsolvedDownload', value: 0 },
 						{ name: 'quizExcercises', value: 0 },
-						{ name: 'booksDownload', value: 0 },
+						{ name: 'examsUnsolvedDownload', value: 0 },
+						{ name: 'examsSolvedDownload', value: 0 },
 						{ name: 'examAccess', value: 0 },
+						{ name: 'booksDownload', value: 0 },
 					],
 				},
 			},
