@@ -53,6 +53,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		props: {
 			thisexam,
 		},
+		revalidate: 15,
 	};
 };
 
@@ -123,7 +124,6 @@ const Index = ({
 
 	useEffect(() => {
 		setNavActive('Exams');
-		console.log(thisexam.hasAnswers);
 		if (thisexam.hasAnswers && purchased) {
 			setHideContent(true);
 		}
@@ -152,7 +152,7 @@ const Index = ({
 	};
 
 	let checkUser = async () => {
-		notify('Checking...');
+		notify('...');
 		let data = { username: userData.userName };
 		axios
 			.post('http://localhost:3000/api/getUser', data)

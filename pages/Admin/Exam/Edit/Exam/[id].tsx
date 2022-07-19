@@ -104,10 +104,10 @@ type formData = {
 }[];
 
 const EditExam = ({
-    	exam,
-    	forms,
-    	subjects,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	exam,
+	forms,
+	subjects,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive, userData } = useContext(NavContext);
 
 	useEffect(() => {
@@ -190,7 +190,7 @@ const EditExam = ({
 		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [change]);
+	}, []);
 
 	let retriaveExamTypeData = () => {
 		setHideShow(false);
@@ -246,7 +246,11 @@ const EditExam = ({
 	};
 
 	let handleSelectTopic = (value: string) => {
-		setExamSelectValue({ ...examSelectValue, examTypeId: value });
+		setExamSelectValue({
+			...examSelectValue,
+			examTypeId: value,
+			userId: userData.id,
+		});
 	};
 
 	let handleCreateNotes = () => {
