@@ -37,6 +37,7 @@ model users {
   examDownloadable  examDownloadable[]
   review            review[]
   vifurushi         vifurushi[]
+  purchase          purchase[]
 }
 
 model vifurushi {
@@ -47,24 +48,12 @@ model vifurushi {
   users   users  @relation(fields: [usersId], references: [id])
 }
 
-model pin {
-  id         Int      @id @default(autoincrement())
-  pin        Int
-  active     Boolean  @default(true)
-  used       Boolean  @default(false)
-  days       Int
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  categoryId Int
-  category   category @relation(fields: [categoryId], references: [id])
-}
-
-model category {
-  id        Int      @id @default(autoincrement())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  pin       pin[]
+model purchase {
+  id      Int    @id @default(autoincrement())
+  name    String
+  value   Int
+  usersId Int
+  users   users  @relation(fields: [usersId], references: [id])
 }
 
 model subject {

@@ -26,7 +26,7 @@ type dataProps = AppProps & {
 	Component: Page;
 };
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }) {
 	const matches = useMediaQuery('(min-width:958px)');
 
 	const [navActive, setNavActive] = useState('Notes');
@@ -77,7 +77,7 @@ function MyApp({ Component, pageProps }) {
     `}</style> */}
 
 				<Progress isAnimating={isAnimating} />
-				<SessionProvider session={pageProps.session} refetchInterval={0}>
+				<SessionProvider session={session} refetchInterval={0}>
 					<NavContext.Provider
 						value={{
 							setNavActive,
@@ -98,7 +98,7 @@ function MyApp({ Component, pageProps }) {
 		<div className='container'>
 			<Progress isAnimating={isAnimating} />
 			<SessionProvider
-				session={pageProps.session}
+				session={session}
 				refetchInterval={5 * 60}
 				refetchOnWindowFocus={true}>
 				<NavContext.Provider

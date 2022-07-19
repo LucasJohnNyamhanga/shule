@@ -17,7 +17,7 @@ const formLocatorLink = 'FormOne';
 
 export const getStaticProps: GetStaticProps = async (context) => {
 	const id = context.params?.id;
-	let Id = parseInt(String(id));
+	const Id = parseInt(String(id));
 	// ...
 	const examServer = await prisma.reference.findUnique({
 		where: {
@@ -53,7 +53,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 	const examType = JSON.parse(JSON.stringify(examServer));
 
 	const paths = examType.map((type: examType) => {
-		let id = String(type.id);
+		const id = String(type.id);
 		return {
 			params: {
 				id: `${id}`,
@@ -73,16 +73,14 @@ const Index = ({
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
 	const { navActive, setNavActive, userData } = useContext(NavContext);
-	const { data: session, status } = useSession();
 	const { push, asPath } = useRouter();
 
 	useEffect(() => {
 		setNavActive('References');
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [navActive]);
 
-	let handleDownload = (link: string) => {
-		if (session) {
+	const handleDownload = (link: string) => {
+		if (userData.id != '') {
 			push(`/Pricing?callbackUrl=${asPath}`);
 			//FileSaver.saveAs(link, link.replace(/(.*)\//g, ''));
 		} else {

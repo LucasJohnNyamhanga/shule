@@ -1,10 +1,12 @@
 import React, { ReactNode, useContext, useEffect, useState } from 'react';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { prisma } from '../../../../db/prisma';
 import Styles from '../../../../styles/notesMaker.module.scss';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
-import InputTextMui from '../../../../components/tools/InputTextMui';
 import { NavContext } from '../../../../components/context/StateContext';
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import InputTextMui from '../../../../components/tools/InputTextMui';
+
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
@@ -35,6 +37,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			};
 		}
 	}
+
+	await prisma.$disconnect();
 	return {
 		props: {},
 	};

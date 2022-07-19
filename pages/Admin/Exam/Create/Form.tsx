@@ -1,10 +1,11 @@
 import React, { ReactNode, useContext, useEffect, useState } from 'react';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { prisma } from '../../../../db/prisma';
 import Styles from '../../../../styles/notesMaker.module.scss';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
-import InputTextMui from '../../../../components/tools/InputTextMui';
 import { NavContext } from '../../../../components/context/StateContext';
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import InputTextMui from '../../../../components/tools/InputTextMui';
 
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -36,14 +37,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			};
 		}
 	}
+
+	await prisma.$disconnect();
 	return {
 		props: {},
 	};
 };
 
-const Form = (
-	props: InferGetServerSidePropsType<typeof getServerSideProps>
-) => {
+const Notes = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive, userData } = useContext(NavContext);
 	const [formData, setFormData] = useState({
 		formName: '',
@@ -57,11 +58,9 @@ const Form = (
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [userData]);
-
 	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
-
 	let handleTextInput = (
 		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
 		name: string
@@ -69,7 +68,6 @@ const Form = (
 		let value = event.currentTarget.value;
 		setFormData({ ...formData, formName: value });
 	};
-
 	let handleCreateNotes = () => {
 		if (formData.formName != '') {
 			verifyForm();
@@ -77,7 +75,6 @@ const Form = (
 			notifyError('Fill in form name to proceed.');
 		}
 	};
-
 	let sendToDatabase = () => {
 		axios({
 			method: 'post',
@@ -92,7 +89,6 @@ const Form = (
 				});
 				let jibu: string = response.data.message;
 				let type: string = response.data.type;
-
 				if (type == 'success') {
 					notifySuccess(jibu);
 				} else {
@@ -108,7 +104,6 @@ const Form = (
 				// always executed
 			});
 	};
-
 	let verifyForm = () => {
 		axios({
 			method: 'post',
@@ -132,7 +127,6 @@ const Form = (
 				// always executed
 			});
 	};
-
 	return (
 		<div className={Styles.container}>
 			<Toaster position='bottom-left' />
@@ -157,9 +151,9 @@ const Form = (
 	);
 };
 
-export default Form;
+export default Notes;
 
 //*Removing default search bar :)
-Form.getLayout = function PageLayout(page: ReactNode) {
+Notes.getLayout = function PageLayout(page: ReactNode) {
 	return <>{page}</>;
 };
