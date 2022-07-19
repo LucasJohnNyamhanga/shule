@@ -158,7 +158,8 @@ const Index = ({
 				//responce
 				const userData = JSON.parse(JSON.stringify(response.data));
 				let imenunuliwa = userData.purchase.find((sell) => {
-					return sell.id == thisexam.id;
+					console.log(sell);
+					return sell.value == thisexam.id;
 				});
 
 				if (imenunuliwa) {
@@ -171,13 +172,13 @@ const Index = ({
 								if (value > 0) {
 									setHideContent(!hideContent);
 									createPurchase({
-										name: 'notesDownload',
+										name: 'examAccess',
 										value: thisexam.id,
 										usersId: userData.id,
 									});
 
 									//!call decrement code
-									decrementData({ name: 'notesDownload', id: userData.id });
+									decrementData({ name: 'examAccess', id: userData.id });
 								} else {
 									push(`/Pricing?callbackUrl=${asPath}`);
 								}

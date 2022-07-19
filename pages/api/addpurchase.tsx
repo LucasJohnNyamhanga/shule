@@ -12,11 +12,11 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	const { name, value, id } = req.body;
+	const { name, value, usersId } = req.body;
 	try {
 		await prisma.purchase.create({
 			data: {
-				usersId: parseInt(id),
+				usersId: parseInt(usersId),
 				name,
 				value,
 			},
