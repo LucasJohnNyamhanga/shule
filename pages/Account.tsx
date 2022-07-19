@@ -1,78 +1,94 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable react/react-in-jsx-scope */
-import {
-	ChangeEvent,
-	ReactNode,
-	useContext,
-	useEffect,
-	useRef,
-	useState,
-} from 'react';
+import { ChangeEvent, useRef } from 'react';
 import Styles from '../styles/account.module.scss';
 import Avatar from '@mui/material/Avatar';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import Loader from '../components/tools/loader';
-import toast, { Toaster } from 'react-hot-toast';
 import bcrypt from 'bcryptjs';
+
+import React, { ReactNode, useContext, useEffect, useState } from 'react';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { prisma } from '../db/prisma';
+import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import { NavContext } from '../components/context/StateContext';
+import InputTextMui from '../components/tools/InputTextMui';
 
-type dataUser = {
-	id: number;
-	name: string;
-	image: string | null;
-	username: string | null;
-	password: string | null;
-	isAdmin: boolean;
-	vifurushi: {
-		name: string;
-		value: number;
-	}[];
+import { getSession } from 'next-auth/react';
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const session = await getSession(context);
+	if (!session) {
+		return {
+			redirect: {
+				destination: `/Auth/SignIn?callbackUr=/`,
+				permanent: false,
+			},
+		};
+	} else {
+		const userFromServer = await prisma.users.findFirst({
+			where: {
+				username: session.user.email,
+			},
+			select: {
+				isAdmin: true,
+			},
+		});
+		const userfound = await JSON.parse(JSON.stringify(userFromServer));
+
+		if (!userfound.isAdmin) {
+			return {
+				redirect: {
+					destination: '/',
+					permanent: false,
+				},
+			};
+		}
+	}
+	const userFromServer = await prisma.users.findFirst({
+		where: {
+			username: session.user.email,
+		},
+		select: {
+			id: true,
+			isAdmin: true,
+			name: true,
+			username: true,
+			password: true,
+			vifurushi: {
+				select: {
+					name: true,
+					value: true,
+				},
+			},
+		},
+	});
+	const userfound = await JSON.parse(JSON.stringify(userFromServer));
+
+	await prisma.$disconnect();
+	return {
+		props: { userfound },
+	};
 };
 
-const Account = (props) => {
+const Notes = ({
+	userfound,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const password = useRef<HTMLInputElement>(null!);
 	const password1 = useRef<HTMLInputElement>(null!);
 	const password2 = useRef<HTMLInputElement>(null!);
 	const [resetPassword, setResetPassword] = useState(false);
-	const [userfound, setUserfound] = useState<dataUser>();
 	const [loadingDisplay, setLoadingDisplay] = useState(false);
 	const [onlyOnce, setONlyOnce] = useState(true);
-	const { userData } = useContext(NavContext);
 	const [passChange, setPassChange] = useState({
 		password: '',
 		password1: '',
 		password2: '',
-		id: userData.id,
+		id: userfound.id,
 	});
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
-
-	const checkUser = async () => {
-		const data = { username: userData.userName };
-
-		axios
-			.post('http://localhost:3000/api/getUser', data)
-			.then(function (response) {
-				//responce
-				const users = JSON.parse(JSON.stringify(response.data));
-				if (users) {
-					setONlyOnce(false);
-				}
-				setUserfound(users);
-				console.log(users);
-			})
-			.catch(function (error) {
-				// handle error
-			});
-	};
-
-	if (onlyOnce) {
-		checkUser();
-	}
-
-	// useEffect(() => {}, [userfound]);
 
 	const handletextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value;
@@ -95,12 +111,11 @@ const Account = (props) => {
 	};
 	const reset = () => {
 		setResetPassword(!resetPassword);
-		setResetPassword(!resetPassword);
 	};
 	const sendToDatabase = (hash: string) => {
 		const database = {
 			password: hash,
-			id: userData.id,
+			id: userfound.id,
 		};
 		axios({
 			method: 'post',
@@ -118,6 +133,7 @@ const Account = (props) => {
 				setLoadingDisplay(false);
 				if (response.data.type == 'success') {
 					notifySuccess(response.data.message);
+					setResetPassword(!resetPassword);
 				} else {
 					notifyError(response.data.message);
 				}
@@ -162,15 +178,7 @@ const Account = (props) => {
 			notifyError('Enter all details.');
 		}
 	};
-	return !userfound ? (
-		<div className={Styles.container}>
-			<div className={Styles.innerContainer}>
-				<div className={Styles.loading}>
-					<Loader />
-				</div>
-			</div>
-		</div>
-	) : (
+	return (
 		<div className={Styles.container}>
 			<Toaster position='bottom-left' reverseOrder={false} />
 			<div className={Styles.innerContainer}>
@@ -303,9 +311,9 @@ const Account = (props) => {
 	);
 };
 
-export default Account;
+export default Notes;
 
-//* Removing default search bar :)
-Account.getLayout = function PageLayout(page: ReactNode) {
+//*Removing default search bar :)
+Notes.getLayout = function PageLayout(page: ReactNode) {
 	return <>{page}</>;
 };
