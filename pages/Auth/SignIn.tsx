@@ -171,7 +171,13 @@ const SignIn = ({}) => {
 
 	let registration = (password: string) => {
 		let dataUser = {
-			name: `${register.firstName} ${register.lastName}`,
+			name: `${
+				register.firstName.charAt(0).toUpperCase() +
+				register.firstName.toLowerCase().slice(1)
+			} ${
+				register.lastName.charAt(0).toUpperCase() +
+				register.lastName.toLowerCase().slice(1)
+			}`,
 			image: null,
 			username: register.username,
 			password,

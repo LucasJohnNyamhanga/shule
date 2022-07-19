@@ -69,6 +69,9 @@ function Pricing(props) {
 				// handle success
 				if (response.data.type == 'success') {
 					notifySuccess(response.data.message);
+					if (typeof callback != 'undefined') {
+						push(`${callback}`);
+					}
 				} else {
 					notifyError(response.data.message);
 				}

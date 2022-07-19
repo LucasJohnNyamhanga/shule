@@ -24,6 +24,12 @@ export default async function handler(
 						value: true,
 					},
 				},
+				purchase: {
+					select: {
+						name: true,
+						value: true,
+					},
+				},
 			},
 		});
 		const user = JSON.parse(JSON.stringify(userFromServer));
