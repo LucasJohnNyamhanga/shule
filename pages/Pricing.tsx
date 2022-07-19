@@ -16,7 +16,7 @@ function Pricing(props) {
 	let handleNotes = () => {
 		let note = {
 			notesDownload: 1,
-			quizExcercises: 5,
+			quizExcercises: 1,
 			key: 'Notes',
 		};
 		sendToDatabase(note);
@@ -33,7 +33,7 @@ function Pricing(props) {
 	let handleExamUnsolved = () => {
 		let examUnsolved = {
 			examsUnsolvedDownload: 1,
-			quizExcercises: 3,
+			quizExcercises: 1,
 			key: 'Unsolved Exam',
 		};
 		sendToDatabase(examUnsolved);
@@ -43,7 +43,7 @@ function Pricing(props) {
 		let examSolved = {
 			examsSolvedDownload: 1,
 			examAccess: 1,
-			quizExcercises: 5,
+			quizExcercises: 1,
 			key: 'Solved Exam',
 		};
 		sendToDatabase(examSolved);
@@ -51,7 +51,7 @@ function Pricing(props) {
 
 	let handleBooks = () => {
 		let books = {
-			quizExcercises: 5,
+			quizExcercises: 1,
 			booksDownload: 1,
 			key: 'Books',
 		};
@@ -139,7 +139,7 @@ function Pricing(props) {
 										Exam Download<div className={Styles.icon}>1</div>
 									</li>
 									<li>
-										Quiz <div className={Styles.icon}>3 Excercises</div>
+										Quiz <div className={Styles.icon}>1 Excercises</div>
 									</li>
 								</ul>
 								<button onClick={handleExamUnsolved} className={Styles.btn3}>
@@ -170,7 +170,7 @@ function Pricing(props) {
 										Exam Access<div className={Styles.icon}>1</div>
 									</li>
 									<li>
-										Quiz <div className={Styles.icon}>5 Excercises</div>
+										Quiz <div className={Styles.icon}>1 Excercises</div>
 									</li>
 								</ul>
 								<button onClick={handleExamSolved} className={Styles.btn3}>
@@ -198,7 +198,7 @@ function Pricing(props) {
 									</li>
 
 									<li>
-										Quiz <div className={Styles.icon}>5 Excercises</div>
+										Quiz <div className={Styles.icon}>1 Excercises</div>
 									</li>
 								</ul>
 								<button onClick={handleNotes} className={Styles.btn1}>
@@ -225,7 +225,7 @@ function Pricing(props) {
 										Book Download <div className={Styles.icon}>1</div>
 									</li>
 									<li>
-										Quiz <div className={Styles.icon}>5 Excercises</div>
+										Quiz <div className={Styles.icon}>1 Excercises</div>
 									</li>
 								</ul>
 								<button onClick={handleBooks} className={Styles.btn4}>
