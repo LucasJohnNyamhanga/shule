@@ -106,6 +106,7 @@ const Index = ({
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
 	const [hideContent, setHideContent] = useState(false);
+	const [purchased, setPurchased] = useState(true);
 	const { push, asPath } = useRouter();
 
 	useEffect(() => {
@@ -123,7 +124,7 @@ const Index = ({
 	useEffect(() => {
 		setNavActive('Exams');
 		console.log(thisexam.hasAnswers);
-		if (thisexam.hasAnswers) {
+		if (thisexam.hasAnswers && purchased) {
 			setHideContent(true);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -151,6 +152,7 @@ const Index = ({
 	};
 
 	let checkUser = async () => {
+		notify('Checking...');
 		let data = { username: userData.userName };
 		axios
 			.post('http://localhost:3000/api/getUser', data)
@@ -158,12 +160,12 @@ const Index = ({
 				//responce
 				const userData = JSON.parse(JSON.stringify(response.data));
 				let imenunuliwa = userData.purchase.find((sell) => {
-					console.log(sell);
 					return sell.value == thisexam.id;
 				});
 
 				if (imenunuliwa) {
 					setHideContent(!hideContent);
+					setPurchased(false);
 					notifySuccess('Purchased content');
 				} else {
 					userData.vifurushi.find(
