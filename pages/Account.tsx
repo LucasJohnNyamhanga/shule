@@ -1,3 +1,6 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable react/react-in-jsx-scope */
 import {
 	ChangeEvent,
 	ReactNode,
@@ -7,93 +10,79 @@ import {
 	useState,
 } from 'react';
 import Styles from '../styles/account.module.scss';
-import { useRouter } from 'next/router';
-import { NavContext } from '../components/context/StateContext';
 import Avatar from '@mui/material/Avatar';
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { getSession } from 'next-auth/react';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import Loader from '../components/tools/loader';
 import toast, { Toaster } from 'react-hot-toast';
 import bcrypt from 'bcryptjs';
 import axios from 'axios';
-import { vifurushi } from '@prisma/client';
+import { NavContext } from '../components/context/StateContext';
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-	const session = await getSession(context);
-	if (!session) {
-		return {
-			redirect: {
-				destination: `/Auth/SignIn?callbackUr=/`,
-				permanent: false,
-			},
-		};
-	} else {
-		const userFromServer = await prisma.users.findFirst({
-			where: {
-				username: session.user.email,
-			},
-			select: {
-				id: true,
-				isAdmin: true,
-				username: true,
-				name: true,
-				password: true,
-				vifurushi: {
-					select: {
-						name: true,
-						value: true,
-					},
-				},
-			},
-		});
-		const userfound = await JSON.parse(JSON.stringify(userFromServer));
-
-		return {
-			props: {
-				userfound,
-			},
-		};
-	}
+type dataUser = {
+	id: number;
+	name: string;
+	image: string | null;
+	username: string | null;
+	password: string | null;
+	isAdmin: boolean;
+	vifurushi: {
+		name: string;
+		value: number;
+	}[];
 };
 
-function Pricing({
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+const Account = (props) => {
 	const password = useRef<HTMLInputElement>(null!);
 	const password1 = useRef<HTMLInputElement>(null!);
 	const password2 = useRef<HTMLInputElement>(null!);
 	const [resetPassword, setResetPassword] = useState(false);
+	const [userfound, setUserfound] = useState<dataUser>();
 	const [loadingDisplay, setLoadingDisplay] = useState(false);
+	const [onlyOnce, setONlyOnce] = useState(true);
+	const { userData } = useContext(NavContext);
 	const [passChange, setPassChange] = useState({
 		password: '',
 		password1: '',
 		password2: '',
-		id: userfound.id,
+		id: userData.id,
 	});
-	const [kifurushi, setKifurushi] = useState({
-		notesDownload: 0,
-		examsSolvedDownload: 0,
-		examsUnsolvedDownload: 0,
-		quizExcercises: 0,
-		booksDownload: 0,
-		examAccess: 0,
-	});
-
-	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
 
-	let handletextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		let value = e.target.value;
-		let name = e.target.name;
+	const checkUser = async () => {
+		const data = { username: userData.userName };
+
+		axios
+			.post('http://localhost:3000/api/getUser', data)
+			.then(function (response) {
+				//responce
+				const users = JSON.parse(JSON.stringify(response.data));
+				if (users) {
+					setONlyOnce(false);
+				}
+				setUserfound(users);
+				console.log(users);
+			})
+			.catch(function (error) {
+				// handle error
+			});
+	};
+
+	if (onlyOnce) {
+		checkUser();
+	}
+
+	// useEffect(() => {}, [userfound]);
+
+	const handletextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const value = e.target.value;
+		const name = e.target.name;
 		setPassChange({ ...passChange, [name]: value });
 		password.current.style.color = 'black';
 		password1.current.style.color = 'black';
 		password2.current.style.color = 'black';
 	};
-
-	let togglePasswordSignUp = (e: ChangeEvent<HTMLInputElement>) => {
+	const togglePasswordSignUp = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.checked) {
 			password1.current.type = 'text';
 			password2.current.type = 'text';
@@ -104,16 +93,14 @@ function Pricing({
 			password.current.type = 'password';
 		}
 	};
-
-	let reset = () => {
+	const reset = () => {
 		setResetPassword(!resetPassword);
 		setResetPassword(!resetPassword);
 	};
-
-	let sendToDatabase = (hash: string) => {
-		let database = {
+	const sendToDatabase = (hash: string) => {
+		const database = {
 			password: hash,
-			id: userfound.id,
+			id: userData.id,
 		};
 		axios({
 			method: 'post',
@@ -129,7 +116,6 @@ function Pricing({
 					id: userfound.id,
 				});
 				setLoadingDisplay(false);
-
 				if (response.data.type == 'success') {
 					notifySuccess(response.data.message);
 				} else {
@@ -144,19 +130,17 @@ function Pricing({
 				// always executed
 			});
 	};
-
-	let resetPasswordNow = async () => {
+	const resetPasswordNow = async () => {
 		if (
 			passChange.password1 != '' &&
 			passChange.password2 != '' &&
 			passChange.password != ''
 		) {
 			//
-			let comaparison = await bcrypt.compare(
+			const comaparison = await bcrypt.compare(
 				passChange.password,
 				userfound.password
 			);
-
 			if (comaparison) {
 				if (passChange.password1 == passChange.password2) {
 					setLoadingDisplay(true);
@@ -178,8 +162,15 @@ function Pricing({
 			notifyError('Enter all details.');
 		}
 	};
-
-	return (
+	return !userfound ? (
+		<div className={Styles.container}>
+			<div className={Styles.innerContainer}>
+				<div className={Styles.loading}>
+					<Loader />
+				</div>
+			</div>
+		</div>
+	) : (
 		<div className={Styles.container}>
 			<Toaster position='bottom-left' reverseOrder={false} />
 			<div className={Styles.innerContainer}>
@@ -200,7 +191,6 @@ function Pricing({
 								</ul>
 							</div>
 						</div>
-
 						<div className={Styles.account}>
 							<div className={Styles.header}>Account Details</div>
 							<div className={Styles.list}>
@@ -249,7 +239,7 @@ function Pricing({
 									ref={password}
 									type='password'
 									value={passChange.password}
-									placeholder={`Current Password`}
+									placeholder={'Current Password'}
 									name={'password'}
 									onChange={(event) => {
 										handletextChange(event);
@@ -262,7 +252,7 @@ function Pricing({
 									ref={password1}
 									type='password'
 									value={passChange.password1}
-									placeholder={`New Password`}
+									placeholder={'New Password'}
 									name={'password1'}
 									onChange={(event) => {
 										handletextChange(event);
@@ -275,7 +265,7 @@ function Pricing({
 									ref={password2}
 									type='password'
 									value={passChange.password2}
-									placeholder={`Retype New Password`}
+									placeholder={'Retype New Password'}
 									name={'password2'}
 									onChange={(event) => {
 										handletextChange(event);
@@ -284,7 +274,6 @@ function Pricing({
 									autoCorrect='off'
 									spellCheck={false}
 								/>
-
 								<div className={Styles.check}>
 									<input
 										type='checkbox'
@@ -312,11 +301,11 @@ function Pricing({
 			</div>
 		</div>
 	);
-}
+};
 
-export default Pricing;
+export default Account;
 
-//*Removing default search bar :)
-Pricing.getLayout = function PageLayout(page: ReactNode) {
+//* Removing default search bar :)
+Account.getLayout = function PageLayout(page: ReactNode) {
 	return <>{page}</>;
 };

@@ -17,6 +17,7 @@ export default async function handler(
 				username: true,
 				isAdmin: true,
 				image: true,
+				name: true,
 				vifurushi: {
 					select: {
 						name: true,

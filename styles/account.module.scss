@@ -17,6 +17,14 @@
 		flex-direction: column;
 		margin-bottom: 50px;
 
+		.loading {
+			display: flex;
+			width: 100%;
+			height: 80vh;
+			justify-content: center;
+			align-items: center;
+		}
+
 		.header {
 			width: 100%;
 			display: flex;

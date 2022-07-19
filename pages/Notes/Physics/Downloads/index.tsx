@@ -7,7 +7,6 @@ import Head from 'next/head';
 import { NavContext } from '../../../../components/context/StateContext';
 import { notesDownloadable } from '@prisma/client';
 import FileSaver from 'file-saver';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
@@ -52,7 +51,6 @@ const Index = ({
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
 	const { navActive, setNavActive, userData } = useContext(NavContext);
-	const { data: session, status } = useSession();
 	const { push, asPath } = useRouter();
 	const [salio, setSalio] = useState({
 		notesDownload: 0,
@@ -68,7 +66,7 @@ const Index = ({
 	}, [navActive]);
 
 	let handleDownload = (link: string) => {
-		if (session) {
+		if (userData.id != '') {
 			checkUser(link);
 		} else {
 			push(`/Auth/SignIn?callbackUrl=${asPath}`);
