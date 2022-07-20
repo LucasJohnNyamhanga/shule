@@ -245,6 +245,7 @@ export default function CustomizedDialogs({
 				});
 
 				if (imenunuliwa) {
+					setloader(true);
 					setOpen(true);
 					retriveData();
 					console.log('imenunuliwa');
