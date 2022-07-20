@@ -96,8 +96,8 @@ type tableKey = {
 };
 
 const Index = ({
-	thisexam,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	thisexam,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive, userData } = useContext(NavContext);
 	const matches300 = useMediaQuery('(min-width:345px)');
 	const [keyInTable, setKeyInTable] = useState<tableKey>({
@@ -160,7 +160,11 @@ const Index = ({
 				//responce
 				const userData = JSON.parse(JSON.stringify(response.data));
 				let imenunuliwa = userData.purchase.find((sell) => {
-					return sell.value == thisexam.id;
+					if (sell.value == thisexam.id && sell.name == 'examAccess') {
+						return true;
+					} else {
+						return false;
+					}
 				});
 
 				if (imenunuliwa) {

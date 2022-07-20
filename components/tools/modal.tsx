@@ -6,6 +6,7 @@ import React, {
 	Ref,
 	useEffect,
 	useRef,
+	useContext,
 } from 'react';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
@@ -23,6 +24,8 @@ import InputTextMui from '../../components/tools/InputTextMui';
 import stringSimilarity from 'string-similarity';
 import { convert } from 'html-to-text';
 import Loader from '../tools/loader';
+import { useRouter } from 'next/router';
+import { NavContext } from '../context/StateContext';
 
 const Transition = forwardRef(function Transition(
 	props: TransitionProps & {
@@ -165,6 +168,7 @@ export default function CustomizedDialogs({
 	const [answer, setAnswer] = useState<answerData>({
 		data: [],
 	});
+	const { push, asPath } = useRouter();
 
 	type dataAnswerDetails = {
 		dataAnswer: boolean[];
@@ -213,10 +217,112 @@ export default function CustomizedDialogs({
 	const [defaultAnswer, setDefaultAnswer] = useState<dataDefaultAnswer>({
 		answerInputs: [],
 	});
+	const { userData } = useContext(NavContext);
 
-	const handleClickOpen = () => {
-		setOpen(true);
-		retriveData();
+	let handleClickOpen = () => {
+		if (userData.id != '') {
+			checkUser();
+		} else {
+			push(`/Auth/SignIn?callbackUrl=${asPath}`);
+		}
+	};
+
+	let checkUser = async () => {
+		let data = { username: userData.userName };
+
+		axios
+			.post('http://localhost:3000/api/getUser', data)
+			.then(function (response) {
+				//responce
+				const userData = JSON.parse(JSON.stringify(response.data));
+
+				let imenunuliwa = userData.purchase.find((sell) => {
+					if (sell.value == id && sell.name == 'quizExcercises') {
+						return true;
+					} else {
+						return false;
+					}
+				});
+
+				if (imenunuliwa) {
+					setOpen(true);
+					retriveData();
+					console.log('imenunuliwa');
+				} else {
+					userData.vifurushi.find(
+						({ name, value }: { name: string; value: number }) => {
+							if (name === 'quizExcercises') {
+								if (value > 0) {
+									setOpen(true);
+									retriveData();
+									createPurchase({
+										name: 'quizExcercises',
+										value: `${id}`,
+										usersId: userData.id,
+									});
+
+									//!call decrement code
+									decrementData({ name: 'quizExcercises', id: userData.id });
+								} else {
+									push(`/Pricing?callbackUrl=${asPath}`);
+								}
+							}
+						}
+					);
+				}
+			})
+			.catch(function (error) {
+				// handle error
+				console.log('Something went wrong');
+			});
+	};
+
+	let decrementData = (databaseData: { name: string; id: string }) => {
+		axios({
+			method: 'post',
+			url: 'http://localhost:3000/api/updateKifurushiUse',
+			data: databaseData,
+		})
+			.then(function (response) {
+				// handle success
+
+				if (response.data.type == 'success') {
+				} else {
+				}
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+			})
+			.then(function () {
+				// always executed
+			});
+	};
+
+	let createPurchase = (databaseData: {
+		name: string;
+		value: string;
+		usersId: string;
+	}) => {
+		axios({
+			method: 'post',
+			url: 'http://localhost:3000/api/addpurchase',
+			data: databaseData,
+		})
+			.then(function (response) {
+				// handle success
+
+				if (response.data.type == 'success') {
+				} else {
+				}
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+			})
+			.then(function () {
+				// always executed
+			});
 	};
 
 	const handleClose = () => {
