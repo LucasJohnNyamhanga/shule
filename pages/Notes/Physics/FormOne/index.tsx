@@ -99,32 +99,6 @@ export const getStaticProps: GetStaticProps = async () => {
 	});
 	const note = JSON.parse(JSON.stringify(noteFromServer));
 
-	return {
-		props: {
-			topics,
-			note,
-			download,
-		},
-		revalidate: 15,
-	};
-};
-
-const Index = ({
-	topics,
-	note,
-	download,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
-	const { navActive, setNavActive } = useContext(NavContext);
-
-	useEffect(() => {
-		setNavActive('Notes');
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [navActive]);
-
-	if (topics.length < 1) {
-		return <Error statusCode={404} />;
-	}
-
 	let htmlServer: string;
 	let toc: {
 		id: string;
@@ -132,7 +106,7 @@ const Index = ({
 	}[] = [];
 
 	if (typeof note[0].note == 'undefined') {
-		htmlServer = `<div className={Styles.notFound} >Notes for ${note[0].topicName} topic will be available soon.</div>`;
+		htmlServer = `<div className={Styles.notFound} >Notes for this topic will be available soon.</div>`;
 	} else {
 		let result = note[0].note.content.replaceAll(
 			`img`,
@@ -165,6 +139,36 @@ const Index = ({
 			.toString();
 
 		htmlServer = content;
+	}
+
+	return {
+		props: {
+			htmlServer,
+			toc,
+			topics,
+			note,
+			download,
+		},
+		revalidate: 15,
+	};
+};
+
+const Index = ({
+    	htmlServer,
+    	toc,
+    	topics,
+    	note,
+    	download,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
+	const { navActive, setNavActive } = useContext(NavContext);
+
+	useEffect(() => {
+		setNavActive('Notes');
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [navActive]);
+
+	if (topics.length < 1) {
+		return <Error statusCode={404} />;
 	}
 
 	let truncateLimit = 12;

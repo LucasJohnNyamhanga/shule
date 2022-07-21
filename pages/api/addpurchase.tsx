@@ -18,7 +18,7 @@ export default async function handler(
 			data: {
 				usersId: parseInt(usersId),
 				name,
-				value,
+				value: parseInt(value),
 			},
 		});
 		res.status(200).json({

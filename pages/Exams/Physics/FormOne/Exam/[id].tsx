@@ -53,6 +53,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		props: {
 			thisexam,
 		},
+		revalidate: 15,
 	};
 };
 
@@ -95,8 +96,8 @@ type tableKey = {
 };
 
 const Index = ({
-	thisexam,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	thisexam,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive, userData } = useContext(NavContext);
 	const matches300 = useMediaQuery('(min-width:345px)');
 	const [keyInTable, setKeyInTable] = useState<tableKey>({
@@ -123,7 +124,6 @@ const Index = ({
 
 	useEffect(() => {
 		setNavActive('Exams');
-		console.log(thisexam.hasAnswers);
 		if (thisexam.hasAnswers && purchased) {
 			setHideContent(true);
 		}
@@ -152,7 +152,7 @@ const Index = ({
 	};
 
 	let checkUser = async () => {
-		notify('Checking...');
+		notify('...');
 		let data = { username: userData.userName };
 		axios
 			.post('http://localhost:3000/api/getUser', data)
@@ -160,7 +160,11 @@ const Index = ({
 				//responce
 				const userData = JSON.parse(JSON.stringify(response.data));
 				let imenunuliwa = userData.purchase.find((sell) => {
-					return sell.value == thisexam.id;
+					if (sell.value == thisexam.id && sell.name == 'examAccess') {
+						return true;
+					} else {
+						return false;
+					}
 				});
 
 				if (imenunuliwa) {
