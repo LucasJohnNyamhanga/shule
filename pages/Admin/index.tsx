@@ -1978,6 +1978,10 @@ const Index = ({}) => {
 			: str;
 	}
 
+	function customTruncate(str: string, size) {
+		return str.length > size ? str.slice(0, size) + '...' : str;
+	}
+
 	function truncateCustom(str: string, size: number) {
 		return str.length > size ? str.slice(0, size) + '...' : str;
 	}
@@ -2457,9 +2461,10 @@ const Index = ({}) => {
 														<CardBox
 															handleUpdate={handleUpdateNotesDownloadable}
 															link={'/Admin/Notes/Edit/Downloadable/' + item.id}
-															label={`${truncate(
-																item.name
-															)} [${item.fileExtension.toUpperCase()}]`}
+															label={`${truncate(item.name)} [${customTruncate(
+																item.fileExtension.toUpperCase(),
+																3
+															)}]`}
 															published={item.published}
 															id={item.id}
 															key={item.id}
@@ -2940,9 +2945,10 @@ const Index = ({}) => {
 														<CardBox
 															handleUpdate={handleUpdateExamDownloadable}
 															link={'/Admin/Exam/Edit/Downloadable/' + exam.id}
-															label={`${truncate(
-																exam.name
-															)} [${exam.fileExtension.toUpperCase()}]`}
+															label={`${truncate(exam.name)} [${customTruncate(
+																exam.fileExtension.toUpperCase(),
+																3
+															)}]`}
 															published={exam.published}
 															id={exam.id}
 															key={exam.id}

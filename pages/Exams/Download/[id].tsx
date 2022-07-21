@@ -9,6 +9,8 @@ import { NavContext } from '../../../components/context/StateContext';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import toast, { Toaster } from 'react-hot-toast';
+import FileSaver from 'file-saver';
+import axios from 'axios';
 
 const subjectLocator = 'Physics';
 const formLocator = 'Form One';
@@ -26,6 +28,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		select: {
 			description: true,
 			year: true,
+			hasAnswers: true,
 			examDownloadable: {
 				select: {
 					name: true,
@@ -92,12 +95,87 @@ const Index = ({
 	}, [navActive]);
 
 	let handleDownload = (link: string) => {
-		if (session) {
-			push(`/Pricing?callbackUrl=${asPath}`);
-			//FileSaver.saveAs(link, link.replace(/(.*)\//g, ''));
+		if (userData.id != '') {
+			checkUser(link);
 		} else {
 			push(`/Auth/SignIn?callbackUrl=${asPath}`);
 		}
+	};
+
+	let checkUser = async (link: string) => {
+		let data = { username: userData.userName };
+		axios
+			.post('http://localhost:3000/api/getUser', data)
+			.then(function (response) {
+				//responce
+				const userData = JSON.parse(JSON.stringify(response.data));
+
+				if (downloads.hasAnswers) {
+					userData.vifurushi.find(
+						({ name, value }: { name: string; value: number }) => {
+							if (name === 'examsSolvedDownload') {
+								if (value > 0) {
+									FileSaver.saveAs(link, link.replace(/(.*)\//g, ''));
+
+									//!call decrement code
+									decrementData({
+										name: 'examsSolvedDownload',
+										id: userData.id,
+									});
+								} else {
+									push(`/Pricing?callbackUrl=${asPath}`);
+								}
+							}
+						}
+					);
+				} else {
+					userData.vifurushi.find(
+						({ name, value }: { name: string; value: number }) => {
+							if (name === 'examsUnsolvedDownload') {
+								if (value > 0) {
+									FileSaver.saveAs(link, link.replace(/(.*)\//g, ''));
+
+									//!call decrement code
+									decrementData({
+										name: 'examsUnsolvedDownload',
+										id: userData.id,
+									});
+								} else {
+									push(`/Pricing?callbackUrl=${asPath}`);
+								}
+							}
+						}
+					);
+				}
+			})
+			.catch(function (error) {
+				// handle error
+				console.log('Something went wrong');
+			});
+	};
+
+	let decrementData = (databaseData: { name: string; id: string }) => {
+		axios({
+			method: 'post',
+			url: 'http://localhost:3000/api/updateKifurushiUse',
+			data: databaseData,
+		})
+			.then(function (response) {
+				// handle success
+
+				if (response.data.type == 'success') {
+					notifySuccess(response.data.message);
+				} else {
+					notifyError(response.data.message);
+				}
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+			})
+			.then(function () {
+				// always executed
+			});
 	};
 
 	//!mambo yanaanza

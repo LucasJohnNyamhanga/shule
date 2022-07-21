@@ -1,14 +1,15 @@
 import { GetStaticProps, GetStaticPaths, InferGetStaticPropsType } from 'next';
 import { prisma } from '../../../db/prisma';
-import { examType, notesDownloadable } from '@prisma/client';
 import React, { useContext, useEffect, useState } from 'react';
 import Styles from '../../../styles/notesDisplay.module.scss';
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import Head from 'next/head';
 import { NavContext } from '../../../components/context/StateContext';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import toast, { Toaster } from 'react-hot-toast';
+import FileSaver from 'file-saver';
+import axios from 'axios';
+import { reference } from '@prisma/client';
 
 const subjectLocator = 'Physics';
 const formLocator = 'Form One';
@@ -52,7 +53,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 	});
 	const examType = JSON.parse(JSON.stringify(examServer));
 
-	const paths = examType.map((type: examType) => {
+	const paths = examType.map((type: reference) => {
 		const id = String(type.id);
 		return {
 			params: {
@@ -67,8 +68,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const Index = ({
-	downloads,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	downloads,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
@@ -79,13 +80,65 @@ const Index = ({
 		setNavActive('References');
 	}, [navActive]);
 
-	const handleDownload = (link: string) => {
+	let handleDownload = (link: string) => {
 		if (userData.id != '') {
-			push(`/Pricing?callbackUrl=${asPath}`);
-			//FileSaver.saveAs(link, link.replace(/(.*)\//g, ''));
+			checkUser(link);
 		} else {
 			push(`/Auth/SignIn?callbackUrl=${asPath}`);
 		}
+	};
+
+	let checkUser = async (link: string) => {
+		let data = { username: userData.userName };
+		axios
+			.post('http://localhost:3000/api/getUser', data)
+			.then(function (response) {
+				//responce
+				const userData = JSON.parse(JSON.stringify(response.data));
+
+				userData.vifurushi.find(
+					({ name, value }: { name: string; value: number }) => {
+						if (name === 'booksDownload') {
+							if (value > 0) {
+								FileSaver.saveAs(link, link.replace(/(.*)\//g, ''));
+
+								//!call decrement code
+								decrementData({ name: 'booksDownload', id: userData.id });
+							} else {
+								push(`/Pricing?callbackUrl=${asPath}`);
+							}
+						}
+					}
+				);
+			})
+			.catch(function (error) {
+				// handle error
+				console.log('Something went wrong');
+			});
+	};
+
+	let decrementData = (databaseData: { name: string; id: string }) => {
+		axios({
+			method: 'post',
+			url: 'http://localhost:3000/api/updateKifurushiUse',
+			data: databaseData,
+		})
+			.then(function (response) {
+				// handle success
+
+				if (response.data.type == 'success') {
+					notifySuccess(response.data.message);
+				} else {
+					notifyError(response.data.message);
+				}
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+			})
+			.then(function () {
+				// always executed
+			});
 	};
 
 	//!mambo yanaanza
