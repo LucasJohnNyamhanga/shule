@@ -94,8 +94,53 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	});
 	const topics = JSON.parse(JSON.stringify(topicsFromServer));
 
+	//! irrigal stuffs
+	let htmlServer;
+	let toc: {
+		id: string;
+		title: string;
+	}[] = [];
+
+	if (typeof thisTopicData.note == 'undefined') {
+		htmlServer = `<div className={Styles.notFound} >Notes for this topic will be available soon.</div>`;
+	} else {
+		let result = thisTopicData.note.content.replaceAll(
+			`img`,
+			`Image layout="fill" objectfit="cover"`
+		);
+
+		const content = unified()
+			.use(rehypeParse, {
+				fragment: true,
+			})
+			.use(() => {
+				return (tree) => {
+					visit(tree, 'element', (node) => {
+						if (node.tagName == 'h2') {
+							//
+							if (node.children[0].type == 'text') {
+								const id = parameterize(node.children[0].value);
+								node.properties!.id = id;
+								toc.push({
+									id,
+									title: node.children[0].value,
+								});
+							}
+						}
+					});
+				};
+			})
+			.use(rehypeStringify)
+			.processSync(result)
+			.toString();
+
+		htmlServer = content;
+	}
+
 	return {
 		props: {
+			htmlServer,
+			toc,
 			topics,
 			thisTopicData,
 			download,
@@ -131,6 +176,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const Index = ({
+	htmlServer,
+	toc,
 	topics,
 	thisTopicData,
 	download,
@@ -141,48 +188,6 @@ const Index = ({
 		setNavActive('Notes');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [navActive]);
-
-	let htmlServer;
-	let toc: {
-		id: string;
-		title: string;
-	}[] = [];
-
-	if (typeof thisTopicData.note == 'undefined') {
-		htmlServer = `<div className={Styles.notFound} >Notes for ${thisTopicData.topicName} topic will be available soon.</div>`;
-	} else {
-		let result = thisTopicData.note.content.replaceAll(
-			`img`,
-			`Image layout="fill" objectfit="cover"`
-		);
-
-		const content = unified()
-			.use(rehypeParse, {
-				fragment: true,
-			})
-			.use(() => {
-				return (tree) => {
-					visit(tree, 'element', (node) => {
-						if (node.tagName == 'h2') {
-							//
-							if (node.children[0].type == 'text') {
-								const id = parameterize(node.children[0].value);
-								node.properties!.id = id;
-								toc.push({
-									id,
-									title: node.children[0].value,
-								});
-							}
-						}
-					});
-				};
-			})
-			.use(rehypeStringify)
-			.processSync(result)
-			.toString();
-
-		htmlServer = content;
-	}
 
 	type dataTopic = {
 		id: number;
