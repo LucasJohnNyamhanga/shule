@@ -135,9 +135,9 @@ type tableKey = {
 };
 
 const Index = ({
-	examTypeAll,
-	thisexamType,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	examTypeAll,
+    	thisexamType,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	const [keyInTable, setKeyInTable] = useState<tableKey>({
@@ -148,10 +148,21 @@ const Index = ({
 		setNavActive('Exams');
 	}, [navActive]);
 
-	if (examTypeAll.length == 0 || thisexamType.exam == 'undefined') {
+	if (examTypeAll.length == 0) {
 		return (
 			<div className={Styles.notFound}>
-				Reviews for ${thisexamType.name} topic will be available soon.
+				<h2>
+					Quiz for ${subjectLocator} ${formLocator} topic will be available
+					soon.
+				</h2>
+			</div>
+		);
+	}
+
+	if (thisexamType?.exam == null) {
+		return (
+			<div className={Styles.notFound}>
+				<h2>Quiz for ${thisexamType.name} topic will be available soon.</h2>
 			</div>
 		);
 	}

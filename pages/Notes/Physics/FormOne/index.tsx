@@ -105,8 +105,8 @@ export const getStaticProps: GetStaticProps = async () => {
 		title: string;
 	}[] = [];
 
-	if (typeof note[0].note == 'undefined') {
-		htmlServer = `<div className={Styles.notFound} >Notes for this topic will be available soon.</div>`;
+	if (note[0]?.note == null) {
+		htmlServer = `<div className={Styles.notFound} > <h2>Notes for this topic will be available soon.</h2> </div>`;
 	} else {
 		let result = note[0].note.content.replaceAll(
 			`img`,
@@ -161,14 +161,28 @@ const Index = ({
     	download,
     }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
-
 	useEffect(() => {
 		setNavActive('Notes');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [navActive]);
 
 	if (topics.length < 1) {
-		return <Error statusCode={404} />;
+		htmlServer = `<div className={Styles.notFound} > <h2> Notes for ${subjectLocator} ${formLocator} will be available soon.</h2></div>`;
+		return (
+			<div className={Styles.container}>
+				<div className={Styles.innerContainer}>
+					<div className={Styles.leftInnercontainerBody}></div>
+					<div className={Styles.rightInnercontainerBody}>
+						<div className={Styles.BodyHeader}></div>
+						<div className={Styles.BodyContent}>
+							<div className='ckContent'>
+								<div dangerouslySetInnerHTML={{ __html: htmlServer }} />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		);
 	}
 
 	let truncateLimit = 12;
@@ -231,7 +245,9 @@ const Index = ({
 							{truncate(note[0].topicName)}
 						</div>
 						{download.length > 0 ? (
-							<Link href={`/Notes/Physics/Downloads`} passHref>
+							<Link
+								href={`/Notes/${subjectLocator}/${formLocatorLink}/Downloads`}
+								passHref>
 								<a>
 									<div className={Styles.download}>Download Notes</div>
 								</a>
