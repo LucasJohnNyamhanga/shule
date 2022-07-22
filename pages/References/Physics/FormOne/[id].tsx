@@ -86,8 +86,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const Index = ({
-	reference,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	reference,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -116,7 +116,9 @@ const Index = ({
 						</div>
 						{reference.isPdf && (
 							<>
-								<Link href={`/References/Download/${reference.id}`} passHref>
+								<Link
+									href={`/References/${subjectLocator}/${formLocatorLink}/Download/${reference.id}`}
+									passHref>
 									<a>
 										<div className={Styles.download}>Download</div>
 									</a>
