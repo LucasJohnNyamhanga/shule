@@ -134,7 +134,16 @@ const Index = ({
 	}, [navActive]);
 
 	if (topics.length < 1) {
-		return <Error statusCode={404} />;
+		return (
+			<div className={Styles.container}>
+				<div className={Styles.innerContainer}>
+					<div className={Styles.leftInnercontainerBody}></div>
+					<div className={Styles.rightInnercontainerBody}>
+						<h2>Questions for this quiz will be available soon.</h2>
+					</div>
+				</div>
+			</div>
+		);
 	}
 
 	useEffect(() => {

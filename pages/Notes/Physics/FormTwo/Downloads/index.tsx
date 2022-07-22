@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
-import Styles from '../../../../styles/notesDisplay.module.scss';
+import Styles from '../../../../../styles/notesDisplay.module.scss';
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
-import { prisma } from '../../../../db/prisma';
+import { prisma } from '../../../../../db/prisma';
 import type { GetStaticProps, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
-import { NavContext } from '../../../../components/context/StateContext';
+import { NavContext } from '../../../../../components/context/StateContext';
 import { notesDownloadable } from '@prisma/client';
 import FileSaver from 'file-saver';
 import { useRouter } from 'next/router';
@@ -12,9 +12,9 @@ import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 
 const subjectLocator = 'Physics';
-const formLocator = 'Form One';
+const formLocator = 'Form Two';
 const subjectLocatorLink = 'Physics';
-const formLocatorLink = 'FormOne';
+const formLocatorLink = 'FormTwo';
 
 export const getStaticProps: GetStaticProps = async () => {
 	const topicsFromServer = await prisma.notesDownloadable.findMany({
@@ -45,8 +45,8 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Index = ({
-	downloads,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	downloads,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);

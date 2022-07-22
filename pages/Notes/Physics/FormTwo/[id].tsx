@@ -101,8 +101,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		title: string;
 	}[] = [];
 
-	if (typeof thisTopicData.note == 'undefined') {
-		htmlServer = `<div className={Styles.notFound} >Notes for this topic will be available soon.</div>`;
+	if (thisTopicData?.note == null) {
+		htmlServer = `<div className={Styles.notFound} ><h2> Notes for this topic will be available soon.</h2></div>`;
 	} else {
 		let result = thisTopicData.note.content.replaceAll(
 			`img`,
@@ -263,7 +263,9 @@ const Index = ({
 							{truncate(thisTopicData.topicName)}
 						</div>
 						{download.length > 0 ? (
-							<Link href={`/Notes/Physics/Downloads`} passHref>
+							<Link
+								href={`/Notes/${subjectLocator}/${formLocatorLink}/Downloads`}
+								passHref>
 								<a>
 									<div className={Styles.download}>Download Notes</div>
 								</a>
