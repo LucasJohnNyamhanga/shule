@@ -36,7 +36,7 @@ export default async function handler(
 					where: { usersId: parseInt(id), name: 'quizExcercises' },
 					data: {
 						value: {
-							increment: 5,
+							increment: 1,
 						},
 					},
 				});
@@ -72,7 +72,7 @@ export default async function handler(
 					where: { usersId: parseInt(id), name: 'quizExcercises' },
 					data: {
 						value: {
-							increment: 3,
+							increment: 1,
 						},
 					},
 				});
@@ -102,7 +102,7 @@ export default async function handler(
 					where: { usersId: parseInt(id), name: 'quizExcercises' },
 					data: {
 						value: {
-							increment: 5,
+							increment: 1,
 						},
 					},
 				});
@@ -124,7 +124,7 @@ export default async function handler(
 					where: { usersId: parseInt(id), name: 'quizExcercises' },
 					data: {
 						value: {
-							increment: 5,
+							increment: 1,
 						},
 					},
 				});
