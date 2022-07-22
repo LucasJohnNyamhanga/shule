@@ -4,7 +4,6 @@ import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import { prisma } from '../../../../db/prisma';
 import type { GetStaticProps, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
-import Error from 'next/error';
 import { NavContext } from '../../../../components/context/StateContext';
 import Book from '../../../../components/tools/Book';
 
@@ -61,8 +60,8 @@ type tableKey = {
 };
 
 const Index = ({
-	reference,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	reference,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -72,7 +71,20 @@ const Index = ({
 	}, [navActive]);
 
 	if (reference.length < 1) {
-		return <Error statusCode={404} />;
+		return (
+			<div className={Styles.container}>
+				<div className={Styles.innerContainer}>
+					<div className={Styles.rightInnercontainerBody}>
+						<div className={Styles.BodyHeader}></div>
+						<div className={Styles.BodyContent}>
+							<div className={Styles.conteinerTable}>
+								<h2>Contents will be published soon.</h2>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		);
 	}
 
 	//!mambo yanaanza

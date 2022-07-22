@@ -139,7 +139,7 @@ const Index = ({
 				<div className={Styles.innerContainer}>
 					<div className={Styles.leftInnercontainerBody}></div>
 					<div className={Styles.rightInnercontainerBody}>
-						<h2>Questions for this quiz will be available soon.</h2>
+						<h2>Examinations will soon be available.</h2>
 					</div>
 				</div>
 			</div>
