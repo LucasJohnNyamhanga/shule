@@ -117,7 +117,7 @@ const Index = ({
 						{reference.isPdf && (
 							<>
 								<Link
-									href={`/References/${subjectLocator}/${formLocatorLink}/Download/${reference.id}`}
+									href={`/References/${subjectLocator}/${formLocatorLink}/Download?id=${reference.id}`}
 									passHref>
 									<a>
 										<div className={Styles.download}>Download</div>
