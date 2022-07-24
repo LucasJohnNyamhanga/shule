@@ -274,9 +274,7 @@ const Index = ({
 								: truncateCustom(thisexam.examType.name, 10)}
 						</div>
 						{thisexam.examDownloadable.length > 0 ? (
-							<Link
-								href={`/Exams/${subjectLocator}/${formLocatorLink}/Download?id=${thisexam.id}`}
-								passHref>
+							<Link href={`/Exams/Download?id=${thisexam.id}`} passHref>
 								<a>
 									<div className={Styles.download}>Download Notes</div>
 								</a>
