@@ -150,7 +150,7 @@
 						flex-direction: row;
 						justify-content: space-between;
 						align-items: center;
-						margin-bottom: 15px;
+						margin-bottom: 0px;
 
 						&Text {
 							font-family: $fontHeader;
@@ -256,6 +256,7 @@
 							flex-direction: column;
 							justify-content: center;
 							align-items: center;
+							// margin-bottom: 15px;
 
 							&Text {
 								font-size: 18px;
@@ -276,7 +277,7 @@
 				}
 				.mobile {
 					display: flex;
-					margin-bottom: 25px;
+					margin-bottom: 15px;
 				}
 
 				// @media only screen and (max-width: 908px) {

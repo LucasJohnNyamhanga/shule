@@ -38,6 +38,8 @@ model users {
   review            review[]
   vifurushi         vifurushi[]
   purchase          purchase[]
+
+  @@fulltext([name, username])
 }
 
 model vifurushi {
@@ -71,6 +73,7 @@ model subject {
   users             users    @relation(fields: [usersId], references: [id])
 
   notesDownloadable notesDownloadable[]
+
   @@fulltext([subjectName, subjectDefinition])
 }
 

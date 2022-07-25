@@ -355,6 +355,26 @@ export const MuiDrawer = ({ textHeader, active, handleClick }: dataType) => {
 						</div>
 						<Divider />
 					</List>
+					<div className={Styles.headerDash}>Users</div>
+					<List>
+						<Divider />
+						<div
+							onClick={() => {
+								setIsDrawerOpen(false);
+								handleClick('User');
+							}}>
+							<Link passHref href={``}>
+								<a>
+									<ListItem
+										button
+										className={active == 'User' ? `${Styles.active}` : ''}>
+										<ListItemText primary={'User'} />
+									</ListItem>
+								</a>
+							</Link>
+						</div>
+						<Divider />
+					</List>
 				</Box>
 			</Drawer>
 		</>
