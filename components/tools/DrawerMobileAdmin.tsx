@@ -14,10 +14,22 @@ import Styles from '../../styles/drawer.module.scss';
 type dataType = {
 	textHeader: string;
 	active: string;
+	userData: {
+		id: string;
+		isAdmin: boolean;
+		userName: string;
+		image: string;
+		isSuperUser: boolean;
+	};
 	handleClick: (value: string) => void;
 };
 
-export const MuiDrawer = ({ textHeader, active, handleClick }: dataType) => {
+export const MuiDrawer = ({
+	textHeader,
+	active,
+	handleClick,
+	userData,
+}: dataType) => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
 	useEffect(() => {}, [active]);
@@ -355,26 +367,30 @@ export const MuiDrawer = ({ textHeader, active, handleClick }: dataType) => {
 						</div>
 						<Divider />
 					</List>
-					<div className={Styles.headerDash}>Users</div>
-					<List>
-						<Divider />
-						<div
-							onClick={() => {
-								setIsDrawerOpen(false);
-								handleClick('User');
-							}}>
-							<Link passHref href={``}>
-								<a>
-									<ListItem
-										button
-										className={active == 'User' ? `${Styles.active}` : ''}>
-										<ListItemText primary={'User'} />
-									</ListItem>
-								</a>
-							</Link>
-						</div>
-						<Divider />
-					</List>
+					{userData.isSuperUser && (
+						<>
+							<div className={Styles.headerDash}>Users</div>
+							<List>
+								<Divider />
+								<div
+									onClick={() => {
+										setIsDrawerOpen(false);
+										handleClick('User');
+									}}>
+									<Link passHref href={``}>
+										<a>
+											<ListItem
+												button
+												className={active == 'User' ? `${Styles.active}` : ''}>
+												<ListItemText primary={'User'} />
+											</ListItem>
+										</a>
+									</Link>
+								</div>
+								<Divider />
+							</List>
+						</>
+					)}
 				</Box>
 			</Drawer>
 		</>

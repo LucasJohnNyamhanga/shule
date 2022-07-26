@@ -34,6 +34,7 @@ function hero({
 				<div className={styles.hero}>
 					<div className={styles.info}>
 						<div className={styles.details}>
+							<h1>Best and well preparared notes.</h1>
 							{/* <h1>
 								&ldquo;{`${textStart}`}
 								<br /> <span>{`${textFinish}`}&rdquo;</span>
@@ -44,7 +45,7 @@ function hero({
 									{buttonText}
 								</Button>
 							</Link> */}
-							<Typewriter
+							{/* <Typewriter
 								onInit={(typewriter) => {
 									typewriter
 										.typeString(text1)
@@ -68,14 +69,22 @@ function hero({
 									autoStart: true,
 									loop: true,
 								}}
-							/>
+							/> */}
 							<div className={styles.permanentLetters}>
-								<span style={{ color: `${color1}` }}>
+								{/* <span style={{ color: `${color1}` }}>
 									<strong>{explanation1}</strong>
 								</span>
 								<span style={{ color: `${color2}` }}>
 									<strong>{explanation2}</strong>
-								</span>
+								</span> */}
+								<p>
+									Written by the best teachers using simple language that is
+									easy to understand and with colorful pictures to show details.
+								</p>{' '}
+								<p>
+									We create the perfect starting point to learn. Begin by
+									searching or go straight to subjects below.
+								</p>
 							</div>
 						</div>
 					</div>

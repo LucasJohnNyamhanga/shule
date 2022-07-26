@@ -180,6 +180,8 @@ const Index = ({}) => {
 	const [userDetail, setUserDetail] = useState({
 		value: '',
 	});
+	const [userSearchData, setUserSearchData] = useState([]);
+	const [activateUserSearch, setActivateUserSearch] = useState(false);
 
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
@@ -2013,12 +2015,38 @@ const Index = ({}) => {
 	) => {
 		let value = event.currentTarget.value;
 		setUserDetail({ value });
+		setActivateUserSearch(false);
 	};
 
 	const retriveUser = () => {
 		if (userDetail.value != '') {
-			notify('Amaizing, lets proceed..');
+			handleSearchUser();
+		} else {
+			notifyError('Enter User Name');
 		}
+	};
+
+	let handleSearchUser = () => {
+		setLoading(true);
+		axios
+			.post('http://localhost:3000/api/searchUser', {
+				user: userDetail.value,
+			})
+			.then(function (response) {
+				const userData = JSON.parse(JSON.stringify(response.data));
+				setUserSearchData(userData);
+				setLoading(false);
+				setActivateUserSearch(true);
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+				notifyError('Error has occured, try later.');
+				setLoading(false);
+			})
+			.then(function () {
+				// always executed
+			});
 	};
 
 	return (
@@ -2198,19 +2226,23 @@ const Index = ({}) => {
 									<div className={Styles.text}>Reference</div>
 								</div>
 							</div>
-							<div>
-								<div className={Styles.TopicHeaderNotes}>Users</div>
-							</div>
-							<div className={Styles.containerBody}>
-								<div
-									ref={user}
-									id={`User`}
-									onClick={(e) => handleNav(`User`)}
-									className={Styles.topicTittle}>
-									<FaUserGraduate size={23} />
-									<div className={Styles.text}>User</div>
-								</div>
-							</div>
+							{userData.isSuperUser && (
+								<>
+									<div>
+										<div className={Styles.TopicHeaderNotes}>Users</div>
+									</div>
+									<div className={Styles.containerBody}>
+										<div
+											ref={user}
+											id={`User`}
+											onClick={(e) => handleNav(`User`)}
+											className={Styles.topicTittle}>
+											<FaUserGraduate size={23} />
+											<div className={Styles.text}>User</div>
+										</div>
+									</div>
+								</>
+							)}
 						</div>
 					</div>
 					{/* //!start of default desplay */}
@@ -2220,6 +2252,7 @@ const Index = ({}) => {
 								textHeader={'Admin Dashboard'}
 								active={active}
 								handleClick={handleNav}
+								userData={userData}
 							/>
 						</div>
 
@@ -3150,15 +3183,22 @@ const Index = ({}) => {
 												Retrieve User
 											</div>
 											<div className={Styles.subjectBody}>
-												{activateFormsReference &&
-													formsReference.map(
-														(form: { id: number; formName: string }) => (
+												{activateUserSearch &&
+													userSearchData.map(
+														(user: {
+															id: number;
+															username: string;
+															name: string;
+														}) => (
 															<CardBox
 																handleUpdate={handleUpdateSubjectExam}
-																link={'/Admin/Reference/Edit/Form/' + form.id}
-																label={form.formName}
-																id={form.id}
-																key={form.id}
+																link={'/Admin/User/' + user.id}
+																label={customTruncate(
+																	`${user.name} as ${user.username}`,
+																	24
+																)}
+																id={user.id}
+																key={user.id}
 																published={''}
 															/>
 														)

@@ -40,13 +40,33 @@
 		flex: 1 1 100%;
 
 		.details {
-			width: 90%;
-			font-size: 100px;
-			font-weight: 400;
-			padding: 15px 15px;
+			h1 {
+				width: 90%;
+				font-size: 4.5rem;
+				font-family: $fontHeader;
+				font-weight: 700;
+				line-height: 1;
+				color: $ugoro;
+				margin-bottom: 16px;
+				margin-top: 16px;
+				margin-left: 10px;
+				padding-left: 10px;
+			}
 
 			.permanentLetters {
-				font-size: 65px;
+				font-size: 1.125rem;
+				font-family: $fontBody;
+				line-height: 1.75rem;
+				font-weight: 500;
+				max-width: 32rem;
+				color: $black;
+			}
+
+			p {
+				margin-left: 0;
+				padding-left: 0;
+				margin-left: 10px;
+				padding-left: 10px;
 			}
 		}
 	}
@@ -67,14 +87,14 @@
 	}
 }
 
-.hero h1 {
-	font-family: 'Montserrat';
-	font-weight: 700;
-	font-size: 45px;
-	margin: 0px;
-	margin-bottom: 10px;
-	color: $lightblue;
-}
+// .hero h1 {
+// 	font-family: 'Montserrat';
+// 	font-weight: 700;
+// 	font-size: 45px;
+// 	margin: 0px;
+// 	margin-bottom: 10px;
+// 	color: $lightblue;
+// }
 
 .hero span {
 	color: $ugoro;
@@ -120,10 +140,19 @@
 
 		.info {
 			.details {
-				font-size: 65px;
+				h1 {
+					font-size: 3rem;
+					font-family: $fontHeader;
+					font-weight: 700;
+				}
 
 				.permanentLetters {
-					font-size: 45px;
+					font-size: 1.125rem;
+					font-family: $fontBody;
+					line-height: 1.25rem;
+					font-weight: 500;
+					max-width: 32rem;
+					color: $black;
 				}
 			}
 		}
@@ -196,12 +225,24 @@
 	.hero {
 		.info {
 			.details {
-				min-width: 95%;
-				min-height: fit-content;
-				font-size: 45px;
-				padding: 15px 10px;
+				h1 {
+					font-size: 1.8rem;
+					font-family: $fontHeader;
+					font-weight: 700;
+				}
+
 				.permanentLetters {
-					font-size: 25px;
+					font-size: 1.125rem;
+					font-family: $fontBody;
+					line-height: 1.05rem;
+					font-weight: 500;
+					max-width: 32rem;
+					color: $black;
+				}
+
+				p {
+					margin-left: 0;
+					padding-left: 0;
 				}
 			}
 		}

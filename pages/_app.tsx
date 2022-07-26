@@ -35,6 +35,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
 		isAdmin: false,
 		userName: '',
 		image: '',
+		isSuperUser: false,
 	});
 
 	//*progress router

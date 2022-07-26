@@ -75,7 +75,7 @@
     "eslint-plugin-n": "^15.2.4",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.30.1",
-    "prisma": "^4.0.0",
+    "prisma": "^4.1.0",
     "typescript": "^4.6.4"
   }
 }

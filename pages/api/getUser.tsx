@@ -16,6 +16,7 @@ export default async function handler(
 				id: true,
 				username: true,
 				isAdmin: true,
+				isSuperUser: true,
 				image: true,
 				name: true,
 				vifurushi: {
