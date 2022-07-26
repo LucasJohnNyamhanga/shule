@@ -99,10 +99,10 @@ type formData = {
 }[];
 
 const EditNotes = ({
-    	notesData,
-    	formsList,
-    	subjects,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	notesData,
+	formsList,
+	subjects,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive, userData } = useContext(NavContext);
 
 	useEffect(() => {
@@ -262,7 +262,8 @@ const EditNotes = ({
 		})
 			.then(function (response) {
 				// handle success
-
+				// updateContent(`/Notes/Physics/FormOne/1`);
+				// updateContent(`/Notes/Physics/FormOne`);
 				let jibu: string = response.data.message;
 				notifySuccess(jibu);
 				setTopicSelectValue({
@@ -279,6 +280,27 @@ const EditNotes = ({
 				// handle error
 				console.log(error);
 				notifyError('Error has occured, try later.');
+			})
+			.then(function () {
+				// always executed
+			});
+	};
+
+	let updateContent = (path: string) => {
+		const data = {
+			secret: 'X-ilZeBDa22ktzz24FDP4BB7NLzbTp',
+			path,
+		};
+		axios({
+			method: 'post',
+			url: 'http://localhost:3000/api/revalidate',
+			data,
+		})
+			.then(function (response) {})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+				notifyError('Validation Error has occured, try later.');
 			})
 			.then(function () {
 				// always executed

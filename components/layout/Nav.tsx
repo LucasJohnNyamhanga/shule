@@ -42,6 +42,7 @@ const Nav = () => {
 							isAdmin: userData.isAdmin,
 							userName: userData.username,
 							image: userData.image,
+							isSuperUser: userData.isSuperUser,
 						});
 					})
 					.catch(function (error) {
@@ -52,6 +53,7 @@ const Nav = () => {
 							isAdmin: false,
 							userName: '',
 							image: '',
+							isSuperUser: false,
 						});
 					});
 				setLimit(limt + 1);
@@ -72,6 +74,7 @@ const Nav = () => {
 				isAdmin: false,
 				userName: '',
 				image: '',
+				isSuperUser: false,
 			});
 		}
 	}, [status, limt, session]);

@@ -81,6 +81,10 @@
 			flex-grow: 1;
 			min-height: 75vh;
 
+			h2 {
+				margin-top: 60px;
+			}
+
 			.BodyHeader {
 				display: flex;
 				flex-direction: row;
@@ -136,6 +140,13 @@
 				font-size: 17px;
 				line-height: 24px;
 				margin-bottom: 40px;
+
+				.conteinerTable {
+					h2 {
+						text-align: center;
+					}
+				}
+
 				.headerHead {
 					margin: 10px 0px;
 					.header {

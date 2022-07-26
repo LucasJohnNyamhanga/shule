@@ -16,7 +16,7 @@ import {
 } from '@prisma/client';
 import Link from 'next/link';
 import CardBox from '../../components/tools/cardBoxStyle';
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster, ToastBar } from 'react-hot-toast';
 import SelectMiu from '../../components/tools/SelectMui';
 import { NavContext } from '../../components/context/StateContext';
 import AlignVerticalBottomIcon from '@mui/icons-material/AlignVerticalBottom';
@@ -27,6 +27,8 @@ import { BsDownload as Downloads } from 'react-icons/bs';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
+import { FaUserGraduate } from 'react-icons/fa';
+import InputTextMui from '../../components/tools/InputTextMui';
 
 type dataTypeSelect = {
 	value: string;
@@ -175,8 +177,15 @@ const Index = ({}) => {
 		examId: '',
 	});
 
+	const [userDetail, setUserDetail] = useState({
+		value: '',
+	});
+	const [userSearchData, setUserSearchData] = useState([]);
+	const [activateUserSearch, setActivateUserSearch] = useState(false);
+
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
+	const notify = (message: string) => toast(message);
 
 	const notes = useRef<HTMLDivElement>(null!);
 	const subject = useRef<HTMLDivElement>(null!);
@@ -196,6 +205,7 @@ const Index = ({}) => {
 	const reference = useRef<HTMLDivElement>(null!);
 	const downloads = useRef<HTMLDivElement>(null!);
 	const examDownloads = useRef<HTMLDivElement>(null!);
+	const user = useRef<HTMLDivElement>(null!);
 
 	let handleNav = (value: string) => {
 		setNavValue(value);
@@ -290,11 +300,15 @@ const Index = ({}) => {
 				retriaveSubjectsReference();
 				setActive('FormReference');
 				break;
-			case 'Reference':
+
+			case 'User':
+				user.current.classList.add(Styles.Active);
+				setActive('User');
+				break;
+			case `Reference`:
 				reference.current.classList.add(Styles.Active);
 				retriaveSubjectsReference();
-				setActive('Reference');
-				break;
+				setActive(`Reference`);
 			default:
 				break;
 		}
@@ -320,6 +334,7 @@ const Index = ({}) => {
 		reference.current.classList.remove(Styles.Active);
 		downloads.current.classList.remove(Styles.Active);
 		examDownloads.current.classList.remove(Styles.Active);
+		user.current.classList.remove(Styles.Active);
 	};
 
 	const retriaveSubjectsReview = async () => {
@@ -1994,6 +2009,46 @@ const Index = ({}) => {
 		return <div className={Styles.error}>Unvalidated Admin</div>;
 	}
 
+	let handleTextInput = (
+		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+		name: string
+	) => {
+		let value = event.currentTarget.value;
+		setUserDetail({ value });
+		setActivateUserSearch(false);
+	};
+
+	const retriveUser = () => {
+		if (userDetail.value != '') {
+			handleSearchUser();
+		} else {
+			notifyError('Enter User Name');
+		}
+	};
+
+	let handleSearchUser = () => {
+		setLoading(true);
+		axios
+			.post('http://localhost:3000/api/searchUser', {
+				user: userDetail.value,
+			})
+			.then(function (response) {
+				const userData = JSON.parse(JSON.stringify(response.data));
+				setUserSearchData(userData);
+				setLoading(false);
+				setActivateUserSearch(true);
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+				notifyError('Error has occured, try later.');
+				setLoading(false);
+			})
+			.then(function () {
+				// always executed
+			});
+	};
+
 	return (
 		<div className={Styles.container}>
 			<div className={Styles.innerContainer}>
@@ -2163,12 +2218,31 @@ const Index = ({}) => {
 								<div
 									ref={reference}
 									id='Reference'
-									onClick={(e) => handleNav(e.currentTarget.id)}
+									onClick={(e) => {
+										handleNav(`Reference`);
+									}}
 									className={Styles.topicTittle}>
 									<NotesIcon />
 									<div className={Styles.text}>Reference</div>
 								</div>
 							</div>
+							{userData.isSuperUser && (
+								<>
+									<div>
+										<div className={Styles.TopicHeaderNotes}>Users</div>
+									</div>
+									<div className={Styles.containerBody}>
+										<div
+											ref={user}
+											id={`User`}
+											onClick={(e) => handleNav(`User`)}
+											className={Styles.topicTittle}>
+											<FaUserGraduate size={23} />
+											<div className={Styles.text}>User</div>
+										</div>
+									</div>
+								</>
+							)}
 						</div>
 					</div>
 					{/* //!start of default desplay */}
@@ -2178,6 +2252,7 @@ const Index = ({}) => {
 								textHeader={'Admin Dashboard'}
 								active={active}
 								handleClick={handleNav}
+								userData={userData}
 							/>
 						</div>
 
@@ -3086,6 +3161,53 @@ const Index = ({}) => {
 								)}
 								{/* //! END OF reference DISPLAY ONLY */}
 								{/* //* this below is a fragment to loading.. */}
+								{navValue == `User` && (
+									<div className={Styles.rightInnercontainerBody}>
+										<div className={Styles.subject}>
+											<div className={Styles.subjectHeader}>
+												<div className={Styles.subjectHeaderText}>
+													User Management
+												</div>
+											</div>
+											<div className={Styles.selectDivTopic}>
+												<InputTextMui
+													label='Enter User Name'
+													content={userDetail.value}
+													name='userDetail'
+													handleChange={handleTextInput}
+												/>
+											</div>
+											<div
+												onClick={retriveUser}
+												className={Styles.subjectHeaderButton}>
+												Retrieve User
+											</div>
+											<div className={Styles.subjectBody}>
+												{activateUserSearch &&
+													userSearchData.map(
+														(user: {
+															id: number;
+															username: string;
+															name: string;
+														}) => (
+															<CardBox
+																handleUpdate={handleUpdateSubjectExam}
+																link={'/Admin/User/' + user.id}
+																label={customTruncate(
+																	`${user.name} as ${user.username}`,
+																	24
+																)}
+																id={user.id}
+																key={user.id}
+																published={''}
+															/>
+														)
+													)}
+											</div>
+										</div>
+									</div>
+								)}
+								{/* //! END OF form reference DISPLAY ONLY */}
 							</>
 						)}
 					</div>

@@ -79,7 +79,7 @@ const Home: NextPage = ({
 				text4={`<span style="color: #9F0733 ;"><strong>Study</strong></span><span>&#128210;</span>`}
 				text5={`<span style="color: #05507C ;"><strong>Revise</strong></span><span>&#128221;</span>`}
 				explanation1={`To amaizingly`}
-				explanation2={` well prepared Notes.`}
+				explanation2={` best prepared Notes.`}
 				color1={'#800000'}
 				color2={'#008080'}
 			/>

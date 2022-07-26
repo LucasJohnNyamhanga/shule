@@ -43,11 +43,19 @@ export const NavMobile = () => {
 							isAdmin: userData.isAdmin,
 							userName: userData.userName,
 							image: userData.image,
+							isSuperUser: userData.isSuperUser,
 						});
 					})
 					.catch(function (error) {
 						// handle error
 						console.log('Something went wrong');
+						setUserData({
+							id: '',
+							isAdmin: false,
+							userName: '',
+							image: '',
+							isSuperUser: false,
+						});
 					});
 				setLimit(limt + 1);
 			}
@@ -65,6 +73,7 @@ export const NavMobile = () => {
 				isAdmin: false,
 				userName: '',
 				image: '',
+				isSuperUser: false,
 			});
 		}
 	}, [status, limt, session]);
