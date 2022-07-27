@@ -4,8 +4,48 @@ import { useRouter } from 'next/router';
 import { NavContext } from '../components/context/StateContext';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { prisma } from '../db/prisma';
 
-function Pricing(props) {
+import { getSession } from 'next-auth/react';
+import { vifurushiPackage } from '@prisma/client';
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const session = await getSession(context);
+	if (!session) {
+		return {
+			redirect: {
+				destination: `/Auth/SignIn?callbackUr=/`,
+				permanent: false,
+			},
+		};
+	}
+	const packageFromServer = await prisma.vifurushiPackage.findMany({
+		select: {
+			id: true,
+			name: true,
+			description: true,
+			price: true,
+			booksDownload: true,
+			examAccess: true,
+			examsSolvedDownload: true,
+			examsUnsolvedDownload: true,
+			notesDownload: true,
+			quizExcercises: true,
+		},
+	});
+	const packageDetails = await JSON.parse(JSON.stringify(packageFromServer));
+
+	await prisma.$disconnect();
+	return {
+		props: { packageDetails },
+	};
+};
+
+function Pricing({
+	packageDetails,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+	console.log(packageDetails);
+
 	const { navActive, setNavActive, userData } = useContext(NavContext);
 	const { query, push } = useRouter();
 	let callback = query.callbackUrl;
@@ -97,144 +137,32 @@ function Pricing(props) {
 					mentainance and upkeep.
 				</div>
 				<div className={Styles.cardContainer}>
-					<div className={Styles.pricingCard}>
-						<div className={Styles.pricing}>
-							<div className={Styles.price}>
-								{/* <sup>Tsh</sup> */}
-								<span>500</span>
+					{packageDetails.map((packageName: vifurushiPackage) => (
+						<div className={Styles.pricingCard} key={packageName.id}>
+							<div className={Styles.pricing}>
+								<div className={Styles.price}>
+									{/* <sup>Tsh</sup> */}
+									<span>{packageName.price}</span>
+								</div>
+								<span className={Styles.type}>{packageName.name}</span>
+								<p>{packageName.description}</p>
 							</div>
-							<span className={Styles.type}>Quiz</span>
-							<p>Access & Downloads</p>
-						</div>
-						<div className={Styles.cardBody}>
-							<div className={Styles.topShape2}></div>
-							<div className={Styles.cardContent}>
-								<ul>
-									<li>
-										Quiz <div className={Styles.icon}>10 Excercises</div>
-									</li>
-								</ul>
-								<button onClick={handleQuiz} className={Styles.btn2}>
-									START
-								</button>
+							<div className={Styles.cardBody}>
+								<div className={Styles.topShape3}></div>
+								<div className={Styles.cardContent}>
+									<ul>
+										<li>
+											Quiz <div className={Styles.icon}>10 Excercises</div>
+										</li>
+									</ul>
+									<button onClick={handleQuiz} className={Styles.btn3}>
+										START
+									</button>
+								</div>
 							</div>
+							<div className={Styles.ribbon3}></div>
 						</div>
-						<div className={Styles.ribbon2}></div>
-					</div>
-					{/* //two */}
-					<div className={Styles.pricingCard}>
-						<div className={Styles.pricing}>
-							<div className={Styles.price}>
-								{/* <sup>Tsh</sup> */}
-								<span>500</span>
-							</div>
-							<span className={Styles.type}>Exams</span>
-							<p>Without Answers</p>
-						</div>
-						<div className={Styles.cardBody}>
-							<div className={Styles.topShape3}></div>
-							<div className={Styles.cardContent}>
-								<ul>
-									<li>
-										Exam Download<div className={Styles.icon}>1</div>
-									</li>
-									<li>
-										Quiz <div className={Styles.icon}>1 Excercises</div>
-									</li>
-								</ul>
-								<button onClick={handleExamUnsolved} className={Styles.btn3}>
-									START
-								</button>
-							</div>
-						</div>
-						<div className={Styles.ribbon3}></div>
-					</div>
-					{/* //three */}
-					<div className={Styles.pricingCard}>
-						<div className={Styles.pricing}>
-							<div className={Styles.price}>
-								{/* <sup>Tsh</sup> */}
-								<span>1500</span>
-							</div>
-							<span className={Styles.type}>Exams</span>
-							<p>With Answers</p>
-						</div>
-						<div className={Styles.cardBody}>
-							<div className={Styles.topShape3}></div>
-							<div className={Styles.cardContent}>
-								<ul>
-									<li>
-										Exam Download<div className={Styles.icon}>1</div>
-									</li>
-									<li>
-										Exam Access<div className={Styles.icon}>1</div>
-									</li>
-									<li>
-										Quiz <div className={Styles.icon}>1 Excercises</div>
-									</li>
-								</ul>
-								<button onClick={handleExamSolved} className={Styles.btn3}>
-									START
-								</button>
-							</div>
-						</div>
-						<div className={Styles.ribbon3}></div>
-					</div>
-					<div className={Styles.pricingCard}>
-						<div className={Styles.pricing}>
-							<div className={Styles.price}>
-								{/* <sup>Tsh</sup> */}
-								<span>1500</span>
-							</div>
-							<span className={Styles.type}>Notes</span>
-							<p>Access & Downloads</p>
-						</div>
-						<div className={Styles.cardBody}>
-							<div className={Styles.topShape1}></div>
-							<div className={Styles.cardContent}>
-								<ul>
-									<li>
-										Notes Download <div className={Styles.icon}>1</div>
-									</li>
-
-									<li>
-										Quiz <div className={Styles.icon}>1 Excercises</div>
-									</li>
-								</ul>
-								<button onClick={handleNotes} className={Styles.btn1}>
-									START
-								</button>
-							</div>
-						</div>
-						<div className={Styles.ribbon1}></div>
-					</div>
-					<div className={Styles.pricingCard}>
-						<div className={Styles.pricing}>
-							<div className={Styles.price}>
-								{/* <sup>Tsh</sup> */}
-								<span>1500</span>
-							</div>
-							<span className={Styles.type}>Library</span>
-							<p>Access & Downloads</p>
-						</div>
-						<div className={Styles.cardBody}>
-							<div className={Styles.topShape4}></div>
-							<div className={Styles.cardContent}>
-								<ul>
-									<li>
-										Book Download <div className={Styles.icon}>1</div>
-									</li>
-									<li>
-										Quiz <div className={Styles.icon}>1 Excercises</div>
-									</li>
-								</ul>
-								<button onClick={handleBooks} className={Styles.btn4}>
-									START
-								</button>
-							</div>
-						</div>
-						<div className={Styles.ribbon4}></div>
-					</div>
+					))}
 				</div>
 			</div>
 		</div>
