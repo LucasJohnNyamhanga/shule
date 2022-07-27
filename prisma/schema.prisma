@@ -52,6 +52,72 @@ model vifurushi {
   users   users  @relation(fields: [usersId], references: [id])
 }
 
+model vifurushiPrice {
+  id    Int    @id @default(autoincrement())
+  name  String
+  price Int
+}
+
+model vifurushiPackage {
+  id                    Int                    @id @default(autoincrement())
+  name                  String
+  value                 Int
+  notesDownload         notesDownload?
+  quizExcercises        quizExcercises?
+  examsUnsolvedDownload examsUnsolvedDownload?
+  examsSolvedDownload   examsSolvedDownload?
+  examAccess            examAccess?
+  booksDownload         booksDownload?
+}
+
+model notesDownload {
+  id                 Int              @id @default(autoincrement())
+  name               String
+  value              Int
+  vifurushiPackageId Int              @unique
+  vifurushiPackage   vifurushiPackage @relation(fields: [vifurushiPackageId], references: [id])
+}
+
+model quizExcercises {
+  id                 Int              @id @default(autoincrement())
+  name               String
+  value              Int
+  vifurushiPackageId Int              @unique
+  vifurushiPackage   vifurushiPackage @relation(fields: [vifurushiPackageId], references: [id])
+}
+
+model examsUnsolvedDownload {
+  id                 Int              @id @default(autoincrement())
+  name               String
+  value              Int
+  vifurushiPackageId Int              @unique
+  vifurushiPackage   vifurushiPackage @relation(fields: [vifurushiPackageId], references: [id])
+}
+
+model examsSolvedDownload {
+  id                 Int              @id @default(autoincrement())
+  name               String
+  value              Int
+  vifurushiPackageId Int              @unique
+  vifurushiPackage   vifurushiPackage @relation(fields: [vifurushiPackageId], references: [id])
+}
+
+model examAccess {
+  id                 Int              @id @default(autoincrement())
+  name               String
+  value              Int
+  vifurushiPackageId Int              @unique
+  vifurushiPackage   vifurushiPackage @relation(fields: [vifurushiPackageId], references: [id])
+}
+
+model booksDownload {
+  id                 Int              @id @default(autoincrement())
+  name               String
+  value              Int
+  vifurushiPackageId Int              @unique
+  vifurushiPackage   vifurushiPackage @relation(fields: [vifurushiPackageId], references: [id])
+}
+
 model purchase {
   id      Int    @id @default(autoincrement())
   name    String
