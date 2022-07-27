@@ -148,19 +148,19 @@ function Pricing({
 								<p>{packageName.description}</p>
 							</div>
 							<div className={Styles.cardBody}>
-								<div className={Styles.topShape2}></div>
+								<div className={Styles.topShape3}></div>
 								<div className={Styles.cardContent}>
 									<ul>
 										<li>
 											Quiz <div className={Styles.icon}>10 Excercises</div>
 										</li>
 									</ul>
-									<button onClick={handleQuiz} className={Styles.btn2}>
+									<button onClick={handleQuiz} className={Styles.btn3}>
 										START
 									</button>
 								</div>
 							</div>
-							<div className={Styles.ribbon2}></div>
+							<div className={Styles.ribbon3}></div>
 						</div>
 					))}
 				</div>
