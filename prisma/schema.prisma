@@ -10,34 +10,34 @@ datasource db {
 
 model users {
   id                Int                 @id @default(autoincrement())
-  name              String              @db.Text
   image             String?
   username          String              @db.Text
   password          String
   isAdmin           Boolean             @default(false)
   isSuperUser       Boolean             @default(false)
-  isOnline          Boolean             @default(false)
   dateJoined        DateTime            @default(now())
+  name              String              @db.Text
   updatedAt         DateTime            @updatedAt
-  subject           subject[]
-  form              form[]
-  topic             topic[]
-  note              note[]
-  subjectReview     subjectReview[]
-  formReview        formReview[]
-  topicReview       topicReview[]
-  question          question[]
-  subjectExams      subjectExams[]
-  formExams         formExams[]
+  isOnline          Boolean             @default(false)
   exam              exam[]
-  subjectReference  subjectReference[]
-  formReference     formReference[]
-  reference         reference[]
-  notesDownloadable notesDownloadable[]
   examDownloadable  examDownloadable[]
-  review            review[]
-  vifurushi         vifurushi[]
+  form              form[]
+  formExams         formExams[]
+  formReference     formReference[]
+  formReview        formReview[]
+  note              note[]
+  notesDownloadable notesDownloadable[]
   purchase          purchase[]
+  question          question[]
+  reference         reference[]
+  review            review[]
+  subject           subject[]
+  subjectExams      subjectExams[]
+  subjectReference  subjectReference[]
+  subjectReview     subjectReview[]
+  topic             topic[]
+  topicReview       topicReview[]
+  vifurushi         vifurushi[]
 
   @@fulltext([username])
   @@fulltext([name])
@@ -62,12 +62,12 @@ model vifurushiPackage {
   id                    Int                    @id @default(autoincrement())
   name                  String
   value                 Int
+  booksDownload         booksDownload?
+  examAccess            examAccess?
+  examsSolvedDownload   examsSolvedDownload?
+  examsUnsolvedDownload examsUnsolvedDownload?
   notesDownload         notesDownload?
   quizExcercises        quizExcercises?
-  examsUnsolvedDownload examsUnsolvedDownload?
-  examsSolvedDownload   examsSolvedDownload?
-  examAccess            examAccess?
-  booksDownload         booksDownload?
 }
 
 model notesDownload {
@@ -124,38 +124,42 @@ model purchase {
   value   Int
   usersId Int
   users   users  @relation(fields: [usersId], references: [id])
+
+  @@index([usersId], map: "purchase_usersId_fkey")
 }
 
 model subject {
-  id                Int      @id @default(autoincrement())
+  id                Int                 @id @default(autoincrement())
   subjectName       String
-  subjectDefinition String   @db.LongText
+  subjectDefinition String              @db.LongText
   imageLocation     String?
-  published         Boolean  @default(false)
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  forms             form[]
-  topic             topic[]
-  note              note[]
+  published         Boolean             @default(false)
   usersId           Int
-  users             users    @relation(fields: [usersId], references: [id])
-
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  users             users               @relation(fields: [usersId], references: [id])
+  note              note[]
   notesDownloadable notesDownloadable[]
+  topic             topic[]
+  forms             form[]
 
+  @@index([usersId], map: "subject_usersId_fkey")
   @@fulltext([subjectName, subjectDefinition])
 }
 
 model form {
   id                Int                 @id @default(autoincrement())
   formName          String
+  usersId           Int
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
-  subjects          subject[]
-  topic             topic[]
-  note              note[]
-  usersId           Int
   users             users               @relation(fields: [usersId], references: [id])
+  note              note[]
   notesDownloadable notesDownloadable[]
+  topic             topic[]
+  subjects          subject[]
+
+  @@index([usersId], map: "form_usersId_fkey")
 }
 
 model topic {
@@ -165,14 +169,17 @@ model topic {
   published       Boolean  @default(false)
   subjectId       Int
   formId          Int
+  usersId         Int
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
-  subject         subject  @relation(fields: [subjectId], references: [id])
   form            form     @relation(fields: [formId], references: [id])
-  note            note?
-  usersId         Int
+  subject         subject  @relation(fields: [subjectId], references: [id])
   users           users    @relation(fields: [usersId], references: [id])
+  note            note?
 
+  @@index([formId], map: "topic_formId_fkey")
+  @@index([subjectId], map: "topic_subjectId_fkey")
+  @@index([usersId], map: "topic_usersId_fkey")
   @@fulltext([topicName, topicDefinition])
 }
 
@@ -186,28 +193,35 @@ model note {
   formId    Int
   usersId   Int
   topicId   Int      @unique
-  subject   subject  @relation(fields: [subjectId], references: [id])
   form      form     @relation(fields: [formId], references: [id])
+  subject   subject  @relation(fields: [subjectId], references: [id])
   topic     topic    @relation(fields: [topicId], references: [id])
   users     users    @relation(fields: [usersId], references: [id])
 
+  @@index([formId], map: "note_formId_fkey")
+  @@index([subjectId], map: "note_subjectId_fkey")
+  @@index([usersId], map: "note_usersId_fkey")
   @@fulltext([content])
 }
 
 model notesDownloadable {
   id            Int      @id @default(autoincrement())
-  name          String
   link          String
   fileExtension String
   published     Boolean  @default(false)
+  formId        Int
+  subjectId     Int
+  usersId       Int
+  name          String
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-  formId        Int
   form          form     @relation(fields: [formId], references: [id])
-  subjectId     Int
   subject       subject  @relation(fields: [subjectId], references: [id])
-  usersId       Int
   users         users    @relation(fields: [usersId], references: [id])
+
+  @@index([formId], map: "notesDownloadable_formId_fkey")
+  @@index([subjectId], map: "notesDownloadable_subjectId_fkey")
+  @@index([usersId], map: "notesDownloadable_usersId_fkey")
 }
 
 model subjectReview {
@@ -216,27 +230,30 @@ model subjectReview {
   subjectDefinition String        @db.LongText
   imageLocation     String?
   published         Boolean       @default(false)
+  usersId           Int
   createdAt         DateTime      @default(now())
   updatedAt         DateTime      @updatedAt
-  forms             formReview[]
-  topic             topicReview[]
-  review            review[]
-  usersId           Int
   users             users         @relation(fields: [usersId], references: [id])
+  review            review[]
+  topic             topicReview[]
+  forms             formReview[]
 
+  @@index([usersId], map: "subjectReview_usersId_fkey")
   @@fulltext([subjectName, subjectDefinition])
 }
 
 model formReview {
   id        Int             @id @default(autoincrement())
   formName  String
+  usersId   Int
   createdAt DateTime        @default(now())
   updatedAt DateTime        @updatedAt
-  subjects  subjectReview[]
-  topic     topicReview[]
-  review    review[]
-  usersId   Int
   users     users           @relation(fields: [usersId], references: [id])
+  review    review[]
+  topic     topicReview[]
+  subjects  subjectReview[]
+
+  @@index([usersId], map: "formReview_usersId_fkey")
 }
 
 model topicReview {
@@ -244,16 +261,19 @@ model topicReview {
   topicName       String
   topicDefinition String?
   published       Boolean       @default(false)
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
   subjectId       Int
   formId          Int
-  subject         subjectReview @relation(fields: [subjectId], references: [id])
-  form            formReview    @relation(fields: [formId], references: [id])
   usersId         Int
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  form            formReview    @relation(fields: [formId], references: [id])
+  subject         subjectReview @relation(fields: [subjectId], references: [id])
   users           users         @relation(fields: [usersId], references: [id])
   review          review[]
 
+  @@index([formId], map: "topicReview_formId_fkey")
+  @@index([subjectId], map: "topicReview_subjectId_fkey")
+  @@index([usersId], map: "topicReview_usersId_fkey")
   @@fulltext([topicName, topicDefinition])
 }
 
@@ -261,18 +281,22 @@ model review {
   id        Int           @id @default(autoincrement())
   name      String
   published Boolean       @default(false)
+  topicId   Int
+  subjectId Int
+  formId    Int
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
-  topicId   Int
-  topic     topicReview   @relation(fields: [topicId], references: [id])
-  subjectId Int
-  subject   subjectReview @relation(fields: [subjectId], references: [id])
-  formId    Int
-  form      formReview    @relation(fields: [formId], references: [id])
   usersId   Int
+  form      formReview    @relation(fields: [formId], references: [id])
+  subject   subjectReview @relation(fields: [subjectId], references: [id])
+  topic     topicReview   @relation(fields: [topicId], references: [id])
   users     users         @relation(fields: [usersId], references: [id])
   question  question[]
 
+  @@index([formId], map: "review_formId_fkey")
+  @@index([subjectId], map: "review_subjectId_fkey")
+  @@index([topicId], map: "review_topicId_fkey")
+  @@index([usersId], map: "review_usersId_fkey")
   @@fulltext([name])
 }
 
@@ -280,17 +304,20 @@ model question {
   id               Int            @id @default(autoincrement())
   question         String         @db.LongText
   published        Boolean        @default(false)
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime       @updatedAt
-  answer           answer[]
   answerDetails    String         @default("") @db.LongText
   questionFormatId Int
-  questionFormat   questionFormat @relation(fields: [questionFormatId], references: [id])
   reviewId         Int
-  review           review         @relation(fields: [reviewId], references: [id])
   usersId          Int
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  questionFormat   questionFormat @relation(fields: [questionFormatId], references: [id])
+  review           review         @relation(fields: [reviewId], references: [id])
   users            users          @relation(fields: [usersId], references: [id])
+  answer           answer[]
 
+  @@index([questionFormatId], map: "question_questionFormatId_fkey")
+  @@index([reviewId], map: "question_reviewId_fkey")
+  @@index([usersId], map: "question_usersId_fkey")
   @@fulltext([question])
 }
 
@@ -306,15 +333,14 @@ model answer {
   id         Int      @id @default(autoincrement())
   answer     String   @db.LongText
   valid      Boolean  @default(false)
+  questionId Int
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  questionId Int
   question   question @relation(fields: [questionId], references: [id])
 
+  @@index([questionId], map: "answer_questionId_fkey")
   @@fulltext([answer])
 }
-
-//Exams
 
 model subjectExams {
   id                Int         @id @default(autoincrement())
@@ -322,40 +348,45 @@ model subjectExams {
   subjectDefinition String      @db.LongText
   imageLocation     String?
   published         Boolean     @default(false)
+  usersId           Int
   createdAt         DateTime    @default(now())
   updatedAt         DateTime    @updatedAt
-  forms             formExams[]
-  examType          examType[]
-  usersId           Int
   users             users       @relation(fields: [usersId], references: [id])
+  examType          examType[]
+  forms             formExams[]
 
+  @@index([usersId], map: "subjectExams_usersId_fkey")
   @@fulltext([subjectName, subjectDefinition])
 }
 
 model formExams {
   id        Int            @id @default(autoincrement())
   formName  String
+  usersId   Int
   createdAt DateTime       @default(now())
   updatedAt DateTime       @updatedAt
-  subjects  subjectExams[]
-  examType  examType[]
-  usersId   Int
   users     users          @relation(fields: [usersId], references: [id])
+  examType  examType[]
+  subjects  subjectExams[]
+
+  @@index([usersId], map: "formExams_usersId_fkey")
 }
 
 model examType {
   id           Int          @id @default(autoincrement())
   name         String
   definition   String       @db.LongText
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
   published    Boolean      @default(false)
   subjectId    Int
-  subjectExams subjectExams @relation(fields: [subjectId], references: [id])
   formId       Int
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
   formExams    formExams    @relation(fields: [formId], references: [id])
+  subjectExams subjectExams @relation(fields: [subjectId], references: [id])
   exam         exam[]
 
+  @@index([formId], map: "examType_formId_fkey")
+  @@index([subjectId], map: "examType_subjectId_fkey")
   @@fulltext([name, definition])
 }
 
@@ -365,33 +396,36 @@ model exam {
   year             Int
   hasAnswers       Boolean            @default(false)
   published        Boolean            @default(false)
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @updatedAt
   examTypeId       Int
-  examType         examType           @relation(fields: [examTypeId], references: [id])
   exam             String             @db.LongText
   usersId          Int
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  examType         examType           @relation(fields: [examTypeId], references: [id])
   users            users              @relation(fields: [usersId], references: [id])
   examDownloadable examDownloadable[]
 
+  @@index([examTypeId], map: "exam_examTypeId_fkey")
+  @@index([usersId], map: "exam_usersId_fkey")
   @@fulltext([description, exam])
 }
 
 model examDownloadable {
   id            Int      @id @default(autoincrement())
-  name          String
   link          String
   fileExtension String
   published     Boolean  @default(false)
+  examId        Int
+  usersId       Int
+  name          String
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-  examId        Int
   exam          exam     @relation(fields: [examId], references: [id])
-  usersId       Int
   users         users    @relation(fields: [usersId], references: [id])
-}
 
-//references
+  @@index([examId], map: "examDownloadable_examId_fkey")
+  @@index([usersId], map: "examDownloadable_usersId_fkey")
+}
 
 model subjectReference {
   id                Int             @id @default(autoincrement())
@@ -399,25 +433,28 @@ model subjectReference {
   subjectDefinition String          @db.LongText
   imageLocation     String?
   published         Boolean         @default(false)
+  usersId           Int
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
-  forms             formReference[]
-  reference         reference[]
-  usersId           Int
   users             users           @relation(fields: [usersId], references: [id])
+  reference         reference[]
+  forms             formReference[]
 
+  @@index([usersId], map: "subjectReference_usersId_fkey")
   @@fulltext([subjectDefinition, subjectName])
 }
 
 model formReference {
   id        Int                @id @default(autoincrement())
   formName  String
+  usersId   Int
   createdAt DateTime           @default(now())
   updatedAt DateTime           @updatedAt
-  subjects  subjectReference[]
-  reference reference[]
-  usersId   Int
   users     users              @relation(fields: [usersId], references: [id])
+  reference reference[]
+  subjects  subjectReference[]
+
+  @@index([usersId], map: "formReference_usersId_fkey")
 }
 
 model reference {
@@ -427,13 +464,15 @@ model reference {
   data             String           @db.LongText
   isPdf            Boolean
   published        Boolean          @default(false)
+  subjectId        Int
+  usersId          Int
   createdAt        DateTime         @default(now())
   updatedAt        DateTime         @updatedAt
-  subjectId        Int
   subjectReference subjectReference @relation(fields: [subjectId], references: [id])
-  formReference    formReference[]
-  usersId          Int
   users            users            @relation(fields: [usersId], references: [id])
+  formReference    formReference[]
 
+  @@index([subjectId], map: "reference_subjectId_fkey")
+  @@index([usersId], map: "reference_usersId_fkey")
   @@fulltext([name, description, data])
 }

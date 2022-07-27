@@ -78,12 +78,9 @@ function hero({
 									<strong>{explanation2}</strong>
 								</span> */}
 								<p>
-									Written by the best teachers using simple language that is
-									easy to understand and with colorful pictures to show details.
-								</p>{' '}
-								<p>
-									We create the perfect starting point to learn. Begin by
-									searching or go straight to subjects below.
+									Written by the best teachers using language which is easy to
+									understand. We create the perfect learning point, you can
+									begin by searching or go straight to subjects below.
 								</p>
 							</div>
 						</div>

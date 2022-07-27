@@ -4,8 +4,82 @@ import { useRouter } from 'next/router';
 import { NavContext } from '../components/context/StateContext';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { prisma } from '../db/prisma';
 
-function Pricing(props) {
+import { getSession } from 'next-auth/react';
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const session = await getSession(context);
+	if (!session) {
+		return {
+			redirect: {
+				destination: `/Auth/SignIn?callbackUr=/`,
+				permanent: false,
+			},
+		};
+	}
+	const packageFromServer = await prisma.vifurushiPackage.findMany({
+		select: {
+			id: true,
+			name: true,
+			value: true,
+			booksDownload: {
+				select: {
+					name: true,
+					value: true,
+				},
+			},
+			examAccess: {
+				select: {
+					name: true,
+					value: true,
+				},
+			},
+			examsSolvedDownload: {
+				select: {
+					name: true,
+					value: true,
+				},
+			},
+			examsUnsolvedDownload: {
+				select: {
+					name: true,
+					value: true,
+				},
+			},
+			notesDownload: {
+				select: {
+					name: true,
+					value: true,
+				},
+			},
+			quizExcercises: {
+				select: {
+					name: true,
+					value: true,
+				},
+			},
+		},
+	});
+	const packageDetails = await JSON.parse(JSON.stringify(packageFromServer));
+
+	const priceFromServer = await prisma.vifurushiPrice.findMany({
+		select: { name: true, price: true },
+	});
+	const packagePrice = await JSON.parse(JSON.stringify(priceFromServer));
+
+	await prisma.$disconnect();
+	return {
+		props: { packageDetails, packagePrice },
+	};
+};
+
+function Pricing({
+	packageDetails,
+	packagePrice,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+	console.log({ packageDetails }, { packagePrice });
+
 	const { navActive, setNavActive, userData } = useContext(NavContext);
 	const { query, push } = useRouter();
 	let callback = query.callbackUrl;
