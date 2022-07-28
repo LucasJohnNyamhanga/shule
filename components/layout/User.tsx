@@ -34,7 +34,9 @@ export default function AccountMenu({ signOut }: dataUser) {
 						aria-controls={open ? 'account-menu' : undefined}
 						aria-haspopup='true'
 						aria-expanded={open ? 'true' : undefined}>
-						<Avatar sx={{ width: 40, height: 40 }} />
+						<Avatar
+							sx={{ width: 40, height: 40, backgroundColor: '#007aff' }}
+						/>
 					</IconButton>
 				</Tooltip>
 			</Box>
@@ -75,14 +77,21 @@ export default function AccountMenu({ signOut }: dataUser) {
 				<Link href='/Account'>
 					<a>
 						<MenuItem>
-							<Avatar /> My account
+							<Avatar
+								sx={{ width: 40, height: 40, backgroundColor: '#800000' }}
+							/>{' '}
+							My account
 						</MenuItem>
 					</a>
 				</Link>
 				<Link href='/Pricing'>
 					<a>
 						<MenuItem>
-							<Avatar>P</Avatar> Pricing
+							<Avatar
+								sx={{ width: 40, height: 40, backgroundColor: '#800000' }}>
+								P
+							</Avatar>{' '}
+							Pricing
 						</MenuItem>
 					</a>
 				</Link>
@@ -90,7 +99,7 @@ export default function AccountMenu({ signOut }: dataUser) {
 
 				<MenuItem onClick={signOut}>
 					<ListItemIcon>
-						<Logout fontSize='small' />
+						<Logout fontSize='small' style={{ color: '#800000' }} />
 					</ListItemIcon>
 					Logout
 				</MenuItem>
