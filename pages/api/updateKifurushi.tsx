@@ -28,7 +28,7 @@ export default async function handler(
 					where: { userId: parseInt(id), name: 'notesDownload' },
 					data: {
 						value: {
-							increment: 1,
+							increment: parseInt(notesDownload),
 						},
 					},
 				});
@@ -36,7 +36,7 @@ export default async function handler(
 					where: { userId: parseInt(id), name: 'quizExcercises' },
 					data: {
 						value: {
-							increment: 1,
+							increment: parseInt(quizExcercises),
 						},
 					},
 				});
@@ -50,7 +50,7 @@ export default async function handler(
 					where: { userId: parseInt(id), name: 'quizExcercises' },
 					data: {
 						value: {
-							increment: 10,
+							increment: parseInt(quizExcercises),
 						},
 					},
 				});
@@ -64,7 +64,7 @@ export default async function handler(
 					where: { userId: parseInt(id), name: 'examsUnsolvedDownload' },
 					data: {
 						value: {
-							increment: 1,
+							increment: parseInt(examsUnsolvedDownload),
 						},
 					},
 				});
@@ -72,7 +72,7 @@ export default async function handler(
 					where: { userId: parseInt(id), name: 'quizExcercises' },
 					data: {
 						value: {
-							increment: 1,
+							increment: parseInt(quizExcercises),
 						},
 					},
 				});
@@ -86,7 +86,7 @@ export default async function handler(
 					where: { userId: parseInt(id), name: 'examsSolvedDownload' },
 					data: {
 						value: {
-							increment: 1,
+							increment: parseInt(examsSolvedDownload),
 						},
 					},
 				});
@@ -94,7 +94,7 @@ export default async function handler(
 					where: { userId: parseInt(id), name: 'examAccess' },
 					data: {
 						value: {
-							increment: 1,
+							increment: parseInt(examAccess),
 						},
 					},
 				});
@@ -102,7 +102,7 @@ export default async function handler(
 					where: { userId: parseInt(id), name: 'quizExcercises' },
 					data: {
 						value: {
-							increment: 1,
+							increment: parseInt(quizExcercises),
 						},
 					},
 				});
@@ -116,7 +116,7 @@ export default async function handler(
 					where: { userId: parseInt(id), name: 'booksDownload' },
 					data: {
 						value: {
-							increment: 1,
+							increment: parseInt(booksDownload),
 						},
 					},
 				});
@@ -124,7 +124,7 @@ export default async function handler(
 					where: { userId: parseInt(id), name: 'quizExcercises' },
 					data: {
 						value: {
-							increment: 1,
+							increment: parseInt(quizExcercises),
 						},
 					},
 				});
