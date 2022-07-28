@@ -17,7 +17,7 @@
 		display: grid;
 		grid-gap: 15px;
 		justify-content: center;
-		align-items: center;
+		align-items: flex-start;
 		grid-template-columns: repeat(auto-fill, minmax(100px, 250px));
 
 		// @media (min-width: 268px) {
