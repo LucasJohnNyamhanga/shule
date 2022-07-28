@@ -2,6 +2,8 @@
 @import 'index';
 html,
 body {
+	--scrollbarBG: black;
+	--thumbBG: #007aff;
 	padding: 0;
 	margin: 0;
 	font-family: -apple-system, Montserrat, BlinkMacSystemFont, Segoe UI, Roboto,
@@ -13,6 +15,20 @@ body {
 		color: $black;
 	}
 	cursor: default;
+	scrollbar-width: thin;
+	scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+
+	&::-webkit-scrollbar-track {
+		background: var(--scrollbarBG);
+	}
+	&::-webkit-scrollbar-thumb {
+		background-color: var(--thumbBG);
+		border-radius: 6px;
+		border: 3px solid var(--scrollbarBG);
+	}
+	&::-webkit-scrollbar {
+		width: 11px;
+	}
 }
 
 a {

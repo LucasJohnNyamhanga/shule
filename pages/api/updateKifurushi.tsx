@@ -25,18 +25,18 @@ export default async function handler(
 		switch (key) {
 			case 'Notes':
 				await prisma.vifurushi.updateMany({
-					where: { usersId: parseInt(id), name: 'notesDownload' },
+					where: { userId: parseInt(id), name: 'notesDownload' },
 					data: {
 						value: {
-							increment: 1,
+							increment: parseInt(notesDownload),
 						},
 					},
 				});
 				await prisma.vifurushi.updateMany({
-					where: { usersId: parseInt(id), name: 'quizExcercises' },
+					where: { userId: parseInt(id), name: 'quizExcercises' },
 					data: {
 						value: {
-							increment: 1,
+							increment: parseInt(quizExcercises),
 						},
 					},
 				});
@@ -47,10 +47,10 @@ export default async function handler(
 				break;
 			case 'Quiz':
 				await prisma.vifurushi.updateMany({
-					where: { usersId: parseInt(id), name: 'quizExcercises' },
+					where: { userId: parseInt(id), name: 'quizExcercises' },
 					data: {
 						value: {
-							increment: 10,
+							increment: parseInt(quizExcercises),
 						},
 					},
 				});
@@ -61,18 +61,18 @@ export default async function handler(
 				break;
 			case 'Unsolved Exam':
 				await prisma.vifurushi.updateMany({
-					where: { usersId: parseInt(id), name: 'examsUnsolvedDownload' },
+					where: { userId: parseInt(id), name: 'examsUnsolvedDownload' },
 					data: {
 						value: {
-							increment: 1,
+							increment: parseInt(examsUnsolvedDownload),
 						},
 					},
 				});
 				await prisma.vifurushi.updateMany({
-					where: { usersId: parseInt(id), name: 'quizExcercises' },
+					where: { userId: parseInt(id), name: 'quizExcercises' },
 					data: {
 						value: {
-							increment: 1,
+							increment: parseInt(quizExcercises),
 						},
 					},
 				});
@@ -83,26 +83,26 @@ export default async function handler(
 				break;
 			case 'Solved Exam':
 				await prisma.vifurushi.updateMany({
-					where: { usersId: parseInt(id), name: 'examsSolvedDownload' },
+					where: { userId: parseInt(id), name: 'examsSolvedDownload' },
 					data: {
 						value: {
-							increment: 1,
+							increment: parseInt(examsSolvedDownload),
 						},
 					},
 				});
 				await prisma.vifurushi.updateMany({
-					where: { usersId: parseInt(id), name: 'examAccess' },
+					where: { userId: parseInt(id), name: 'examAccess' },
 					data: {
 						value: {
-							increment: 1,
+							increment: parseInt(examAccess),
 						},
 					},
 				});
 				await prisma.vifurushi.updateMany({
-					where: { usersId: parseInt(id), name: 'quizExcercises' },
+					where: { userId: parseInt(id), name: 'quizExcercises' },
 					data: {
 						value: {
-							increment: 1,
+							increment: parseInt(quizExcercises),
 						},
 					},
 				});
@@ -113,18 +113,18 @@ export default async function handler(
 				break;
 			case 'Books':
 				await prisma.vifurushi.updateMany({
-					where: { usersId: parseInt(id), name: 'booksDownload' },
+					where: { userId: parseInt(id), name: 'booksDownload' },
 					data: {
 						value: {
-							increment: 1,
+							increment: parseInt(booksDownload),
 						},
 					},
 				});
 				await prisma.vifurushi.updateMany({
-					where: { usersId: parseInt(id), name: 'quizExcercises' },
+					where: { userId: parseInt(id), name: 'quizExcercises' },
 					data: {
 						value: {
-							increment: 1,
+							increment: parseInt(quizExcercises),
 						},
 					},
 				});
