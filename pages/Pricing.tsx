@@ -41,9 +41,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	};
 };
 
-function Pricing({
-	packageDetails,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+const Pricing = ({
+    	packageDetails,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	console.log(packageDetails);
 
 	const { navActive, setNavActive, userData } = useContext(NavContext);
@@ -167,7 +167,7 @@ function Pricing({
 			</div>
 		</div>
 	);
-}
+};
 
 export default Pricing;
 

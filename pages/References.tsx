@@ -1,8 +1,7 @@
-import type { NextPage, InferGetStaticPropsType } from 'next';
+import type { NextPage, InferGetStaticPropsType, GetStaticProps } from 'next';
 import Hero from '../components/layout/Hero';
 import Study from '../components/layout/Study';
 import { prisma } from '../db/prisma';
-import type { GetStaticProps } from 'next';
 import { useContext, useEffect } from 'react';
 import { NavContext } from '../components/context/StateContext';
 import Book from '../components/tools/Book';

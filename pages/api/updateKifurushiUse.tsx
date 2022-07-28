@@ -14,7 +14,7 @@ export default async function handler(
 
 	try {
 		await prisma.vifurushi.updateMany({
-			where: { usersId: parseInt(id), name },
+			where: { userId: parseInt(id), name },
 			data: {
 				value: {
 					decrement: 1,
