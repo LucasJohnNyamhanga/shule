@@ -61,10 +61,27 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	});
 	const userfound = await JSON.parse(JSON.stringify(userFromServer));
 
+	const vifurushiFromServer = await prisma.vifurushiPackage.findMany({
+		select: {
+			id: true,
+			name: true,
+			description: true,
+			price: true,
+			booksDownload: true,
+			examAccess: true,
+			examsSolvedDownload: true,
+			examsUnsolvedDownload: true,
+			notesDownload: true,
+			quizExcercises: true,
+		},
+	});
+	const vifurushi = await JSON.parse(JSON.stringify(vifurushiFromServer));
+
 	await prisma.$disconnect();
 	return {
 		props: {
 			userfound,
+			vifurushi,
 		},
 	};
 };
@@ -76,6 +93,7 @@ type formData = {
 
 const EditExam = ({
 	userfound,
+	vifurushi,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
@@ -114,10 +132,10 @@ const EditExam = ({
 
 	let options: { label: string; value: string }[] = [];
 
-	for (const form of userfound.vifurushi) {
+	for (const kifurushi of vifurushi) {
 		options.push({
-			label: form.name,
-			value: form.id,
+			label: `${kifurushi.name} ${kifurushi.description}`,
+			value: kifurushi.id,
 		});
 	}
 
@@ -125,6 +143,8 @@ const EditExam = ({
 		console.log(value);
 		setPackageSelected({ packageId: value });
 	};
+
+	let handleKifurushiUpdate = () => {};
 
 	return (
 		<div className={Styles.container}>
@@ -176,11 +196,14 @@ const EditExam = ({
 					<div className={Styles.headerUpdate}>Update User Package</div>
 					<div className={Styles.divSelector}>
 						<SelectMiu
-							displayLabel='Select Form'
+							displayLabel='Select Kifurushi'
 							forms={options}
 							handlechange={handleSelect}
 							value={packageSelected.packageId}
 						/>
+					</div>
+					<div onClick={handleKifurushiUpdate} className={Styles.imageSelect}>
+						Update Package
 					</div>
 				</div>
 				{/* <div className={Styles.loader}>{loadingDisplay && <Loader />}</div> */}
