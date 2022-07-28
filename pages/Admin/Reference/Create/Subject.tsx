@@ -67,9 +67,9 @@ type dataTypeSelect = {
 }[];
 
 const CreateNotes = ({
-    	forms,
-    	deactiveteImage,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	forms,
+	deactiveteImage,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive, userData } = useContext(NavContext);
 
 	useEffect(() => {

@@ -1,17 +1,11 @@
-import { ChangeEvent, useRef } from 'react';
 import Styles from '../../../styles/accountAdmin.module.scss';
 import Avatar from '@mui/material/Avatar';
-import AutoStoriesIcon from '@mui/icons-material/AutoStories';
-import Loader from '../../../components/tools/loader';
-import bcrypt from 'bcryptjs';
-
-import React, { ReactNode, useContext, useEffect, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { prisma } from '../../../db/prisma';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
-import { NavContext } from '../../../components/context/StateContext';
-import InputTextMui from '../../../components/tools/InputTextMui';
+import SelectMiu from '../../../components/tools/SelectMui';
 
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -58,6 +52,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			password: true,
 			vifurushi: {
 				select: {
+					id: true,
 					name: true,
 					value: true,
 				},
@@ -85,6 +80,10 @@ const EditExam = ({
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
 
+	const [packageSelected, setPackageSelected] = useState({
+		packageId: '',
+	});
+
 	const sendToDatabase = (hash: string) => {
 		const database = {
 			password: hash,
@@ -111,6 +110,20 @@ const EditExam = ({
 			.then(function () {
 				// always executed
 			});
+	};
+
+	let options: { label: string; value: string }[] = [];
+
+	for (const form of userfound.vifurushi) {
+		options.push({
+			label: form.name,
+			value: form.id,
+		});
+	}
+
+	let handleSelect = (value: string) => {
+		console.log(value);
+		setPackageSelected({ packageId: value });
 	};
 
 	return (
@@ -159,6 +172,15 @@ const EditExam = ({
 								</tbody>
 							</table>
 						</div>
+					</div>
+					<div className={Styles.headerUpdate}>Update User Package</div>
+					<div className={Styles.divSelector}>
+						<SelectMiu
+							displayLabel='Select Form'
+							forms={options}
+							handlechange={handleSelect}
+							value={packageSelected.packageId}
+						/>
 					</div>
 				</div>
 				{/* <div className={Styles.loader}>{loadingDisplay && <Loader />}</div> */}
