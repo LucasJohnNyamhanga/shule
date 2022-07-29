@@ -166,6 +166,99 @@ const Pricing = ({
 		return true;
 	}
 
+	let findColor = (index: number) => {
+		if (index <= 3) {
+			return index + 1;
+		}
+		if (index > 3 && index < 7) {
+			return index - 3;
+		}
+		if (index > 7 && index < 11) {
+			return index - 6;
+		}
+		if (index > 11 && index < 15) {
+			return index - 9;
+		}
+		if (index > 15 && index < 19) {
+			return index - 12;
+		}
+		if (index > 19 && index < 23) {
+			return index - 15;
+		}
+		if (index > 23 && index < 27) {
+			return index - 18;
+		}
+		if (index > 27 && index < 31) {
+			return index - 21;
+		}
+		if (index > 31 && index < 35) {
+			return index - 24;
+		}
+		if (index > 35 && index < 39) {
+			return index - 27;
+		}
+	};
+
+	let showTop = (number) => {
+		switch (number) {
+			case 1:
+				return Styles.topShape1;
+				break;
+			case 2:
+				return Styles.topShape2;
+				break;
+			case 3:
+				return Styles.topShape3;
+				break;
+			case 4:
+				return Styles.topShape4;
+				break;
+
+			default:
+				break;
+		}
+	};
+
+	let showButton = (number) => {
+		switch (number) {
+			case 1:
+				return Styles.btn1;
+				break;
+			case 2:
+				return Styles.btn2;
+				break;
+			case 3:
+				return Styles.btn3;
+				break;
+			case 4:
+				return Styles.btn4;
+				break;
+
+			default:
+				break;
+		}
+	};
+
+	let showLibbon = (number) => {
+		switch (number) {
+			case 1:
+				return Styles.ribbon1;
+				break;
+			case 2:
+				return Styles.ribbon2;
+				break;
+			case 3:
+				return Styles.ribbon3;
+				break;
+			case 4:
+				return Styles.ribbon4;
+				break;
+
+			default:
+				break;
+		}
+	};
+
 	return (
 		<div className={Styles.container}>
 			<Toaster position='bottom-left' reverseOrder={false} />
@@ -190,16 +283,7 @@ const Pricing = ({
 									<p>{packageName.description}</p>
 								</div>
 								<div className={Styles.cardBody}>
-									<div
-										className={
-											index === 0
-												? Styles.topShape4
-												: index % 2 == 0
-												? Styles.topShape1
-												: isPrime(index)
-												? Styles.topShape2
-												: Styles.topShape3
-										}></div>
+									<div className={showTop(findColor(index))}></div>
 									<div className={Styles.cardContent}>
 										<ul>
 											{packageName.notesDownload == 0
@@ -265,29 +349,12 @@ const Pricing = ({
 										</ul>
 										<button
 											onClick={handleQuiz}
-											className={
-												index === 0
-													? Styles.btn4
-													: index % 2 == 0
-													? Styles.btn1
-													: isPrime(index)
-													? Styles.btn2
-													: Styles.btn3
-											}>
+											className={showButton(findColor(index))}>
 											START
 										</button>
 									</div>
 								</div>
-								<div
-									className={
-										index === 0
-											? Styles.ribbon4
-											: index % 2 == 0
-											? Styles.ribbon1
-											: isPrime(index)
-											? Styles.ribbon2
-											: Styles.ribbon3
-									}></div>
+								<div className={showLibbon(findColor(index))}></div>
 							</div>
 						)
 					)}
