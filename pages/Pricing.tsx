@@ -45,87 +45,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const Pricing = ({
 	packageDetails,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-	let notesData: vifurushiPackage,
-		quizData: vifurushiPackage,
-		examAnsweredData: vifurushiPackage,
-		examUnansweredData: vifurushiPackage,
-		libraryData: vifurushiPackage;
-
-	packageDetails.map((pack: vifurushiPackage) => {
-		switch (pack.name) {
-			case 'Notes':
-				notesData = pack;
-				break;
-			case 'Quiz':
-				quizData = pack;
-				break;
-			case 'Exams':
-				if (pack.description == 'Without Answers') {
-					examUnansweredData = pack;
-				} else {
-					examAnsweredData = pack;
-				}
-				break;
-			case 'Library':
-				libraryData = pack;
-				break;
-
-			default:
-				break;
-		}
-	});
-
 	const { userData } = useContext(NavContext);
 	const { query, push } = useRouter();
 	let callback = query.callbackUrl;
 	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
-
-	let handleNotes = () => {
-		let note = {
-			notesDownload: notesData.notesDownload,
-			quizExcercises: notesData.quizExcercises,
-			key: 'Notes',
-		};
-		sendToDatabase(note);
-	};
-
-	let handleQuiz = () => {
-		let quiz = {
-			quizExcercises: quizData.quizExcercises,
-			key: 'Quiz',
-		};
-		sendToDatabase(quiz);
-	};
-
-	let handleExamUnsolved = () => {
-		let examUnsolved = {
-			examsUnsolvedDownload: examUnansweredData.examsUnsolvedDownload,
-			quizExcercises: examUnansweredData.quizExcercises,
-			key: 'Unsolved Exam',
-		};
-		sendToDatabase(examUnsolved);
-	};
-
-	let handleExamSolved = () => {
-		let examSolved = {
-			examsSolvedDownload: examAnsweredData.examsSolvedDownload,
-			examAccess: examAnsweredData.examAccess,
-			quizExcercises: examAnsweredData.quizExcercises,
-			key: 'Solved Exam',
-		};
-		sendToDatabase(examSolved);
-	};
-
-	let handleBooks = () => {
-		let books = {
-			quizExcercises: libraryData.quizExcercises,
-			booksDownload: libraryData.booksDownload,
-			key: 'Books',
-		};
-		sendToDatabase(books);
-	};
 
 	let sendToDatabase = (databaseData: {}) => {
 		let database = { ...databaseData, id: userData.id };
@@ -154,17 +79,116 @@ const Pricing = ({
 			});
 	};
 
-	function isPrime(num: number) {
-		// returns boolean
-		if (num <= 1) return false; // negatives
-		if (num % 2 == 0 && num > 2) return false; // even numbers
-		const s = Math.sqrt(num); // store the square to loop faster
-		for (let i = 3; i <= s; i += 2) {
-			// start from 3, stop at the square, increment in twos
-			if (num % i === 0) return false; // modulo shows a divisor was found
+	let handleBuy = (
+		booksDownload: number,
+		examAccess: number,
+		examsSolvedDownload: number,
+		examsUnsolvedDownload: number,
+		notesDownload: number,
+		quizExcercises: number
+	) => {
+		sendToDatabase({
+			booksDownload,
+			examAccess,
+			examsSolvedDownload,
+			examsUnsolvedDownload,
+			notesDownload,
+			quizExcercises,
+		});
+	};
+
+	let findColor = (index: number) => {
+		if (index <= 3) {
+			return index + 1;
 		}
-		return true;
-	}
+		if (index > 3 && index < 7) {
+			return index - 3;
+		}
+		if (index > 7 && index < 11) {
+			return index - 6;
+		}
+		if (index > 11 && index < 15) {
+			return index - 9;
+		}
+		if (index > 15 && index < 19) {
+			return index - 12;
+		}
+		if (index > 19 && index < 23) {
+			return index - 15;
+		}
+		if (index > 23 && index < 27) {
+			return index - 18;
+		}
+		if (index > 27 && index < 31) {
+			return index - 21;
+		}
+		if (index > 31 && index < 35) {
+			return index - 24;
+		}
+		if (index > 35 && index < 39) {
+			return index - 27;
+		}
+	};
+
+	let showTop = (number) => {
+		switch (number) {
+			case 1:
+				return Styles.topShape1;
+				break;
+			case 2:
+				return Styles.topShape2;
+				break;
+			case 3:
+				return Styles.topShape3;
+				break;
+			case 4:
+				return Styles.topShape4;
+				break;
+
+			default:
+				break;
+		}
+	};
+
+	let showButton = (number) => {
+		switch (number) {
+			case 1:
+				return Styles.btn1;
+				break;
+			case 2:
+				return Styles.btn2;
+				break;
+			case 3:
+				return Styles.btn3;
+				break;
+			case 4:
+				return Styles.btn4;
+				break;
+
+			default:
+				break;
+		}
+	};
+
+	let showLibbon = (number) => {
+		switch (number) {
+			case 1:
+				return Styles.ribbon1;
+				break;
+			case 2:
+				return Styles.ribbon2;
+				break;
+			case 3:
+				return Styles.ribbon3;
+				break;
+			case 4:
+				return Styles.ribbon4;
+				break;
+
+			default:
+				break;
+		}
+	};
 
 	return (
 		<div className={Styles.container}>
@@ -190,16 +214,7 @@ const Pricing = ({
 									<p>{packageName.description}</p>
 								</div>
 								<div className={Styles.cardBody}>
-									<div
-										className={
-											index === 0
-												? Styles.topShape4
-												: index % 2 == 0
-												? Styles.topShape1
-												: isPrime(index)
-												? Styles.topShape2
-												: Styles.topShape3
-										}></div>
+									<div className={showTop(findColor(index))}></div>
 									<div className={Styles.cardContent}>
 										<ul>
 											{packageName.notesDownload == 0
@@ -264,30 +279,22 @@ const Pricing = ({
 												  )}
 										</ul>
 										<button
-											onClick={handleQuiz}
-											className={
-												index === 0
-													? Styles.btn4
-													: index % 2 == 0
-													? Styles.btn1
-													: isPrime(index)
-													? Styles.btn2
-													: Styles.btn3
-											}>
+											onClick={() => {
+												handleBuy(
+													packageName.booksDownload,
+													packageName.examAccess,
+													packageName.examsSolvedDownload,
+													packageName.examsUnsolvedDownload,
+													packageName.notesDownload,
+													packageName.quizExcercises
+												);
+											}}
+											className={showButton(findColor(index))}>
 											START
 										</button>
 									</div>
 								</div>
-								<div
-									className={
-										index === 0
-											? Styles.ribbon4
-											: index % 2 == 0
-											? Styles.ribbon1
-											: isPrime(index)
-											? Styles.ribbon2
-											: Styles.ribbon3
-									}></div>
+								<div className={showLibbon(findColor(index))}></div>
 							</div>
 						)
 					)}

@@ -154,12 +154,12 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Index = ({
-    	htmlServer,
-    	toc,
-    	topics,
-    	note,
-    	download,
-    }: InferGetStaticPropsType<typeof getStaticProps>) => {
+	htmlServer,
+	toc,
+	topics,
+	note,
+	download,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 	useEffect(() => {
 		setNavActive('Notes');

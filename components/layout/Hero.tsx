@@ -79,8 +79,8 @@ function hero({
 								</span> */}
 								<p>
 									Written by the best teachers using language which is easy to
-									understand. We create the perfect learning point, you can
-									begin by searching or go straight to subjects below.
+									understand. This is the perfect learning point for you, start
+									by searching or go straight to subjects below.
 								</p>
 							</div>
 						</div>

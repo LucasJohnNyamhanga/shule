@@ -74,6 +74,45 @@
 			}
 		}
 
+		.headerUpdate {
+			width: 100%;
+			display: flex;
+			flex-direction: row;
+			padding-top: 20px;
+			margin-bottom: 10px;
+			font-weight: 500;
+			font-family: $fontHeader;
+			font-size: large;
+		}
+
+		.divSelector {
+			max-width: 350px;
+		}
+
+		.imageSelect {
+			width: 180px;
+			height: 40px;
+			background-color: $ugoro;
+			color: $white;
+			border: 2px solid transparent;
+			margin: 15px;
+			margin-left: 0px;
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+			align-items: center;
+			border-radius: 5px;
+			transition: 0.2s linear;
+			font-weight: 500;
+		}
+
+		.imageSelect:hover {
+			background-color: $lightkahawa;
+			color: $ugoro;
+			border: 2px solid $lightblue;
+			cursor: pointer;
+		}
+
 		.account {
 			display: flex;
 			flex-direction: column;
@@ -129,168 +168,16 @@
 				}
 			}
 		}
-
-		.resetPassword {
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-			margin-top: 15px;
-
-			.form {
-				width: 100%;
-				display: flex;
-				flex-direction: column;
-				max-width: 350px;
-
-				.logInHeader {
-					width: 100%;
-					display: flex;
-					flex-direction: column;
-					justify-content: center;
-					align-items: center;
-
-					margin-bottom: 15px;
-
-					.icon {
-						font-size: 65px;
-						margin-bottom: 15px;
-						color: $lightblue;
-					}
-
-					.text {
-						font-family: $fontHeader;
-						font-weight: 600;
-						font-size: 25px;
-						color: $ugoro;
-						width: fit-content;
-						align-self: center;
-					}
-				}
-				.credential {
-					margin-bottom: 15px;
-
-					input {
-						border: 2px solid $ugoro;
-						padding: 10px;
-						font-size: 18px;
-						border-radius: 5px;
-						width: 100%;
-						outline: none;
-						font-family: $fontBody;
-						margin-bottom: 10px;
-						color: $black;
-					}
-
-					.check {
-						display: flex;
-						flex-direction: row;
-						font-size: 18px;
-						font-weight: 400;
-						justify-content: flex-start;
-						align-items: center;
-
-						input {
-							width: 20px;
-							height: 20px;
-							align-self: center;
-							margin: 0px;
-							margin-right: 10px;
-							margin-left: 5px;
-						}
-					}
-				}
-
-				.button {
-					width: 100%;
-					background-color: $ugoro;
-					color: $white;
-					border: 2px solid transparent;
-					padding: 10px 25px;
-					display: flex;
-					flex-direction: row;
-					justify-content: center;
-					align-items: center;
-					border-radius: 5px;
-					transition: 0.2s linear;
-					font-weight: 500;
-
-					.google {
-						margin-right: 10px;
-					}
-				}
-
-				.button:hover {
-					background-color: $lightkahawa;
-					color: $ugoro;
-					border: 2px solid $lightblue;
-					cursor: pointer;
-				}
-
-				.buttonSignUp {
-					width: 100%;
-					background-color: $answerBackground;
-					margin-top: 5px;
-					color: $ugoro;
-					border: 2px solid $ugoro;
-					padding: 10px 25px;
-					display: flex;
-					flex-direction: row;
-					justify-content: center;
-					align-items: center;
-					border-radius: 3px;
-					transition: 0.2s linear;
-					font-weight: 500;
-				}
-
-				.buttonSignUp:hover {
-					background-color: $lightblue;
-					color: $white;
-					border: 2px solid $lightblue;
-					cursor: pointer;
-				}
-
-				.separator {
-					display: flex;
-					flex-direction: row;
-					justify-content: space-between;
-					margin: 15px 0px;
-				}
-
-				.line {
-					display: flex;
-					flex: 1;
-					background-color: $black;
-					height: 1px;
-				}
-
-				.line:first-child {
-					margin-left: 15px;
-				}
-
-				.line:last-child {
-					margin-right: 15px;
-				}
-
-				.or {
-					width: fit-content;
-					margin-left: 10px;
-					margin-right: 10px;
-				}
-			}
-		}
-		.loader {
-			width: 100%;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			height: 80px;
-			margin-top: 15px;
-		}
 	}
 
-	@media only screen and (max-width: 668px) {
+	@media only screen and (max-width: 608px) {
 		.innerContainer {
+			.imageSelect {
+				width: 100%;
+			}
+			.divSelector {
+				max-width: 100%;
+			}
 			.header {
 				width: 100%;
 				display: flex;
