@@ -45,87 +45,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const Pricing = ({
 	packageDetails,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-	let notesData: vifurushiPackage,
-		quizData: vifurushiPackage,
-		examAnsweredData: vifurushiPackage,
-		examUnansweredData: vifurushiPackage,
-		libraryData: vifurushiPackage;
-
-	packageDetails.map((pack: vifurushiPackage) => {
-		switch (pack.name) {
-			case 'Notes':
-				notesData = pack;
-				break;
-			case 'Quiz':
-				quizData = pack;
-				break;
-			case 'Exams':
-				if (pack.description == 'Without Answers') {
-					examUnansweredData = pack;
-				} else {
-					examAnsweredData = pack;
-				}
-				break;
-			case 'Library':
-				libraryData = pack;
-				break;
-
-			default:
-				break;
-		}
-	});
-
 	const { userData } = useContext(NavContext);
 	const { query, push } = useRouter();
 	let callback = query.callbackUrl;
 	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
-
-	let handleNotes = () => {
-		let note = {
-			notesDownload: notesData.notesDownload,
-			quizExcercises: notesData.quizExcercises,
-			key: 'Notes',
-		};
-		sendToDatabase(note);
-	};
-
-	let handleQuiz = () => {
-		let quiz = {
-			quizExcercises: quizData.quizExcercises,
-			key: 'Quiz',
-		};
-		sendToDatabase(quiz);
-	};
-
-	let handleExamUnsolved = () => {
-		let examUnsolved = {
-			examsUnsolvedDownload: examUnansweredData.examsUnsolvedDownload,
-			quizExcercises: examUnansweredData.quizExcercises,
-			key: 'Unsolved Exam',
-		};
-		sendToDatabase(examUnsolved);
-	};
-
-	let handleExamSolved = () => {
-		let examSolved = {
-			examsSolvedDownload: examAnsweredData.examsSolvedDownload,
-			examAccess: examAnsweredData.examAccess,
-			quizExcercises: examAnsweredData.quizExcercises,
-			key: 'Solved Exam',
-		};
-		sendToDatabase(examSolved);
-	};
-
-	let handleBooks = () => {
-		let books = {
-			quizExcercises: libraryData.quizExcercises,
-			booksDownload: libraryData.booksDownload,
-			key: 'Books',
-		};
-		sendToDatabase(books);
-	};
 
 	let sendToDatabase = (databaseData: {}) => {
 		let database = { ...databaseData, id: userData.id };
@@ -154,17 +79,23 @@ const Pricing = ({
 			});
 	};
 
-	function isPrime(num: number) {
-		// returns boolean
-		if (num <= 1) return false; // negatives
-		if (num % 2 == 0 && num > 2) return false; // even numbers
-		const s = Math.sqrt(num); // store the square to loop faster
-		for (let i = 3; i <= s; i += 2) {
-			// start from 3, stop at the square, increment in twos
-			if (num % i === 0) return false; // modulo shows a divisor was found
-		}
-		return true;
-	}
+	let handleBuy = (
+		booksDownload: number,
+		examAccess: number,
+		examsSolvedDownload: number,
+		examsUnsolvedDownload: number,
+		notesDownload: number,
+		quizExcercises: number
+	) => {
+		sendToDatabase({
+			booksDownload,
+			examAccess,
+			examsSolvedDownload,
+			examsUnsolvedDownload,
+			notesDownload,
+			quizExcercises,
+		});
+	};
 
 	let findColor = (index: number) => {
 		if (index <= 3) {
@@ -348,7 +279,16 @@ const Pricing = ({
 												  )}
 										</ul>
 										<button
-											onClick={handleQuiz}
+											onClick={() => {
+												handleBuy(
+													packageName.booksDownload,
+													packageName.examAccess,
+													packageName.examsSolvedDownload,
+													packageName.examsUnsolvedDownload,
+													packageName.notesDownload,
+													packageName.quizExcercises
+												);
+											}}
 											className={showButton(findColor(index))}>
 											START
 										</button>

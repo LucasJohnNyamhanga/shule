@@ -1,11 +1,12 @@
 import Styles from '../../../styles/accountAdmin.module.scss';
 import Avatar from '@mui/material/Avatar';
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useContext, useEffect, useState } from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { prisma } from '../../../db/prisma';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import SelectMiu from '../../../components/tools/SelectMui';
+import { NavContext } from '../../../components/context/StateContext';
 
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -98,9 +99,20 @@ const EditExam = ({
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
 
+	const { navActive, setNavActive, userData } = useContext(NavContext);
+
+	useEffect(() => {
+		setNavActive('Admin');
+	}, []);
+
 	const [packageSelected, setPackageSelected] = useState({
 		packageId: '',
 	});
+
+	const [role, setRole] = useState({
+		role: '',
+	});
+	const [activateRole, setActivateRole] = useState(false);
 
 	const sendToDatabase = (hash: string) => {
 		const database = {
@@ -139,12 +151,34 @@ const EditExam = ({
 		});
 	}
 
+	let optionsRole: { label: string; value: string }[] = [];
+	optionsRole.push(
+		{
+			label: `Super`,
+			value: 'super',
+		},
+		{
+			label: `Admin`,
+			value: 'admin',
+		},
+		{
+			label: `User`,
+			value: 'user',
+		}
+	);
+
 	let handleSelect = (value: string) => {
-		console.log(value);
 		setPackageSelected({ packageId: value });
 	};
 
+	let handleSelectRole = (value: string) => {
+		setRole({ role: value });
+	};
+
 	let handleKifurushiUpdate = () => {};
+	let reset = () => {
+		setActivateRole(!activateRole);
+	};
 
 	return (
 		<div className={Styles.container}>
@@ -159,9 +193,27 @@ const EditExam = ({
 							<li className={Styles.userName}>{userfound.username}</li>
 							<li>{userfound.name}</li>
 							<li>{userfound.isAdmin ? 'Administrator' : ''}</li>
+							<li className={Styles.edit} onClick={reset}>
+								Edit Role
+							</li>
 						</ul>
 					</div>
 				</div>
+				{activateRole && (
+					<div>
+						<div className={Styles.divSelector}>
+							<SelectMiu
+								displayLabel='Select Role'
+								forms={optionsRole}
+								handlechange={handleSelectRole}
+								value={role.role}
+							/>
+						</div>
+						<div onClick={handleKifurushiUpdate} className={Styles.imageSelect}>
+							Update Role
+						</div>
+					</div>
+				)}
 				<div className={Styles.account}>
 					<div className={Styles.header}>Account Details</div>
 					<div className={Styles.list}>
