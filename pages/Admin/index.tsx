@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useContext } from 'react';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Styles from '../../styles/admin.module.scss';
 import { ReactNode } from 'react';
 import SummarizeIcon from '@mui/icons-material/Summarize';
@@ -29,17 +30,55 @@ import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { FaUserGraduate } from 'react-icons/fa';
 import InputTextMui from '../../components/tools/InputTextMui';
+import { prisma } from '../../db/prisma';
 
-type dataTypeSelect = {
-	value: string;
-	label: string;
-}[];
+import { getSession } from 'next-auth/react';
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const session = await getSession(context);
+	if (!session) {
+		return {
+			redirect: {
+				destination: `/Auth/SignIn?callbackUr=/`,
+				permanent: false,
+			},
+		};
+	} else {
+		const userFromServer = await prisma.users.findFirst({
+			where: {
+				username: session.user.email,
+			},
+			select: {
+				isAdmin: true,
+			},
+		});
+		const userfound = await JSON.parse(JSON.stringify(userFromServer));
 
-const Index = ({}) => {
+		if (!userfound.isAdmin) {
+			return {
+				redirect: {
+					destination: '/',
+					permanent: false,
+				},
+			};
+		}
+	}
+
+	await prisma.$disconnect();
+	return {
+		props: {},
+	};
+};
+
+const Index = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const matches300 = useMediaQuery('(min-width:325px)');
 	const { push } = useRouter();
 	const { status } = useSession();
 	const { navActive, setNavActive, userData } = useContext(NavContext);
+
+	type dataTypeSelect = {
+		value: string;
+		label: string;
+	}[];
 
 	const [navValue, setNavValue] = useState('');
 	const [subjects, setSubjects] = useState([]);

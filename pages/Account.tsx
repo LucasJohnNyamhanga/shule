@@ -13,8 +13,6 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { prisma } from '../db/prisma';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
-import { NavContext } from '../components/context/StateContext';
-import InputTextMui from '../components/tools/InputTextMui';
 
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
