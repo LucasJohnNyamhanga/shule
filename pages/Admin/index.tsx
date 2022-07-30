@@ -2081,14 +2081,19 @@ const Index = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 			})
 			.then(function (response) {
 				const userData = JSON.parse(JSON.stringify(response.data));
-				setUserSearchData(userData);
-				setLoading(false);
-				setActivateUserSearch(true);
+				if (userData.length > 0) {
+					setUserSearchData(userData);
+					setLoading(false);
+					setActivateUserSearch(true);
+				} else {
+					setLoading(false);
+					notifyError('User Not found.');
+				}
 			})
 			.catch(function (error) {
 				// handle error
 				console.log(error);
-				notifyError('Error has occured, try later.');
+
 				setLoading(false);
 			})
 			.then(function () {

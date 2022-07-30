@@ -14,8 +14,8 @@
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	padding-left: 15px;
-	padding-right: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
 
 	.controls {
 		width: 50px;
@@ -62,7 +62,7 @@
 		.labelText {
 			width: 100%;
 			font-size: 14px;
-			padding: 10px;
+			padding: 10px 0px;
 		}
 	}
 }
