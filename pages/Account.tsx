@@ -172,9 +172,11 @@ const Notes = ({
 									<li className={Styles.userName}>{userfound.username}</li>
 									<li>{userfound.name}</li>
 									<li>{userfound.isAdmin ? 'Administrator' : ''}</li>
-									<li className={Styles.edit} onClick={reset}>
-										Edit Password
-									</li>
+									{userfound.password != 'googleHasIt' && (
+										<li className={Styles.edit} onClick={reset}>
+											Edit Password
+										</li>
+									)}
 								</ul>
 							</div>
 						</div>

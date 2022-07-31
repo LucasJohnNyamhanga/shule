@@ -9,6 +9,7 @@ import SelectMiu from '../../../components/tools/SelectMui';
 import { NavContext } from '../../../components/context/StateContext';
 
 import { getSession } from 'next-auth/react';
+import { users } from '@prisma/client';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
 	if (!session) {
@@ -29,7 +30,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		});
 		const userfound = await JSON.parse(JSON.stringify(userFromServer));
 
-		if (!userfound.isAdmin) {
+		if (!userfound.isAdmin && !userfound.isSuperUser) {
 			return {
 				redirect: {
 					destination: '/',
@@ -48,6 +49,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		select: {
 			id: true,
 			isAdmin: true,
+			isSuperUser: true,
 			name: true,
 			username: true,
 			password: true,
@@ -93,18 +95,30 @@ type formData = {
 }[];
 
 const EditExam = ({
-	userfound,
-	vifurushi,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	userfound,
+    	vifurushi,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
 
+	type userType = {
+		id: number;
+		image: string | null;
+		username: string;
+		password: string;
+		isAdmin: boolean;
+		isSuperUser: boolean;
+		dateJoined: Date;
+		name: string;
+		updatedAt: Date;
+		isOnline: boolean;
+		vifurushi: {
+			name: string;
+			value: number;
+		}[];
+	};
+
 	const { navActive, setNavActive, userData } = useContext(NavContext);
-
-	useEffect(() => {
-		setNavActive('Admin');
-	}, []);
-
 	const [packageSelected, setPackageSelected] = useState({
 		packageId: '',
 	});
@@ -113,7 +127,8 @@ const EditExam = ({
 		role: '',
 	});
 	const [activateRole, setActivateRole] = useState(false);
-
+	const [ready, setReady] = useState(false);
+	const [user, setUser] = useState<userType>();
 	const sendToDatabase = (hash: string) => {
 		const database = {
 			password: hash,
@@ -128,6 +143,51 @@ const EditExam = ({
 				// handle success
 
 				if (response.data.type == 'success') {
+					notifySuccess(response.data.message);
+				} else {
+					notifyError(response.data.message);
+				}
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+			})
+			.then(function () {
+				// always executed
+			});
+	};
+
+	let checkUser = async () => {
+		axios
+			.post('http://localhost:3000/api/getUser', {
+				username: userfound.username,
+			})
+			.then(function (response) {
+				//responce
+				const userData = JSON.parse(JSON.stringify(response.data));
+				setUser(userData);
+			})
+			.catch(function (error) {
+				// handle error
+				console.log('Something went wrong');
+			});
+	};
+
+	const updateUserStatus = (data: {
+		id: number;
+		isAdmin: boolean;
+		isSuperUser: boolean;
+	}) => {
+		axios({
+			method: 'post',
+			url: 'http://localhost:3000/api/updateUserStatus',
+			data: data,
+		})
+			.then(function (response) {
+				// handle success
+
+				if (response.data.type == 'success') {
+					checkUser();
 					notifySuccess(response.data.message);
 				} else {
 					notifyError(response.data.message);
@@ -167,67 +227,129 @@ const EditExam = ({
 		}
 	);
 
-	let handleSelect = (value: string) => {
+	const handleSelect = (value: string) => {
 		setPackageSelected({ packageId: value });
 	};
 
-	let handleSelectRole = (value: string) => {
+	const handleSelectRole = (value: string) => {
 		setRole({ role: value });
 	};
 
-	let handleKifurushiUpdate = () => {};
-	let reset = () => {
+	const updateRole = () => {
+		let data: { id: number; isAdmin: boolean; isSuperUser: boolean };
+		switch (role.role) {
+			case 'super':
+				console.log(role.role);
+				if (user.isSuperUser) {
+					notifyError(`${user.name} is already a super admin`);
+				} else {
+					data = {
+						id: userfound.id,
+						isAdmin: true,
+						isSuperUser: true,
+					};
+					updateUserStatus(data);
+				}
+				break;
+			case 'admin':
+				if (user.isAdmin && !user.isSuperUser) {
+					notifyError(`${user.name} is already an admin`);
+				} else {
+					data = {
+						id: userfound.id,
+						isAdmin: true,
+						isSuperUser: false,
+					};
+					updateUserStatus(data);
+				}
+
+				break;
+			case 'user':
+				if (!user.isAdmin) {
+					notifyError(`${user.name} is already a normal user`);
+				} else {
+					console.log(role.role);
+					data = {
+						id: userfound.id,
+						isAdmin: false,
+						isSuperUser: false,
+					};
+					updateUserStatus(data);
+				}
+				break;
+
+			default:
+				break;
+		}
+	};
+
+	const handleKifurushiUpdate = () => {};
+	const reset = () => {
 		setActivateRole(!activateRole);
 	};
 
-	return (
-		<div className={Styles.container}>
-			<Toaster position='bottom-left' reverseOrder={false} />
-			<div className={Styles.innerContainer}>
-				<div className={Styles.header}>
-					<Avatar className={Styles.avatar}>
-						{userfound.name.charAt(0).toUpperCase()}
-					</Avatar>
-					<div className={Styles.list}>
-						<ul>
-							<li className={Styles.userName}>{userfound.username}</li>
-							<li>{userfound.name}</li>
-							<li>{userfound.isAdmin ? 'Administrator' : ''}</li>
-							<li className={Styles.edit} onClick={reset}>
-								Edit Role
-							</li>
-						</ul>
-					</div>
-				</div>
-				{activateRole && (
-					<div>
-						<div className={Styles.divSelector}>
-							<SelectMiu
-								displayLabel='Select Role'
-								forms={optionsRole}
-								handlechange={handleSelectRole}
-								value={role.role}
-							/>
+	useEffect(() => {
+		setNavActive('Admin');
+		setUser(userfound);
+		setReady(true);
+	}, []);
+
+	console.log(user);
+	if (!ready) return <div className={Styles.container}></div>;
+	if (ready)
+		return (
+			<div className={Styles.container}>
+				<Toaster position='bottom-left' reverseOrder={false} />
+				<div className={Styles.innerContainer}>
+					<div className={Styles.header}>
+						<Avatar className={Styles.avatar}>
+							{user.name.charAt(0).toUpperCase()}
+						</Avatar>
+						<div className={Styles.list}>
+							<ul>
+								<li className={Styles.userName}>{user.username}</li>
+								<li>{user.name}</li>
+								<li>
+									{user.isSuperUser
+										? 'Super Admin'
+										: user.isAdmin
+										? 'Administrator'
+										: ''}
+								</li>
+								<li className={Styles.edit} onClick={reset}>
+									Edit Role
+								</li>
+							</ul>
 						</div>
-						<div onClick={handleKifurushiUpdate} className={Styles.imageSelect}>
-							Update Role
-						</div>
 					</div>
-				)}
-				<div className={Styles.account}>
-					<div className={Styles.header}>Account Details</div>
-					<div className={Styles.list}>
-						<div className={Styles.table}>
-							<table>
-								<thead>
-									<tr>
-										<th>Package Name</th>
-										<th>Amount</th>
-									</tr>
-								</thead>
-								<tbody>
-									{userfound.vifurushi.map(
-										(furushi: { name: string; value: number }) => (
+					{activateRole && (
+						<div>
+							<div className={Styles.divSelector}>
+								<SelectMiu
+									displayLabel='Select Role'
+									forms={optionsRole}
+									handlechange={handleSelectRole}
+									value={role.role}
+								/>
+							</div>
+							<div onClick={updateRole} className={Styles.imageSelect}>
+								Update Role
+							</div>
+						</div>
+					)}
+					<div className={Styles.account}>
+						<div className={Styles.header}>Account Details</div>
+						<div className={Styles.list}>
+							<div className={Styles.table}>
+								<table>
+									<thead>
+										<tr>
+											<th>Package Name</th>
+											<th>Amount</th>
+										</tr>
+									</thead>
+									<tbody>
+										{user.vifurushi.map((furushi) => (
 											<tr key={furushi.name}>
 												<td>
 													{furushi.name
@@ -239,29 +361,28 @@ const EditExam = ({
 												</td>
 												<td>{furushi.value}</td>
 											</tr>
-										)
-									)}
-								</tbody>
-							</table>
+										))}
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div className={Styles.headerUpdate}>Update User Package</div>
+						<div className={Styles.divSelector}>
+							<SelectMiu
+								displayLabel='Select Kifurushi'
+								forms={options}
+								handlechange={handleSelect}
+								value={packageSelected.packageId}
+							/>
+						</div>
+						<div onClick={handleKifurushiUpdate} className={Styles.imageSelect}>
+							Update Package
 						</div>
 					</div>
-					<div className={Styles.headerUpdate}>Update User Package</div>
-					<div className={Styles.divSelector}>
-						<SelectMiu
-							displayLabel='Select Kifurushi'
-							forms={options}
-							handlechange={handleSelect}
-							value={packageSelected.packageId}
-						/>
-					</div>
-					<div onClick={handleKifurushiUpdate} className={Styles.imageSelect}>
-						Update Package
-					</div>
+					{/* <div className={Styles.loader}>{loadingDisplay && <Loader />}</div> */}
 				</div>
-				{/* <div className={Styles.loader}>{loadingDisplay && <Loader />}</div> */}
 			</div>
-		</div>
-	);
+		);
 };
 
 export default EditExam;

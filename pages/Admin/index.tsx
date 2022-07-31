@@ -28,7 +28,7 @@ import { BsDownload as Downloads } from 'react-icons/bs';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
-import { FaUserGraduate } from 'react-icons/fa';
+import { FaUserSecret, FaUsers } from 'react-icons/fa';
 import InputTextMui from '../../components/tools/InputTextMui';
 import { prisma } from '../../db/prisma';
 
@@ -220,6 +220,7 @@ const Index = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 		value: '',
 	});
 	const [userSearchData, setUserSearchData] = useState([]);
+	const [adminsList, setAdminsList] = useState([]);
 	const [activateUserSearch, setActivateUserSearch] = useState(false);
 
 	const notifySuccess = (message: string) => toast.success(message);
@@ -2101,8 +2102,6 @@ const Index = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 			});
 	};
 
-	const [adminsList, setAdminsList] = useState([]);
-
 	let handleAdmins = () => {
 		setLoading(true);
 		axios
@@ -2303,7 +2302,7 @@ const Index = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 												id={`User`}
 												onClick={(e) => handleNav(`User`)}
 												className={Styles.topicTittle}>
-												<FaUserGraduate size={23} />
+												<FaUsers size={23} />
 												<div className={Styles.text}>User</div>
 											</div>
 											<div
@@ -2311,7 +2310,7 @@ const Index = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 												id={`Admin`}
 												onClick={(e) => handleNav(`Admin`)}
 												className={Styles.topicTittle}>
-												<FaUserGraduate size={23} />
+												<FaUserSecret size={23} />
 												<div className={Styles.text}>Admins</div>
 											</div>
 										</div>
