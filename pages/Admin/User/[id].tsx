@@ -95,9 +95,9 @@ type formData = {
 }[];
 
 const EditExam = ({
-    	userfound,
-    	vifurushi,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	userfound,
+	vifurushi,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
 
@@ -129,33 +129,6 @@ const EditExam = ({
 	const [activateRole, setActivateRole] = useState(false);
 	const [ready, setReady] = useState(false);
 	const [user, setUser] = useState<userType>();
-	const sendToDatabase = (hash: string) => {
-		const database = {
-			password: hash,
-			id: userfound.id,
-		};
-		axios({
-			method: 'post',
-			url: 'http://localhost:3000/api/updatePassword',
-			data: database,
-		})
-			.then(function (response) {
-				// handle success
-
-				if (response.data.type == 'success') {
-					notifySuccess(response.data.message);
-				} else {
-					notifyError(response.data.message);
-				}
-			})
-			.catch(function (error) {
-				// handle error
-				console.log(error);
-			})
-			.then(function () {
-				// always executed
-			});
-	};
 
 	let checkUser = async () => {
 		axios
@@ -189,6 +162,7 @@ const EditExam = ({
 				if (response.data.type == 'success') {
 					checkUser();
 					notifySuccess(response.data.message);
+					setRole({ role: '' });
 				} else {
 					notifyError(response.data.message);
 				}
@@ -283,9 +257,50 @@ const EditExam = ({
 		}
 	};
 
-	const handleKifurushiUpdate = () => {};
 	const reset = () => {
 		setActivateRole(!activateRole);
+		setRole({ role: '' });
+	};
+
+	let sendToDatabase = (databaseData: {}) => {
+		let database = { ...databaseData, id: userfound.id };
+		axios({
+			method: 'post',
+			url: 'http://localhost:3000/api/updateKifurushi',
+			data: database,
+		})
+			.then(function (response) {
+				// handle success
+				if (response.data.type == 'success') {
+					checkUser();
+					notifySuccess(response.data.message);
+					setPackageSelected({ packageId: '' });
+				} else {
+					notifyError(response.data.message);
+				}
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+			})
+			.then(function () {
+				// always executed
+			});
+	};
+
+	let handleBuy = () => {
+		vifurushi.find((kifurushi) => {
+			if (kifurushi.id === packageSelected.packageId) {
+				sendToDatabase({
+					booksDownload: kifurushi.booksDownload,
+					examAccess: kifurushi.examAccess,
+					examsSolvedDownload: kifurushi.examsSolvedDownload,
+					examsUnsolvedDownload: kifurushi.examsUnsolvedDownload,
+					notesDownload: kifurushi.notesDownload,
+					quizExcercises: kifurushi.quizExcercises,
+				});
+			}
+		});
 	};
 
 	useEffect(() => {
@@ -375,7 +390,7 @@ const EditExam = ({
 								value={packageSelected.packageId}
 							/>
 						</div>
-						<div onClick={handleKifurushiUpdate} className={Styles.imageSelect}>
+						<div onClick={handleBuy} className={Styles.imageSelect}>
 							Update Package
 						</div>
 					</div>
