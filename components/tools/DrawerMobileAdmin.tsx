@@ -388,6 +388,22 @@ export const MuiDrawer = ({
 									</Link>
 								</div>
 								<Divider />
+								<div
+									onClick={() => {
+										setIsDrawerOpen(false);
+										handleClick('Admin');
+									}}>
+									<Link passHref href={``}>
+										<a>
+											<ListItem
+												button
+												className={active == 'Admin' ? `${Styles.active}` : ''}>
+												<ListItemText primary={'Admin'} />
+											</ListItem>
+										</a>
+									</Link>
+								</div>
+								<Divider />
 							</List>
 						</>
 					)}

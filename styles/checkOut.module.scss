@@ -1,0 +1,30 @@
+@import 'index';
+.container {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	justify-content: flex-start;
+	align-items: center;
+	min-height: 70vh;
+	background-color: $white;
+
+	.innerContainer {
+		display: flex;
+		width: 100%;
+		max-width: 1200px;
+		flex: 1;
+		padding: 10px;
+		flex-direction: column;
+		margin-bottom: 50px;
+	}
+}
+
+@media only screen and (max-width: 668px) {
+	.innerContainer {
+	}
+}
+
+@media only screen and (max-width: 378px) {
+	.innerContainer {
+	}
+}

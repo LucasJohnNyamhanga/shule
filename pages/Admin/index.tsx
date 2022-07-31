@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useContext } from 'react';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Styles from '../../styles/admin.module.scss';
 import { ReactNode } from 'react';
 import SummarizeIcon from '@mui/icons-material/Summarize';
@@ -27,19 +28,57 @@ import { BsDownload as Downloads } from 'react-icons/bs';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
-import { FaUserGraduate } from 'react-icons/fa';
+import { FaUserSecret, FaUsers } from 'react-icons/fa';
 import InputTextMui from '../../components/tools/InputTextMui';
+import { prisma } from '../../db/prisma';
 
-type dataTypeSelect = {
-	value: string;
-	label: string;
-}[];
+import { getSession } from 'next-auth/react';
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const session = await getSession(context);
+	if (!session) {
+		return {
+			redirect: {
+				destination: `/Auth/SignIn?callbackUr=/`,
+				permanent: false,
+			},
+		};
+	} else {
+		const userFromServer = await prisma.users.findFirst({
+			where: {
+				username: session.user.email,
+			},
+			select: {
+				isAdmin: true,
+			},
+		});
+		const userfound = await JSON.parse(JSON.stringify(userFromServer));
 
-const Index = ({}) => {
+		if (!userfound.isAdmin) {
+			return {
+				redirect: {
+					destination: '/',
+					permanent: false,
+				},
+			};
+		}
+	}
+
+	await prisma.$disconnect();
+	return {
+		props: {},
+	};
+};
+
+const Index = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const matches300 = useMediaQuery('(min-width:325px)');
 	const { push } = useRouter();
 	const { status } = useSession();
 	const { navActive, setNavActive, userData } = useContext(NavContext);
+
+	type dataTypeSelect = {
+		value: string;
+		label: string;
+	}[];
 
 	const [navValue, setNavValue] = useState('');
 	const [subjects, setSubjects] = useState([]);
@@ -181,6 +220,7 @@ const Index = ({}) => {
 		value: '',
 	});
 	const [userSearchData, setUserSearchData] = useState([]);
+	const [adminsList, setAdminsList] = useState([]);
 	const [activateUserSearch, setActivateUserSearch] = useState(false);
 
 	const notifySuccess = (message: string) => toast.success(message);
@@ -206,6 +246,7 @@ const Index = ({}) => {
 	const downloads = useRef<HTMLDivElement>(null!);
 	const examDownloads = useRef<HTMLDivElement>(null!);
 	const user = useRef<HTMLDivElement>(null!);
+	const admin = useRef<HTMLDivElement>(null!);
 
 	let handleNav = (value: string) => {
 		setNavValue(value);
@@ -309,6 +350,12 @@ const Index = ({}) => {
 				reference.current.classList.add(Styles.Active);
 				retriaveSubjectsReference();
 				setActive(`Reference`);
+				break;
+			case 'Admin':
+				admin.current.classList.add(Styles.Active);
+				setActive('Admin');
+				handleAdmins();
+				break;
 			default:
 				break;
 		}
@@ -335,6 +382,7 @@ const Index = ({}) => {
 		downloads.current.classList.remove(Styles.Active);
 		examDownloads.current.classList.remove(Styles.Active);
 		user.current.classList.remove(Styles.Active);
+		admin.current.classList.remove(Styles.Active);
 	};
 
 	const retriaveSubjectsReview = async () => {
@@ -2034,9 +2082,36 @@ const Index = ({}) => {
 			})
 			.then(function (response) {
 				const userData = JSON.parse(JSON.stringify(response.data));
-				setUserSearchData(userData);
+				if (userData.length > 0) {
+					setUserSearchData(userData);
+					setLoading(false);
+					setActivateUserSearch(true);
+				} else {
+					setLoading(false);
+					notifyError('User Not found.');
+				}
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+
 				setLoading(false);
-				setActivateUserSearch(true);
+			})
+			.then(function () {
+				// always executed
+			});
+	};
+
+	let handleAdmins = () => {
+		setLoading(true);
+		axios
+			.post('http://localhost:3000/api/getAdmins', {
+				user: userDetail.value,
+			})
+			.then(function (response) {
+				const userData = JSON.parse(JSON.stringify(response.data));
+				setAdminsList(userData);
+				setLoading(false);
 			})
 			.catch(function (error) {
 				// handle error
@@ -2059,190 +2134,189 @@ const Index = ({}) => {
 							<div className={Styles.containerHeader}>
 								<div className={Styles.TopicHeader}>Admin Dashboard</div>
 							</div>
-
-							<div>
-								<div className={Styles.TopicHeaderNotes}>Notes</div>
-							</div>
-							<div className={Styles.containerBody}>
-								<div
-									ref={subject}
-									id='Subjects'
-									onClick={(e) => handleNav(e.currentTarget.id)}
-									className={Styles.topicTittle}>
-									<Books />
-									<div className={Styles.text}>Subjects</div>
+							<div className={Styles.scroller}>
+								<div className={Styles.containerBody}>
+									<div className={Styles.TopicHeaderNotes}>Notes</div>
+									<div
+										ref={subject}
+										id='Subjects'
+										onClick={(e) => handleNav(e.currentTarget.id)}
+										className={Styles.topicTittle}>
+										<Books />
+										<div className={Styles.text}>Subjects</div>
+									</div>
+									<div
+										ref={form}
+										id='Forms'
+										onClick={(e) => handleNav(e.currentTarget.id)}
+										className={Styles.topicTittle}>
+										<SchoolIcon />
+										<div className={Styles.text}>Forms</div>
+									</div>
+									<div
+										ref={topic}
+										id='Topics'
+										onClick={(e) => handleNav(e.currentTarget.id)}
+										className={Styles.topicTittle}>
+										<NotesIcon />
+										<div className={Styles.text}>Topics</div>
+									</div>
+									<div
+										ref={notes}
+										id='Notes'
+										onClick={(e) => handleNav(e.currentTarget.id)}
+										className={Styles.topicTittle}>
+										<SummarizeIcon />
+										<div className={Styles.text}>Notes</div>
+									</div>
+									<div
+										ref={downloads}
+										id='Downloads'
+										onClick={(e) => handleNav(e.currentTarget.id)}
+										className={Styles.topicTittle}>
+										<Downloads size={25} />
+										<div className={Styles.text}>Downloadables</div>
+									</div>
 								</div>
-								<div
-									ref={form}
-									id='Forms'
-									onClick={(e) => handleNav(e.currentTarget.id)}
-									className={Styles.topicTittle}>
-									<SchoolIcon />
-									<div className={Styles.text}>Forms</div>
-								</div>
-								<div
-									ref={topic}
-									id='Topics'
-									onClick={(e) => handleNav(e.currentTarget.id)}
-									className={Styles.topicTittle}>
-									<NotesIcon />
-									<div className={Styles.text}>Topics</div>
-								</div>
-								<div
-									ref={notes}
-									id='Notes'
-									onClick={(e) => handleNav(e.currentTarget.id)}
-									className={Styles.topicTittle}>
-									<SummarizeIcon />
-									<div className={Styles.text}>Notes</div>
-								</div>
-								<div
-									ref={downloads}
-									id='Downloads'
-									onClick={(e) => handleNav(e.currentTarget.id)}
-									className={Styles.topicTittle}>
-									<Downloads size={25} />
-									<div className={Styles.text}>Downloadables</div>
-								</div>
-							</div>
-							<div>
 								<div className={Styles.TopicHeaderNotes}>Quiz</div>
-							</div>
-							<div className={Styles.containerBody}>
-								<div
-									ref={subjectReview}
-									id='SubjectsReview'
-									onClick={(e) => handleNav(e.currentTarget.id)}
-									className={Styles.topicTittle}>
-									<Books />
-									<div className={Styles.text}>Subjects</div>
+								<div className={Styles.containerBody}>
+									<div
+										ref={subjectReview}
+										id='SubjectsReview'
+										onClick={(e) => handleNav(e.currentTarget.id)}
+										className={Styles.topicTittle}>
+										<Books />
+										<div className={Styles.text}>Subjects</div>
+									</div>
+									<div
+										ref={formReview}
+										id='FormsReview'
+										onClick={(e) => handleNav(e.currentTarget.id)}
+										className={Styles.topicTittle}>
+										<SchoolIcon />
+										<div className={Styles.text}>Forms</div>
+									</div>
+									<div
+										ref={topicReview}
+										id='TopicsReview'
+										onClick={(e) => handleNav(e.currentTarget.id)}
+										className={Styles.topicTittle}>
+										<NotesIcon />
+										<div className={Styles.text}>Topics</div>
+									</div>
+									<div
+										ref={review}
+										id='Review'
+										onClick={(e) => handleNav(e.currentTarget.id)}
+										className={Styles.topicTittle}>
+										<AlignVerticalBottomIcon />
+										<div className={Styles.text}>Quiz</div>
+									</div>
+									<div
+										ref={questions}
+										id='Questions'
+										onClick={(e) => handleNav(e.currentTarget.id)}
+										className={Styles.topicTittle}>
+										<QuestionMarkIcon />
+										<div className={Styles.text}>Questions</div>
+									</div>
 								</div>
-								<div
-									ref={formReview}
-									id='FormsReview'
-									onClick={(e) => handleNav(e.currentTarget.id)}
-									className={Styles.topicTittle}>
-									<SchoolIcon />
-									<div className={Styles.text}>Forms</div>
-								</div>
-								<div
-									ref={topicReview}
-									id='TopicsReview'
-									onClick={(e) => handleNav(e.currentTarget.id)}
-									className={Styles.topicTittle}>
-									<NotesIcon />
-									<div className={Styles.text}>Topics</div>
-								</div>
-								<div
-									ref={review}
-									id='Review'
-									onClick={(e) => handleNav(e.currentTarget.id)}
-									className={Styles.topicTittle}>
-									<AlignVerticalBottomIcon />
-									<div className={Styles.text}>Quiz</div>
-								</div>
-								<div
-									ref={questions}
-									id='Questions'
-									onClick={(e) => handleNav(e.currentTarget.id)}
-									className={Styles.topicTittle}>
-									<QuestionMarkIcon />
-									<div className={Styles.text}>Questions</div>
-								</div>
-							</div>
-							<div>
 								<div className={Styles.TopicHeaderNotes}>Exams</div>
-							</div>
-							<div className={Styles.containerBody}>
-								<div
-									ref={subjectExam}
-									id='SubjectsExam'
-									onClick={(e) => handleNav(e.currentTarget.id)}
-									className={Styles.topicTittle}>
-									<Books />
-									<div className={Styles.text}>Subjects</div>
+								<div className={Styles.containerBody}>
+									<div
+										ref={subjectExam}
+										id='SubjectsExam'
+										onClick={(e) => handleNav(e.currentTarget.id)}
+										className={Styles.topicTittle}>
+										<Books />
+										<div className={Styles.text}>Subjects</div>
+									</div>
+									<div
+										ref={formExam}
+										id='FormsExam'
+										onClick={(e) => handleNav(e.currentTarget.id)}
+										className={Styles.topicTittle}>
+										<SchoolIcon />
+										<div className={Styles.text}>Forms</div>
+									</div>
+									<div
+										ref={examType}
+										id='ExamType'
+										onClick={(e) => handleNav(e.currentTarget.id)}
+										className={Styles.topicTittle}>
+										<NotesIcon />
+										<div className={Styles.text}>Exam Types</div>
+									</div>
+									<div
+										ref={exam}
+										id='Exam'
+										onClick={(e) => handleNav(e.currentTarget.id)}
+										className={Styles.topicTittle}>
+										<SummarizeIcon />
+										<div className={Styles.text}>Exams</div>
+									</div>
+									<div
+										ref={examDownloads}
+										id='ExamDownloads'
+										onClick={(e) => handleNav(e.currentTarget.id)}
+										className={Styles.topicTittle}>
+										<Downloads size={25} />
+										<div className={Styles.text}>Downloadables</div>
+									</div>
 								</div>
-								<div
-									ref={formExam}
-									id='FormsExam'
-									onClick={(e) => handleNav(e.currentTarget.id)}
-									className={Styles.topicTittle}>
-									<SchoolIcon />
-									<div className={Styles.text}>Forms</div>
-								</div>
-								<div
-									ref={examType}
-									id='ExamType'
-									onClick={(e) => handleNav(e.currentTarget.id)}
-									className={Styles.topicTittle}>
-									<NotesIcon />
-									<div className={Styles.text}>Exam Types</div>
-								</div>
-								<div
-									ref={exam}
-									id='Exam'
-									onClick={(e) => handleNav(e.currentTarget.id)}
-									className={Styles.topicTittle}>
-									<SummarizeIcon />
-									<div className={Styles.text}>Exams</div>
-								</div>
-								<div
-									ref={examDownloads}
-									id='ExamDownloads'
-									onClick={(e) => handleNav(e.currentTarget.id)}
-									className={Styles.topicTittle}>
-									<Downloads size={25} />
-									<div className={Styles.text}>Downloadables</div>
-								</div>
-							</div>
-							<div>
 								<div className={Styles.TopicHeaderNotes}>Library</div>
-							</div>
-							<div className={Styles.containerBody}>
-								<div
-									ref={subjectReference}
-									id='SubjectReference'
-									onClick={(e) => handleNav(e.currentTarget.id)}
-									className={Styles.topicTittle}>
-									<Books />
-									<div className={Styles.text}>Subjects</div>
+								<div className={Styles.containerBody}>
+									<div
+										ref={subjectReference}
+										id='SubjectReference'
+										onClick={(e) => handleNav(e.currentTarget.id)}
+										className={Styles.topicTittle}>
+										<Books />
+										<div className={Styles.text}>Subjects</div>
+									</div>
+									<div
+										ref={formReference}
+										id='FormReference'
+										onClick={(e) => handleNav(e.currentTarget.id)}
+										className={Styles.topicTittle}>
+										<SchoolIcon />
+										<div className={Styles.text}>Forms</div>
+									</div>
+									<div
+										ref={reference}
+										id='Reference'
+										onClick={(e) => {
+											handleNav(`Reference`);
+										}}
+										className={Styles.topicTittle}>
+										<NotesIcon />
+										<div className={Styles.text}>Reference</div>
+									</div>
 								</div>
-								<div
-									ref={formReference}
-									id='FormReference'
-									onClick={(e) => handleNav(e.currentTarget.id)}
-									className={Styles.topicTittle}>
-									<SchoolIcon />
-									<div className={Styles.text}>Forms</div>
-								</div>
-								<div
-									ref={reference}
-									id='Reference'
-									onClick={(e) => {
-										handleNav(`Reference`);
-									}}
-									className={Styles.topicTittle}>
-									<NotesIcon />
-									<div className={Styles.text}>Reference</div>
-								</div>
-							</div>
-							{userData.isSuperUser && (
-								<>
-									<div>
+								{userData.isSuperUser && (
+									<>
 										<div className={Styles.TopicHeaderNotes}>Users</div>
-									</div>
-									<div className={Styles.containerBody}>
-										<div
-											ref={user}
-											id={`User`}
-											onClick={(e) => handleNav(`User`)}
-											className={Styles.topicTittle}>
-											<FaUserGraduate size={23} />
-											<div className={Styles.text}>User</div>
+										<div className={Styles.containerBody}>
+											<div
+												ref={user}
+												id={`User`}
+												onClick={(e) => handleNav(`User`)}
+												className={Styles.topicTittle}>
+												<FaUsers size={23} />
+												<div className={Styles.text}>User</div>
+											</div>
+											<div
+												ref={admin}
+												id={`Admin`}
+												onClick={(e) => handleNav(`Admin`)}
+												className={Styles.topicTittle}>
+												<FaUserSecret size={23} />
+												<div className={Styles.text}>Admins</div>
+											</div>
 										</div>
-									</div>
-								</>
-							)}
+									</>
+								)}
+							</div>
 						</div>
 					</div>
 					{/* //!start of default desplay */}
@@ -3203,6 +3277,40 @@ const Index = ({}) => {
 															/>
 														)
 													)}
+											</div>
+										</div>
+									</div>
+								)}
+								{/* //! END OF form reference DISPLAY ONLY */}
+								{/* //* this below is a fragment to loading.. */}
+								{navValue == `Admin` && (
+									<div className={Styles.rightInnercontainerBody}>
+										<div className={Styles.subject}>
+											<div className={Styles.subjectHeader}>
+												<div className={Styles.subjectHeaderText}>
+													Admins Management
+												</div>
+											</div>
+											<div className={Styles.subjectBody}>
+												{adminsList.map(
+													(user: {
+														id: number;
+														username: string;
+														name: string;
+													}) => (
+														<CardBox
+															handleUpdate={handleUpdateSubjectExam}
+															link={'/Admin/User/' + user.id}
+															label={customTruncate(
+																`${user.name} as ${user.username}`,
+																24
+															)}
+															id={user.id}
+															key={user.id}
+															published={''}
+														/>
+													)
+												)}
 											</div>
 										</div>
 									</div>

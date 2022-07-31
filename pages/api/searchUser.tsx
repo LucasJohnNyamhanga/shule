@@ -56,22 +56,7 @@ export default async function handler(
 				select: {
 					id: true,
 					username: true,
-					isAdmin: true,
-					isSuperUser: true,
-					image: true,
 					name: true,
-					vifurushi: {
-						select: {
-							name: true,
-							value: true,
-						},
-					},
-					purchase: {
-						select: {
-							name: true,
-							value: true,
-						},
-					},
 				},
 			});
 			let searchResults = JSON.parse(JSON.stringify(result));
