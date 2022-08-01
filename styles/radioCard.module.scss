@@ -5,7 +5,6 @@
 	width: 100%;
 	justify-content: center;
 	align-items: center;
-	background-color: $captionBackground;
 
 	--card-line-height: 1.2em;
 	--card-padding: 1em;
@@ -14,7 +13,7 @@
 	--color-gray: #e2ebf6;
 	--color-dark-gray: #c4d1e1;
 	--radio-border-width: 2px;
-	--radio-size: 1.5em;
+	--radio-size: 1.6em;
 
 	.grid {
 		display: grid;
@@ -24,9 +23,9 @@
 		max-width: 1400px;
 		padding: 0;
 		color: #263238;
-		font-family: 'Noto Sans', sans-serif;
+		font-family: $fontBody;
 		margin: 0;
-		padding: 2em;
+		padding: 10px;
 
 		@media (min-width: 600px) {
 			grid-template-columns: repeat(2, 1fr);
@@ -66,6 +65,7 @@
 				outline: none;
 				transition: background 0.2s ease-out, border-color 0.2s ease-out;
 				width: var(--radio-size);
+				z-index: 999;
 
 				&::after {
 					border: var(--radio-border-width) solid #fff;
@@ -141,6 +141,11 @@
 			font-size: 1.5rem;
 			font-weight: bold;
 			line-height: 1em;
+			z-index: 2;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
 		}
 
 		.plancost {

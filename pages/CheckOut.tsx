@@ -54,7 +54,16 @@ const Notes = ({
 		<div className={Styles.container}>
 			<Toaster position='bottom-left' reverseOrder={false} />
 			<div className={Styles.innerContainer}>
+				<div className={Styles.header}>
+					You’re almost there! Complete your order
+				</div>
+				<div className={Styles.plan}>
+					1. Choose Your Plan Quantity Or Add Another Plan
+				</div>
+				<div className={Styles.plan}>2. Choose Payment option</div>
 				<RadioCard />
+				<div className={Styles.plan}>3. Payment Procedures</div>
+				<div className={Styles.plan}>4. Account Activation</div>
 			</div>
 		</div>
 	);
