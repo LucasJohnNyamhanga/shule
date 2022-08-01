@@ -77,9 +77,9 @@ type formData = {
 }[];
 
 const Create = ({
-    	forms,
-    	subjects,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	forms,
+	subjects,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive, userData } = useContext(NavContext);
 
 	useEffect(() => {
@@ -220,7 +220,7 @@ const Create = ({
 
 	return (
 		<div className={Styles.container}>
-			<Toaster position='bottom-left' reverseOrder={false} />
+			<Toaster position='top-center' reverseOrder={false} />
 			<div className={Styles.innerContainer}>
 				<div className={Styles.rightInnercontainerBody}>
 					<div className={Styles.mainMain}>

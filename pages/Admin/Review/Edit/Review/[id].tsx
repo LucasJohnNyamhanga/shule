@@ -99,10 +99,10 @@ type formData = {
 }[];
 
 const EditNotes = ({
-        	review,
-        	forms,
-        	subjects,
-        }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	review,
+	forms,
+	subjects,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive, userData } = useContext(NavContext);
 
 	useEffect(() => {
@@ -287,7 +287,7 @@ const EditNotes = ({
 
 	return (
 		<div className={Styles.container}>
-			<Toaster position='bottom-left' reverseOrder={false} />
+			<Toaster position='top-center' reverseOrder={false} />
 			<div className={Styles.innerContainer}>
 				<div className={Styles.rightInnercontainerBody}>
 					<div className={Styles.mainMain}>

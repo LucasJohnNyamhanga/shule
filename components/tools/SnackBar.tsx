@@ -6,51 +6,58 @@ import CloseIcon from '@mui/icons-material/Close';
 import { type } from 'os';
 
 type typeData = {
-    textMessage: string,
-    opener: boolean,
-    handleClearToast: () => void;
-}
+	textMessage: string;
+	opener: boolean;
+	handleClearToast: () => void;
+};
 
-export default function SimpleSnackbar({textMessage, opener, handleClearToast}:typeData) {
-  const [open, setOpen] = React.useState(false);
-    
-    React.useEffect(() => {
-        setOpen(opener);
-    },[opener])
+export default function SimpleSnackbar({
+	textMessage,
+	opener,
+	handleClearToast,
+}: typeData) {
+	const [open, setOpen] = React.useState(false);
 
-  const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-      setOpen(false);
-      handleClearToast();
-  };
+	React.useEffect(() => {
+		setOpen(opener);
+	}, [opener]);
 
-  const action = (
-    <React.Fragment>
-      {/* <Button color="secondary" size="small" onClick={handleClose}>
+	const handleClose = (
+		event: React.SyntheticEvent | Event,
+		reason?: string
+	) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+		setOpen(false);
+		handleClearToast();
+	};
+
+	const action = (
+		<React.Fragment>
+			{/* <Button color="secondary" size="small" onClick={handleClose}>
         UNDO
       </Button> */}
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </React.Fragment>
-  );
+			<IconButton
+				size='small'
+				aria-label='close'
+				color='inherit'
+				onClick={handleClose}>
+				<CloseIcon fontSize='small' />
+			</IconButton>
+		</React.Fragment>
+	);
 
-  return (
-    <div>
-      <Snackbar
-        open={open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        message={textMessage}
-        action={action}
-      />
-    </div>
-  );
+	return (
+		<div>
+			<Snackbar
+				open={open}
+				autoHideDuration={6000}
+				onClose={handleClose}
+				message={textMessage}
+				action={action}
+				anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+			/>
+		</div>
+	);
 }

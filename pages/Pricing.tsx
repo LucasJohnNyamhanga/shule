@@ -43,8 +43,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const Pricing = ({
-	packageDetails,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	packageDetails,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { userData } = useContext(NavContext);
 	const { query, push } = useRouter();
 	let callback = query.callbackUrl;
@@ -80,20 +80,25 @@ const Pricing = ({
 	};
 
 	let handleBuy = (
-		booksDownload: number,
-		examAccess: number,
-		examsSolvedDownload: number,
-		examsUnsolvedDownload: number,
-		notesDownload: number,
-		quizExcercises: number
+		id: number
+		// booksDownload: number,
+		// examAccess: number,
+		// examsSolvedDownload: number,
+		// examsUnsolvedDownload: number,
+		// notesDownload: number,
+		// quizExcercises: number
 	) => {
-		sendToDatabase({
-			booksDownload,
-			examAccess,
-			examsSolvedDownload,
-			examsUnsolvedDownload,
-			notesDownload,
-			quizExcercises,
+		// sendToDatabase({
+		// 	booksDownload,
+		// 	examAccess,
+		// 	examsSolvedDownload,
+		// 	examsUnsolvedDownload,
+		// 	notesDownload,
+		// 	quizExcercises,
+		// });
+		push({
+			pathname: `/CheckOut`,
+			query: { id: id, callbackUrl: callback },
 		});
 	};
 
@@ -192,7 +197,7 @@ const Pricing = ({
 
 	return (
 		<div className={Styles.container}>
-			<Toaster position='bottom-left' reverseOrder={false} />
+			<Toaster position='top-center' reverseOrder={false} />
 			<div className={Styles.innerContainer}>
 				<div className={Styles.intro}>
 					Find the right package to power your learning.
@@ -281,12 +286,13 @@ const Pricing = ({
 										<button
 											onClick={() => {
 												handleBuy(
-													packageName.booksDownload,
-													packageName.examAccess,
-													packageName.examsSolvedDownload,
-													packageName.examsUnsolvedDownload,
-													packageName.notesDownload,
-													packageName.quizExcercises
+													// packageName.booksDownload,
+													// packageName.examAccess,
+													// packageName.examsSolvedDownload,
+													// packageName.examsUnsolvedDownload,
+													// packageName.notesDownload,
+													// packageName.quizExcercises
+													packageName.id
 												);
 											}}
 											className={showButton(findColor(index))}>

@@ -16,15 +16,131 @@
 		padding: 10px;
 		flex-direction: column;
 		margin-bottom: 50px;
+
+		.form {
+			width: fit-content;
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+			align-items: center;
+			box-shadow: $boxShadow;
+
+			.valuebutton {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				width: 40px;
+				height: 40px;
+				text-align: center;
+				vertical-align: middle;
+				padding: 11px 0;
+				background: #eee;
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+				-khtml-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+
+				&:hover {
+					cursor: pointer;
+				}
+			}
+
+			.decrease {
+				background-color: $ugoro;
+				color: white;
+				border-radius: 5px 0px 0px 5px;
+			}
+
+			.increase {
+				background-color: $lightblue;
+				color: white;
+				border-radius: 0px 5px 5px 0px;
+			}
+
+			.inputwrap {
+				margin: 0px;
+				padding: 0px;
+			}
+
+			input {
+				text-align: center;
+				border: none;
+				border-top: 1px solid #ddd;
+				border-bottom: 1px solid #ddd;
+				margin: 0px;
+				width: 50px;
+				height: 40px;
+				font-size: 18px;
+				font-family: $fontHeader;
+			}
+
+			/* Chrome, Safari, Edge, Opera */
+			input::-webkit-outer-spin-button,
+			input::-webkit-inner-spin-button {
+				-webkit-appearance: none;
+				margin: 0;
+			}
+
+			/* Firefox */
+			input[type='number'] {
+				-moz-appearance: textfield;
+			}
+		}
+	}
+
+	.header {
+		font-family: $fontHeader;
+		font-size: 30px;
+		font-weight: 700;
+		margin: 20px 0px;
+		padding-top: 20px;
+	}
+
+	.plan {
+		font-family: $fontHeader;
+		font-size: 20px;
+		font-weight: 600;
+		margin: 10px 0px;
+	}
+}
+
+@media only screen and (max-width: 458px) {
+	.innerContainer {
+		.header {
+			font-family: $fontHeader;
+			font-size: 16px;
+			font-weight: 700;
+			margin: 10px 0px;
+			padding-top: 10px;
+		}
+
+		.plan {
+			font-family: $fontHeader;
+			font-size: 12px;
+			font-weight: 600;
+			margin: 10px 0px;
+		}
 	}
 }
 
 @media only screen and (max-width: 668px) {
 	.innerContainer {
-	}
-}
+		.header {
+			font-family: $fontHeader;
+			font-size: 28px;
+			font-weight: 700;
+			margin: 10px 0px;
+			padding-top: 10px;
+		}
 
-@media only screen and (max-width: 378px) {
-	.innerContainer {
+		.plan {
+			font-family: $fontHeader;
+			font-size: 20px;
+			font-weight: 600;
+			margin: 10px 0px;
+		}
 	}
 }

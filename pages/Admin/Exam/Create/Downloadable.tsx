@@ -396,7 +396,7 @@ const Notes = ({
 
 	return (
 		<div className={Styles.container}>
-			<Toaster position='bottom-left' />
+			<Toaster position='top-center' />
 			<div className={Styles.innerContainer}>
 				<div className={Styles.content}>
 					<div className={Styles.mainContent}>

@@ -203,7 +203,7 @@ const SignIn = ({}) => {
 
 	return (
 		<div className={Styles.container}>
-			<Toaster position='bottom-left' />
+			<Toaster position='top-center' />
 			<div className={Styles.innerContainer}>
 				<div>
 					{signInAccount && (

@@ -97,10 +97,10 @@ type formData = {
 }[];
 
 const Notes = ({
-	forms,
-	subjects,
-	examType,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	forms,
+    	subjects,
+    	examType,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive, userData } = useContext(NavContext);
 
 	const [formOptions, setFormOptions] = useState<formData>([]);
@@ -319,7 +319,7 @@ const Notes = ({
 
 	return (
 		<div className={Styles.container}>
-			<Toaster position='bottom-left' />
+			<Toaster position='top-center' />
 			<div className={Styles.innerContainer}>
 				<div className={Styles.content}>
 					<div className={Styles.mainContent}>

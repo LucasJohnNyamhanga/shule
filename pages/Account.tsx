@@ -52,8 +52,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const Notes = ({
-    	userfound,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+        	userfound,
+        }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const password = useRef<HTMLInputElement>(null!);
 	const password1 = useRef<HTMLInputElement>(null!);
 	const password2 = useRef<HTMLInputElement>(null!);
@@ -159,7 +159,7 @@ const Notes = ({
 	};
 	return (
 		<div className={Styles.container}>
-			<Toaster position='bottom-left' reverseOrder={false} />
+			<Toaster position='top-center' reverseOrder={false} />
 			<div className={Styles.innerContainer}>
 				{!resetPassword && (
 					<>

@@ -63,8 +63,8 @@ type tableKey = {
 };
 
 const Index = ({
-    	downloads,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	downloads,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
@@ -165,7 +165,7 @@ const Index = ({
 
 	return (
 		<div className={Styles.container}>
-			<Toaster position='bottom-left' />
+			<Toaster position='top-center' />
 			<div className={Styles.innerContainer}>
 				<div className={Styles.rightInnercontainerBody}>
 					<div className={Styles.BodyHeader}>
