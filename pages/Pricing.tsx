@@ -43,8 +43,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const Pricing = ({
-    	packageDetails,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	packageDetails,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { userData } = useContext(NavContext);
 	const { query, push } = useRouter();
 	let callback = query.callbackUrl;
@@ -258,7 +258,7 @@ const Pricing = ({
 														<li>
 															Solved Exam Download{' '}
 															<div className={Styles.icon}>
-																{packageName.quizExcercises}
+																{packageName.examsSolvedDownload}
 															</div>
 														</li>
 												  )}
@@ -268,7 +268,7 @@ const Pricing = ({
 														<li>
 															Solved Exam Access{' '}
 															<div className={Styles.icon}>
-																{packageName.quizExcercises}
+																{packageName.examAccess}
 															</div>
 														</li>
 												  )}

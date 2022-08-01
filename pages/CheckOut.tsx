@@ -71,12 +71,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const Notes = ({
-    	userfound,
-    	packageDetails,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	userfound,
+	packageDetails,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	console.log(packageDetails);
 	const { query, push } = useRouter();
 	let callback = query.callbackUrl;
+	const [planQuantity, setPlanQuantity] = useState({
+		value: 1,
+	});
 
 	const randomPin = () => {
 		let val = Math.floor(1000 + Math.random() * 9000);
@@ -96,29 +99,86 @@ const Notes = ({
 				</div>
 				<div>
 					<div className={Styles.plan}>
-						1. Choose Your Plan Quantity Or Add Another Plan
+						1. Choose Your Package Quantity Or Add Another Package
 					</div>
-					<div>
-						<div>
-							<div>Selected Plan</div>
-							<div>{packageDetails.name}</div>
+					<div className={Styles.plan1}>
+						<div className={Styles.planCntainer}>
+							<div>Selected Package: </div>
+							<div
+								className={
+									Styles.details
+								}>{`${packageDetails.name} ${packageDetails.description} Package`}</div>
 						</div>
-						<div>
-							<div>Plan Quantity</div>
-							<div className={Styles.form}>
-								<div className={`${Styles.valuebutton} ${Styles.decrease}`}>
+						<div className={Styles.planCntainer}>
+							<div>Package Quantity</div>
+							<div className={`${Styles.form} ${Styles.details}`}>
+								<div
+									className={`${Styles.valuebutton} ${Styles.decrease} ${Styles.details}`}>
 									<TiMinus />
 								</div>
 								<input
 									className={Styles.inputwrap}
 									type='number'
 									id='number'
-									value='0'
+									value={planQuantity.value}
 								/>
 								<div className={`${Styles.valuebutton} ${Styles.increase}`}>
 									<TiPlus />
 								</div>
 							</div>
+						</div>
+						<table>
+							<caption>{`${packageDetails.name} Package Details`}</caption>
+							<thead>
+								<tr>
+									<th scope='col'>Package Content</th>
+									<th scope='col'>Value</th>
+								</tr>
+							</thead>
+							<tbody>
+								{packageDetails.notesDownload != 0 && (
+									<tr>
+										<td>{`Notes Download`}</td>
+										<td>{`${packageDetails.notesDownload} `}</td>
+									</tr>
+								)}
+								{packageDetails.quizExcercises != 0 && (
+									<tr>
+										<td>{`Quiz Excercises`}</td>
+										<td>{`${packageDetails.quizExcercises} `}</td>
+									</tr>
+								)}
+								{packageDetails.examsUnsolvedDownload != 0 && (
+									<tr>
+										<td>{`Unsolved Exam Download`}</td>
+										<td>{`${packageDetails.examsUnsolvedDownload} `}</td>
+									</tr>
+								)}
+								{packageDetails.examsSolvedDownload != 0 && (
+									<tr>
+										<td>{`Solved Exam Download`}</td>
+										<td>{`${packageDetails.examsSolvedDownload} `}</td>
+									</tr>
+								)}
+								{packageDetails.examAccess != 0 && (
+									<tr>
+										<td>{`Solved Exam Access`}</td>
+										<td>{`${packageDetails.examAccess} `}</td>
+									</tr>
+								)}
+								{packageDetails.booksDownload != 0 && (
+									<tr>
+										<td>{`Books Download`}</td>
+										<td>{`${packageDetails.booksDownload} `}</td>
+									</tr>
+								)}
+							</tbody>
+						</table>
+
+						<div className={Styles.planCntainerPrice}>
+							<div className={Styles.details}>Package Price: </div>
+							<div
+								className={Styles.details}>{`${packageDetails.price} Tsh`}</div>
 						</div>
 					</div>
 				</div>
