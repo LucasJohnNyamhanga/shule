@@ -119,7 +119,7 @@ const Index = ({
 
 	return (
 		<div className={Styles.container}>
-			<Toaster position='bottom-left' />
+			<Toaster position='top-center' />
 			<Head>
 				<title>{`${downloads.subjectReference.subjectName} Library Download`}</title>
 				<meta name='viewport' content='initial-scale=1.0, width=device-width' />

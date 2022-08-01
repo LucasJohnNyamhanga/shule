@@ -240,7 +240,7 @@ const EditSubject = ({
 
 	return (
 		<div className={Styles.container}>
-			<Toaster position='bottom-left' reverseOrder={false} />
+			<Toaster position='top-center' reverseOrder={false} />
 			<div className={Styles.innerContainer}>
 				<div className={Styles.rightInnercontainerBody}>
 					<div className={Styles.mainMain}>

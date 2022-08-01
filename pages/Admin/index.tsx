@@ -2127,7 +2127,7 @@ const Index = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	return (
 		<div className={Styles.container}>
 			<div className={Styles.innerContainer}>
-				<Toaster position='bottom-left' />
+				<Toaster position='top-center' />
 				<div className={Styles.containerBody}>
 					<div className={Styles.leftInnercontainerBody}>
 						<div className={Styles.leftInner}>

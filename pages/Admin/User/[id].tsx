@@ -314,7 +314,7 @@ const EditExam = ({
 	if (ready)
 		return (
 			<div className={Styles.container}>
-				<Toaster position='bottom-left' reverseOrder={false} />
+				<Toaster position='top-center' reverseOrder={false} />
 				<div className={Styles.innerContainer}>
 					<div className={Styles.header}>
 						<Avatar className={Styles.avatar}>

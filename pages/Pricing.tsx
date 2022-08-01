@@ -43,8 +43,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const Pricing = ({
-	packageDetails,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	packageDetails,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { userData } = useContext(NavContext);
 	const { query, push } = useRouter();
 	let callback = query.callbackUrl;
@@ -192,7 +192,7 @@ const Pricing = ({
 
 	return (
 		<div className={Styles.container}>
-			<Toaster position='bottom-left' reverseOrder={false} />
+			<Toaster position='top-center' reverseOrder={false} />
 			<div className={Styles.innerContainer}>
 				<div className={Styles.intro}>
 					Find the right package to power your learning.

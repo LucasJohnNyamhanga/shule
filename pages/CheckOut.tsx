@@ -48,11 +48,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const Notes = ({
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	userfound,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	return (
 		<div className={Styles.container}>
-			<Toaster position='bottom-left' reverseOrder={false} />
+			<Toaster position='top-center' reverseOrder={false} />
 			<div className={Styles.innerContainer}>
 				<div className={Styles.header}>
 					You’re almost there! Complete your order
