@@ -80,20 +80,25 @@ const Pricing = ({
 	};
 
 	let handleBuy = (
-		booksDownload: number,
-		examAccess: number,
-		examsSolvedDownload: number,
-		examsUnsolvedDownload: number,
-		notesDownload: number,
-		quizExcercises: number
+		id: number
+		// booksDownload: number,
+		// examAccess: number,
+		// examsSolvedDownload: number,
+		// examsUnsolvedDownload: number,
+		// notesDownload: number,
+		// quizExcercises: number
 	) => {
-		sendToDatabase({
-			booksDownload,
-			examAccess,
-			examsSolvedDownload,
-			examsUnsolvedDownload,
-			notesDownload,
-			quizExcercises,
+		// sendToDatabase({
+		// 	booksDownload,
+		// 	examAccess,
+		// 	examsSolvedDownload,
+		// 	examsUnsolvedDownload,
+		// 	notesDownload,
+		// 	quizExcercises,
+		// });
+		push({
+			pathname: `/CheckOut`,
+			query: { id: id, callbackUrl: callback },
 		});
 	};
 
@@ -281,12 +286,13 @@ const Pricing = ({
 										<button
 											onClick={() => {
 												handleBuy(
-													packageName.booksDownload,
-													packageName.examAccess,
-													packageName.examsSolvedDownload,
-													packageName.examsUnsolvedDownload,
-													packageName.notesDownload,
-													packageName.quizExcercises
+													// packageName.booksDownload,
+													// packageName.examAccess,
+													// packageName.examsSolvedDownload,
+													// packageName.examsUnsolvedDownload,
+													// packageName.notesDownload,
+													// packageName.quizExcercises
+													packageName.id
 												);
 											}}
 											className={showButton(findColor(index))}>
