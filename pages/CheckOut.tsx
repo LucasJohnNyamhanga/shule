@@ -95,7 +95,7 @@ const Notes = ({
 			<Toaster position='top-center' reverseOrder={false} />
 			<div className={Styles.innerContainer}>
 				<div className={Styles.header}>
-					You’re almost there!, Complete your order.
+					You’re almost there!, Complete your order now.
 				</div>
 				<div>
 					<div className={Styles.plan}>
@@ -132,7 +132,7 @@ const Notes = ({
 							<thead>
 								<tr>
 									<th scope='col'>Package Content</th>
-									<th scope='col'>Value</th>
+									<th scope='col'>Quantity</th>
 								</tr>
 							</thead>
 							<tbody>
