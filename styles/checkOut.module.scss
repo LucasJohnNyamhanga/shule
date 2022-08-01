@@ -50,13 +50,13 @@
 
 			.decrease {
 				background-color: $ugoro;
-				color: white;
+				color: $white;
 				border-radius: 5px 0px 0px 5px;
 			}
 
 			.increase {
 				background-color: $lightblue;
-				color: white;
+				color: $white;
 				border-radius: 0px 5px 5px 0px;
 			}
 
@@ -75,6 +75,7 @@
 				height: 40px;
 				font-size: 18px;
 				font-family: $fontHeader;
+				font-weight: 600;
 			}
 
 			/* Chrome, Safari, Edge, Opera */
@@ -89,51 +90,13 @@
 				-moz-appearance: textfield;
 			}
 		}
-	}
 
-	.header {
-		font-family: $fontHeader;
-		font-size: 30px;
-		font-weight: 700;
-		margin: 20px 0px;
-		padding-top: 20px;
-	}
-
-	.plan {
-		font-family: $fontHeader;
-		font-size: 20px;
-		font-weight: 600;
-		margin: 10px 0px;
-	}
-}
-
-@media only screen and (max-width: 458px) {
-	.innerContainer {
 		.header {
 			font-family: $fontHeader;
-			font-size: 16px;
+			font-size: 30px;
 			font-weight: 700;
-			margin: 10px 0px;
-			padding-top: 10px;
-		}
-
-		.plan {
-			font-family: $fontHeader;
-			font-size: 12px;
-			font-weight: 600;
-			margin: 10px 0px;
-		}
-	}
-}
-
-@media only screen and (max-width: 668px) {
-	.innerContainer {
-		.header {
-			font-family: $fontHeader;
-			font-size: 28px;
-			font-weight: 700;
-			margin: 10px 0px;
-			padding-top: 10px;
+			margin: 20px 0px;
+			padding-top: 20px;
 		}
 
 		.plan {
@@ -142,5 +105,234 @@
 			font-weight: 600;
 			margin: 10px 0px;
 		}
+
+		.plan1 {
+			padding-left: 20px;
+
+			.planCntainer {
+				display: flex;
+				flex-direction: row;
+				justify-content: flex-start;
+				padding: 5px 0px;
+				align-items: center;
+				font-weight: 400;
+				font-size: 18px;
+
+				.details {
+					margin-left: 10px;
+					font-weight: 600;
+				}
+			}
+
+			table {
+				border: 1px solid #ccc;
+				border-collapse: collapse;
+				margin: 0;
+				padding: 0;
+				table-layout: fixed;
+				width: 100%;
+				max-width: 800px;
+			}
+
+			table caption {
+				font-size: 1.5em;
+				margin: 0.5em 0 0.75em;
+				text-align: left;
+
+				font-weight: 500;
+			}
+
+			table tr {
+				background-color: #f8f8f8;
+				border: 1px solid #ddd;
+				padding: 0.35em;
+			}
+
+			table th,
+			table td {
+				padding: 0.625em;
+				font-family: $fontBody;
+				text-align: left;
+			}
+
+			table th {
+				font-size: 0.85em;
+				letter-spacing: 0.1em;
+				text-transform: uppercase;
+				font-family: $fontHeader;
+			}
+
+			@media screen and (max-width: 490px) {
+				table {
+					border: 0;
+					width: 100%;
+				}
+
+				table caption {
+					font-size: 1.3em;
+				}
+
+				table thead {
+					border: none;
+					clip: rect(0 0 0 0);
+					height: 1px;
+					margin: -1px;
+					overflow: hidden;
+					padding: 0;
+					position: absolute;
+					width: 1px;
+				}
+
+				table tr {
+					border-bottom: 3px solid #ddd;
+					display: block;
+					margin-bottom: 0.625em;
+				}
+
+				table td {
+					border-bottom: 1px solid #ddd;
+					display: block;
+					font-size: 1em;
+					text-align: center;
+				}
+
+				table td::before {
+					/*
+    * aria-label has no advantage, it won't be read inside a table
+    content: attr(aria-label);
+    */
+					content: attr(data-label);
+					float: left;
+					font-weight: bold;
+					text-transform: uppercase;
+				}
+
+				table td:last-child {
+					border-bottom: 0;
+				}
+			}
+
+			.planCntainerPrice {
+				display: flex;
+				flex-direction: row;
+				justify-content: flex-start;
+				padding: 15px 0px;
+				align-items: center;
+				font-weight: 400;
+				font-size: 18px;
+
+				.details {
+					margin-left: 10px;
+					font-weight: 700;
+					font-size: 20px;
+					margin-top: 10px;
+					margin-bottom: 20px;
+					color: $ugoro;
+				}
+			}
+
+			//possible plan inside plan 1
+			@media only screen and (max-width: 458px) {
+				padding-left: 0px;
+
+				.planCntainer {
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+					align-items: flex-start;
+					padding: 10px 0px;
+
+					.details {
+						margin-left: 0px;
+						padding: 5px 0px;
+					}
+				}
+			}
+		}
+	}
+
+	@media only screen and (max-width: 758px) {
+		.innerContainer {
+			.header {
+				font-family: $fontHeader;
+				font-size: 28px;
+				font-weight: 700;
+				margin: 10px 0px;
+				padding-top: 10px;
+			}
+
+			.plan {
+				font-family: $fontHeader;
+				font-size: 20px;
+				font-weight: 600;
+				margin: 10px 0px;
+			}
+
+			.plan1 {
+				padding-left: 0px;
+				.planCntainerPrice {
+					padding: 0px 0px;
+				}
+			}
+		}
+	}
+
+	@media only screen and (max-width: 458px) {
+		.innerContainer {
+			.header {
+				font-family: $fontHeader;
+				font-size: 22px;
+				font-weight: 700;
+				margin: 10px 0px;
+				padding-top: 10px;
+			}
+
+			.plan {
+				font-family: $fontHeader;
+				font-size: 18px;
+				font-weight: 600;
+				margin: 10px 0px;
+			}
+
+			.plan1 {
+				padding-left: 0px;
+				.planCntainerPrice {
+					padding: 0px 0px;
+				}
+			}
+		}
+	}
+
+	@media only screen and (max-width: 258px) {
+		.innerContainer {
+			.header {
+				font-family: $fontHeader;
+				font-size: 20px;
+				font-weight: 700;
+				margin: 10px 0px;
+				padding-top: 10px;
+			}
+
+			.plan {
+				font-family: $fontHeader;
+				font-size: 16px;
+				font-weight: 600;
+				margin: 10px 0px;
+			}
+
+			.plan1 {
+				padding-left: 0px;
+				.planCntainerPrice {
+					padding: 0px 0px;
+				}
+			}
+		}
+	}
+
+	.packageDetails {
+		font-family: $fontHeader;
+		font-size: 18px;
+		font-weight: 500;
+		margin: 10px 0px;
 	}
 }
