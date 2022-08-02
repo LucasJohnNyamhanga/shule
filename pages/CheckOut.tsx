@@ -103,6 +103,11 @@ const Notes = ({
 	const [booksDownload, setBooksDownload] = useState(0);
 	const [price, setPrice] = useState(0);
 	const [runOnce, setRunOnce] = useState(true);
+	const [paymentOption, setPaymentOption] = useState('default');
+
+	const notify = (message: string) => toast(message);
+	const notifySuccess = (message: string) => toast.success(message);
+	const notifyError = (message: string) => toast.error(message);
 
 	const randomPin = () => {
 		let val = Math.floor(1000 + Math.random() * 9000);
@@ -293,6 +298,10 @@ const Notes = ({
 		setSelectOption(filtered);
 	};
 
+	const handleSelectPaymentMethod = (value: string) => {
+		setPaymentOption(value);
+	};
+
 	useEffect(() => {
 		if (runOnce) {
 			randomPin();
@@ -315,8 +324,9 @@ const Notes = ({
 					You’re almost there!, Complete your order now.
 				</div>
 				<div>
+					<div className={Styles.step}>STEP 1.</div>
 					<div className={Styles.plan}>
-						1. Choose Your Package Quantity Or Add Another Package
+						Choose Your Package Quantity Or Add Another Package
 					</div>
 					<div className={Styles.plan1}>
 						<div className={Styles.planCntainer}>
@@ -353,7 +363,7 @@ const Notes = ({
 								selectOption.length > 0
 									? `All Packages`
 									: packageDetails.name + ` Package`
-							}  Content`}</caption>
+							}  Content Table`}</caption>
 							<thead>
 								<tr>
 									<th scope='col'>Package Content</th>
@@ -422,34 +432,302 @@ const Notes = ({
 						</div>
 
 						<div className={Styles.planCntainerPrice}>
-							<div className={Styles.details}>
-								{selectOption.length > 0 ? `Total Price: ` : `Pay :`}
-							</div>
+							<div className={Styles.details}>{`Total Price: `}</div>
 							<div className={Styles.details}>{`${price} Tsh`}</div>
 						</div>
-						{selectOption.length > 0 && (
-							<>
-								<div className={Styles.planCntainerPrice}>
-									<div className={Styles.details}>Discount: </div>
-									<div className={Styles.details}>{`${
-										selectOption.length * 150
-									} Tsh`}</div>
-								</div>
+						<div className={Styles.planCntainerPrice}>
+							<div className={Styles.details}>Discount: </div>
+							<div className={Styles.details}>{`${
+								selectOption.length * 150
+							} Tsh`}</div>
+						</div>
 
-								<div className={Styles.planPay}>
-									<div className={Styles.details}>Pay: </div>
-									<div className={Styles.details}>{`${
-										price - selectOption.length * 150
-									} Tsh`}</div>
-								</div>
-							</>
-						)}
+						<div className={Styles.planPay}>
+							<div className={Styles.details}>Pay: </div>
+							<div className={Styles.details}>{`${
+								price - selectOption.length * 150
+							} Tsh`}</div>
+						</div>
 					</div>
 				</div>
-				<div className={Styles.plan}>2. Choose Payment option</div>
-				<RadioCard />
-				<div className={Styles.plan}>3. Payment Procedures</div>
-				<div className={Styles.plan}>4. Account Activation</div>
+				<div className={Styles.step}>STEP 2.</div>
+				<div className={Styles.plan}>Choose Payment option</div>
+				<RadioCard handleSelectValue={handleSelectPaymentMethod} />
+				<div className={Styles.step}>STEP 3.</div>
+				<div className={Styles.plan}>Payment Procedures</div>
+				{paymentOption === 'default' && (
+					<div className={Styles.planCntainer}>
+						<p>{`You have not selected a payment option`}</p>
+					</div>
+				)}
+				{paymentOption === 'vodacom' && (
+					<div className={Styles.planCntainer}>
+						<p>
+							You have selected VODACOM MPESA from Vodacom as your payment
+							option, our payment number is{' '}
+							<span className={Styles.text}>5212520 - DATASOFT</span>, please
+							follow below instruction to complete payment.
+						</p>
+						<div className='ckContent'>
+							<div className={`toc ${Styles.planCntainerToc}`}>
+								<ol>
+									<li>
+										dial <span className={Styles.text}>*150*00#</span>
+									</li>
+									<li>
+										select <span className={Styles.text}>5. Lipa Bill</span>
+									</li>
+									<li>
+										select <span className={Styles.text}>1. Lipa kwa SIMU</span>
+									</li>
+									<li>
+										select{' '}
+										<span className={Styles.text}>2. Lipa kwa Voda Lipa</span>
+									</li>
+									<li>
+										Ingiza Kiasi :{' '}
+										<span className={Styles.text}>{`${
+											price - selectOption.length * 150
+										}`}</span>
+									</li>
+									<li>
+										Ingiza lipa namba:{' '}
+										<span className={Styles.text}>5212520</span>
+									</li>
+									<li>
+										Ingiza namba ya siri:{' '}
+										<span className={Styles.text}>XXXX</span>
+									</li>
+								</ol>
+							</div>
+						</div>
+					</div>
+				)}
+				{paymentOption === 'airtel' && (
+					<div className={Styles.planCntainer}>
+						<p>
+							You have selected AIRTEL MONEY from Airtel as your payment option,
+							our payment number is{' '}
+							<span className={Styles.text}>5212520 - DATASOFT</span>, please
+							follow below instruction to complete payment.
+						</p>
+						<div className='ckContent'>
+							<div className={`toc ${Styles.planCntainerToc}`}>
+								<ol>
+									<li>
+										dial <span className={Styles.text}>*150*60#</span>
+									</li>
+									<li>
+										select <span className={Styles.text}>5. Lipa Bill</span>
+									</li>
+									<li>
+										select <span className={Styles.text}>1. Lipa kwa SIMU</span>
+									</li>
+									<li>
+										select{' '}
+										<span className={Styles.text}>2. Lipa kwa Voda Lipa</span>
+									</li>
+									<li>
+										Ingiza Kiasi :{' '}
+										<span className={Styles.text}>{`${
+											price - selectOption.length * 150
+										}`}</span>
+									</li>
+									<li>
+										Ingiza lipa namba:{' '}
+										<span className={Styles.text}>5212520</span>
+									</li>
+									<li>
+										Ingiza namba ya siri:{' '}
+										<span className={Styles.text}>XXXX</span>
+									</li>
+								</ol>
+							</div>
+						</div>
+					</div>
+				)}
+				{paymentOption === 'tigo' && (
+					<div className={Styles.planCntainer}>
+						<p>
+							You have selected TIGO PESA from Tigo as your payment option, our
+							payment number is{' '}
+							<span className={Styles.text}>5212520 - DATASOFT</span>, please
+							follow below instruction to complete payment.
+						</p>
+						<div className='ckContent'>
+							<div className={`toc ${Styles.planCntainerToc}`}>
+								<ol>
+									<li>
+										dial <span className={Styles.text}>*150*01#</span>
+									</li>
+
+									<li>
+										select <span className={Styles.text}>5. Lipa kwa SIMU</span>
+									</li>
+									<li>
+										select{' '}
+										<span className={Styles.text}>
+											3. Kwenda Mitandao Mingine
+										</span>
+									</li>
+									<li>
+										select <span className={Styles.text}>1. M-PESA</span>
+									</li>
+									<li>
+										Ingiza MPESA lipa namba:{' '}
+										<span className={Styles.text}>5212520</span>
+									</li>
+									<li>
+										Ingiza Kiasi :{' '}
+										<span className={Styles.text}>{`${
+											price - selectOption.length * 150
+										}`}</span>
+									</li>
+
+									<li>
+										Ingiza namba ya siri:{' '}
+										<span className={Styles.text}>XXXX</span>
+									</li>
+									<li>
+										Ingiza
+										<span className={Styles.text}> namba 1 Kuthibitisha.</span>
+									</li>
+								</ol>
+							</div>
+						</div>
+					</div>
+				)}
+				{paymentOption === 'halotel' && (
+					<div className={Styles.planCntainer}>
+						<p>
+							You have selected HALOPESA from Halotel as your payment option,
+							our payment number is{' '}
+							<span className={Styles.text}>5212520 - DATASOFT</span>, please
+							follow below instruction to complete payment.
+						</p>
+						<div className='ckContent'>
+							<div className={`toc ${Styles.planCntainerToc}`}>
+								<ol>
+									<li>
+										dial <span className={Styles.text}>*150*88#</span>
+									</li>
+									<li>
+										select <span className={Styles.text}>4. Lipa Bill</span>
+									</li>
+									<li>
+										select <span className={Styles.text}>1. Lipa kwa SIMU</span>
+									</li>
+									<li>
+										select{' '}
+										<span className={Styles.text}>2. Lipa kwa Voda Lipa</span>
+									</li>
+									<li>
+										Ingiza Kiasi :{' '}
+										<span className={Styles.text}>{`${
+											price - selectOption.length * 150
+										}`}</span>
+									</li>
+									<li>
+										Ingiza lipa namba:{' '}
+										<span className={Styles.text}>5212520</span>
+									</li>
+									<li>
+										Ingiza namba ya siri:{' '}
+										<span className={Styles.text}>XXXX</span>
+									</li>
+								</ol>
+							</div>
+						</div>
+					</div>
+				)}
+				{paymentOption === 'ttcl' && (
+					<div className={Styles.planCntainer}>
+						<p>
+							You have selected T-PESA from TTCL as your payment option, our
+							payment number is{' '}
+							<span className={Styles.text}>5212520 - DATASOFT</span>, please
+							follow below instruction to complete payment.
+						</p>
+						<div className='ckContent'>
+							<div className={`toc ${Styles.planCntainerToc}`}>
+								<ol>
+									<li>
+										dial <span className={Styles.text}>*150*71#</span>
+									</li>
+									<li>
+										select <span className={Styles.text}>4. Lipa Bill</span>
+									</li>
+									<li>
+										select <span className={Styles.text}>1. Lipa kwa SIMU</span>
+									</li>
+									<li>
+										select{' '}
+										<span className={Styles.text}>2. Lipa kwa Voda Lipa</span>
+									</li>
+									<li>
+										Ingiza Kiasi :{' '}
+										<span className={Styles.text}>{`${
+											price - selectOption.length * 150
+										}`}</span>
+									</li>
+									<li>
+										Ingiza lipa namba:{' '}
+										<span className={Styles.text}>5212520</span>
+									</li>
+									<li>
+										Ingiza namba ya siri:{' '}
+										<span className={Styles.text}>XXXX</span>
+									</li>
+								</ol>
+							</div>
+						</div>
+					</div>
+				)}
+				{paymentOption === 'zantel' && (
+					<div className={Styles.planCntainer}>
+						<p>
+							You have selected ESYPESA from Zantel as your payment option, our
+							payment number is{' '}
+							<span className={Styles.text}>5212520 - DATASOFT</span>, please
+							follow below instruction to complete payment.
+						</p>
+						<div className='ckContent'>
+							<div className={`toc ${Styles.planCntainerToc}`}>
+								<ol>
+									<li>
+										dial <span className={Styles.text}>*150*02#</span>
+									</li>
+									<li>
+										select <span className={Styles.text}>4. Lipa Bill</span>
+									</li>
+									<li>
+										select <span className={Styles.text}>1. Lipa kwa SIMU</span>
+									</li>
+									<li>
+										select{' '}
+										<span className={Styles.text}>2. Lipa kwa Voda Lipa</span>
+									</li>
+									<li>
+										Ingiza Kiasi :{' '}
+										<span className={Styles.text}>{`${
+											price - selectOption.length * 150
+										}`}</span>
+									</li>
+									<li>
+										Ingiza lipa namba:{' '}
+										<span className={Styles.text}>5212520</span>
+									</li>
+									<li>
+										Ingiza namba ya siri:{' '}
+										<span className={Styles.text}>XXXX</span>
+									</li>
+								</ol>
+							</div>
+						</div>
+					</div>
+				)}
+				<div className={Styles.step}>STEP 4.</div>
+				<div className={Styles.plan}>Account Activation</div>
 			</div>
 		</div>
 	);

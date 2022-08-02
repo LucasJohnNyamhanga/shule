@@ -95,8 +95,18 @@
 			font-family: $fontHeader;
 			font-size: 30px;
 			font-weight: 700;
-			margin: 20px 0px;
+			margin: 0px 0px;
 			padding-top: 20px;
+		}
+
+		.step {
+			font-family: $fontHeader;
+			font-size: 20px;
+			font-weight: 600;
+			margin: 10px 0px;
+			margin-top: 20px;
+			color: $ugoro;
+			padding-top: 10px;
 		}
 
 		.plan {
@@ -106,9 +116,45 @@
 			margin: 10px 0px;
 		}
 
+		.planCntainerToc {
+			font-weight: 500;
+			font-size: 18px;
+			font-family: $fontBody;
+
+			.text {
+				color: $ugoro;
+				font-weight: 600;
+			}
+		}
+
+		.planCntainer {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			padding: 5px 0px;
+			align-items: flex-start;
+			font-weight: 400;
+			font-size: 18px;
+
+			p {
+				font-size: 18px;
+				font-weight: 400;
+				margin: 10px 0px;
+				.text {
+					color: $ugoro;
+					font-weight: 600;
+				}
+			}
+
+			.details {
+				margin-left: 10px;
+				font-weight: 600;
+			}
+		}
+
 		.plan1 {
 			padding-left: 20px;
-			margin-bottom: 20px;
+			margin-bottom: 0px;
 
 			.planCntainer {
 				display: flex;
@@ -118,6 +164,14 @@
 				align-items: center;
 				font-weight: 400;
 				font-size: 18px;
+
+				p {
+					font-size: 18px;
+					fo .text {
+						color: $ugoro;
+						font-weight: 600;
+					}
+				}
 
 				.details {
 					margin-left: 10px;
@@ -332,6 +386,10 @@
 					padding: 0px 0px;
 				}
 			}
+		}
+
+		.planCntainer {
+			color: red;
 		}
 	}
 
