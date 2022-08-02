@@ -108,6 +108,7 @@
 
 		.plan1 {
 			padding-left: 20px;
+			margin-bottom: 20px;
 
 			.planCntainer {
 				display: flex;
@@ -212,21 +213,73 @@
 				}
 			}
 
+			.additionalPackage {
+				display: flex;
+				flex-direction: column;
+				padding-top: 20px;
+				font-weight: 500;
+				font-size: 18px;
+
+				.mainLeft {
+					width: 100%;
+					display: flex;
+					flex-direction: column;
+					max-width: 500px;
+
+					.chipDisplay {
+						width: 100%;
+						display: flex;
+						flex-direction: row;
+						flex-wrap: wrap;
+						justify-content: flex-start;
+						margin-top: 5px;
+						margin-bottom: 10px;
+					}
+				}
+
+				.details {
+					margin-left: 10px;
+					font-weight: 600;
+				}
+			}
+
 			.planCntainerPrice {
 				display: flex;
 				flex-direction: row;
 				justify-content: flex-start;
-				padding: 15px 0px;
 				align-items: center;
 				font-weight: 400;
 				font-size: 18px;
+				max-width: 300px;
 
 				.details {
 					margin-left: 10px;
 					font-weight: 700;
 					font-size: 20px;
-					margin-top: 10px;
-					margin-bottom: 20px;
+					margin-top: 5px;
+					margin-bottom: 0px;
+					color: $ugoro;
+				}
+			}
+
+			.planPay {
+				display: flex;
+				flex-direction: row;
+				justify-content: flex-start;
+				align-items: center;
+				font-weight: 400;
+				font-size: 18px;
+				border-top: 2px solid $ugoro;
+				max-width: 300px;
+				margin-top: 10px;
+				padding-bottom: 10px;
+
+				.details {
+					margin-left: 10px;
+					font-weight: 700;
+					font-size: 20px;
+					margin-top: 5px;
+					margin-bottom: 0px;
 					color: $ugoro;
 				}
 			}
@@ -246,6 +299,11 @@
 						margin-left: 0px;
 						padding: 5px 0px;
 					}
+				}
+
+				.planPay {
+					justify-content: center;
+					align-items: center;
 				}
 			}
 		}

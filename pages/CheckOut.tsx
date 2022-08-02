@@ -11,7 +11,8 @@ import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { TiMinus, TiPlus } from 'react-icons/ti';
-
+import DisplayChip from '../components/tools/displayChip';
+import SelectMiu from '../components/tools/SelectMui';
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const packageId = context.query.id!.toString();
@@ -64,30 +65,246 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	});
 	const packageDetails = await JSON.parse(JSON.stringify(packageFromServer));
 
+	const vifurushiFromServer = await prisma.vifurushiPackage.findMany({
+		select: {
+			id: true,
+			name: true,
+			description: true,
+			price: true,
+			booksDownload: true,
+			examAccess: true,
+			examsSolvedDownload: true,
+			examsUnsolvedDownload: true,
+			notesDownload: true,
+			quizExcercises: true,
+		},
+	});
+	const vifurushi = await JSON.parse(JSON.stringify(vifurushiFromServer));
+
 	await prisma.$disconnect();
 	return {
-		props: { userfound, packageDetails },
+		props: { userfound, packageDetails, vifurushi },
 	};
 };
 
 const Notes = ({
 	userfound,
 	packageDetails,
+	vifurushi,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-	console.log(packageDetails);
 	const { query, push } = useRouter();
 	let callback = query.callbackUrl;
-	const [planQuantity, setPlanQuantity] = useState({
-		value: 1,
-	});
+	const [planQuantity, setPlanQuantity] = useState(1);
+	const [notesDownload, setNotesDownload] = useState(0);
+	const [quizExcercises, setQuizExcercises] = useState(0);
+	const [examsUnsolvedDownload, setExamsUnsolvedDownload] = useState(0);
+	const [examsSolvedDownload, setExamsSolvedDownload] = useState(0);
+	const [examAccess, setExamAccess] = useState(0);
+	const [booksDownload, setBooksDownload] = useState(0);
+	const [price, setPrice] = useState(0);
+	const [runOnce, setRunOnce] = useState(true);
 
 	const randomPin = () => {
 		let val = Math.floor(1000 + Math.random() * 9000);
 		console.log(val);
 	};
 
+	const increase = () => {
+		setPlanQuantity(planQuantity + 1);
+		packageDetails.price * planQuantity;
+		addPrice(packageDetails.price);
+		AddTableQuantity();
+	};
+
+	const decrease = () => {
+		if (planQuantity > 1) {
+			setPlanQuantity(planQuantity - 1);
+			subPrice(packageDetails.price);
+			SubTableQuantity();
+		}
+	};
+
+	const addPrice = (priceTag: number) => {
+		setPrice(price + priceTag);
+	};
+
+	const subPrice = (priceTag: number) => {
+		setPrice(price - priceTag);
+	};
+
+	const AddTableQuantity = () => {
+		{
+			notesDownload != 0
+				? setNotesDownload(notesDownload + packageDetails.notesDownload)
+				: '';
+		}
+		{
+			quizExcercises != 0
+				? setQuizExcercises(quizExcercises + packageDetails.quizExcercises)
+				: '';
+		}
+		{
+			examsUnsolvedDownload != 0
+				? setExamsUnsolvedDownload(
+						examsUnsolvedDownload + packageDetails.examsUnsolvedDownload
+				  )
+				: '';
+		}
+		{
+			examsSolvedDownload != 0
+				? setExamsSolvedDownload(
+						examsSolvedDownload + packageDetails.examsSolvedDownload
+				  )
+				: '';
+		}
+		{
+			examAccess != 0
+				? setExamAccess(examAccess + packageDetails.examAccess)
+				: '';
+		}
+		{
+			booksDownload != 0
+				? setBooksDownload(booksDownload + packageDetails.booksDownload)
+				: '';
+		}
+	};
+
+	const SubTableQuantity = () => {
+		{
+			notesDownload != 0
+				? setNotesDownload(notesDownload - packageDetails.notesDownload)
+				: '';
+		}
+		{
+			quizExcercises != 0
+				? setQuizExcercises(quizExcercises - packageDetails.quizExcercises)
+				: '';
+		}
+		{
+			examsUnsolvedDownload != 0
+				? setExamsUnsolvedDownload(
+						examsUnsolvedDownload - packageDetails.examsUnsolvedDownload
+				  )
+				: '';
+		}
+		{
+			examsSolvedDownload != 0
+				? setExamsSolvedDownload(
+						examsSolvedDownload - packageDetails.examsSolvedDownload
+				  )
+				: '';
+		}
+		{
+			examAccess != 0
+				? setExamAccess(examAccess - packageDetails.examAccess)
+				: '';
+		}
+		{
+			booksDownload != 0
+				? setBooksDownload(booksDownload - packageDetails.booksDownload)
+				: '';
+		}
+	};
+	type dataTypeSelect = {
+		id: string;
+		label: string;
+	}[];
+
+	const [selectOption, setSelectOption] = useState<dataTypeSelect>([]);
+
+	type templateType = {
+		id: string;
+		label: string;
+	};
+
+	let options: { label: string; value: string }[] = [];
+
+	for (const kifurushi of vifurushi) {
+		if (kifurushi.id !== packageDetails.id)
+			options.push({
+				label: `${kifurushi.name} ${kifurushi.description}`,
+				value: kifurushi.id,
+			});
+	}
+
+	let handleSelect = (value: string) => {
+		let template: templateType = {
+			id: '',
+			label: '',
+		};
+		for (const form of options) {
+			if (form.value == value) {
+				template = {
+					id: value,
+					label: form.label,
+				};
+			}
+		}
+		add(selectOption, template);
+	};
+
+	function add(arrName: dataTypeSelect, tamplate: templateType) {
+		const found = arrName.some((item) => item.id === tamplate.id);
+		if (!found) {
+			setSelectOption([...selectOption, tamplate]);
+
+			vifurushi.find((kifurushi) => {
+				if (kifurushi.id == tamplate.id) {
+					addPrice(kifurushi.price);
+
+					setNotesDownload(kifurushi.notesDownload + notesDownload);
+					setQuizExcercises(kifurushi.quizExcercises + quizExcercises);
+					setExamsUnsolvedDownload(
+						kifurushi.examsUnsolvedDownload + examsUnsolvedDownload
+					);
+					setExamsSolvedDownload(
+						kifurushi.examsSolvedDownload + examsSolvedDownload
+					);
+					setExamAccess(kifurushi.examAccess + examAccess);
+					setBooksDownload(kifurushi.booksDownload + booksDownload);
+				}
+			});
+		}
+	}
+
+	let handleDeleteFormDisplay = (label: string) => {
+		let filtered = selectOption.filter((data) => {
+			if (data.label == label) {
+				vifurushi.find((kifurushi) => {
+					if (kifurushi.id == data.id) {
+						subPrice(kifurushi.price);
+
+						setNotesDownload(notesDownload - kifurushi.notesDownload);
+						setQuizExcercises(quizExcercises - kifurushi.quizExcercises);
+						setExamsUnsolvedDownload(
+							examsUnsolvedDownload - kifurushi.examsUnsolvedDownload
+						);
+						setExamsSolvedDownload(
+							examsSolvedDownload - kifurushi.examsSolvedDownload
+						);
+						setExamAccess(examAccess - kifurushi.examAccess);
+						setBooksDownload(booksDownload - kifurushi.booksDownload);
+					}
+				});
+			}
+			return data.label != label;
+		});
+
+		setSelectOption(filtered);
+	};
+
 	useEffect(() => {
-		randomPin();
+		if (runOnce) {
+			randomPin();
+			setNotesDownload(packageDetails.notesDownload);
+			setQuizExcercises(packageDetails.quizExcercises);
+			setExamsUnsolvedDownload(packageDetails.examsUnsolvedDownload);
+			setExamsSolvedDownload(packageDetails.examsSolvedDownload);
+			setExamAccess(packageDetails.examAccess);
+			setBooksDownload(packageDetails.booksDownload);
+			setPrice(packageDetails.price);
+			setRunOnce(false);
+		}
 	}, []);
 
 	return (
@@ -113,6 +330,7 @@ const Notes = ({
 							<div>Package Quantity</div>
 							<div className={`${Styles.form} ${Styles.details}`}>
 								<div
+									onClick={decrease}
 									className={`${Styles.valuebutton} ${Styles.decrease} ${Styles.details}`}>
 									<TiMinus />
 								</div>
@@ -120,15 +338,22 @@ const Notes = ({
 									className={Styles.inputwrap}
 									type='number'
 									id='number'
-									value={planQuantity.value}
+									value={planQuantity}
+									onChange={() => {}}
 								/>
-								<div className={`${Styles.valuebutton} ${Styles.increase}`}>
+								<div
+									onClick={increase}
+									className={`${Styles.valuebutton} ${Styles.increase}`}>
 									<TiPlus />
 								</div>
 							</div>
 						</div>
 						<table>
-							<caption>{`${packageDetails.name} Package Details`}</caption>
+							<caption>{`${
+								selectOption.length > 0
+									? `All Packages`
+									: packageDetails.name + ` Package`
+							}  Content`}</caption>
 							<thead>
 								<tr>
 									<th scope='col'>Package Content</th>
@@ -136,50 +361,89 @@ const Notes = ({
 								</tr>
 							</thead>
 							<tbody>
-								{packageDetails.notesDownload != 0 && (
+								{notesDownload != 0 && (
 									<tr>
 										<td>{`Notes Download`}</td>
-										<td>{`${packageDetails.notesDownload} `}</td>
+										<td>{`${notesDownload} `}</td>
 									</tr>
 								)}
-								{packageDetails.quizExcercises != 0 && (
+								{quizExcercises != 0 && (
 									<tr>
 										<td>{`Quiz Excercises`}</td>
-										<td>{`${packageDetails.quizExcercises} `}</td>
+										<td>{`${quizExcercises} `}</td>
 									</tr>
 								)}
-								{packageDetails.examsUnsolvedDownload != 0 && (
+								{examsUnsolvedDownload != 0 && (
 									<tr>
 										<td>{`Unsolved Exam Download`}</td>
-										<td>{`${packageDetails.examsUnsolvedDownload} `}</td>
+										<td>{`${examsUnsolvedDownload} `}</td>
 									</tr>
 								)}
-								{packageDetails.examsSolvedDownload != 0 && (
+								{examsSolvedDownload != 0 && (
 									<tr>
 										<td>{`Solved Exam Download`}</td>
-										<td>{`${packageDetails.examsSolvedDownload} `}</td>
+										<td>{`${examsSolvedDownload} `}</td>
 									</tr>
 								)}
-								{packageDetails.examAccess != 0 && (
+								{examAccess != 0 && (
 									<tr>
 										<td>{`Solved Exam Access`}</td>
-										<td>{`${packageDetails.examAccess} `}</td>
+										<td>{`${examAccess} `}</td>
 									</tr>
 								)}
-								{packageDetails.booksDownload != 0 && (
+								{booksDownload != 0 && (
 									<tr>
 										<td>{`Books Download`}</td>
-										<td>{`${packageDetails.booksDownload} `}</td>
+										<td>{`${booksDownload} `}</td>
 									</tr>
 								)}
 							</tbody>
 						</table>
 
-						<div className={Styles.planCntainerPrice}>
-							<div className={Styles.details}>Package Price: </div>
-							<div
-								className={Styles.details}>{`${packageDetails.price} Tsh`}</div>
+						<div className={Styles.additionalPackage}>
+							<div>Add Additional Package And Get Discount: </div>
+							<div className={Styles.mainLeft}>
+								<SelectMiu
+									displayLabel='Select Additional Package'
+									forms={options}
+									handlechange={handleSelect}
+									value={''}
+								/>
+								<div className={Styles.chipDisplay}>
+									{selectOption.map((option, index) => (
+										<DisplayChip
+											handleDelete={handleDeleteFormDisplay}
+											label={option.label}
+											key={index}
+										/>
+									))}
+								</div>
+							</div>
 						</div>
+
+						<div className={Styles.planCntainerPrice}>
+							<div className={Styles.details}>
+								{selectOption.length > 0 ? `Total Price: ` : `Pay :`}
+							</div>
+							<div className={Styles.details}>{`${price} Tsh`}</div>
+						</div>
+						{selectOption.length > 0 && (
+							<>
+								<div className={Styles.planCntainerPrice}>
+									<div className={Styles.details}>Discount: </div>
+									<div className={Styles.details}>{`${
+										selectOption.length * 150
+									} Tsh`}</div>
+								</div>
+
+								<div className={Styles.planPay}>
+									<div className={Styles.details}>Pay: </div>
+									<div className={Styles.details}>{`${
+										price - selectOption.length * 150
+									} Tsh`}</div>
+								</div>
+							</>
+						)}
 					</div>
 				</div>
 				<div className={Styles.plan}>2. Choose Payment option</div>
