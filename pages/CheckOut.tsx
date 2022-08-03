@@ -107,6 +107,8 @@ const Notes = ({
 	const [PIN, setPIN] = useState(1987);
 
 	const [accountActivation, setAccountActivation] = useState(false);
+	const [pay, setPay] = useState(0);
+	const [discount, setDiscount] = useState(0);
 
 	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
@@ -231,7 +233,7 @@ const Notes = ({
 	for (const kifurushi of vifurushi) {
 		if (kifurushi.id !== packageDetails.id)
 			options.push({
-				label: `${kifurushi.name} ${kifurushi.description}`,
+				label: `${kifurushi.name} ${kifurushi.description} - ${kifurushi.price}Tsh`,
 				value: kifurushi.id,
 			});
 	}
@@ -389,6 +391,11 @@ const Notes = ({
 								className={
 									Styles.details
 								}>{`${packageDetails.name} ${packageDetails.description} Package`}</div>
+						</div>
+						<div className={Styles.planCntainer}>
+							<div>Package Price: </div>
+							<div
+								className={Styles.details}>{`${packageDetails.price}Tsh`}</div>
 						</div>
 						<div className={Styles.planCntainer}>
 							<div>Package Quantity</div>
@@ -563,7 +570,16 @@ const Notes = ({
 									<li>
 										Ingiza Kiasi :{' '}
 										<span className={Styles.text}>{`${
-											price - selectOption.length * 150
+											price -
+											(selectOption.length > 0
+												? selectOption.length * 100 +
+												  (planQuantity > 1
+														? planQuantity * (packageDetails.price * 0.1)
+														: 0)
+												: 0 +
+												  (planQuantity > 1
+														? planQuantity * (packageDetails.price * 0.1)
+														: 0))
 										}`}</span>
 									</li>
 									<li>
@@ -607,7 +623,16 @@ const Notes = ({
 									<li>
 										Ingiza Kiasi :{' '}
 										<span className={Styles.text}>{`${
-											price - selectOption.length * 150
+											price -
+											(selectOption.length > 0
+												? selectOption.length * 100 +
+												  (planQuantity > 1
+														? planQuantity * (packageDetails.price * 0.1)
+														: 0)
+												: 0 +
+												  (planQuantity > 1
+														? planQuantity * (packageDetails.price * 0.1)
+														: 0))
 										}`}</span>
 									</li>
 									<li>
@@ -658,7 +683,16 @@ const Notes = ({
 									<li>
 										Ingiza Kiasi :{' '}
 										<span className={Styles.text}>{`${
-											price - selectOption.length * 150
+											price -
+											(selectOption.length > 0
+												? selectOption.length * 100 +
+												  (planQuantity > 1
+														? planQuantity * (packageDetails.price * 0.1)
+														: 0)
+												: 0 +
+												  (planQuantity > 1
+														? planQuantity * (packageDetails.price * 0.1)
+														: 0))
 										}`}</span>
 									</li>
 
@@ -703,7 +737,16 @@ const Notes = ({
 									<li>
 										Ingiza Kiasi :{' '}
 										<span className={Styles.text}>{`${
-											price - selectOption.length * 150
+											price -
+											(selectOption.length > 0
+												? selectOption.length * 100 +
+												  (planQuantity > 1
+														? planQuantity * (packageDetails.price * 0.1)
+														: 0)
+												: 0 +
+												  (planQuantity > 1
+														? planQuantity * (packageDetails.price * 0.1)
+														: 0))
 										}`}</span>
 									</li>
 									<li>
@@ -747,7 +790,16 @@ const Notes = ({
 									<li>
 										Ingiza Kiasi :{' '}
 										<span className={Styles.text}>{`${
-											price - selectOption.length * 150
+											price -
+											(selectOption.length > 0
+												? selectOption.length * 100 +
+												  (planQuantity > 1
+														? planQuantity * (packageDetails.price * 0.1)
+														: 0)
+												: 0 +
+												  (planQuantity > 1
+														? planQuantity * (packageDetails.price * 0.1)
+														: 0))
 										}`}</span>
 									</li>
 									<li>
@@ -791,7 +843,16 @@ const Notes = ({
 									<li>
 										Ingiza Kiasi :{' '}
 										<span className={Styles.text}>{`${
-											price - selectOption.length * 150
+											price -
+											(selectOption.length > 0
+												? selectOption.length * 100 +
+												  (planQuantity > 1
+														? planQuantity * (packageDetails.price * 0.1)
+														: 0)
+												: 0 +
+												  (planQuantity > 1
+														? planQuantity * (packageDetails.price * 0.1)
+														: 0))
 										}`}</span>
 									</li>
 									<li>
@@ -828,7 +889,7 @@ const Notes = ({
 							information.
 						</p>
 						<p>
-							<span className={Styles.text}>{`ORDER HELP LINE`}</span>
+							<span className={Styles.text}>{`HELP LINE`}</span>
 						</p>
 						<div className='ckContent'>
 							<div className={`toc ${Styles.planCntainerToc}`}>
