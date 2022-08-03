@@ -247,6 +247,7 @@ const Index = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const examDownloads = useRef<HTMLDivElement>(null!);
 	const user = useRef<HTMLDivElement>(null!);
 	const admin = useRef<HTMLDivElement>(null!);
+	const order = useRef<HTMLDivElement>(null!);
 
 	let handleNav = (value: string) => {
 		setNavValue(value);
@@ -356,6 +357,11 @@ const Index = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 				setActive('Admin');
 				handleAdmins();
 				break;
+			case 'Order':
+				order.current.classList.add(Styles.Active);
+				setActive('Order');
+				handleOrder();
+				break;
 			default:
 				break;
 		}
@@ -383,6 +389,7 @@ const Index = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 		examDownloads.current.classList.remove(Styles.Active);
 		user.current.classList.remove(Styles.Active);
 		admin.current.classList.remove(Styles.Active);
+		order.current.classList.remove(Styles.Active);
 	};
 
 	const retriaveSubjectsReview = async () => {
@@ -2124,6 +2131,30 @@ const Index = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 			});
 	};
 
+	const [orderList, setOrderList] = useState([]);
+
+	let handleOrder = () => {
+		setLoading(true);
+		axios
+			.post('http://localhost:3000/api/getOrder', {
+				user: userDetail.value,
+			})
+			.then(function (response) {
+				const userData = JSON.parse(JSON.stringify(response.data));
+				setOrderList(userData);
+				setLoading(false);
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+				notifyError('Error has occured, try later.');
+				setLoading(false);
+			})
+			.then(function () {
+				// always executed
+			});
+	};
+
 	return (
 		<div className={Styles.container}>
 			<div className={Styles.innerContainer}>
@@ -2312,6 +2343,14 @@ const Index = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 												className={Styles.topicTittle}>
 												<FaUserSecret size={23} />
 												<div className={Styles.text}>Admins</div>
+											</div>
+											<div
+												ref={order}
+												id={`Order`}
+												onClick={(e) => handleNav(`Order`)}
+												className={Styles.topicTittle}>
+												<NotesIcon />
+												<div className={Styles.text}>Orders</div>
 											</div>
 										</div>
 									</>
@@ -3316,6 +3355,44 @@ const Index = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 									</div>
 								)}
 								{/* //! END OF form reference DISPLAY ONLY */}
+								{navValue == `Order` && (
+									<div className={Styles.rightInnercontainerBody}>
+										<div className={Styles.subject}>
+											<div className={Styles.subjectHeader}>
+												<div className={Styles.subjectHeaderText}>
+													{orderList.length +
+														` ${
+															orderList.length > 1 ? 'Orders' : 'Order'
+														} List`}
+												</div>
+											</div>
+											<div className={Styles.subjectBody}>
+												{orderList.map(
+													(
+														user: {
+															id: number;
+															orderNumber: string;
+															description: string;
+														},
+														index: number
+													) => (
+														<CardBox
+															handleUpdate={handleUpdateSubjectExam}
+															link={'/Admin/User/' + user.id}
+															label={customTruncate(
+																`${index + 1}. Order ${user.orderNumber} `,
+																24
+															)}
+															id={user.id}
+															key={user.id}
+															published={''}
+														/>
+													)
+												)}
+											</div>
+										</div>
+									</div>
+								)}
 							</>
 						)}
 					</div>
