@@ -106,6 +106,10 @@
 			transition: border-color 0.2s ease-out;
 		}
 
+		.text {
+			margin-top: 10px;
+		}
+
 		.card:hover .plandetails {
 			border-color: var(--color-dark-gray);
 		}

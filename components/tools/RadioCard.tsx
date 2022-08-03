@@ -42,7 +42,7 @@ const RadioCard = ({ handleSelectValue }: dataType) => {
 								mo
 							</abbr>
 						</span> */}
-						<span>Use Vodacom MPESA</span>
+						<span className={Styles.text}>Use Vodacom MPESA</span>
 						{/* <span>100 GB/mo</span>
 						<span>1 concurrent build</span> */}
 					</span>
@@ -74,7 +74,7 @@ const RadioCard = ({ handleSelectValue }: dataType) => {
 								mo
 							</abbr>
 						</span> */}
-						<span>Use Airtel Money</span>
+						<span className={Styles.text}>Use Airtel Money</span>
 						{/* <span>100 GB/mo</span>
 						<span>1 concurrent build</span> */}
 					</span>
@@ -106,7 +106,7 @@ const RadioCard = ({ handleSelectValue }: dataType) => {
 								mo
 							</abbr>
 						</span> */}
-						<span>Use Tigo PESA</span>
+						<span className={Styles.text}>Use Tigo PESA</span>
 						{/* <span>100 GB/mo</span>
 						<span>1 concurrent build</span> */}
 					</span>
@@ -138,7 +138,7 @@ const RadioCard = ({ handleSelectValue }: dataType) => {
 								mo
 							</abbr>
 						</span> */}
-						<span>Use TTCL T-PESA</span>
+						<span className={Styles.text}>Use TTCL T-PESA</span>
 						{/* <span>100 GB/mo</span>
 						<span>1 concurrent build</span> */}
 					</span>
@@ -170,7 +170,7 @@ const RadioCard = ({ handleSelectValue }: dataType) => {
 								mo
 							</abbr>
 						</span> */}
-						<span>Use Halotel HaloPESA</span>
+						<span className={Styles.text}>Use Halotel HaloPESA</span>
 						{/* <span>100 GB/mo</span>
 						<span>1 concurrent build</span> */}
 					</span>
@@ -202,7 +202,7 @@ const RadioCard = ({ handleSelectValue }: dataType) => {
 								mo
 							</abbr>
 						</span> */}
-						<span>Use Zantel EZYPESA</span>
+						<span className={Styles.text}>Use Zantel EZYPESA</span>
 						{/* <span>100 GB/mo</span>
 						<span>1 concurrent build</span> */}
 					</span>

@@ -14,6 +14,7 @@ import { TiMinus, TiPlus } from 'react-icons/ti';
 import DisplayChip from '../components/tools/displayChip';
 import SelectMiu from '../components/tools/SelectMui';
 import { getSession } from 'next-auth/react';
+import Loader from '../components/tools/loader';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const packageId = context.query.id!.toString();
 
@@ -102,16 +103,18 @@ const Notes = ({
 	const [examAccess, setExamAccess] = useState(0);
 	const [booksDownload, setBooksDownload] = useState(0);
 	const [price, setPrice] = useState(0);
-	const [runOnce, setRunOnce] = useState(true);
 	const [paymentOption, setPaymentOption] = useState('default');
+	const [PIN, setPIN] = useState(1987);
+
+	const [accountActivation, setAccountActivation] = useState(false);
 
 	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
 
 	const randomPin = () => {
-		let val = Math.floor(1000 + Math.random() * 9000);
-		console.log(val);
+		let pin = Math.floor(1000 + Math.random() * 9000);
+		setPIN(pin);
 	};
 
 	const increase = () => {
@@ -216,6 +219,7 @@ const Notes = ({
 	}[];
 
 	const [selectOption, setSelectOption] = useState<dataTypeSelect>([]);
+	const [loadingDisplay, setLoadingDisplay] = useState(false);
 
 	type templateType = {
 		id: string;
@@ -302,18 +306,68 @@ const Notes = ({
 		setPaymentOption(value);
 	};
 
-	useEffect(() => {
-		if (runOnce) {
-			randomPin();
-			setNotesDownload(packageDetails.notesDownload);
-			setQuizExcercises(packageDetails.quizExcercises);
-			setExamsUnsolvedDownload(packageDetails.examsUnsolvedDownload);
-			setExamsSolvedDownload(packageDetails.examsSolvedDownload);
-			setExamAccess(packageDetails.examAccess);
-			setBooksDownload(packageDetails.booksDownload);
-			setPrice(packageDetails.price);
-			setRunOnce(false);
+	const activatePackage = () => {
+		let amountPay =
+			price -
+			(selectOption.length > 0
+				? selectOption.length * 100 +
+				  (planQuantity > 1 ? planQuantity * (packageDetails.price * 0.1) : 0)
+				: 0 +
+				  (planQuantity > 1 ? planQuantity * (packageDetails.price * 0.1) : 0));
+		if (paymentOption == 'default') {
+			notifyError('Select Payment Option And Make Payment To Proceed.');
+		} else {
+			let data = {
+				orderNumber: `${PIN}`,
+				description: `${userfound.name} as ${userfound.username} paid ${amountPay} through ${paymentOption}`,
+				amountPaid: amountPay,
+				booksDownload,
+				examAccess,
+				examsSolvedDownload,
+				examsUnsolvedDownload,
+				notesDownload,
+				quizExcercises,
+				userId: userfound.id,
+			};
+			sendToDatabase(data);
 		}
+	};
+
+	let sendToDatabase = (databaseData: {}) => {
+		setLoadingDisplay(true);
+		axios({
+			method: 'post',
+			url: 'http://localhost:3000/api/createOrder',
+			data: databaseData,
+		})
+			.then(function (response) {
+				// handle success
+				if (response.data.type == 'success') {
+					notifySuccess(response.data.message);
+					setAccountActivation(true);
+					setLoadingDisplay(false);
+				} else {
+					notifyError(response.data.message);
+				}
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+			})
+			.then(function () {
+				// always executed
+			});
+	};
+
+	useEffect(() => {
+		randomPin();
+		setNotesDownload(packageDetails.notesDownload);
+		setQuizExcercises(packageDetails.quizExcercises);
+		setExamsUnsolvedDownload(packageDetails.examsUnsolvedDownload);
+		setExamsSolvedDownload(packageDetails.examsSolvedDownload);
+		setExamAccess(packageDetails.examAccess);
+		setBooksDownload(packageDetails.booksDownload);
+		setPrice(packageDetails.price);
 	}, []);
 
 	return (
@@ -438,14 +492,31 @@ const Notes = ({
 						<div className={Styles.planCntainerPrice}>
 							<div className={Styles.details}>Discount: </div>
 							<div className={Styles.details}>{`${
-								selectOption.length * 150
+								selectOption.length > 0
+									? selectOption.length * 100 +
+									  (planQuantity > 1
+											? planQuantity * (packageDetails.price * 0.1)
+											: 0)
+									: 0 +
+									  (planQuantity > 1
+											? planQuantity * (packageDetails.price * 0.1)
+											: 0)
 							} Tsh`}</div>
 						</div>
 
 						<div className={Styles.planPay}>
 							<div className={Styles.details}>Pay: </div>
 							<div className={Styles.details}>{`${
-								price - selectOption.length * 150
+								price -
+								(selectOption.length > 0
+									? selectOption.length * 100 +
+									  (planQuantity > 1
+											? planQuantity * (packageDetails.price * 0.1)
+											: 0)
+									: 0 +
+									  (planQuantity > 1
+											? planQuantity * (packageDetails.price * 0.1)
+											: 0))
 							} Tsh`}</div>
 						</div>
 					</div>
@@ -457,14 +528,19 @@ const Notes = ({
 				<div className={Styles.plan}>Payment Procedures</div>
 				{paymentOption === 'default' && (
 					<div className={Styles.planCntainer}>
-						<p>{`You have not selected a payment option`}</p>
+						<p>
+							You have not selected a payment option, we have variety of mobile
+							payment options to easy the payment process. Please select payment
+							option to fit your need to proceed to step 3.
+						</p>
 					</div>
 				)}
 				{paymentOption === 'vodacom' && (
 					<div className={Styles.planCntainer}>
 						<p>
-							You have selected VODACOM MPESA from Vodacom as your payment
-							option, our payment number is{' '}
+							You have selected{' '}
+							<span className={Styles.text}>VODACOM MPESA from Vodacom</span> as
+							your payment option, our payment number is{' '}
 							<span className={Styles.text}>5212520 - DATASOFT</span>, please
 							follow below instruction to complete payment.
 						</p>
@@ -506,8 +582,9 @@ const Notes = ({
 				{paymentOption === 'airtel' && (
 					<div className={Styles.planCntainer}>
 						<p>
-							You have selected AIRTEL MONEY from Airtel as your payment option,
-							our payment number is{' '}
+							You have selected{' '}
+							<span className={Styles.text}>AIRTEL MONEY from Airtel</span> as
+							your payment option, our payment number is{' '}
 							<span className={Styles.text}>5212520 - DATASOFT</span>, please
 							follow below instruction to complete payment.
 						</p>
@@ -549,8 +626,9 @@ const Notes = ({
 				{paymentOption === 'tigo' && (
 					<div className={Styles.planCntainer}>
 						<p>
-							You have selected TIGO PESA from Tigo as your payment option, our
-							payment number is{' '}
+							You have selected{' '}
+							<span className={Styles.text}>TIGO PESA from Tigo</span> as your
+							payment option, our payment number is{' '}
 							<span className={Styles.text}>5212520 - DATASOFT</span>, please
 							follow below instruction to complete payment.
 						</p>
@@ -600,8 +678,9 @@ const Notes = ({
 				{paymentOption === 'halotel' && (
 					<div className={Styles.planCntainer}>
 						<p>
-							You have selected HALOPESA from Halotel as your payment option,
-							our payment number is{' '}
+							You have selected{' '}
+							<span className={Styles.text}>HALOPESA from Halotel</span> as your
+							payment option, our payment number is{' '}
 							<span className={Styles.text}>5212520 - DATASOFT</span>, please
 							follow below instruction to complete payment.
 						</p>
@@ -643,8 +722,9 @@ const Notes = ({
 				{paymentOption === 'ttcl' && (
 					<div className={Styles.planCntainer}>
 						<p>
-							You have selected T-PESA from TTCL as your payment option, our
-							payment number is{' '}
+							You have selected{' '}
+							<span className={Styles.text}>T-PESA from TTCL</span> as your
+							payment option, our payment number is{' '}
 							<span className={Styles.text}>5212520 - DATASOFT</span>, please
 							follow below instruction to complete payment.
 						</p>
@@ -686,8 +766,9 @@ const Notes = ({
 				{paymentOption === 'zantel' && (
 					<div className={Styles.planCntainer}>
 						<p>
-							You have selected ESYPESA from Zantel as your payment option, our
-							payment number is{' '}
+							You have selected{' '}
+							<span className={Styles.text}>ESYPESA from Zantel</span> as your
+							payment option, our payment number is{' '}
 							<span className={Styles.text}>5212520 - DATASOFT</span>, please
 							follow below instruction to complete payment.
 						</p>
@@ -728,6 +809,42 @@ const Notes = ({
 				)}
 				<div className={Styles.step}>STEP 4.</div>
 				<div className={Styles.plan}>Account Activation</div>
+				{!accountActivation && !loadingDisplay && (
+					<div className={Styles.Button} onClick={activatePackage}>
+						Activate Package
+					</div>
+				)}
+				{accountActivation && (
+					<div className={Styles.planCntainer}>
+						<h2 className={Styles.activation}>Activation Pending</h2>
+						<p>
+							{`Make sure you have completed payment process and received confirmation
+						sms from ${paymentOption.toUpperCase()}`}
+							, <span className={Styles.text}>Send sms to 0784 477 999</span>{' '}
+							with words <span className={Styles.text}>{`ORDER ${PIN}`}</span>{' '}
+							to immediately activate your account, time for activation will
+							depend on payment complition process from{' '}
+							{`${paymentOption.toUpperCase()}`}. Check your account for updated
+							information.
+						</p>
+						<p>
+							<span className={Styles.text}>{`ORDER HELP LINE`}</span>
+						</p>
+						<div className='ckContent'>
+							<div className={`toc ${Styles.planCntainerToc}`}>
+								<ol>
+									<li>
+										<span className={Styles.text}>0784 477 999</span>
+									</li>
+									<li>
+										<span className={Styles.text}>0743 713 597</span>
+									</li>
+								</ol>
+							</div>
+						</div>
+					</div>
+				)}
+				<div className={Styles.loader}>{loadingDisplay && <Loader />}</div>
 			</div>
 		</div>
 	);
