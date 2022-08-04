@@ -130,6 +130,105 @@
 			}
 		}
 
+		.headerOrder {
+			font-size: 25px;
+			font-family: $fontHeader;
+			font-weight: 500;
+			margin-top: 20px;
+			margin-bottom: 10px;
+			padding-left: 20px;
+		}
+
+		.order {
+			table {
+				border: 1px solid #ccc;
+				border-collapse: collapse;
+				margin: 0;
+				padding: 0;
+				table-layout: fixed;
+				width: 100%;
+				max-width: 800px;
+			}
+
+			table caption {
+				font-size: 1.5em;
+				margin: 0.5em 0 0.75em;
+				text-align: left;
+
+				font-weight: 500;
+			}
+
+			table tr {
+				background-color: #f8f8f8;
+				border: 1px solid #ddd;
+				padding: 0.35em;
+			}
+
+			table th,
+			table td {
+				padding: 0.625em;
+				font-family: $fontBody;
+				text-align: left;
+			}
+
+			table th {
+				font-size: 0.85em;
+				letter-spacing: 0.1em;
+				text-transform: uppercase;
+				font-family: $fontHeader;
+			}
+
+			@media screen and (max-width: 490px) {
+				table {
+					border: 0;
+					width: 100%;
+				}
+
+				table caption {
+					font-size: 1.3em;
+				}
+
+				table thead {
+					border: none;
+					clip: rect(0 0 0 0);
+					height: 1px;
+					margin: -1px;
+					overflow: hidden;
+					padding: 0;
+					position: absolute;
+					width: 1px;
+				}
+
+				table tr {
+					border-bottom: 3px solid #ddd;
+					display: block;
+					margin-bottom: 0.625em;
+				}
+
+				table td {
+					border-bottom: 1px solid #ddd;
+					display: block;
+					font-size: 1em;
+					text-align: center;
+				}
+
+				table td::before {
+					/*
+    * aria-label has no advantage, it won't be read inside a table
+    content: attr(aria-label);
+    */
+					content: attr(data-label);
+					float: left;
+					font-weight: bold;
+					text-transform: uppercase;
+				}
+
+				table td:last-child {
+					border-bottom: 0;
+				}
+			}
+		}
+
 		.resetPassword {
 			display: flex;
 			flex-direction: column;
@@ -279,14 +378,6 @@
 				}
 			}
 		}
-		.loader {
-			width: 100%;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			height: 80px;
-			margin-top: 15px;
-		}
 	}
 
 	@media only screen and (max-width: 668px) {
@@ -393,6 +484,15 @@
 
 	@media only screen and (max-width: 378px) {
 		.innerContainer {
+			.headerOrder {
+				width: 100%;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				margin: 0px;
+				padding: 10px;
+			}
 			.header {
 				width: 100%;
 				display: flex;

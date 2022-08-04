@@ -19,10 +19,15 @@ export default async function handler(
 			where: {
 				status: true,
 			},
+			orderBy: {
+				createdAt: 'desc',
+			},
 			select: {
 				id: true,
 				orderNumber: true,
 				description: true,
+				createdAt: true,
+				status: true,
 			},
 		});
 		let searchResults = JSON.parse(JSON.stringify(result));
