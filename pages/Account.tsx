@@ -64,8 +64,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const Notes = ({
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	userfound,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const password = useRef<HTMLInputElement>(null!);
 	const password1 = useRef<HTMLInputElement>(null!);
 	const password2 = useRef<HTMLInputElement>(null!);
@@ -293,7 +293,7 @@ const Notes = ({
 								<div className={Styles.order}>
 									{userfound.order.map(
 										(
-											user: {
+											order: {
 												id: number;
 												orderNumber: string;
 												description: string;
@@ -303,15 +303,15 @@ const Notes = ({
 											index: number
 										) => (
 											<CardBox
-												link={'/Admin/User/' + user.id}
+												link={`/Order?id=${order.id}`}
 												label={customTruncate(
-													`${index + 1}. Order ${user.orderNumber}`,
+													`${index + 1}. Order ${order.orderNumber}`,
 													24
 												)}
-												id={user.id}
-												key={user.id}
-												published={user.status}
-												time={timeAgo(user.createdAt)}
+												id={order.id}
+												key={order.id}
+												published={order.status}
+												time={timeAgo(order.createdAt)}
 											/>
 										)
 									)}

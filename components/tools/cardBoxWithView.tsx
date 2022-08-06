@@ -36,7 +36,7 @@ const CardBoxStyle = ({ label, id, published, link, time }: dataType) => {
 											{published ? (
 												<div className={Styles.publisedPublised}>Pending</div>
 											) : (
-												<div className={Styles.publisedUnPublised}>Active</div>
+												<div className={Styles.publisedUnPublised}>Done</div>
 											)}
 										</div>
 									</IconButton>

@@ -107,6 +107,7 @@ const Notes = ({
 	const [PIN, setPIN] = useState(1987);
 
 	const [accountActivation, setAccountActivation] = useState(false);
+	const [once, setOnce] = useState(true);
 	const [pay, setPay] = useState(0);
 	const [discount, setDiscount] = useState(0);
 
@@ -116,7 +117,30 @@ const Notes = ({
 
 	const randomPin = () => {
 		let pin = Math.floor(1000 + Math.random() * 9000);
-		setPIN(pin);
+		checkPin(`${pin}`);
+	};
+
+	const checkPin = (number: string) => {
+		axios({
+			method: 'post',
+			url: 'http://localhost:3000/api/getOrderByNumber',
+			data: { number },
+		})
+			.then(function (response) {
+				const pinFromServer = JSON.parse(JSON.stringify(response.data));
+				if (pinFromServer.length > 0) {
+					randomPin();
+				} else {
+					setPIN(parseInt(number));
+				}
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+			})
+			.then(function () {
+				// always executed
+			});
 	};
 
 	const increase = () => {
@@ -345,7 +369,7 @@ const Notes = ({
 			.then(function (response) {
 				// handle success
 				if (response.data.type == 'success') {
-					notifySuccess(response.data.message);
+					notifySuccess('Activation process has started.');
 					setAccountActivation(true);
 					setLoadingDisplay(false);
 				} else {
@@ -362,14 +386,17 @@ const Notes = ({
 	};
 
 	useEffect(() => {
-		randomPin();
-		setNotesDownload(packageDetails.notesDownload);
-		setQuizExcercises(packageDetails.quizExcercises);
-		setExamsUnsolvedDownload(packageDetails.examsUnsolvedDownload);
-		setExamsSolvedDownload(packageDetails.examsSolvedDownload);
-		setExamAccess(packageDetails.examAccess);
-		setBooksDownload(packageDetails.booksDownload);
-		setPrice(packageDetails.price);
+		if (once) {
+			randomPin();
+			setNotesDownload(packageDetails.notesDownload);
+			setQuizExcercises(packageDetails.quizExcercises);
+			setExamsUnsolvedDownload(packageDetails.examsUnsolvedDownload);
+			setExamsSolvedDownload(packageDetails.examsSolvedDownload);
+			setExamAccess(packageDetails.examAccess);
+			setBooksDownload(packageDetails.booksDownload);
+			setPrice(packageDetails.price);
+			setOnce(false);
+		}
 	}, []);
 
 	return (

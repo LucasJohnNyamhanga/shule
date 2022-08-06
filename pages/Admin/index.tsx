@@ -3424,7 +3424,7 @@ const Index = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 											<div className={Styles.subjectBody}>
 												{orderList.map(
 													(
-														user: {
+														order: {
 															id: number;
 															orderNumber: string;
 															description: string;
@@ -3434,15 +3434,15 @@ const Index = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 														index: number
 													) => (
 														<CardBoxView
-															link={'/Admin/User/' + user.id}
+															link={'/Admin/User/Order/' + order.id}
 															label={customTruncate(
-																`${index + 1}. Order ${user.orderNumber}`,
+																`${index + 1}. Order ${order.orderNumber}`,
 																24
 															)}
-															id={user.id}
-															key={user.id}
-															published={user.status}
-															time={timeAgo(user.createdAt)}
+															id={order.id}
+															key={order.id}
+															published={order.status}
+															time={timeAgo(order.createdAt)}
 														/>
 													)
 												)}
