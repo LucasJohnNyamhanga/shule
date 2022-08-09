@@ -376,6 +376,8 @@ model exam {
 
   @@index([examTypeId], map: "exam_examTypeId_fkey")
   @@index([usersId], map: "exam_usersId_fkey")
+  @@fulltext([exam])
+  @@fulltext([description])
   @@fulltext([description, exam])
 }
 

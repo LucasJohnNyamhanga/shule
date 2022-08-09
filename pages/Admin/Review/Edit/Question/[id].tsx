@@ -331,6 +331,15 @@ const EditNotes = ({
 			retriaveReviewData();
 		}
 
+		setQuestionDetails({
+			question: question.question,
+			answer: question.answer,
+			questionFormatId: question.questionFormatId,
+			reviewId: question.reviewId,
+			answerDetails: question.answerDetails,
+		});
+		setShowQuestion(true);
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [change]);
 
@@ -603,10 +612,7 @@ const EditNotes = ({
 						{
 							let answers = [];
 							answers.push(answer1);
-							let answer2: string = String(!answer1.answer).replace(
-								/^./,
-								(str) => str.toUpperCase()
-							);
+							let answer2: string = answer1.answer == 'True' ? 'False' : 'True';
 							answers.push({
 								answer: answer2,
 								valid: false,
