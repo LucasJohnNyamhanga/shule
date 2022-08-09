@@ -425,17 +425,24 @@ $checkmarksize: 16px;
 
 	.toc {
 		padding-bottom: 5px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: flex-start;
 		ol {
 			max-width: 100%;
 			counter-reset: my-awesome-counter;
 			list-style: none;
 			padding-left: 40px;
+			display: flex;
+			flex-direction: column;
+			margin: 2.5px 0px;
 		}
 		ol li {
-			margin: 0 0 0.5rem 0;
+			height: 100%;
+			margin: 10px 0px;
 			counter-increment: my-awesome-counter;
 			position: relative;
-			padding-bottom: 5px;
 		}
 		ol li::before {
 			content: counter(my-awesome-counter);

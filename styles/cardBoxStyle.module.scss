@@ -33,6 +33,7 @@
 		display: flex;
 		flex-direction: row;
 		width: 50%;
+		align-items: flex-start;
 		justify-content: space-between;
 
 		.labelTextInText {
@@ -43,10 +44,10 @@
 		}
 
 		.published {
-			font-size: small;
+			font-size: 12px;
 			font-weight: 500;
 			font-family: $fontBody;
-			cursor: pointer;
+			cursor: wait;
 
 			.publisedPublised {
 				color: $lightblue;
@@ -58,11 +59,75 @@
 		}
 	}
 
-	@media only screen and (max-width: 948px) {
-		.labelText {
+	.labelTextView {
+		display: flex;
+		flex-direction: row;
+		flex: 1;
+		justify-content: space-between;
+
+		.labelTextInText {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.published {
+			font-size: 12px;
+			font-weight: 500;
+			font-family: $fontBody;
+			cursor: wait;
+
+			.publisedPublised {
+				color: red;
+			}
+
+			.publisedUnPublised {
+				color: $lightblue;
+			}
+		}
+	}
+
+	.labelTextInTextOnly {
+		display: flex;
+		flex-direction: row;
+		width: 50%;
+		justify-content: flex-end;
+		align-items: center;
+
+		.published {
+			font-size: 12px;
+			font-weight: 500;
+			font-family: $fontBody;
+			cursor: pointer;
+
+			.publisedPublised {
+				color: $lightblue;
+			}
+		}
+	}
+
+	@media only screen and (max-width: 428px) {
+		.labelTextView {
 			width: 100%;
 			font-size: 14px;
 			padding: 10px 0px;
+			flex-direction: column;
+			align-items: flex-start;
+			justify-content: center;
+		}
+
+		.labelText {
+			display: flex;
+			flex-direction: column;
+			padding: 10px 0px;
+			width: 100%;
+			align-items: flex-start;
+			justify-content: center;
 		}
 	}
+}
+
+.card:hover {
+	background-color: $lightkahawa;
 }

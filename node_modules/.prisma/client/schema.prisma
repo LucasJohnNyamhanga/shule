@@ -38,6 +38,7 @@ model users {
   topic             topic[]
   topicReview       topicReview[]
   vifurushi         vifurushi[]
+  order             order[]
 
   @@fulltext([username])
   @@fulltext([name])
@@ -63,6 +64,27 @@ model vifurushiPackage {
   examsUnsolvedDownload Int
   notesDownload         Int
   quizExcercises        Int
+}
+
+model order {
+  id                    Int      @id @default(autoincrement())
+  orderNumber           String   @db.Text
+  description           String   @db.Text
+  amountPaid            Int
+  booksDownload         Int
+  examAccess            Int
+  examsSolvedDownload   Int
+  examsUnsolvedDownload Int
+  notesDownload         Int
+  quizExcercises        Int
+  createdAt             DateTime @default(now())
+  status                Boolean  @default(true)
+  userId                Int      @db.Int
+  users                 users    @relation(fields: [userId], references: [id])
+
+  @@fulltext([orderNumber])
+  @@fulltext([description])
+  @@fulltext([orderNumber, description])
 }
 
 model purchase {

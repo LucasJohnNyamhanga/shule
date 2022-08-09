@@ -1,0 +1,204 @@
+@import 'index';
+.container {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	justify-content: flex-start;
+	align-items: center;
+	min-height: 70vh;
+	background-color: $white;
+
+	.innerContainer {
+		display: flex;
+		width: 100%;
+		max-width: 1200px;
+		flex: 1;
+		padding: 10px;
+		flex-direction: column;
+		margin-bottom: 50px;
+
+		.orderNumber {
+			font-size: 35px;
+			font-family: $fontHeader;
+			color: $ugoro;
+			margin-top: 30px;
+			margin-bottom: 15px;
+			font-weight: 600;
+		}
+
+		.orderDescription {
+			font-size: 20px;
+			font-family: $fontBody;
+			margin-top: 0px;
+			margin-bottom: 10px;
+			font-weight: 400;
+		}
+
+		.table {
+			margin-bottom: 10px;
+			table {
+				border: 1px solid #ccc;
+				border-collapse: collapse;
+				margin: 0;
+				padding: 0;
+				table-layout: fixed;
+				width: 100%;
+				max-width: 800px;
+			}
+
+			table caption {
+				font-size: 1.5em;
+				margin: 0.5em 0 0.75em;
+				text-align: left;
+
+				font-weight: 500;
+			}
+
+			table tr {
+				background-color: #f8f8f8;
+				border: 1px solid #ddd;
+				padding: 0.35em;
+			}
+
+			table th,
+			table td {
+				padding: 0.625em;
+				font-family: $fontBody;
+				text-align: left;
+			}
+
+			table th {
+				font-size: 0.85em;
+				letter-spacing: 0.1em;
+				text-transform: uppercase;
+				font-family: $fontHeader;
+			}
+
+			@media screen and (max-width: 490px) {
+				table {
+					border: 0;
+					width: 100%;
+				}
+
+				table caption {
+					font-size: 1.3em;
+				}
+
+				table thead {
+					border: none;
+					clip: rect(0 0 0 0);
+					height: 1px;
+					margin: -1px;
+					overflow: hidden;
+					padding: 0;
+					position: absolute;
+					width: 1px;
+				}
+
+				table tr {
+					border-bottom: 3px solid #ddd;
+					display: block;
+					margin-bottom: 0.625em;
+				}
+
+				table td {
+					border-bottom: 1px solid #ddd;
+					display: block;
+					font-size: 1em;
+					text-align: center;
+				}
+
+				table td::before {
+					/*
+    * aria-label has no advantage, it won't be read inside a table
+    content: attr(aria-label);
+    */
+					content: attr(data-label);
+					float: left;
+					font-weight: bold;
+					text-transform: uppercase;
+				}
+
+				table td:last-child {
+					border-bottom: 0;
+				}
+			}
+		}
+
+		.Button {
+			margin-top: 15px;
+			width: fit-content;
+			height: 40px;
+			background-color: $ugoro;
+			color: $white;
+			border: 2px solid transparent;
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+			align-items: center;
+			border-radius: 5px;
+			transition: 0.2s linear;
+			padding-left: 25px;
+			padding-right: 25px;
+			text-align: center;
+			margin-bottom: 5px;
+			margin-top: 10px;
+			font-weight: 500;
+		}
+
+		.Button:hover {
+			background-color: $lightkahawa;
+			color: $ugoro;
+			border: 2px solid $lightblue;
+			cursor: pointer;
+		}
+
+		.planCntainerToc {
+			font-weight: 500;
+			font-size: 18px;
+			font-family: $fontBody;
+
+			.creation {
+				margin: 10px 0px;
+				font-family: $fontBody;
+				font-size: 18px;
+				font-weight: 400;
+			}
+
+			.text {
+				color: $ugoro;
+				font-weight: 600;
+			}
+		}
+
+		.creation {
+			font-family: $fontBody;
+			font-weight: 400;
+			margin-top: 5px;
+			margin-bottom: 0px;
+		}
+
+		.help {
+			margin-top: 15px;
+			font-size: 18px;
+			color: $ugoro;
+			font-weight: 500;
+		}
+
+		@media only screen and (max-width: 468px) {
+			.orderNumber {
+				font-size: 25px;
+				margin-top: 20px;
+				margin-bottom: 10px;
+			}
+
+			.orderDescription {
+				font-size: 16px;
+			}
+
+			.Button {
+				width: 100%;
+			}
+		}
+	}
+}

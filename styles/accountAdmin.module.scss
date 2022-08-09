@@ -25,6 +25,15 @@
 			align-items: center;
 		}
 
+		.headerOrder {
+			font-size: 25px;
+			font-family: $fontHeader;
+			font-weight: 500;
+			margin-top: 20px;
+			margin-bottom: 10px;
+			padding-left: 20px;
+		}
+
 		.header {
 			width: 100%;
 			display: flex;

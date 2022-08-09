@@ -118,7 +118,7 @@
 						}
 
 						.Active {
-							transition: 0.2s linear;
+							transition: 0.1s linear;
 							border-right: 0px solid $lightblue;
 							border-top: 2px solid $lightblue !important;
 							border-bottom: 2px solid $lightblue;
@@ -172,12 +172,13 @@
 						flex-direction: row;
 						justify-content: space-between;
 						align-items: center;
-						margin-bottom: 0px;
+						margin-bottom: 10px;
 
 						&Text {
 							font-family: $fontHeader;
 							font-weight: 500;
 							font-size: 24px;
+							margin-bottom: 10px;
 						}
 
 						&Button {
@@ -191,12 +192,12 @@
 							justify-content: center;
 							align-items: center;
 							border-radius: 5px;
-							transition: 0.2s linear;
+							transition: 0.1s linear;
 							padding-left: 25px;
 							padding-right: 25px;
 							text-align: center;
 							margin-bottom: 25px;
-							margin-top: 10px;
+							margin-top: 0px;
 							font-weight: 500;
 						}
 

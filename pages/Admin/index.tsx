@@ -17,6 +17,7 @@ import {
 } from '@prisma/client';
 import Link from 'next/link';
 import CardBox from '../../components/tools/cardBoxStyle';
+import CardBoxView from '../../components/tools/cardBoxWithView';
 import toast, { Toaster, ToastBar } from 'react-hot-toast';
 import SelectMiu from '../../components/tools/SelectMui';
 import { NavContext } from '../../components/context/StateContext';
@@ -222,6 +223,7 @@ const Index = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const [userSearchData, setUserSearchData] = useState([]);
 	const [adminsList, setAdminsList] = useState([]);
 	const [activateUserSearch, setActivateUserSearch] = useState(false);
+	const [orderList, setOrderList] = useState([]);
 
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
@@ -247,6 +249,7 @@ const Index = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const examDownloads = useRef<HTMLDivElement>(null!);
 	const user = useRef<HTMLDivElement>(null!);
 	const admin = useRef<HTMLDivElement>(null!);
+	const order = useRef<HTMLDivElement>(null!);
 
 	let handleNav = (value: string) => {
 		setNavValue(value);
@@ -356,6 +359,11 @@ const Index = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 				setActive('Admin');
 				handleAdmins();
 				break;
+			case 'Order':
+				order.current.classList.add(Styles.Active);
+				setActive('Order');
+				handleOrder();
+				break;
 			default:
 				break;
 		}
@@ -383,6 +391,7 @@ const Index = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 		examDownloads.current.classList.remove(Styles.Active);
 		user.current.classList.remove(Styles.Active);
 		admin.current.classList.remove(Styles.Active);
+		order.current.classList.remove(Styles.Active);
 	};
 
 	const retriaveSubjectsReview = async () => {
@@ -2124,6 +2133,83 @@ const Index = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 			});
 	};
 
+	let handleOrder = () => {
+		setLoading(true);
+		axios
+			.post('http://localhost:3000/api/getOrder', {
+				user: userDetail.value,
+			})
+			.then(function (response) {
+				const userData = JSON.parse(JSON.stringify(response.data));
+				setOrderList(userData);
+				setLoading(false);
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+				notifyError('Error has occured, try later.');
+				setLoading(false);
+			})
+			.then(function () {
+				// always executed
+			});
+	};
+
+	function timeAgo(time) {
+		switch (typeof time) {
+			case 'number':
+				break;
+			case 'string':
+				time = +new Date(time);
+				break;
+			case 'object':
+				if (time.constructor === Date) time = time.getTime();
+				break;
+			default:
+				time = +new Date();
+		}
+		var time_formats = [
+			[60, 'seconds', 1], // 60
+			[120, '1 minute ago', '1 minute from now'], // 60*2
+			[3600, 'minutes', 60], // 60*60, 60
+			[7200, '1 hour ago', '1 hour from now'], // 60*60*2
+			[86400, 'hours', 3600], // 60*60*24, 60*60
+			[172800, 'Yesterday', 'Tomorrow'], // 60*60*24*2
+			[604800, 'days', 86400], // 60*60*24*7, 60*60*24
+			[1209600, 'Last week', 'Next week'], // 60*60*24*7*4*2
+			[2419200, 'weeks', 604800], // 60*60*24*7*4, 60*60*24*7
+			[4838400, 'Last month', 'Next month'], // 60*60*24*7*4*2
+			[29030400, 'months', 2419200], // 60*60*24*7*4*12, 60*60*24*7*4
+			[58060800, 'Last year', 'Next year'], // 60*60*24*7*4*12*2
+			[2903040000, 'years', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
+			[5806080000, 'Last century', 'Next century'], // 60*60*24*7*4*12*100*2
+			[58060800000, 'centuries', 2903040000], // 60*60*24*7*4*12*100*20, 60*60*24*7*4*12*100
+		];
+		var seconds = (+new Date() - time) / 1000,
+			token = 'ago',
+			list_choice = 1;
+
+		if (seconds == 0) {
+			return 'Just now';
+		}
+		if (seconds < 0) {
+			seconds = Math.abs(seconds);
+			token = 'from now';
+			list_choice = 2;
+		}
+		var i = 0,
+			format;
+		while ((format = time_formats[i++]))
+			if (seconds < format[0]) {
+				if (typeof format[2] == 'string') return format[list_choice];
+				else
+					return (
+						Math.floor(seconds / format[2]) + ' ' + format[1] + ' ' + token
+					);
+			}
+		return time;
+	}
+
 	return (
 		<div className={Styles.container}>
 			<div className={Styles.innerContainer}>
@@ -2312,6 +2398,14 @@ const Index = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 												className={Styles.topicTittle}>
 												<FaUserSecret size={23} />
 												<div className={Styles.text}>Admins</div>
+											</div>
+											<div
+												ref={order}
+												id={`Order`}
+												onClick={(e) => handleNav(`Order`)}
+												className={Styles.topicTittle}>
+												<NotesIcon />
+												<div className={Styles.text}>Orders</div>
 											</div>
 										</div>
 									</>
@@ -3316,6 +3410,46 @@ const Index = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 									</div>
 								)}
 								{/* //! END OF form reference DISPLAY ONLY */}
+								{navValue == `Order` && (
+									<div className={Styles.rightInnercontainerBody}>
+										<div className={Styles.subject}>
+											<div className={Styles.subjectHeader}>
+												<div className={Styles.subjectHeaderText}>
+													{orderList.length +
+														` ${
+															orderList.length > 1 ? 'Orders' : 'Order'
+														} List`}
+												</div>
+											</div>
+											<div className={Styles.subjectBody}>
+												{orderList.map(
+													(
+														order: {
+															id: number;
+															orderNumber: string;
+															description: string;
+															status: boolean;
+															createdAt: Date;
+														},
+														index: number
+													) => (
+														<CardBoxView
+															link={'/Admin/User/Order/' + order.id}
+															label={customTruncate(
+																`${index + 1}. Order ${order.orderNumber}`,
+																24
+															)}
+															id={order.id}
+															key={order.id}
+															published={order.status}
+															time={timeAgo(order.createdAt)}
+														/>
+													)
+												)}
+											</div>
+										</div>
+									</div>
+								)}
 							</>
 						)}
 					</div>

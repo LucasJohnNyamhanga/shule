@@ -1,7 +1,15 @@
 import Styles from '../../styles/radioCard.module.scss';
 import Image from 'next/image';
+import { useState } from 'react';
 
-const RadioCard = () => {
+type dataType = {
+	handleSelectValue: (value: string) => void;
+};
+
+const RadioCard = ({ handleSelectValue }: dataType) => {
+	const handleSelect = (value: string) => {
+		handleSelectValue(value);
+	};
 	return (
 		<div className={Styles.container}>
 			<div className={Styles.grid}>
@@ -10,7 +18,11 @@ const RadioCard = () => {
 						name='plan'
 						className={Styles.radio}
 						type='radio'
-						defaultChecked
+						// defaultChecked
+						// checked={selected=='vodacom'}
+						onChange={() => {
+							handleSelect('vodacom');
+						}}
 					/>
 					<span className={Styles.plandetails}>
 						<span className={Styles.plantype}>
@@ -30,13 +42,20 @@ const RadioCard = () => {
 								mo
 							</abbr>
 						</span> */}
-						<span>Use Vodacom MPESA</span>
+						<span className={Styles.text}>Use Vodacom MPESA</span>
 						{/* <span>100 GB/mo</span>
 						<span>1 concurrent build</span> */}
 					</span>
 				</label>
 				<label className={Styles.card}>
-					<input name='plan' className={Styles.radio} type='radio' />
+					<input
+						name='plan'
+						className={Styles.radio}
+						type='radio'
+						onChange={() => {
+							handleSelect('airtel');
+						}}
+					/>
 					<span className={Styles.plandetails}>
 						<span className={Styles.plantype}>
 							<Image
@@ -55,13 +74,20 @@ const RadioCard = () => {
 								mo
 							</abbr>
 						</span> */}
-						<span>Use Airtel Money</span>
+						<span className={Styles.text}>Use Airtel Money</span>
 						{/* <span>100 GB/mo</span>
 						<span>1 concurrent build</span> */}
 					</span>
 				</label>
 				<label className={Styles.card}>
-					<input name='plan' className={Styles.radio} type='radio' />
+					<input
+						name='plan'
+						className={Styles.radio}
+						type='radio'
+						onChange={() => {
+							handleSelect('tigo');
+						}}
+					/>
 					<span className={Styles.plandetails}>
 						<span className={Styles.plantype}>
 							<Image
@@ -80,13 +106,20 @@ const RadioCard = () => {
 								mo
 							</abbr>
 						</span> */}
-						<span>Use Tigo PESA</span>
+						<span className={Styles.text}>Use Tigo PESA</span>
 						{/* <span>100 GB/mo</span>
 						<span>1 concurrent build</span> */}
 					</span>
 				</label>
 				<label className={Styles.card}>
-					<input name='plan' className={Styles.radio} type='radio' />
+					<input
+						name='plan'
+						className={Styles.radio}
+						type='radio'
+						onChange={() => {
+							handleSelect('ttcl');
+						}}
+					/>
 					<span className={Styles.plandetails}>
 						<span className={Styles.plantype}>
 							<Image
@@ -105,13 +138,20 @@ const RadioCard = () => {
 								mo
 							</abbr>
 						</span> */}
-						<span>Use TTCL T-PESA</span>
+						<span className={Styles.text}>Use TTCL T-PESA</span>
 						{/* <span>100 GB/mo</span>
 						<span>1 concurrent build</span> */}
 					</span>
 				</label>
 				<label className={Styles.card}>
-					<input name='plan' className={Styles.radio} type='radio' />
+					<input
+						name='plan'
+						className={Styles.radio}
+						type='radio'
+						onChange={() => {
+							handleSelect('halotel');
+						}}
+					/>
 					<span className={Styles.plandetails}>
 						<span className={Styles.plantype}>
 							<Image
@@ -130,13 +170,20 @@ const RadioCard = () => {
 								mo
 							</abbr>
 						</span> */}
-						<span>Use Halotel HaloPESA</span>
+						<span className={Styles.text}>Use Halotel HaloPESA</span>
 						{/* <span>100 GB/mo</span>
 						<span>1 concurrent build</span> */}
 					</span>
 				</label>
 				<label className={Styles.card}>
-					<input name='plan' className={Styles.radio} type='radio' />
+					<input
+						name='plan'
+						className={Styles.radio}
+						type='radio'
+						onChange={() => {
+							handleSelect('zantel');
+						}}
+					/>
 					<span className={Styles.plandetails}>
 						<span className={Styles.plantype}>
 							<Image
@@ -155,7 +202,7 @@ const RadioCard = () => {
 								mo
 							</abbr>
 						</span> */}
-						<span>Use Zantel EZYPESA</span>
+						<span className={Styles.text}>Use Zantel EZYPESA</span>
 						{/* <span>100 GB/mo</span>
 						<span>1 concurrent build</span> */}
 					</span>
