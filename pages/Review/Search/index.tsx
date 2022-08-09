@@ -8,28 +8,32 @@ import Link from 'next/link';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const searchText = context.query.find!.toString();
 
-	const result = await prisma.note.findMany({
+	const result = await prisma.question.findMany({
 		where: {
-			content: {
+			question: {
 				search: searchText,
 			},
 		},
 		select: {
 			id: true,
-			content: true,
-			subject: {
+			question: true,
+			review: {
 				select: {
-					subjectName: true,
-				},
-			},
-			form: {
-				select: {
-					formName: true,
-				},
-			},
-			topic: {
-				select: {
-					topicName: true,
+					subject: {
+						select: {
+							subjectName: true,
+						},
+					},
+					form: {
+						select: {
+							formName: true,
+						},
+					},
+					topic: {
+						select: {
+							topicName: true,
+						},
+					},
 				},
 			},
 		},

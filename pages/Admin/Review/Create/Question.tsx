@@ -103,10 +103,10 @@ type answerDataType = {
 };
 
 const Create = ({
-	forms,
-	subjects,
-	questionFormat,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	forms,
+    	subjects,
+    	questionFormat,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive, userData } = useContext(NavContext);
 
 	useEffect(() => {
@@ -481,9 +481,7 @@ const Create = ({
 					{
 						let answers = [];
 						answers.push(answer1);
-						let answer2: string = String(!answer1.answer).replace(/^./, (str) =>
-							str.toUpperCase()
-						);
+						let answer2: string = answer1.answer == 'True' ? 'False' : 'True';
 						answers.push({
 							answer: answer2,
 							valid: false,
