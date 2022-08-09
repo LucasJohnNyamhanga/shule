@@ -220,31 +220,39 @@ const SignIn = ({}) => {
 								<div className={Styles.text}>Shule Account</div>
 							</div>
 							<div className={Styles.credential}>
-								<input
-									type='text'
-									value={formData.username}
-									placeholder={`Username`}
-									name={'username'}
-									onChange={(event) => {
-										handletext(event);
-									}}
-									autoComplete='off'
-									autoCorrect='off'
-									spellCheck={false}
-								/>
-								<input
-									ref={password}
-									type='password'
-									value={formData.password}
-									placeholder={`Password`}
-									name={`password`}
-									onChange={(event) => {
-										handletext(event);
-									}}
-									autoComplete='off'
-									autoCorrect='off'
-									spellCheck={false}
-								/>
+								<div className={Styles.inputBox}>
+									<input
+										type='text'
+										required
+										value={formData.username}
+										placeholder={``}
+										name={'username'}
+										onChange={(event) => {
+											handletext(event);
+										}}
+										autoComplete='off'
+										autoCorrect='off'
+										spellCheck={false}
+									/>
+									<span>Username</span>
+								</div>
+								<div className={Styles.inputBox}>
+									<input
+										ref={password}
+										required
+										type='password'
+										value={formData.password}
+										placeholder={``}
+										name={`password`}
+										onChange={(event) => {
+											handletext(event);
+										}}
+										autoComplete='off'
+										autoCorrect='off'
+										spellCheck={false}
+									/>
+									<span>Password</span>
+								</div>
 								<div className={Styles.check}>
 									<input
 										type='checkbox'
@@ -293,71 +301,92 @@ const SignIn = ({}) => {
 								<div className={Styles.text}>Register to Shule</div>
 							</div>
 							<div className={Styles.credential}>
-								<input
-									type='text'
-									value={register.firstName}
-									placeholder={`First Name`}
-									name={'firstName'}
-									onChange={(event) => {
-										handletextChange(event);
-									}}
-									autoComplete='off'
-									autoCorrect='off'
-									spellCheck={false}
-								/>
-								<input
-									type='text'
-									value={register.lastName}
-									placeholder={`Last Name`}
-									name={'lastName'}
-									onChange={(event) => {
-										handletextChange(event);
-									}}
-									autoComplete='off'
-									autoCorrect='off'
-									spellCheck={false}
-								/>
-								<input
-									ref={username}
-									type='text'
-									value={register.username}
-									placeholder={`Username`}
-									name={'username'}
-									onChange={(event) => {
-										handletextChange(event);
-									}}
-									autoComplete='off'
-									autoCorrect='off'
-									spellCheck={false}
-								/>
-								<input
-									ref={password1}
-									type='password'
-									value={register.password}
-									placeholder={`Password`}
-									name={`password`}
-									onChange={(event) => {
-										handletextChange(event);
-									}}
-									autoComplete='off'
-									autoCorrect='off'
-									spellCheck={false}
-								/>
-								<input
-									ref={password2}
-									type='password'
-									value={register.password2}
-									placeholder={`Retype Password`}
-									name={`password2`}
-									onChange={(event) => {
-										handletextChange(event);
-									}}
-									autoComplete='off'
-									autoCorrect='off'
-									spellCheck={false}
-								/>
+								<div className={Styles.inputBox}>
+									<input
+										type='text'
+										required
+										value={register.firstName}
+										placeholder={``}
+										name={'firstName'}
+										onChange={(event) => {
+											handletextChange(event);
+										}}
+										autoComplete='off'
+										autoCorrect='off'
+										spellCheck={false}
+									/>
+									<span>First Name</span>
+								</div>
+								<div className={Styles.inputBox}>
+									<input
+										type='text'
+										required
+										value={register.lastName}
+										placeholder={``}
+										name={'lastName'}
+										onChange={(event) => {
+											handletextChange(event);
+										}}
+										autoComplete='off'
+										autoCorrect='off'
+										spellCheck={false}
+									/>
+									<span>Last Name</span>
+								</div>
+								<div className={Styles.inputBox}>
+									<input
+										ref={username}
+										required
+										type='text'
+										value={register.username}
+										placeholder={``}
+										name={'username'}
+										onChange={(event) => {
+											handletextChange(event);
+										}}
+										autoComplete='off'
+										autoCorrect='off'
+										spellCheck={false}
+									/>
+									<span>Username</span>
+								</div>
+								<div className={Styles.inputBox}>
+									<input
+										ref={password1}
+										type='password'
+										value={register.password}
+										placeholder={``}
+										name={`password`}
+										onChange={(event) => {
+											handletextChange(event);
+										}}
+										autoComplete='off'
+										autoCorrect='off'
+										spellCheck={false}
+										required
+									/>
+									<span>Password</span>
+								</div>
+								<div className={Styles.inputBox}>
+									<input
+										required
+										ref={password2}
+										type='password'
+										value={register.password2}
+										placeholder={``}
+										name={`password2`}
+										onChange={(event) => {
+											handletextChange(event);
+										}}
+										autoComplete='off'
+										autoCorrect='off'
+										spellCheck={false}
+									/>
+									<span>Retype Password</span>
+								</div>
 								<div className={Styles.check}>
 									<input
+										required
 										type='checkbox'
 										onChange={(e) => {
 											togglePasswordSignUp(e);
