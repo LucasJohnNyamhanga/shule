@@ -13,6 +13,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			content: {
 				search: searchText,
 			},
+			published: true,
 		},
 		select: {
 			id: true,
@@ -57,11 +58,16 @@ type note = {
 };
 
 const Reference = ({
-    	searchResults,
-    	searchText,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	searchResults,
+	searchText,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 	const [searchResultsStatus, setSearchResultsStatus] = useState(false);
+
+	useEffect(() => {
+		setNavActive('Notes');
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [navActive]);
 
 	function truncateHTML(text: string, length: number) {
 		let startIndex = text
@@ -158,22 +164,6 @@ const Reference = ({
 			? setSearchResultsStatus(true)
 			: setSearchResultsStatus(false);
 	}, [searchResults, searchText]);
-	// const content = unified()
-	// 	.use(rehypeParse, { fragment: true })
-	// 	.use(() => {
-	// 		return (tree: Root) => {
-	// 			visit(tree, 'element', (node, index, parent) => {
-	// 				if (node.type == 'element') {
-	// 					node.children.map((child) => {
-	// 						console.log(child);
-	// 					});
-	// 				}
-	// 			});
-	// 		};
-	// 	})
-	// 	.use(rehypeStringify)
-	// 	.processSync(doc)
-	// 	.toString();
 
 	return (
 		<div className={Styles.container}>

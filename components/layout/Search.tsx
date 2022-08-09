@@ -129,15 +129,14 @@ const Search = () => {
 								: ''
 						}>
 						<a>
-							<button
-								type='submit'
+							<div
 								onSubmit={(e) => {
 									e.preventDefault();
 									handleSearch();
 								}}
 								className={Styles.searchButton}>
 								Search
-							</button>
+							</div>
 						</a>
 					</Link>
 				)}
