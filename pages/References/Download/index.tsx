@@ -42,8 +42,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const Index = ({
-	downloads,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	downloads,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
@@ -146,6 +146,8 @@ const Index = ({
 							Styles.downloadCenterHeader
 						}>{`Download Center For ${downloads.name}.`}</div>
 					<div className={Styles.BodyContent}>
+						<h3>Book Description</h3>
+						<p>{downloads.description}</p>
 						<div>
 							{`Following ${downloads.length > 1 ? `Files  are` : `File is`}
 							available for download.`}
