@@ -10,7 +10,6 @@
 
 	.innerContainer {
 		width: 100%;
-		min-height: 250px;
 		max-width: 1200px;
 		color: $lightkahawa;
 		margin: 1.6rem;
@@ -50,14 +49,15 @@
 
 			.body {
 				padding: 10px 15px;
-				width: 100%;
+				width: 100% !important;
 				font-size: 16px;
 				cursor: pointer;
+				border: 2px solid transparent;
 			}
 
 			.body:hover {
 				color: $white;
-				text-decoration: underline;
+				border: 2px dashed $white;
 			}
 
 			.header {
@@ -73,7 +73,16 @@
 
 	.copyrights {
 		color: $lightkahawa;
-		padding: 20px;
+		padding: 20px 20px 0px 20px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+	.product {
+		color: $white;
+		padding: 10px;
+		margin-bottom: 25px;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
