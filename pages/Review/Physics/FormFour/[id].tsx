@@ -135,10 +135,10 @@ const Index = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [navActive]);
 
-	if (thisTopicData.review == null || thisTopicData.review == 'undefined') {
+	if (thisTopicData?.review == null || thisTopicData?.review == 'undefined') {
 		return (
 			<div className={Styles.notFound}>
-				Reviews for ${thisTopicData.topicName} topic will be available soon.
+				Reviews for ${thisTopicData?.topicName} topic will be available soon.
 			</div>
 		);
 	}

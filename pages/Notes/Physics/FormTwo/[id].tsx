@@ -13,6 +13,7 @@ import rehypeParse from 'rehype-parse';
 import { visit } from 'unist-util-visit';
 import parameterize from 'parameterize-js';
 
+
 const subjectLocator = 'Physics';
 const formLocator = 'Form Two';
 const subjectLocatorLink = 'Physics';
@@ -176,12 +177,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const Index = ({
-    	htmlServer,
-    	toc,
-    	topics,
-    	thisTopicData,
-    	download,
-    }: InferGetStaticPropsType<typeof getStaticProps>) => {
+        	htmlServer,
+        	toc,
+        	topics,
+        	thisTopicData,
+        	download,
+        }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {

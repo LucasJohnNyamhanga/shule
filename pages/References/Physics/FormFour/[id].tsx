@@ -10,10 +10,9 @@ import { NavContext } from '../../../../components/context/StateContext';
 const subjectLocator = 'Physics';
 import PdfViewer from '../../../../components/tools/PdfViewer';
 import Link from 'next/link';
-
-const formLocator = 'Form Five';
+const formLocator = 'Form Four';
 const subjectLocatorLink = 'Physics';
-const formLocatorLink = 'FormFive';
+const formLocatorLink = 'FormFour';
 
 export const getStaticProps: GetStaticProps = async (context) => {
 	const id = context.params?.id;
