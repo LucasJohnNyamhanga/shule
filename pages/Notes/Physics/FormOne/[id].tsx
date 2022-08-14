@@ -176,12 +176,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const Index = ({
-    	htmlServer,
-    	toc,
-    	topics,
-    	thisTopicData,
-    	download,
-    }: InferGetStaticPropsType<typeof getStaticProps>) => {
+	htmlServer,
+	toc,
+	topics,
+	thisTopicData,
+	download,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -264,7 +264,7 @@ const Index = ({
 						</div>
 						{download.length > 0 ? (
 							<Link
-								href={`/Notes/${subjectLocator}/${formLocatorLink}/Downloads`}
+								href={`/Notes/${subjectLocatorLink}/${formLocatorLink}/Downloads`}
 								passHref>
 								<a>
 									<div className={Styles.download}>Download Notes</div>
