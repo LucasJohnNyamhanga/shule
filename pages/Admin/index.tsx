@@ -2036,7 +2036,6 @@ const Index = ({
 		retriaveDataForExamList();
 		setNavActive('Admin');
 
-		notifySuccess(`user name is ${userfound.name}`);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [changerNotes, navActive, matches300, status, userData]);
 
