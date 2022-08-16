@@ -14,6 +14,7 @@ const Nav = () => {
 	const { data: session, status } = useSession();
 	const [limt, setLimit] = useState(0);
 	const [runOnce, setRunOnce] = useState(true);
+	const [isAdmin, setIsAdmin] = useState(false);
 
 	const { push, asPath } = useRouter();
 
@@ -45,6 +46,9 @@ const Nav = () => {
 							image: userData.image,
 							isSuperUser: userData.isSuperUser,
 						});
+						if (userData.isAdmin) {
+							setIsAdmin(true);
+						}
 					})
 					.catch(function (error) {
 						// handle error
@@ -56,6 +60,7 @@ const Nav = () => {
 							image: '',
 							isSuperUser: false,
 						});
+						setIsAdmin(false);
 					});
 				setLimit(limt + 1);
 			}
@@ -167,7 +172,7 @@ const Nav = () => {
 										</div>
 									</a>
 								</Link>
-								{userData.isAdmin && (
+								{isAdmin && (
 									<Link href='/Admin'>
 										<a>
 											<div
