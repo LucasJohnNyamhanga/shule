@@ -77,7 +77,7 @@ const Nav = () => {
 				isSuperUser: false,
 			});
 		}
-	}, [status, limt, session]);
+	}, [status, limt, session, navActive, userData]);
 
 	return (
 		<div className={Styles.container}>
