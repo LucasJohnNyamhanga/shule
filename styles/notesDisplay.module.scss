@@ -137,6 +137,17 @@
 				line-height: 24px;
 				margin-bottom: 30px;
 
+				h3 {
+					margin-bottom: 0px;
+					padding-bottom: 0px;
+					margin-top: 10px;
+					font-weight: 400;
+				}
+
+				p {
+					margin-top: 10px;
+				}
+
 				.info {
 					font-weight: 500;
 					font-family: $fontBody;

@@ -7,9 +7,10 @@ import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
 import Head from 'next/head';
 import { NavContext } from '../../../../components/context/StateContext';
 
-const subjectLocator = 'Physics';
 import PdfViewer from '../../../../components/tools/PdfViewer';
 import Link from 'next/link';
+
+const subjectLocator = 'Physics';
 const formLocator = 'Form Three';
 const subjectLocatorLink = 'Physics';
 const formLocatorLink = 'FormThree';
@@ -86,8 +87,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const Index = ({
-        	reference,
-        }: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	reference,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {

@@ -120,9 +120,9 @@ type tableKey = {
 };
 
 const Index = ({
-        	topics,
-        	note,
-        }: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	topics,
+    	note,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	const [keyInTable, setKeyInTable] = useState<tableKey>({

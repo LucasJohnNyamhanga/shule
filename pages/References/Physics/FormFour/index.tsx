@@ -8,9 +8,9 @@ import { NavContext } from '../../../../components/context/StateContext';
 import Book from '../../../../components/tools/Book';
 
 const subjectLocator = 'Physics';
-const formLocator = 'Form Five';
+const formLocator = 'Form Four';
 const subjectLocatorLink = 'Physics';
-const formLocatorLink = 'FormFive';
+const formLocatorLink = 'FormFour';
 
 export const getStaticProps: GetStaticProps = async () => {
 	const referenceFromServer = await prisma.reference.findMany({
@@ -60,8 +60,8 @@ type tableKey = {
 };
 
 const Index = ({
-        	reference,
-        }: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	reference,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {

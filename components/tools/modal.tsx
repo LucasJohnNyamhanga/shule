@@ -892,7 +892,6 @@ export default function CustomizedDialogs({
 								<div>Correct: {score}</div>
 								<div>Incorrect: {attempted - score}</div>
 								<div>Unattempted: {questionList.length - attempted}</div>
-								<div>Tuzo Point: 5</div>
 							</div>
 						</>
 					)}

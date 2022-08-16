@@ -1,13 +1,25 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { ReactNode, useContext, useEffect, useState } from 'react';
 import Styles from '../../../../styles/reviewDisplay.module.scss';
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
-import { examType } from '@prisma/client';
+import { type } from 'os';
+import {
+	exam,
+	examType,
+	formExams,
+	note,
+	review,
+	topic,
+	topicReview,
+} from '@prisma/client';
 import { prisma } from '../../../../db/prisma';
 import type { GetStaticProps, InferGetStaticPropsType } from 'next';
+import parse from 'html-react-parser';
 import Head from 'next/head';
 import Link from 'next/link';
+import Error from 'next/error';
 import Drawer from '../../../../components/tools/DrawerExam';
 import { NavContext } from '../../../../components/context/StateContext';
+import Modal from '../../../../components/tools/modal';
 import Table from '../../../../components/tools/Table';
 
 const subjectLocator = 'Physics';
@@ -108,9 +120,9 @@ type tableKey = {
 };
 
 const Index = ({
-	topics,
-	note,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	topics,
+    	note,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	const [keyInTable, setKeyInTable] = useState<tableKey>({

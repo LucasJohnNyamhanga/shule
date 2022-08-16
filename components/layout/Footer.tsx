@@ -7,9 +7,16 @@ const Footer = () => {
 			<div className={Styles.innerContainer}>
 				<div className={Styles.footerDetails}>
 					<div className={Styles.header}>Shule Info</div>
-
-					<div className={Styles.body}>About Us</div>
-					<div className={Styles.body}>Contact Us</div>
+					<Link href='/AboutUs'>
+						<a>
+							<div className={Styles.body}>About Us</div>
+						</a>
+					</Link>
+					<Link href='/ContactUs'>
+						<a>
+							<div className={Styles.body}>Contact Us</div>
+						</a>
+					</Link>
 					<div className={Styles.body}>Help Line: +255784477999</div>
 				</div>
 				<div className={Styles.footerDetails}>
@@ -40,8 +47,21 @@ const Footer = () => {
 				</div>
 				<div className={Styles.footerDetails}>
 					<div className={Styles.header}>Guide lines</div>
-					<div className={Styles.body}>Terms and Conditions </div>
-					<div className={Styles.body}>Privacy Policy </div>
+					<Link href='/TermsAndConditions'>
+						<a>
+							<div className={Styles.body}>Terms and Conditions </div>
+						</a>
+					</Link>
+					<Link href='/PrivacyPolicy'>
+						<a>
+							<div className={Styles.body}>Privacy Policy </div>
+						</a>
+					</Link>
+					<Link href='/Disclaimer'>
+						<a>
+							<div className={Styles.body}>Disclaimer</div>
+						</a>
+					</Link>
 				</div>
 
 				<div className={Styles.footerDetails}>
@@ -52,6 +72,7 @@ const Footer = () => {
 				</div>
 			</div>
 			<div className={Styles.copyrights}>www.shule.co.tz &copy; 2022</div>
+			<div className={Styles.product}>Product of DataSoft Technologies</div>
 		</div>
 	);
 };

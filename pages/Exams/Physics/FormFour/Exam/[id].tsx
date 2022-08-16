@@ -96,8 +96,8 @@ type tableKey = {
 };
 
 const Index = ({
-        	thisexam,
-        }: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	thisexam,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive, userData } = useContext(NavContext);
 	const matches300 = useMediaQuery('(min-width:345px)');
 	const [keyInTable, setKeyInTable] = useState<tableKey>({
