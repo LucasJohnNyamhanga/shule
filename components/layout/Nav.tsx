@@ -7,6 +7,7 @@ import { useSession, getSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import User from '../layout/User';
+import toast, { Toaster } from 'react-hot-toast';
 
 const Nav = () => {
 	const { setNavActive, navActive, userData, setUserData } =
@@ -15,6 +16,9 @@ const Nav = () => {
 	const [limt, setLimit] = useState(0);
 	const [runOnce, setRunOnce] = useState(true);
 	const [isAdmin, setIsAdmin] = useState(false);
+	const notify = (message: string) => toast(message);
+	const notifySuccess = (message: string) => toast.success(message);
+	const notifyError = (message: string) => toast.error(message);
 
 	const { push, asPath } = useRouter();
 
@@ -30,6 +34,7 @@ const Nav = () => {
 	};
 
 	let checkUser = async () => {
+		notify('Checking user..');
 		const session = await getSession();
 		if (session) {
 			if (limt <= 5) {
@@ -39,6 +44,7 @@ const Nav = () => {
 					.then(function (response) {
 						//responce
 						const userData = JSON.parse(JSON.stringify(response.data));
+						notifySuccess('Data received');
 						setUserData({
 							id: userData.id,
 							isAdmin: userData.isAdmin,
@@ -47,6 +53,7 @@ const Nav = () => {
 							isSuperUser: userData.isSuperUser,
 						});
 						if (userData.isAdmin) {
+							notifySuccess('Is An Admin');
 							setIsAdmin(true);
 						}
 					})
@@ -86,10 +93,11 @@ const Nav = () => {
 			}
 			setRunOnce(false);
 		}
-	}, [status, session]);
+	}, [status, session, isAdmin]);
 
 	return (
 		<div className={Styles.container}>
+			<Toaster position='top-center' reverseOrder={false} />
 			<div className={Styles.innerContainerTop}>
 				<div className={Styles.NavDetails}>
 					<div className={Styles.topAdvatisment}>
