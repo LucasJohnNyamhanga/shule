@@ -58,14 +58,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	});
 	const userfound = await JSON.parse(JSON.stringify(userFromServer));
 
-	if (userfound.isAdmin == false) {
-		return {
-			redirect: {
-				destination: '/',
-				permanent: false,
-			},
-		};
-	}
+	// if (userfound.isAdmin == false) {
+	// 	return {
+	// 		redirect: {
+	// 			destination: '/',
+	// 			permanent: false,
+	// 		},
+	// 	};
+	// }
 
 	await prisma.$disconnect();
 	return {
