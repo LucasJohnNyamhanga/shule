@@ -13,6 +13,7 @@ const Nav = () => {
 		useContext(NavContext);
 	const { data: session, status } = useSession();
 	const [limt, setLimit] = useState(0);
+	const [runOnce, setRunOnce] = useState(true);
 
 	const { push, asPath } = useRouter();
 
@@ -62,22 +63,25 @@ const Nav = () => {
 	};
 
 	useEffect(() => {
-		if (session) {
-			if (status === 'authenticated') {
-				checkUser();
+		if (runOnce) {
+			if (session) {
+				if (status === 'authenticated') {
+					checkUser();
+				} else {
+					setLimit(0);
+				}
 			} else {
-				setLimit(0);
+				setUserData({
+					id: '',
+					isAdmin: false,
+					userName: '',
+					image: '',
+					isSuperUser: false,
+				});
 			}
-		} else {
-			setUserData({
-				id: '',
-				isAdmin: false,
-				userName: '',
-				image: '',
-				isSuperUser: false,
-			});
+			setRunOnce(false);
 		}
-	}, [status, limt, session, navActive, userData]);
+	}, [status, session]);
 
 	return (
 		<div className={Styles.container}>
