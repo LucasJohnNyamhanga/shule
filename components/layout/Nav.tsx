@@ -7,18 +7,12 @@ import { useSession, getSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import User from '../layout/User';
-import toast, { Toaster } from 'react-hot-toast';
 
 const Nav = () => {
 	const { setNavActive, navActive, userData, setUserData } =
 		useContext(NavContext);
 	const { data: session, status } = useSession();
 	const [limt, setLimit] = useState(0);
-	const [runOnce, setRunOnce] = useState(true);
-	const [isAdmin, setIsAdmin] = useState(false);
-	const notify = (message: string) => toast(message);
-	const notifySuccess = (message: string) => toast.success(message);
-	const notifyError = (message: string) => toast.error(message);
 
 	const { push, asPath } = useRouter();
 
@@ -34,7 +28,6 @@ const Nav = () => {
 	};
 
 	let checkUser = async () => {
-		notify('Checking user..');
 		const session = await getSession();
 		if (session) {
 			if (limt <= 5) {
@@ -44,7 +37,6 @@ const Nav = () => {
 					.then(function (response) {
 						//responce
 						const userData = JSON.parse(JSON.stringify(response.data));
-						notifySuccess('Data received');
 						setUserData({
 							id: userData.id,
 							isAdmin: userData.isAdmin,
@@ -52,10 +44,6 @@ const Nav = () => {
 							image: userData.image,
 							isSuperUser: userData.isSuperUser,
 						});
-						if (userData.isAdmin) {
-							notifySuccess('Is An Admin');
-							setIsAdmin(true);
-						}
 					})
 					.catch(function (error) {
 						// handle error
@@ -67,7 +55,6 @@ const Nav = () => {
 							image: '',
 							isSuperUser: false,
 						});
-						setIsAdmin(false);
 					});
 				setLimit(limt + 1);
 			}
@@ -75,29 +62,25 @@ const Nav = () => {
 	};
 
 	useEffect(() => {
-		if (runOnce) {
-			if (session) {
-				if (status === 'authenticated') {
-					checkUser();
-				} else {
-					setLimit(0);
-				}
+		if (session) {
+			if (status === 'authenticated') {
+				checkUser();
 			} else {
-				setUserData({
-					id: '',
-					isAdmin: false,
-					userName: '',
-					image: '',
-					isSuperUser: false,
-				});
+				setLimit(0);
 			}
-			setRunOnce(false);
+		} else {
+			setUserData({
+				id: '',
+				isAdmin: false,
+				userName: '',
+				image: '',
+				isSuperUser: false,
+			});
 		}
-	}, [status, session, isAdmin]);
+	}, [session]);
 
 	return (
 		<div className={Styles.container}>
-			<Toaster position='top-center' reverseOrder={false} />
 			<div className={Styles.innerContainerTop}>
 				<div className={Styles.NavDetails}>
 					<div className={Styles.topAdvatisment}>
@@ -180,23 +163,6 @@ const Nav = () => {
 										</div>
 									</a>
 								</Link>
-								{isAdmin && (
-									<Link href='/Admin'>
-										<a>
-											<div
-												onClick={() => {
-													setNavActive('Admin');
-												}}>
-												<li
-													className={
-														'Admin' == navActive ? Styles.active : Styles.links
-													}>
-													Admin
-												</li>
-											</div>
-										</a>
-									</Link>
-								)}
 							</ul>
 						</div>
 						<div className={Styles.buttonsNav}>

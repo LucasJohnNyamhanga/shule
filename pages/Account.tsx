@@ -16,6 +16,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 
 import { getSession } from 'next-auth/react';
+import Link from 'next/link';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
 	if (!session) {
@@ -245,7 +246,15 @@ const Notes = ({
 								<ul>
 									<li className={Styles.userName}>{userfound.username}</li>
 									<li>{userfound.name}</li>
-									<li>{userfound.isAdmin ? 'Administrator' : ''}</li>
+									<li>
+										{userfound.isAdmin ? (
+											<Link href='/Admin'>
+												<a>Administrator</a>
+											</Link>
+										) : (
+											''
+										)}
+									</li>
 									{userfound.password != 'googleHasIt' && (
 										<li className={Styles.edit} onClick={reset}>
 											Edit Password
