@@ -36,14 +36,14 @@ import { prisma } from '../../db/prisma';
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
-	if (!session) {
-		return {
-			redirect: {
-				destination: `/Auth/SignIn?callbackUr=/`,
-				permanent: false,
-			},
-		};
-	}
+	// if (!session) {
+	// 	return {
+	// 		redirect: {
+	// 			destination: `/Auth/SignIn?callbackUr=/`,
+	// 			permanent: false,
+	// 		},
+	// 	};
+	// }
 	const userFromServer = await prisma.users.findFirst({
 		where: {
 			username: session.user.email,
