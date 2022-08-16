@@ -36,14 +36,15 @@ import { prisma } from '../../db/prisma';
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
-	// if (!session) {
-	// 	return {
-	// 		redirect: {
-	// 			destination: `/Auth/SignIn?callbackUr=/`,
-	// 			permanent: false,
-	// 		},
-	// 	};
-	// }
+	if (!session) {
+		return {
+			redirect: {
+				destination: `/Auth/SignIn?callbackUr=/`,
+				permanent: false,
+			},
+		};
+	}
+
 	const userFromServer = await prisma.users.findFirst({
 		where: {
 			username: session.user.email,
@@ -57,14 +58,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	});
 	const userfound = await JSON.parse(JSON.stringify(userFromServer));
 
-	// if (!userfound.isAdmin) {
-	// 	return {
-	// 		redirect: {
-	// 			destination: '/',
-	// 			permanent: false,
-	// 		},
-	// 	};
-	// }
+	if (userfound.isAdmin == false) {
+		return {
+			redirect: {
+				destination: '/',
+				permanent: false,
+			},
+		};
+	}
 
 	await prisma.$disconnect();
 	return {
@@ -259,8 +260,6 @@ const Index = ({
 		setNavValue(value);
 		createActive(value);
 	};
-
-	notifySuccess(userfound.isAdmin);
 
 	let createActive = (key: string) => {
 		removeActive();
@@ -2037,6 +2036,8 @@ const Index = ({
 		retriaveDataForExam();
 		retriaveDataForExamList();
 		setNavActive('Admin');
+
+		notifySuccess(`user name is ${userfound.name}`);
 
 		if (status === 'unauthenticated' || !userData.isAdmin) {
 			checkUser();
