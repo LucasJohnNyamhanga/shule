@@ -43,34 +43,38 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 				permanent: false,
 			},
 		};
-	} else {
-		const userFromServer = await prisma.users.findFirst({
-			where: {
-				username: session.user.email,
-			},
-			select: {
-				isAdmin: true,
-			},
-		});
-		const userfound = await JSON.parse(JSON.stringify(userFromServer));
+	}
+	const userFromServer = await prisma.users.findFirst({
+		where: {
+			username: session.user.email,
+		},
+		select: {
+			id: true,
+			isAdmin: true,
+			name: true,
+			username: true,
+		},
+	});
+	const userfound = await JSON.parse(JSON.stringify(userFromServer));
 
-		if (!userfound.isAdmin) {
-			return {
-				redirect: {
-					destination: '/',
-					permanent: false,
-				},
-			};
-		}
+	if (!userfound.isAdmin) {
+		return {
+			redirect: {
+				destination: '/',
+				permanent: false,
+			},
+		};
 	}
 
 	await prisma.$disconnect();
 	return {
-		props: {},
+		props: { userfound },
 	};
 };
 
-const Index = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Index = ({
+	userfound,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const matches300 = useMediaQuery('(min-width:325px)');
 	const { push } = useRouter();
 	const { status } = useSession();
@@ -2062,7 +2066,7 @@ const Index = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 		return <div className={Styles.error}>Unathorized</div>;
 	}
 
-	if (!userData.isAdmin) {
+	if (!userfound.isAdmin) {
 		return <div className={Styles.error}>Unvalidated Admin</div>;
 	}
 
