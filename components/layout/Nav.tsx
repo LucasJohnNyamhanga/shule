@@ -183,7 +183,7 @@ const Nav = () => {
 							</ul>
 						</div>
 						<div className={Styles.buttonsNav}>
-							{userData.id != '' ? (
+							{session ? (
 								<>
 									<User signOut={handleLogOut} />
 								</>
