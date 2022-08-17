@@ -32,7 +32,8 @@ import { useSession } from 'next-auth/react';
 import { FaUserSecret, FaUsers } from 'react-icons/fa';
 import InputTextMui from '../../components/tools/InputTextMui';
 import { prisma } from '../../db/prisma';
-
+import useSWR from 'swr';
+const fetcher = (url) => axios.get(url).then((res) => res.data);
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
@@ -2124,24 +2125,14 @@ const Index = ({
 
 	let handleOrder = () => {
 		setLoading(true);
-		axios
-			.post('http://localhost:3000/api/getOrder', {
-				user: userDetail.value,
-			})
-			.then(function (response) {
-				const userData = JSON.parse(JSON.stringify(response.data));
-				setOrderList(userData);
-				setLoading(false);
-			})
-			.catch(function (error) {
-				// handle error
-				console.log(error);
-				notifyError('Error has occured, try later.');
-				setLoading(false);
-			})
-			.then(function () {
-				// always executed
-			});
+		const { data, error } = useSWR('/api/getOrder', fetcher);
+		if (data) {
+			setOrderList(data);
+			setLoading(false);
+		}
+		if (error) {
+			setLoading(false);
+		}
 	};
 
 	function timeAgo(time) {
