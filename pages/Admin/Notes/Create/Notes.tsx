@@ -16,8 +16,7 @@ import axios from 'axios';
 import { NavContext } from '../../../../components/context/StateContext';
 import useSWR from 'swr';
 
-const fetcherPost = (url) => axios.post(url).then((res) => res.data);
-const fetcherGet = (url) => axios.get(url).then((res) => res.data);
+const url = 'https://shule-eight.vercel.app';
 
 //load when browser kicks in, on page load
 const CkEditor = dynamic(() => import('../../../../components/tools/Ck'), {
@@ -154,30 +153,39 @@ const Notes = ({
 		setHideShow(false);
 
 		//SWR Fetcher
-		const { data, error } = useSWR('/api/topics', fetcherPost);
-		if (data) {
-			const topics: [] = JSON.parse(JSON.stringify(data));
-			// handle success
-			if (topics.length > 0) {
-				let topicFromServer: formData = [];
-				topics.map((topic: topic) => {
-					topicFromServer.push({
-						label: topic.topicName,
-						value: topic.id as unknown as string,
-					});
-				});
-				setTopicOptions(topicFromServer);
-				setHideShow(true);
-				notifySuccess('Select topic to proceed..');
-			} else {
-				notifyError('No topics available for your selection.');
-			}
-		}
+		//const { data, error } = useSWR('/api/topics', fetcherPost);
 
-		if (error) {
-			console.log(error);
-			notifyError('Something went wrong.');
-		}
+		axios({
+			method: 'post',
+			url: url + '/api/topics',
+			data: topicDetails,
+		})
+			.then(function (response) {
+				const topics: [] = JSON.parse(JSON.stringify(response.data));
+				// handle success
+				if (topics.length > 0) {
+					let topicFromServer: formData = [];
+					topics.map((topic: topic) => {
+						topicFromServer.push({
+							label: topic.topicName,
+							value: topic.id as unknown as string,
+						});
+					});
+					setTopicOptions(topicFromServer);
+					setHideShow(true);
+					notifySuccess('Select topic to proceed..');
+				} else {
+					notifyError('No topics available for your selection.');
+				}
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+				notifyError('Something went wrong.');
+			})
+			.then(function () {
+				// always executed
+			});
 	};
 
 	let handleContent = (data: string) => {
@@ -226,51 +234,62 @@ const Notes = ({
 	};
 
 	let sendToDatabase = () => {
-		const { data, error } = useSWR(
-			{ url: '/api/user', data: topicSelectValue },
-			fetcherPost
-		);
-		if (data) {
-			setTopicSelectValue({
-				formId: '',
-				subjectId: '',
-				topicId: '',
-				content: '',
-				userId: '',
+		axios({
+			method: 'post',
+			url: url + '/api/addNotes',
+			data: topicSelectValue,
+		})
+			.then(function (response) {
+				// handle success
+				setTopicSelectValue({
+					formId: '',
+					subjectId: '',
+					topicId: '',
+					content: '',
+					userId: '',
+				});
+				let jibu: string = response.data.message;
+				let type: string = response.data.type;
+
+				if (type == 'success') {
+					notifySuccess(jibu);
+				} else {
+					notifyError(jibu);
+				}
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+				notifyError('Error has occured, try later.');
+			})
+			.then(function () {
+				// always executed
 			});
-			let jibu: string = data.message;
-			let type: string = data.type;
-
-			if (type == 'success') {
-				notifySuccess(jibu);
-			} else {
-				notifyError(jibu);
-			}
-		}
-
-		if (error) {
-			notifyError('Something went wrong!.');
-		}
 	};
 
 	let checkNotes = () => {
-		const { data, error } = useSWR(
-			{ url: '/api/notes', data: topicSelectValue },
-			fetcherPost
-		);
-		if (data) {
-			const notesFromServer = JSON.parse(JSON.stringify(data));
-			// handle success
-			if (notesFromServer.length > 0) {
-				notifyError('Database contain another copy of this note.');
-			} else {
-				sendToDatabase();
-			}
-		}
-
-		if (error) {
-			notifyError('Something went wrong!.');
-		}
+		axios({
+			method: 'post',
+			url: url + '/api/notes',
+			data: topicSelectValue,
+		})
+			.then(function (response) {
+				const notesFromServer = JSON.parse(JSON.stringify(response.data));
+				// handle success
+				if (notesFromServer.length > 0) {
+					notifyError('Database contain another copy of this note.');
+				} else {
+					sendToDatabase();
+				}
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+				notifyError('Something went wrong.');
+			})
+			.then(function () {
+				// always executed
+			});
 	};
 
 	let handleOnReady = () => {
