@@ -294,7 +294,7 @@ process.env.NODE_ENV !== "production" ? Select.propTypes
    * If the value is an object it must have reference equality with the option in order to be selected.
    * If the value is not an object, the string representation must match with the string representation of the option in order to be selected.
    */
-  value: PropTypes.any,
+  value: PropTypes.oneOfType([PropTypes.oneOf(['']), PropTypes.any]),
 
   /**
    * The variant to use.
