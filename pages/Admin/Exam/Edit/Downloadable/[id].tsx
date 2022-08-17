@@ -28,25 +28,26 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 				permanent: false,
 			},
 		};
-	} else {
-		const userFromServer = await prisma.users.findFirst({
-			where: {
-				username: session.user.email,
-			},
-			select: {
-				isAdmin: true,
-			},
-		});
-		const userfound = await JSON.parse(JSON.stringify(userFromServer));
+	}
 
-		if (!userfound.isAdmin) {
-			return {
-				redirect: {
-					destination: '/',
-					permanent: false,
-				},
-			};
-		}
+	const userFromServer = await prisma.users.findFirst({
+		where: {
+			username: session.user.email,
+		},
+		select: {
+			isAdmin: true,
+			id: true,
+		},
+	});
+	const userfound = await JSON.parse(JSON.stringify(userFromServer));
+
+	if (!userfound.isAdmin) {
+		return {
+			redirect: {
+				destination: '/',
+				permanent: false,
+			},
+		};
 	}
 	let id = context.params?.id as string;
 	let Id = parseInt(id);
@@ -102,6 +103,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			exam,
 			forms,
 			subjects,
+			userfound,
 		},
 	};
 };
@@ -112,11 +114,12 @@ type formData = {
 }[];
 
 const Notes = ({
-    	exam,
-    	forms,
-    	subjects,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-	const { navActive, setNavActive, userData } = useContext(NavContext);
+	exam,
+	forms,
+	subjects,
+	userfound,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	const { navActive, setNavActive } = useContext(NavContext);
 
 	const router = useRouter();
 
@@ -409,7 +412,7 @@ const Notes = ({
 			link: location != '' ? location : exam.link,
 			fileExtension: location != '' ? ext : exam.fileExtension,
 			examId: examSelectValue.examId,
-			userId: userData.id,
+			userId: userfound.id,
 		};
 
 		axios({

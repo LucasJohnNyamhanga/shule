@@ -106,9 +106,9 @@ type formData = {
 }[];
 
 const EditExam = ({
-    	userfound,
-    	vifurushi,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	userfound,
+	vifurushi,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
 

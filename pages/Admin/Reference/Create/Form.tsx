@@ -17,37 +17,38 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 				permanent: false,
 			},
 		};
-	} else {
-		const userFromServer = await prisma.users.findFirst({
-			where: {
-				username: session.user.email,
-			},
-			select: {
-				isAdmin: true,
-			},
-		});
-		const userfound = await JSON.parse(JSON.stringify(userFromServer));
+	}
 
-		if (!userfound.isAdmin) {
-			return {
-				redirect: {
-					destination: '/',
-					permanent: false,
-				},
-			};
-		}
+	const userFromServer = await prisma.users.findFirst({
+		where: {
+			username: session.user.email,
+		},
+		select: {
+			isAdmin: true,
+			id: true,
+		},
+	});
+	const userfound = await JSON.parse(JSON.stringify(userFromServer));
+
+	if (!userfound.isAdmin) {
+		return {
+			redirect: {
+				destination: '/',
+				permanent: false,
+			},
+		};
 	}
 
 	await prisma.$disconnect();
 	return {
-		props: {},
+		props: { userfound },
 	};
 };
 
-const Form = (
-	props: InferGetServerSidePropsType<typeof getServerSideProps>
-) => {
-	const { navActive, setNavActive, userData } = useContext(NavContext);
+const Form = ({
+	userfound,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
 		setNavActive('Admin');
@@ -68,7 +69,7 @@ const Form = (
 		name: string
 	) => {
 		let value = event.currentTarget.value;
-		setFormData({ formName: value, userId: userData.id });
+		setFormData({ formName: value, userId: userfound.id });
 	};
 
 	let handleCreateNotes = () => {

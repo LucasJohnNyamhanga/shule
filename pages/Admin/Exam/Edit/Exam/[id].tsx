@@ -26,25 +26,26 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 				permanent: false,
 			},
 		};
-	} else {
-		const userFromServer = await prisma.users.findFirst({
-			where: {
-				username: session.user.email,
-			},
-			select: {
-				isAdmin: true,
-			},
-		});
-		const userfound = await JSON.parse(JSON.stringify(userFromServer));
+	}
 
-		if (!userfound.isAdmin) {
-			return {
-				redirect: {
-					destination: '/',
-					permanent: false,
-				},
-			};
-		}
+	const userFromServer = await prisma.users.findFirst({
+		where: {
+			username: session.user.email,
+		},
+		select: {
+			isAdmin: true,
+			id: true,
+		},
+	});
+	const userfound = await JSON.parse(JSON.stringify(userFromServer));
+
+	if (!userfound.isAdmin) {
+		return {
+			redirect: {
+				destination: '/',
+				permanent: false,
+			},
+		};
 	}
 	let id = context.params?.id as string;
 	let Id = parseInt(id);
@@ -94,6 +95,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			exam,
 			forms,
 			subjects,
+			userfound,
 		},
 	};
 };
@@ -104,11 +106,12 @@ type formData = {
 }[];
 
 const EditExam = ({
-    	exam,
-    	forms,
-    	subjects,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-	const { navActive, setNavActive, userData } = useContext(NavContext);
+	exam,
+	forms,
+	subjects,
+	userfound,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
 		setNavActive('Admin');
@@ -164,7 +167,7 @@ const EditExam = ({
 			year: exam.year,
 			id: exam.id,
 			hasAnswers: exam.hasAnswers,
-			userId: userData.id,
+			userId: userfound.id,
 		});
 
 		let subjectFromServer: formData = [];
@@ -249,7 +252,7 @@ const EditExam = ({
 		setExamSelectValue({
 			...examSelectValue,
 			examTypeId: value,
-			userId: userData.id,
+			userId: userfound.id,
 		});
 	};
 

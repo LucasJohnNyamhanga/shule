@@ -58,7 +58,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	});
 	const userfound = await JSON.parse(JSON.stringify(userFromServer));
 
-	if (userfound.isAdmin == false) {
+	if (!userfound.isAdmin) {
 		return {
 			redirect: {
 				destination: '/',
@@ -2052,14 +2052,6 @@ const Index = ({
 
 	function truncateCustom(str: string, size: number) {
 		return str.length > size ? str.slice(0, size) + '...' : str;
-	}
-
-	if (status !== 'authenticated') {
-		return <div className={Styles.error}>Unathorized</div>;
-	}
-
-	if (!userfound.isAdmin) {
-		return <div className={Styles.error}>Unvalidated Admin</div>;
 	}
 
 	let handleTextInput = (
