@@ -52,6 +52,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		select: {
 			id: true,
 			isAdmin: true,
+			isSuperUser: true,
 			name: true,
 			username: true,
 		},
@@ -78,7 +79,7 @@ const Index = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const matches300 = useMediaQuery('(min-width:325px)');
 	const { status } = useSession();
-	const { navActive, setNavActive, userData } = useContext(NavContext);
+	const { navActive, setNavActive } = useContext(NavContext);
 
 	type dataTypeSelect = {
 		value: string;
@@ -2037,7 +2038,7 @@ const Index = ({
 		setNavActive('Admin');
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [changerNotes, navActive, matches300, status, userData]);
+	}, [changerNotes, navActive, matches300, status]);
 
 	let truncateLimit = 20;
 	function truncate(str: string) {
@@ -2367,7 +2368,7 @@ const Index = ({
 										<div className={Styles.text}>Reference</div>
 									</div>
 								</div>
-								{userData.isSuperUser && (
+								{userfound.isSuperUser && (
 									<>
 										<div className={Styles.TopicHeaderNotes}>Users</div>
 										<div className={Styles.containerBody}>
@@ -2408,7 +2409,7 @@ const Index = ({
 								textHeader={'Admin Dashboard'}
 								active={active}
 								handleClick={handleNav}
-								userData={userData}
+								userData={userfound}
 							/>
 						</div>
 
