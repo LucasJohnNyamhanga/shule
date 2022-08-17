@@ -13,7 +13,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			content: {
 				search: searchText,
 			},
-			published: true,
 		},
 		select: {
 			id: true,
@@ -58,9 +57,9 @@ type note = {
 };
 
 const Reference = ({
-	searchResults,
-	searchText,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	searchResults,
+    	searchText,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 	const [searchResultsStatus, setSearchResultsStatus] = useState(false);
 
