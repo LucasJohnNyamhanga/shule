@@ -5,12 +5,10 @@ import Link from 'next/link';
 import { NavContext } from '../../components/context/StateContext';
 import { useSession, getSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import axios from 'axios';
 import User from '../layout/User';
 
 const Nav = () => {
-	const { setNavActive, navActive, userData, setUserData } =
-		useContext(NavContext);
+	const { setNavActive, navActive } = useContext(NavContext);
 	const { data: session, status } = useSession();
 	const [limt, setLimit] = useState(0);
 
@@ -27,57 +25,7 @@ const Nav = () => {
 		});
 	};
 
-	let checkUser = async () => {
-		const session = await getSession();
-		if (session) {
-			if (limt <= 5) {
-				let data = session.user.email;
-				axios
-					.post('http://localhost:3000/api/getUser', { username: data })
-					.then(function (response) {
-						//responce
-						const userData = JSON.parse(JSON.stringify(response.data));
-						setUserData({
-							id: userData.id,
-							isAdmin: userData.isAdmin,
-							userName: userData.username,
-							image: userData.image,
-							isSuperUser: userData.isSuperUser,
-						});
-					})
-					.catch(function (error) {
-						// handle error
-						console.log('Something went wrong');
-						setUserData({
-							id: '',
-							isAdmin: false,
-							userName: '',
-							image: '',
-							isSuperUser: false,
-						});
-					});
-				setLimit(limt + 1);
-			}
-		}
-	};
-
-	useEffect(() => {
-		if (session) {
-			if (status === 'authenticated') {
-				checkUser();
-			} else {
-				setLimit(0);
-			}
-		} else {
-			setUserData({
-				id: '',
-				isAdmin: false,
-				userName: '',
-				image: '',
-				isSuperUser: false,
-			});
-		}
-	}, [session]);
+	useEffect(() => {}, [navActive]);
 
 	return (
 		<div className={Styles.container}>

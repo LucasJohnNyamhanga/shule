@@ -31,25 +31,26 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 				permanent: false,
 			},
 		};
-	} else {
-		const userFromServer = await prisma.users.findFirst({
-			where: {
-				username: session.user.email,
-			},
-			select: {
-				isAdmin: true,
-			},
-		});
-		const userfound = await JSON.parse(JSON.stringify(userFromServer));
+	}
 
-		if (!userfound.isAdmin) {
-			return {
-				redirect: {
-					destination: '/',
-					permanent: false,
-				},
-			};
-		}
+	const userFromServer = await prisma.users.findFirst({
+		where: {
+			username: session.user.email,
+		},
+		select: {
+			isAdmin: true,
+			id: true,
+		},
+	});
+	const userfound = await JSON.parse(JSON.stringify(userFromServer));
+
+	if (!userfound.isAdmin) {
+		return {
+			redirect: {
+				destination: '/',
+				permanent: false,
+			},
+		};
 	}
 
 	const formsFromServer: userData = await prisma.formExams.findMany({
@@ -82,6 +83,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			forms,
 			subjects,
 			examType,
+			userfound,
 		},
 	};
 };
@@ -97,11 +99,12 @@ type formData = {
 }[];
 
 const Notes = ({
-    	forms,
-    	subjects,
-    	examType,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-	const { navActive, setNavActive, userData } = useContext(NavContext);
+	forms,
+	subjects,
+	examType,
+	userfound,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	const { navActive, setNavActive } = useContext(NavContext);
 
 	const [formOptions, setFormOptions] = useState<formData>([]);
 	const [subjectOptions, setSubjectOptions] = useState<formData>([]);
@@ -133,7 +136,7 @@ const Notes = ({
 			description: '',
 			year: '',
 			hasAnswers: '',
-			userId: userData.id,
+			userId: userfound.id,
 		});
 
 		setNavActive('Admin');
@@ -160,7 +163,7 @@ const Notes = ({
 		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [change, navActive, userData]);
+	}, [change, navActive]);
 
 	let retriaveExamTypeData = () => {
 		setHideShow(false);
@@ -266,7 +269,7 @@ const Notes = ({
 							description: '',
 							year: '',
 							hasAnswers: '',
-							userId: userData.id,
+							userId: userfound.id,
 						});
 
 						setExamDetails({

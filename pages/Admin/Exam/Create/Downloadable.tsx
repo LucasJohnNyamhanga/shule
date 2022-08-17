@@ -33,25 +33,25 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 				permanent: false,
 			},
 		};
-	} else {
-		const userFromServer = await prisma.users.findFirst({
-			where: {
-				username: session.user.email,
-			},
-			select: {
-				isAdmin: true,
-			},
-		});
-		const userfound = await JSON.parse(JSON.stringify(userFromServer));
+	}
+	const userFromServer = await prisma.users.findFirst({
+		where: {
+			username: session.user.email,
+		},
+		select: {
+			id: true,
+			isAdmin: true,
+		},
+	});
+	const userfound = await JSON.parse(JSON.stringify(userFromServer));
 
-		if (!userfound.isAdmin) {
-			return {
-				redirect: {
-					destination: '/',
-					permanent: false,
-				},
-			};
-		}
+	if (!userfound.isAdmin) {
+		return {
+			redirect: {
+				destination: '/',
+				permanent: false,
+			},
+		};
 	}
 
 	const formsFromServer: userData = await prisma.formExams.findMany({
@@ -83,6 +83,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		props: {
 			forms,
 			subjects,
+			userfound,
 		},
 	};
 };
@@ -98,10 +99,11 @@ type formData = {
 }[];
 
 const Notes = ({
-    	forms,
-    	subjects,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-	const { navActive, setNavActive, userData } = useContext(NavContext);
+	forms,
+	subjects,
+	userfound,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	const { navActive, setNavActive } = useContext(NavContext);
 	useEffect(() => {
 		setNavActive('Admin');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -137,7 +139,7 @@ const Notes = ({
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
 
-	console.log(userData.id);
+	console.log(userfound.id);
 
 	useEffect(() => {
 		setExamSelectValue({
@@ -145,7 +147,7 @@ const Notes = ({
 			link: '',
 			fileExtension: '',
 			examId: '',
-			userId: userData.id,
+			userId: userfound.id,
 		});
 		let subjectFromServer: formData = [];
 		subjects.map((subject: subject) => {
@@ -285,7 +287,7 @@ const Notes = ({
 			link: location,
 			fileExtension: ext,
 			examId: examSelectValue.examId,
-			userId: userData.id,
+			userId: userfound.id,
 		};
 
 		axios({
@@ -306,7 +308,7 @@ const Notes = ({
 					link: '',
 					fileExtension: '',
 					examId: '',
-					userId: userData.id,
+					userId: userfound.id,
 				});
 
 				setImage('');

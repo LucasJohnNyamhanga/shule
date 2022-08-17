@@ -29,25 +29,25 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 				permanent: false,
 			},
 		};
-	} else {
-		const userFromServer = await prisma.users.findFirst({
-			where: {
-				username: session.user.email,
-			},
-			select: {
-				isAdmin: true,
-			},
-		});
-		const userfound = await JSON.parse(JSON.stringify(userFromServer));
+	}
+	const userFromServer = await prisma.users.findFirst({
+		where: {
+			username: session.user.email,
+		},
+		select: {
+			isAdmin: true,
+			id: true,
+		},
+	});
+	const userfound = await JSON.parse(JSON.stringify(userFromServer));
 
-		if (!userfound.isAdmin) {
-			return {
-				redirect: {
-					destination: '/',
-					permanent: false,
-				},
-			};
-		}
+	if (!userfound.isAdmin) {
+		return {
+			redirect: {
+				destination: '/',
+				permanent: false,
+			},
+		};
 	}
 	const formsFromServer = await prisma.formReference.findMany({
 		select: {
@@ -78,6 +78,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			forms,
 			deactiveteImage,
 			subjects,
+			userfound,
 		},
 	};
 };
@@ -103,11 +104,12 @@ type selectFormType = {
 }[];
 
 const CreateNotes = ({
-        	forms,
-        	deactiveteImage,
-        	subjects,
-        }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-	const { navActive, setNavActive, userData } = useContext(NavContext);
+	forms,
+	deactiveteImage,
+	subjects,
+	userfound,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	const { navActive, setNavActive } = useContext(NavContext);
 
 	const [selectOption, setSelectOption] = useState<dataTypeSelect>([]);
 	const [subjectOptions, setSubjectOptions] = useState<formData>([]);
@@ -274,7 +276,7 @@ const CreateNotes = ({
 			formReference: forms,
 			subjectId: referenceDetails.subjectId,
 			isPdf: referenceDetails.isPdf,
-			userId: userData.id,
+			userId: userfound.id,
 		};
 
 		axios({

@@ -17,35 +17,38 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 				permanent: false,
 			},
 		};
-	} else {
-		const userFromServer = await prisma.users.findFirst({
-			where: {
-				username: session.user.email,
-			},
-			select: {
-				isAdmin: true,
-			},
-		});
-		const userfound = await JSON.parse(JSON.stringify(userFromServer));
+	}
 
-		if (!userfound.isAdmin) {
-			return {
-				redirect: {
-					destination: '/',
-					permanent: false,
-				},
-			};
-		}
+	const userFromServer = await prisma.users.findFirst({
+		where: {
+			username: session.user.email,
+		},
+		select: {
+			isAdmin: true,
+			id: true,
+		},
+	});
+	const userfound = await JSON.parse(JSON.stringify(userFromServer));
+
+	if (!userfound.isAdmin) {
+		return {
+			redirect: {
+				destination: '/',
+				permanent: false,
+			},
+		};
 	}
 
 	await prisma.$disconnect();
 	return {
-		props: {},
+		props: { userfound },
 	};
 };
 
-const Notes = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-	const { navActive, setNavActive, userData } = useContext(NavContext);
+const Notes = ({
+	userfound,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	const { navActive, setNavActive } = useContext(NavContext);
 	const [formData, setFormData] = useState({
 		formName: '',
 		userId: '',
@@ -54,10 +57,10 @@ const Notes = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 		setNavActive('Admin');
 		setFormData({
 			formName: '',
-			userId: userData.id,
+			userId: userfound.id,
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [userData]);
+	}, []);
 	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
@@ -85,7 +88,7 @@ const Notes = ({}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 				// handle success
 				setFormData({
 					formName: '',
-					userId: userData.id,
+					userId: userfound.id,
 				});
 				let jibu: string = response.data.message;
 				let type: string = response.data.type;

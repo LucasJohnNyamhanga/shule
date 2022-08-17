@@ -20,25 +20,25 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 				permanent: false,
 			},
 		};
-	} else {
-		const userFromServer = await prisma.users.findFirst({
-			where: {
-				username: session.user.email,
-			},
-			select: {
-				isAdmin: true,
-			},
-		});
-		const userfound = await JSON.parse(JSON.stringify(userFromServer));
+	}
+	const userFromServer = await prisma.users.findFirst({
+		where: {
+			username: session.user.email,
+		},
+		select: {
+			isAdmin: true,
+			id: true,
+		},
+	});
+	const userfound = await JSON.parse(JSON.stringify(userFromServer));
 
-		if (!userfound.isAdmin) {
-			return {
-				redirect: {
-					destination: '/',
-					permanent: false,
-				},
-			};
-		}
+	if (!userfound.isAdmin) {
+		return {
+			redirect: {
+				destination: '/',
+				permanent: false,
+			},
+		};
 	}
 	let id = context.params?.id as string;
 	let Id = parseInt(id);
@@ -60,6 +60,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	return {
 		props: {
 			form,
+			userfound,
 		},
 	};
 };
@@ -75,8 +76,9 @@ type formData = {
 
 const EditForm = ({
 	form,
+	userfound,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-	const { navActive, setNavActive, userData } = useContext(NavContext);
+	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
 		setNavActive('Admin');
@@ -94,7 +96,7 @@ const EditForm = ({
 		setFormData({
 			formName: form.formName,
 			id: form.id,
-			userId: userData.id,
+			userId: userfound.id,
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
