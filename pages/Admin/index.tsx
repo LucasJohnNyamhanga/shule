@@ -401,7 +401,6 @@ const Index = ({
 
 	const retriaveSubjectsReview = async () => {
 		setLoading(true);
-		//needs SWR
 		axios
 			.get('https://shule-eight.vercel.app/api/subjectsReview')
 			.then(function (response) {
@@ -413,7 +412,6 @@ const Index = ({
 					value: '',
 					label: '',
 				};
-
 				for (const selectSubject of subjectsFromServer) {
 					template = {
 						value: selectSubject.id,
