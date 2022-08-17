@@ -32,8 +32,7 @@ import { useSession } from 'next-auth/react';
 import { FaUserSecret, FaUsers } from 'react-icons/fa';
 import InputTextMui from '../../components/tools/InputTextMui';
 import { prisma } from '../../db/prisma';
-import useSWR from 'swr';
-const fetcher = (url) => axios.get(url).then((res) => res.data);
+
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
@@ -403,7 +402,7 @@ const Index = ({
 	const retriaveSubjectsReview = async () => {
 		setLoading(true);
 		axios
-			.get('http://localhost:3000/api/subjectsReview')
+			.get('https://shule-eight.vercel.app/api/subjectsReview')
 			.then(function (response) {
 				const subjectsFromServer = JSON.parse(JSON.stringify(response.data));
 				// handle success
@@ -435,7 +434,7 @@ const Index = ({
 			});
 
 		axios
-			.get('http://localhost:3000/api/formsReview')
+			.get('https://shule-eight.vercel.app/api/formsReview')
 			.then(function (response) {
 				const FormsFromServer = JSON.parse(JSON.stringify(response.data));
 				// handle success
@@ -470,7 +469,7 @@ const Index = ({
 	const retriaveSubjectsExam = async () => {
 		setLoading(true);
 		axios
-			.get('http://localhost:3000/api/subjectsExam')
+			.get('https://shule-eight.vercel.app/api/subjectsExam')
 			.then(function (response) {
 				const subjectsFromServer = JSON.parse(JSON.stringify(response.data));
 				// handle success
@@ -502,7 +501,7 @@ const Index = ({
 			});
 
 		axios
-			.get('http://localhost:3000/api/formsExam')
+			.get('https://shule-eight.vercel.app/api/formsExam')
 			.then(function (response) {
 				const FormsFromServer = JSON.parse(JSON.stringify(response.data));
 				// handle success
@@ -536,7 +535,7 @@ const Index = ({
 	const retriaveSubjectsReference = async () => {
 		setLoading(true);
 		axios
-			.get('http://localhost:3000/api/subjectsReference')
+			.get('https://shule-eight.vercel.app/api/subjectsReference')
 			.then(function (response) {
 				const subjectsFromServer = JSON.parse(JSON.stringify(response.data));
 				// handle success
@@ -570,7 +569,7 @@ const Index = ({
 			});
 
 		axios
-			.get('http://localhost:3000/api/formsReference')
+			.get('https://shule-eight.vercel.app/api/formsReference')
 			.then(function (response) {
 				const FormsFromServer = JSON.parse(JSON.stringify(response.data));
 				// handle success
@@ -607,7 +606,7 @@ const Index = ({
 	const retriaveSubjects = async () => {
 		setLoading(true);
 		axios
-			.get('http://localhost:3000/api/subjects')
+			.get('https://shule-eight.vercel.app/api/subjects')
 			.then(function (response) {
 				const subjectsFromServer = JSON.parse(JSON.stringify(response.data));
 				// handle success
@@ -639,7 +638,7 @@ const Index = ({
 			});
 
 		axios
-			.get('http://localhost:3000/api/forms')
+			.get('https://shule-eight.vercel.app/api/forms')
 			.then(function (response) {
 				const FormsFromServer = JSON.parse(JSON.stringify(response.data));
 				// handle success
@@ -674,7 +673,7 @@ const Index = ({
 	let handleUpdateSubject = (published: boolean, id: number) => {
 		setLoading(true);
 		axios
-			.post('http://localhost:3000/api/updateDraftOrPublished', {
+			.post('https://shule-eight.vercel.app/api/updateDraftOrPublished', {
 				id,
 				published: !published,
 			})
@@ -698,7 +697,7 @@ const Index = ({
 		setLoading(true);
 		axios
 			.post(
-				'http://localhost:3000/api/updateDraftOrPublishedExamDownloadable',
+				'https://shule-eight.vercel.app/api/updateDraftOrPublishedExamDownloadable',
 				{
 					id,
 					published: !published,
@@ -723,10 +722,13 @@ const Index = ({
 	let handleUpdatePublishExam = (published: boolean, id: number) => {
 		setLoading(true);
 		axios
-			.post('http://localhost:3000/api/updateDraftOrPublishedExamination', {
-				id,
-				published: !published,
-			})
+			.post(
+				'https://shule-eight.vercel.app/api/updateDraftOrPublishedExamination',
+				{
+					id,
+					published: !published,
+				}
+			)
 			.then(function (response) {
 				let jibu: string = response.data.message;
 				notifySuccess(jibu);
@@ -746,10 +748,13 @@ const Index = ({
 	let handleUpdateSubjectReview = (published: boolean, id: number) => {
 		setLoading(true);
 		axios
-			.post('http://localhost:3000/api/updateDraftOrPublishedsubjectReview', {
-				id,
-				published: !published,
-			})
+			.post(
+				'https://shule-eight.vercel.app/api/updateDraftOrPublishedsubjectReview',
+				{
+					id,
+					published: !published,
+				}
+			)
 			.then(function (response) {
 				retriaveSubjectsReview();
 				let jibu: string = response.data.message;
@@ -769,7 +774,7 @@ const Index = ({
 	let handleUpdateSubjectExam = (published: boolean, id: number) => {
 		setLoading(true);
 		axios
-			.post('http://localhost:3000/api/updateDraftOrPublishedExam', {
+			.post('https://shule-eight.vercel.app/api/updateDraftOrPublishedExam', {
 				id,
 				published: !published,
 			})
@@ -793,7 +798,7 @@ const Index = ({
 		setLoading(true);
 		axios
 			.post(
-				'http://localhost:3000/api/updateDraftOrPublishedSubjectReference',
+				'https://shule-eight.vercel.app/api/updateDraftOrPublishedSubjectReference',
 				{
 					id,
 					published: !published,
@@ -819,7 +824,7 @@ const Index = ({
 		setLoading(true);
 		axios
 			.post(
-				'http://localhost:3000/api/updateDraftOrPublishedNotesDownloadable',
+				'https://shule-eight.vercel.app/api/updateDraftOrPublishedNotesDownloadable',
 				{
 					id,
 					published: !published,
@@ -844,7 +849,7 @@ const Index = ({
 	let handleUpdateTopic = (published: boolean, id: number) => {
 		setLoading(true);
 		axios
-			.post('http://localhost:3000/api/updateDraftOrPublishedTopic', {
+			.post('https://shule-eight.vercel.app/api/updateDraftOrPublishedTopic', {
 				id,
 				published: !published,
 			})
@@ -867,10 +872,13 @@ const Index = ({
 	let handleUpdateTopicReview = (published: boolean, id: number) => {
 		setLoading(true);
 		axios
-			.post('http://localhost:3000/api/updateDraftOrPublishedTopicReview', {
-				id,
-				published: !published,
-			})
+			.post(
+				'https://shule-eight.vercel.app/api/updateDraftOrPublishedTopicReview',
+				{
+					id,
+					published: !published,
+				}
+			)
 			.then(function (response) {
 				let jibu: string = response.data.message;
 				notifySuccess(jibu);
@@ -890,10 +898,13 @@ const Index = ({
 	let handleUpdateExamType = (published: boolean, id: number) => {
 		setLoading(true);
 		axios
-			.post('http://localhost:3000/api/updateDraftOrPublishedExamType', {
-				id,
-				published: !published,
-			})
+			.post(
+				'https://shule-eight.vercel.app/api/updateDraftOrPublishedExamType',
+				{
+					id,
+					published: !published,
+				}
+			)
 			.then(function (response) {
 				let jibu: string = response.data.message;
 				notifySuccess(jibu);
@@ -913,10 +924,13 @@ const Index = ({
 	let handleUpdateReference = (published: boolean, id: number) => {
 		setLoading(true);
 		axios
-			.post('http://localhost:3000/api/updateDraftOrPublishedReference', {
-				id,
-				published: !published,
-			})
+			.post(
+				'https://shule-eight.vercel.app/api/updateDraftOrPublishedReference',
+				{
+					id,
+					published: !published,
+				}
+			)
 			.then(function (response) {
 				let jibu: string = response.data.message;
 				notifySuccess(jibu);
@@ -936,10 +950,13 @@ const Index = ({
 	let handleUpdateQuestion = (published: boolean, id: number) => {
 		setLoading(true);
 		axios
-			.post('http://localhost:3000/api/updateDraftOrPublishedQuestions', {
-				id,
-				published: !published,
-			})
+			.post(
+				'https://shule-eight.vercel.app/api/updateDraftOrPublishedQuestions',
+				{
+					id,
+					published: !published,
+				}
+			)
 			.then(function (response) {
 				let jibu: string = response.data.message;
 				notifySuccess(jibu);
@@ -959,7 +976,7 @@ const Index = ({
 	let handleUpdateReviewPublished = (published: boolean, id: number) => {
 		setLoading(true);
 		axios
-			.post('http://localhost:3000/api/updateDraftOrPublishedReview', {
+			.post('https://shule-eight.vercel.app/api/updateDraftOrPublishedReview', {
 				id,
 				published: !published,
 			})
@@ -987,7 +1004,7 @@ const Index = ({
 	let retrivalTopics = () => {
 		setLoading(true);
 		axios
-			.get('http://localhost:3000/api/subjects')
+			.get('https://shule-eight.vercel.app/api/subjects')
 			.then(function (response) {
 				const subjectsFromServer = JSON.parse(JSON.stringify(response.data));
 				// handle success
@@ -1019,7 +1036,7 @@ const Index = ({
 			});
 
 		axios
-			.get('http://localhost:3000/api/forms')
+			.get('https://shule-eight.vercel.app/api/forms')
 			.then(function (response) {
 				const FormsFromServer = JSON.parse(JSON.stringify(response.data));
 				// handle success
@@ -1055,7 +1072,7 @@ const Index = ({
 	let retrivalTopicsReview = () => {
 		setLoading(true);
 		axios
-			.get('http://localhost:3000/api/subjectsReview')
+			.get('https://shule-eight.vercel.app/api/subjectsReview')
 			.then(function (response) {
 				const subjectsFromServer = JSON.parse(JSON.stringify(response.data));
 				// handle success
@@ -1087,7 +1104,7 @@ const Index = ({
 			});
 
 		axios
-			.get('http://localhost:3000/api/formsReview')
+			.get('https://shule-eight.vercel.app/api/formsReview')
 			.then(function (response) {
 				const FormsFromServer = JSON.parse(JSON.stringify(response.data));
 				// handle success
@@ -1306,7 +1323,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: 'http://localhost:3000/api/topics',
+				url: 'https://shule-eight.vercel.app/api/topics',
 				data: topicDetails,
 			})
 				.then(function (response) {
@@ -1343,7 +1360,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: 'http://localhost:3000/api/downloadable',
+				url: 'https://shule-eight.vercel.app/api/downloadable',
 				data: downloadableDetails,
 			})
 				.then(function (response) {
@@ -1377,7 +1394,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: 'http://localhost:3000/api/topicsReview',
+				url: 'https://shule-eight.vercel.app/api/topicsReview',
 				data: topicDetailsReview,
 			})
 				.then(function (response) {
@@ -1411,7 +1428,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: 'http://localhost:3000/api/examType',
+				url: 'https://shule-eight.vercel.app/api/examType',
 				data: topicDetailsExam,
 			})
 				.then(function (response) {
@@ -1445,7 +1462,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: 'http://localhost:3000/api/reference',
+				url: 'https://shule-eight.vercel.app/api/reference',
 				data: detailsReference,
 			})
 				.then(function (response) {
@@ -1480,7 +1497,7 @@ const Index = ({
 			setActivateNotes(false);
 			axios({
 				method: 'post',
-				url: 'http://localhost:3000/api/topics',
+				url: 'https://shule-eight.vercel.app/api/topics',
 				data: notesDetails,
 			})
 				.then(function (response) {
@@ -1523,7 +1540,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: 'http://localhost:3000/api/examType',
+				url: 'https://shule-eight.vercel.app/api/examType',
 				data: DetailsExam,
 			})
 				.then(function (response) {
@@ -1569,7 +1586,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: 'http://localhost:3000/api/examType',
+				url: 'https://shule-eight.vercel.app/api/examType',
 				data: examListDetails,
 			})
 				.then(function (response) {
@@ -1620,7 +1637,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: 'http://localhost:3000/api/examList',
+				url: 'https://shule-eight.vercel.app/api/examList',
 				data: examListDetails,
 			})
 				.then(function (response) {
@@ -1670,7 +1687,7 @@ const Index = ({
 			setActivateNotesReview(false);
 			axios({
 				method: 'post',
-				url: 'http://localhost:3000/api/topicsReview',
+				url: 'https://shule-eight.vercel.app/api/topicsReview',
 				data: notesDetailsReview,
 			})
 				.then(function (response) {
@@ -1711,7 +1728,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: 'http://localhost:3000/api/topicsReview',
+				url: 'https://shule-eight.vercel.app/api/topicsReview',
 				data: detailsQuestions,
 			})
 				.then(function (response) {
@@ -1759,7 +1776,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: 'http://localhost:3000/api/review',
+				url: 'https://shule-eight.vercel.app/api/review',
 				data: detailsQuestions,
 			})
 				.then(function (response) {
@@ -1808,7 +1825,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: 'http://localhost:3000/api/notes',
+				url: 'https://shule-eight.vercel.app/api/notes',
 				data: notesDetails,
 			})
 				.then(function (response) {
@@ -1846,7 +1863,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: 'http://localhost:3000/api/exam',
+				url: 'https://shule-eight.vercel.app/api/exam',
 				data: DetailsExam,
 			})
 				.then(function (response) {
@@ -1885,7 +1902,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: 'http://localhost:3000/api/examDownloadable',
+				url: 'https://shule-eight.vercel.app/api/examDownloadable',
 				data: examListDetails,
 			})
 				.then(function (response) {
@@ -1926,7 +1943,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: 'http://localhost:3000/api/review',
+				url: 'https://shule-eight.vercel.app/api/review',
 				data: notesDetailsReview,
 			})
 				.then(function (response) {
@@ -1965,7 +1982,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: 'http://localhost:3000/api/questions',
+				url: 'https://shule-eight.vercel.app/api/questions',
 				data: detailsQuestions,
 			})
 				.then(function (response) {
@@ -2005,7 +2022,7 @@ const Index = ({
 
 	let handleUpdateNotes = (published: boolean, id: number) => {
 		axios
-			.post('http://localhost:3000/api/updateDraftOrPublishedNotes', {
+			.post('https://shule-eight.vercel.app/api/updateDraftOrPublishedNotes', {
 				id,
 				published: !published,
 			})
@@ -2076,7 +2093,7 @@ const Index = ({
 	let handleSearchUser = () => {
 		setLoading(true);
 		axios
-			.post('http://localhost:3000/api/searchUser', {
+			.post('https://shule-eight.vercel.app/api/searchUser', {
 				user: userDetail.value,
 			})
 			.then(function (response) {
@@ -2104,7 +2121,7 @@ const Index = ({
 	let handleAdmins = () => {
 		setLoading(true);
 		axios
-			.post('http://localhost:3000/api/getAdmins', {
+			.post('https://shule-eight.vercel.app/api/getAdmins', {
 				user: userDetail.value,
 			})
 			.then(function (response) {
@@ -2125,14 +2142,24 @@ const Index = ({
 
 	let handleOrder = () => {
 		setLoading(true);
-		const { data, error } = useSWR('/api/getOrder', fetcher);
-		if (data) {
-			setOrderList(data);
-			setLoading(false);
-		}
-		if (error) {
-			setLoading(false);
-		}
+		axios
+			.post('https://shule-eight.vercel.app/api/getOrder', {
+				user: userDetail.value,
+			})
+			.then(function (response) {
+				const userData = JSON.parse(JSON.stringify(response.data));
+				setOrderList(userData);
+				setLoading(false);
+			})
+			.catch(function (error) {
+				// handle error
+				console.log(error);
+				notifyError('Error has occured, try later.');
+				setLoading(false);
+			})
+			.then(function () {
+				// always executed
+			});
 	};
 
 	function timeAgo(time) {
