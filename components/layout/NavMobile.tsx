@@ -10,8 +10,7 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 
 export const NavMobile = () => {
-	const { navActive, setNavActive, userData, setUserData } =
-		useContext(NavContext);
+	const { navActive, setNavActive } = useContext(NavContext);
 	const { data: session, status } = useSession();
 	const [limt, setLimit] = useState(0);
 
@@ -28,55 +27,7 @@ export const NavMobile = () => {
 		});
 	};
 
-	let checkUser = async () => {
-		const session = await getSession();
-		if (session) {
-			if (limt <= 6) {
-				let data = session.user.email;
-				axios
-					.post('http://localhost:3000/api/getUser', { username: data })
-					.then(function (response) {
-						//responce
-						const userData = JSON.parse(JSON.stringify(response.data));
-						setUserData({
-							id: userData.id,
-							isAdmin: userData.isAdmin,
-							userName: userData.userName,
-							image: userData.image,
-							isSuperUser: userData.isSuperUser,
-						});
-					})
-					.catch(function (error) {
-						// handle error
-						console.log('Something went wrong');
-						setUserData({
-							id: '',
-							isAdmin: false,
-							userName: '',
-							image: '',
-							isSuperUser: false,
-						});
-					});
-				setLimit(limt + 1);
-			}
-		}
-	};
-
-	useEffect(() => {
-		if (session) {
-			if (status === 'authenticated') {
-				checkUser();
-			}
-		} else {
-			setUserData({
-				id: '',
-				isAdmin: false,
-				userName: '',
-				image: '',
-				isSuperUser: false,
-			});
-		}
-	}, [status, limt, session]);
+	useEffect(() => {}, [navActive]);
 
 	let handleMobileMenu = (linkValue: string) => {
 		setNavActive(linkValue);
@@ -104,7 +55,6 @@ export const NavMobile = () => {
 						<DrawerMobile
 							handleMenu={handleMobileMenu}
 							navActive={navActive}
-							userData={userData}
 							handleSignOut={handleLogOut}
 							handleSighIn={handleSignIn}
 						/>

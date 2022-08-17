@@ -2,31 +2,26 @@ import { Drawer, Box, List, ListItemText, Divider } from '@mui/material';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import Styles from '../../styles/drawerMobile.module.scss';
+import { useSession } from 'next-auth/react';
 
 type dataType = {
 	handleMenu: (linkValue: string) => void;
 	handleSignOut: () => void;
 	handleSighIn: () => void;
 	navActive: string;
-	userData: {
-		id: string;
-		isAdmin: boolean;
-		userName: string;
-		image: string;
-	};
 };
 
 export const MuiDrawer = ({
 	handleMenu,
 	navActive,
-	userData,
 	handleSignOut,
 	handleSighIn,
 }: dataType) => {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const humberger = useRef<HTMLDivElement>(null!);
+	const { data: session, status } = useSession();
 
-	useEffect(() => {}, [navActive, userData]);
+	useEffect(() => {}, [navActive]);
 
 	let handleMenuClick = (linkValue: string) => {
 		humberger.current.classList.toggle(Styles.isActive);
@@ -126,42 +121,11 @@ export const MuiDrawer = ({
 							</a>
 						</Link>
 						<Divider />
-						{userData.isAdmin && (
-							<>
-								<Link href={'/Admin'}>
-									<a>
-										<div
-											ref={admin}
-											className={
-												'Admin' == navActive ? Styles.active : Styles.setCenter
-											}
-											onClick={() => {
-												handleMenuClick('Admin');
-											}}>
-											Admin
-										</div>
-									</a>
-								</Link>
-								<Divider />
-							</>
-						)}
 					</List>
 					<ListItemText primary={`ACCOUNT`} />
 					<Divider />
 					<List>
-						{userData.id == '' ? (
-							<>
-								<div
-									className={Styles.activeCredential}
-									onClick={() => {
-										handleSighIn();
-										handleMenuClick('');
-									}}>
-									Sign In
-								</div>
-								<Divider />
-							</>
-						) : (
+						{session ? (
 							<>
 								<Link href={'/Account'}>
 									<a>
@@ -194,6 +158,18 @@ export const MuiDrawer = ({
 										handleMenuClick('');
 									}}>
 									Sign Out
+								</div>
+								<Divider />
+							</>
+						) : (
+							<>
+								<div
+									className={Styles.activeCredential}
+									onClick={() => {
+										handleSighIn();
+										handleMenuClick('');
+									}}>
+									Sign In
 								</div>
 								<Divider />
 							</>
