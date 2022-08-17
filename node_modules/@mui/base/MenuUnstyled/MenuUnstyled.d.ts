@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { MenuUnstyledProps } from './MenuUnstyled.types';
+import { OverridableComponent } from '@mui/types';
+import { MenuUnstyledTypeMap } from './MenuUnstyled.types';
 /**
  *
  * Demos:
@@ -10,5 +10,5 @@ import { MenuUnstyledProps } from './MenuUnstyled.types';
  *
  * - [MenuUnstyled API](https://mui.com/base/api/menu-unstyled/)
  */
-declare const MenuUnstyled: React.ForwardRefExoticComponent<MenuUnstyledProps & React.HTMLAttributes<HTMLElement> & React.RefAttributes<any>>;
+declare const MenuUnstyled: OverridableComponent<MenuUnstyledTypeMap<{}, "ul">>;
 export default MenuUnstyled;

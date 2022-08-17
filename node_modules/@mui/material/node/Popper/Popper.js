@@ -83,6 +83,30 @@ process.env.NODE_ENV !== "production" ? Popper.propTypes
   .oneOfType([_propTypes.default.node, _propTypes.default.func]),
 
   /**
+   * @ignore
+   */
+  component: _propTypes.default
+  /* @typescript-to-proptypes-ignore */
+  .elementType,
+
+  /**
+   * The components used for each slot inside the Popper.
+   * Either a string to use a HTML element or a component.
+   * @default {}
+   */
+  components: _propTypes.default.shape({
+    Root: _propTypes.default.elementType
+  }),
+
+  /**
+   * The props used for each slot inside the Popper.
+   * @default {}
+   */
+  componentsProps: _propTypes.default.shape({
+    root: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.object])
+  }),
+
+  /**
    * An HTML element or function that returns one.
    * The `container` will have the portal children appended to it.
    *

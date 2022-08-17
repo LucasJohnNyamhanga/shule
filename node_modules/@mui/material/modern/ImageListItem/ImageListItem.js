@@ -40,9 +40,8 @@ const ImageListItemRoot = styled('li', {
 })(({
   ownerState
 }) => _extends({
-  display: 'inline-block',
-  position: 'relative',
-  lineHeight: 0
+  display: 'block',
+  position: 'relative'
 }, ownerState.variant === 'standard' && {
   // For titlebar under list item
   display: 'flex',
@@ -57,7 +56,8 @@ const ImageListItemRoot = styled('li', {
   [`& .${imageListItemClasses.img}`]: _extends({
     objectFit: 'cover',
     width: '100%',
-    height: '100%'
+    height: '100%',
+    display: 'block'
   }, ownerState.variant === 'standard' && {
     height: 'auto',
     flexGrow: 1

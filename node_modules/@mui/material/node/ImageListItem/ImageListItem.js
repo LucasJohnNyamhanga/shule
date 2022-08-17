@@ -67,9 +67,8 @@ const ImageListItemRoot = (0, _styled.default)('li', {
 })(({
   ownerState
 }) => (0, _extends2.default)({
-  display: 'inline-block',
-  position: 'relative',
-  lineHeight: 0
+  display: 'block',
+  position: 'relative'
 }, ownerState.variant === 'standard' && {
   // For titlebar under list item
   display: 'flex',
@@ -84,7 +83,8 @@ const ImageListItemRoot = (0, _styled.default)('li', {
   [`& .${_imageListItemClasses.default.img}`]: (0, _extends2.default)({
     objectFit: 'cover',
     width: '100%',
-    height: '100%'
+    height: '100%',
+    display: 'block'
   }, ownerState.variant === 'standard' && {
     height: 'auto',
     flexGrow: 1

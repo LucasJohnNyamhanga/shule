@@ -1,6 +1,4 @@
-import * as React from 'react';
-import { MultiSelectUnstyledProps } from './MultiSelectUnstyled.types';
-declare const _default: <TValue extends {}>(props: MultiSelectUnstyledProps<TValue> & React.RefAttributes<HTMLElement>) => JSX.Element | null;
+import { MultiSelectUnstyledType } from './MultiSelectUnstyled.types';
 /**
  * The foundation for building custom-styled multi-selection select components.
  *
@@ -12,4 +10,5 @@ declare const _default: <TValue extends {}>(props: MultiSelectUnstyledProps<TVal
  *
  * - [MultiSelectUnstyled API](https://mui.com/base/api/multi-select-unstyled/)
  */
-export default _default;
+declare const MultiSelectUnstyled: MultiSelectUnstyledType;
+export default MultiSelectUnstyled;

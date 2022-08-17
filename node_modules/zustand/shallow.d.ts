@@ -1,1 +1,2 @@
-export default function shallow<T, U>(objA: T, objB: U): boolean;
+declare function shallow<T>(objA: T, objB: T): boolean;
+export default shallow;

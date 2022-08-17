@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { ButtonUnstyledOwnProps } from './ButtonUnstyled.types';
+import { OverridableComponent } from '@mui/types';
+import { ButtonUnstyledOwnProps, ButtonUnstyledTypeMap } from './ButtonUnstyled.types';
 export interface ButtonUnstyledOwnerState extends ButtonUnstyledOwnProps {
     focusVisible: boolean;
     active: boolean;
@@ -15,7 +15,5 @@ export interface ButtonUnstyledOwnerState extends ButtonUnstyledOwnProps {
  *
  * - [ButtonUnstyled API](https://mui.com/base/api/button-unstyled/)
  */
-declare const ButtonUnstyled: React.ForwardRefExoticComponent<Pick<ButtonUnstyledOwnProps & Omit<any, keyof ButtonUnstyledOwnProps> & {
-    component?: React.ElementType<any> | undefined;
-}, string | number | symbol> & React.RefAttributes<any>>;
+declare const ButtonUnstyled: OverridableComponent<ButtonUnstyledTypeMap<{}, "button">>;
 export default ButtonUnstyled;
