@@ -114,7 +114,11 @@ const Nav = () => {
 							</ul>
 						</div>
 						<div className={Styles.buttonsNav}>
-							{session ? (
+							{status == 'loading' ? (
+								<div style={{ color: '#007aff', fontWeight: '500' }}>
+									Validating..
+								</div>
+							) : session ? (
 								<>
 									<User signOut={handleLogOut} />
 								</>
