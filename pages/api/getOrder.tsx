@@ -12,8 +12,7 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	const { user } = req.body;
-	console.log(user);
+	const {} = req.body;
 	try {
 		const result = await prisma.order.findMany({
 			where: {
@@ -30,41 +29,9 @@ export default async function handler(
 				status: true,
 			},
 		});
-		let searchResults = JSON.parse(JSON.stringify(result));
 
-		if (searchResults.length > 0) {
-			res.status(200).json(searchResults);
-		} else {
-			const result = await prisma.users.findMany({
-				where: {
-					name: {
-						contains: user,
-					},
-				},
-				select: {
-					id: true,
-					username: true,
-					isAdmin: true,
-					isSuperUser: true,
-					image: true,
-					name: true,
-					vifurushi: {
-						select: {
-							name: true,
-							value: true,
-						},
-					},
-					purchase: {
-						select: {
-							name: true,
-							value: true,
-						},
-					},
-				},
-			});
-			let searchResults = JSON.parse(JSON.stringify(result));
-			res.status(200).json(searchResults);
-		}
+		let searchResults = JSON.parse(JSON.stringify(result));
+		res.status(200).json(searchResults);
 	} catch (error) {
 		res.status(404).json('Not Found');
 		console.log(error);

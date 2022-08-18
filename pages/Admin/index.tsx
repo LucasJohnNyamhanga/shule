@@ -76,8 +76,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const Index = ({
-    	userfound,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	userfound,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const matches300 = useMediaQuery('(min-width:325px)');
 	const { status } = useSession();
 	const { navActive, setNavActive } = useContext(NavContext);
@@ -2071,9 +2071,9 @@ const Index = ({
 				user: userDetail.value,
 			})
 			.then(function (response) {
-				const userData = JSON.parse(JSON.stringify(response.data));
-				if (userData.length > 0) {
-					setUserSearchData(userData);
+				const userDataSearch = JSON.parse(JSON.stringify(response.data));
+				if (userDataSearch.length > 0) {
+					setUserSearchData(userDataSearch);
 					setLoading(false);
 					setActivateUserSearch(true);
 				} else {
@@ -2099,8 +2099,8 @@ const Index = ({
 				user: userDetail.value,
 			})
 			.then(function (response) {
-				const userData = JSON.parse(JSON.stringify(response.data));
-				setAdminsList(userData);
+				const adminData: [] = JSON.parse(JSON.stringify(response.data));
+				setAdminsList(adminData);
 				setLoading(false);
 			})
 			.catch(function (error) {
@@ -2125,7 +2125,7 @@ const Index = ({
 				if (orderData.length > 0) {
 					setOrderList(orderData);
 				} else {
-					notifyError('No order to display');
+					setOrderList([]);
 				}
 				setLoading(false);
 			})
