@@ -9,7 +9,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
 import { NavContext } from '../../../../../components/context/StateContext';
-const url = 'https://shule-eight.vercel.app';
+const url = 'https://shule-eight.vercel.app/';
 //load when browser kicks in, on page load
 const CkEditor = dynamic(() => import('../../../../../components/tools/Ck'), {
 	ssr: false,
@@ -118,6 +118,7 @@ const EditNotes = ({
 	const [topicOptions, setTopicOptions] = useState<formData>([]);
 	const [change, setChange] = useState(0);
 	const [hideShow, setHideShow] = useState(false);
+	const [loadOnce, setLoadOnce] = useState(true);
 	const [topicDetails, setTopicDetails] = useState({
 		formId: '',
 		subjectId: '',
@@ -151,32 +152,35 @@ const EditNotes = ({
 	};
 
 	useEffect(() => {
-		setTopicSelectValue({
-			formId: notesData.formId,
-			subjectId: notesData.subjectId,
-			topicId: notesData.topicId,
-			content: notesData.content,
-			id: notesData.id,
-			userId: userfound.id,
-		});
-
-		let subjectFromServer: formData = [];
-		subjects.map((subject: subject) => {
-			subjectFromServer.push({
-				label: subject.subjectName,
-				value: subject.id as unknown as string,
+		if (loadOnce) {
+			setTopicSelectValue({
+				formId: notesData.formId,
+				subjectId: notesData.subjectId,
+				topicId: notesData.topicId,
+				content: notesData.content,
+				id: notesData.id,
+				userId: userfound.id,
 			});
-		});
-		setSubjectOptions(subjectFromServer);
 
-		let formFromServer: formData = [];
-		formsList.map((form: form) => {
-			formFromServer.push({
-				label: form.formName,
-				value: form.id as unknown as string,
+			let subjectFromServer: formData = [];
+			subjects.map((subject: subject) => {
+				subjectFromServer.push({
+					label: subject.subjectName,
+					value: subject.id as unknown as string,
+				});
 			});
-		});
-		setFormOptions(formFromServer);
+			setSubjectOptions(subjectFromServer);
+
+			let formFromServer: formData = [];
+			formsList.map((form: form) => {
+				formFromServer.push({
+					label: form.formName,
+					value: form.id as unknown as string,
+				});
+			});
+			setFormOptions(formFromServer);
+			setLoadOnce(false);
+		}
 
 		if (topicDetails.formId != '' && topicDetails.subjectId != '') {
 			retriaveTopicsData();
@@ -343,15 +347,13 @@ const EditNotes = ({
 							handlechange={handleSelectForm}
 							value={topicSelectValue.formId}
 						/>
-						{hideShow && (
-							<SelectMiu
-								show={true}
-								displayLabel='Select Topic'
-								forms={topicOptions}
-								handlechange={handleSelectTopic}
-								value={topicSelectValue.topicId}
-							/>
-						)}
+						<SelectMiu
+							show={true}
+							displayLabel='Select Topic'
+							forms={topicOptions}
+							handlechange={handleSelectTopic}
+							value={topicSelectValue.topicId}
+						/>
 					</div>
 				</div>
 				<div>
