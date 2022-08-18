@@ -10,7 +10,7 @@ import axios from 'axios';
 import { NavContext } from '../../../../../components/context/StateContext';
 import { prisma } from '../../../../../db/prisma';
 import InputTextMui from '../../../../../components/tools/InputTextMui';
-
+const url = 'https://shule-eight.vercel.app';
 //load when browser kicks in, on page load
 const CkEditor = dynamic(() => import('../../../../../components/tools/Ck'), {
 	ssr: false,
@@ -106,11 +106,11 @@ type formData = {
 }[];
 
 const EditExam = ({
-	exam,
-	forms,
-	subjects,
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	exam,
+    	forms,
+    	subjects,
+    	userfound,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -199,7 +199,7 @@ const EditExam = ({
 		setHideShow(false);
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/examType',
+			url: url + '/api/examType',
 			data: examDetails,
 		})
 			.then(function (response) {
@@ -286,7 +286,7 @@ const EditExam = ({
 		if (allnumeric(year) && 1999 < yearInNumber && yearInNumber < today + 1) {
 			axios({
 				method: 'post',
-				url: 'http://localhost:3000/api/updateExam',
+				url: url + '/api/updateExam',
 				data: examSelectValue,
 			})
 				.then(function (response) {

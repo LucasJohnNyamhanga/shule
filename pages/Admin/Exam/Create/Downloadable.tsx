@@ -17,7 +17,7 @@ import { NavContext } from '../../../../components/context/StateContext';
 import InputTextMui from '../../../../components/tools/InputTextMui';
 import FileUpload from '../../../../components/tools/FileUploadAny';
 import Progress from '../../../../components/tools/progressFileUpload';
-
+const url = 'https://shule-eight.vercel.app';
 //load when browser kicks in, on page load
 const CkEditor = dynamic(() => import('../../../../components/tools/Ck'), {
 	ssr: false,
@@ -99,10 +99,10 @@ type formData = {
 }[];
 
 const Notes = ({
-	forms,
-	subjects,
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	forms,
+    	subjects,
+    	userfound,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 	useEffect(() => {
 		setNavActive('Admin');
@@ -185,7 +185,7 @@ const Notes = ({
 	let retriaveExamTypeData = () => {
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/examType',
+			url: url + '/api/examType',
 			data: examDetails,
 		})
 			.then(function (response) {
@@ -223,7 +223,7 @@ const Notes = ({
 	let retriaveExamData = () => {
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/examList',
+			url: url + '/api/examList',
 			data: examDetails,
 		})
 			.then(function (response) {
@@ -292,7 +292,7 @@ const Notes = ({
 
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/addExamDownloadable',
+			url: url + '/api/addExamDownloadable',
 			data: databaseData,
 		})
 			.then(function (response) {

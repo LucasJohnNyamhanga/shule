@@ -18,7 +18,7 @@ import axios from 'axios';
 import InputTextMui from '../../../../../components/tools/InputTextMui';
 import { NavContext } from '../../../../../components/context/StateContext';
 import { type } from 'os';
-
+const url = 'https://shule-eight.vercel.app';
 //load when browser kicks in, on page load
 const CkEditor = dynamic(() => import('../../../../../components/tools/Ck'), {
 	ssr: false,
@@ -165,12 +165,12 @@ type typePrisma = {
 };
 
 const EditNotes = ({
-	question,
-	forms,
-	subjects,
-	questionFormat,
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	question,
+    	forms,
+    	subjects,
+    	questionFormat,
+    	userfound,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 	let formatName = (id: number) => {
 		for (let format of questionFormat) {
@@ -464,7 +464,7 @@ const EditNotes = ({
 	let retriaveTopicsData = () => {
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/topicsReview',
+			url: url + '/api/topicsReview',
 			data: subjectValidation,
 		})
 			.then(function (response) {
@@ -508,7 +508,7 @@ const EditNotes = ({
 	let retriaveReviewData = () => {
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/review',
+			url: url + '/api/review',
 			data: subjectValidation,
 		})
 			.then(function (response) {
@@ -560,7 +560,7 @@ const EditNotes = ({
 		};
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/updateQuestion',
+			url: url + '/api/updateQuestion',
 			data: database,
 		})
 			.then(function (response) {

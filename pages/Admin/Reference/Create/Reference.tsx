@@ -18,6 +18,7 @@ import dynamic from 'next/dynamic';
 const CkEditor = dynamic(() => import('../../../../components/tools/Ck'), {
 	ssr: false,
 });
+const url = 'https://shule-eight.vercel.app';
 
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -104,11 +105,11 @@ type selectFormType = {
 }[];
 
 const CreateNotes = ({
-	forms,
-	deactiveteImage,
-	subjects,
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	forms,
+    	deactiveteImage,
+    	subjects,
+    	userfound,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	const [selectOption, setSelectOption] = useState<dataTypeSelect>([]);
@@ -281,7 +282,7 @@ const CreateNotes = ({
 
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/addReference',
+			url: url + '/api/addReference',
 			data: databaseData,
 		})
 			.then(function (response) {

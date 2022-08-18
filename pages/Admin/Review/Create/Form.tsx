@@ -6,8 +6,9 @@ import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import { NavContext } from '../../../../components/context/StateContext';
 import InputTextMui from '../../../../components/tools/InputTextMui';
-
+const url = 'https://shule-eight.vercel.app';
 import { getSession } from 'next-auth/react';
+import LoaderWait from '../../../../components/tools/loaderWait';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
 	if (!session) {
@@ -45,10 +46,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	};
 };
 const Form = ({
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+        	userfound,
+        }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
-
+	const [loading, setLoad] = useState(false);
 	useEffect(() => {
 		setNavActive('Admin');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -74,6 +75,7 @@ const Form = ({
 	let handleCreateNotes = () => {
 		if (formData.formName != '') {
 			verifyForm();
+			setLoad(true);
 		} else {
 			notifyError('Fill in form name to proceed.');
 		}
@@ -82,7 +84,7 @@ const Form = ({
 	let sendToDatabase = () => {
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/addFormReview',
+			url: url + '/api/addFormReview',
 			data: formData,
 		})
 			.then(function (response) {
@@ -93,7 +95,7 @@ const Form = ({
 				});
 				let jibu: string = response.data.message;
 				let type: string = response.data.type;
-
+				setLoad(false);
 				if (type == 'success') {
 					notifySuccess(jibu);
 				} else {
@@ -113,7 +115,7 @@ const Form = ({
 	let verifyForm = () => {
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/formsReviewVerify',
+			url: url + '/api/formsReviewVerify',
 			data: formData,
 		})
 			.then(function (response) {
@@ -121,6 +123,7 @@ const Form = ({
 				// handle success
 				if (FormsFromServer.length > 0) {
 					notifyError('Database contain another copy of this form.');
+					setLoad(false);
 				} else {
 					sendToDatabase();
 				}
@@ -149,9 +152,15 @@ const Form = ({
 					</div>
 				</div>
 				<div>
-					<div onClick={handleCreateNotes} className={Styles.imageSelect}>
-						Create Form
-					</div>
+					{loading ? (
+						<div  className={Styles.imageSelect}>
+							<LoaderWait />
+						</div>
+					) : (
+						<div onClick={handleCreateNotes} className={Styles.imageSelect}>
+							Create Form
+						</div>
+					)}
 				</div>
 			</div>
 		</div>

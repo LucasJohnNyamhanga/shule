@@ -24,6 +24,7 @@ const CkEditor = dynamic(() => import('../../../../components/tools/Ck'), {
 });
 
 import { getSession } from 'next-auth/react';
+import LoaderWait from '../../../../components/tools/loaderWait';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
 	if (!session) {
@@ -90,10 +91,10 @@ type formData = {
 }[];
 
 const Notes = ({
-	forms,
-	subjects,
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	forms,
+    	subjects,
+    	userfound,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -118,7 +119,7 @@ const Notes = ({
 		content: '',
 		userId: '',
 	});
-
+	const [loading, setLoad] = useState(false);
 	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
@@ -224,6 +225,7 @@ const Notes = ({
 			topicSelectValue.content.length > 200
 		) {
 			checkNotes();
+			setLoad(true);
 		} else {
 			if (topicSelectValue.content.length < 200) {
 				notifyError('Notes content should exceed 200 characters..');
@@ -253,14 +255,17 @@ const Notes = ({
 
 				if (type == 'success') {
 					notifySuccess(jibu);
+					setLoad(false);
 				} else {
 					notifyError(jibu);
+					setLoad(false);
 				}
 			})
 			.catch(function (error) {
 				// handle error
 				console.log(error);
 				notifyError('Error has occured, try later.');
+				setLoad(false);
 			})
 			.then(function () {
 				// always executed
@@ -278,6 +283,7 @@ const Notes = ({
 				// handle success
 				if (notesFromServer.length > 0) {
 					notifyError('Database contain another copy of this note.');
+					setLoad(false);
 				} else {
 					sendToDatabase();
 				}
@@ -286,6 +292,7 @@ const Notes = ({
 				// handle error
 				console.log(error);
 				notifyError('Something went wrong.');
+				setLoad(false);
 			})
 			.then(function () {
 				// always executed
@@ -335,9 +342,15 @@ const Notes = ({
 					</div>
 				</div>
 				<div>
-					<div onClick={handleCreateNotes} className={Styles.imageSelect}>
-						Create Notes
-					</div>
+					{loading ? (
+						<div className={Styles.imageSelect}>
+							<LoaderWait />
+						</div>
+					) : (
+						<div onClick={handleCreateNotes} className={Styles.imageSelect}>
+							Create Notes
+						</div>
+					)}
 				</div>
 			</div>
 		</div>

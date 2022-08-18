@@ -18,7 +18,7 @@ import {
 import Link from 'next/link';
 import CardBox from '../../components/tools/cardBoxStyle';
 import CardBoxView from '../../components/tools/cardBoxWithView';
-import toast, { Toaster, ToastBar } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import SelectMiu from '../../components/tools/SelectMui';
 import { NavContext } from '../../components/context/StateContext';
 import AlignVerticalBottomIcon from '@mui/icons-material/AlignVerticalBottom';
@@ -27,7 +27,6 @@ import Loader from '../../components/tools/loader';
 import Drawer from '../../components/tools/DrawerMobileAdmin';
 import { BsDownload as Downloads } from 'react-icons/bs';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { FaUserSecret, FaUsers } from 'react-icons/fa';
 import InputTextMui from '../../components/tools/InputTextMui';
@@ -76,8 +75,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const Index = ({
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	userfound,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const matches300 = useMediaQuery('(min-width:325px)');
 	const { status } = useSession();
 	const { navActive, setNavActive } = useContext(NavContext);

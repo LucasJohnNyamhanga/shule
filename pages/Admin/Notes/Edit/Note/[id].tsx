@@ -9,13 +9,14 @@ import toast, { Toaster } from 'react-hot-toast';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
 import { NavContext } from '../../../../../components/context/StateContext';
-
+const url = 'https://shule-eight.vercel.app';
 //load when browser kicks in, on page load
 const CkEditor = dynamic(() => import('../../../../../components/tools/Ck'), {
 	ssr: false,
 });
 
 import { getSession } from 'next-auth/react';
+import LoaderWait from '../../../../../components/tools/loaderWait';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
 	if (!session) {
@@ -111,7 +112,7 @@ const EditNotes = ({
 		setNavActive('Admin');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [navActive]);
-
+	const [loading, setLoad] = useState(false);
 	const [formOptions, setFormOptions] = useState<formData>([]);
 	const [subjectOptions, setSubjectOptions] = useState<formData>([]);
 	const [topicOptions, setTopicOptions] = useState<formData>([]);
@@ -188,7 +189,7 @@ const EditNotes = ({
 		setHideShow(false);
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/topics',
+			url: url + '/api/topics',
 			data: topicDetails,
 		})
 			.then(function (response) {
@@ -247,6 +248,7 @@ const EditNotes = ({
 			topicSelectValue.content.length > 200
 		) {
 			sendToDatabase();
+			setLoad(true);
 		} else {
 			if (topicSelectValue.content.length < 200) {
 				notifyError('Notes content should exceed 200 characters..');
@@ -259,7 +261,7 @@ const EditNotes = ({
 	let sendToDatabase = () => {
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/updateNotes',
+			url: url + '/api/updateNotes',
 			data: topicSelectValue,
 		})
 			.then(function (response) {
@@ -276,6 +278,7 @@ const EditNotes = ({
 					id: '',
 					userId: '',
 				});
+				setLoad(false);
 				delayRedirect();
 			})
 			.catch(function (error) {
@@ -295,7 +298,7 @@ const EditNotes = ({
 		};
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/revalidate',
+			url: url + '/api/revalidate',
 			data,
 		})
 			.then(function (response) {})
@@ -352,9 +355,15 @@ const EditNotes = ({
 					</div>
 				</div>
 				<div>
-					<div onClick={handleCreateNotes} className={Styles.imageSelect}>
-						Update Notes
-					</div>
+					{loading ? (
+						<div onClick={handleCreateNotes} className={Styles.imageSelect}>
+							<LoaderWait />
+						</div>
+					) : (
+						<div onClick={handleCreateNotes} className={Styles.imageSelect}>
+							Update Notes
+						</div>
+					)}
 				</div>
 			</div>
 		</div>

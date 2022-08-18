@@ -12,8 +12,9 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { Topic } from '@mui/icons-material';
 import toast, { Toaster } from 'react-hot-toast';
 import { NavContext } from '../../../../components/context/StateContext';
-
+const url = 'https://shule-eight.vercel.app';
 import { getSession } from 'next-auth/react';
+import LoaderWait from '../../../../components/tools/loaderWait';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
 	if (!session) {
@@ -78,12 +79,12 @@ type formData = {
 }[];
 
 const Create = ({
-	forms,
-	subjects,
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	forms,
+    	subjects,
+    	userfound,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
-
+	const [loading, setLoad] = useState(false);
 	useEffect(() => {
 		setNavActive('Admin');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -149,7 +150,7 @@ const Create = ({
 	let sendToDatabase = () => {
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/addTopic',
+			url: url + '/api/addTopic',
 			data: subjectDetails,
 		})
 			.then(function (response) {
@@ -166,14 +167,17 @@ const Create = ({
 
 				if (type == 'success') {
 					notifySuccess(jibu);
+					setLoad(false);
 				} else {
 					notifyError(jibu);
+					setLoad(false);
 				}
 			})
 			.catch(function (error) {
 				// handle error
 				console.log(error);
 				notifyError('Error has occured, try later.');
+				setLoad(false);
 			})
 			.then(function () {
 				// always executed
@@ -189,6 +193,7 @@ const Create = ({
 		) {
 			//!Call save to database
 			validateTopic();
+			setLoad(true);
 		} else {
 			//!return error
 			notifyError('Fill in all fields including topic relations.');
@@ -198,7 +203,7 @@ const Create = ({
 	let validateTopic = () => {
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/topicsVerify',
+			url: url + '/api/topicsVerify',
 			data: subjectDetails,
 		})
 			.then(function (response) {
@@ -206,6 +211,7 @@ const Create = ({
 				// handle success
 				if (topicsFromServer.length > 0) {
 					notifyError('Database contain another copy of this topic.');
+					setLoad(false);
 				} else {
 					sendToDatabase();
 				}
@@ -214,6 +220,7 @@ const Create = ({
 				// handle error
 				console.log(error);
 				notifyError('Something went wrong.');
+				setLoad(false);
 			})
 			.then(function () {
 				// always executed
@@ -258,9 +265,15 @@ const Create = ({
 						/>
 					</div>
 				</div>
-				<div onClick={handleCreateTopic} className={Styles.imageSelect}>
-					Create Topic
-				</div>
+				{loading ? (
+					<div  className={Styles.imageSelect}>
+						<LoaderWait />
+					</div>
+				) : (
+					<div onClick={handleCreateTopic} className={Styles.imageSelect}>
+						Create Topic
+					</div>
+				)}
 			</div>
 		</div>
 	);

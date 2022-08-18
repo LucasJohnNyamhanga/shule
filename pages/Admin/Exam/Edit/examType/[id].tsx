@@ -9,7 +9,7 @@ import Styles from '../../../../../styles/createNotes.module.scss';
 import { useRouter } from 'next/router';
 import toast, { Toaster } from 'react-hot-toast';
 import { NavContext } from '../../../../../components/context/StateContext';
-
+const url = 'https://shule-eight.vercel.app';
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
@@ -96,11 +96,11 @@ type formData = {
 }[];
 
 const EditSubject = ({
-	examType,
-	formsList,
-	subjects,
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	examType,
+    	formsList,
+    	subjects,
+    	userfound,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -194,7 +194,7 @@ const EditSubject = ({
 		console.log(data);
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/updateExamType',
+			url: url + '/api/updateExamType',
 			data,
 		})
 			.then(function (response) {
