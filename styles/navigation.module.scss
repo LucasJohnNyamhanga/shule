@@ -123,6 +123,12 @@
 				justify-content: center;
 				align-items: center;
 
+				.validating {
+					font-size: 20px;
+					font-family: $fontHeader;
+					color: $lightkahawa;
+					font-weight: 500;
+				}
 				.Sign {
 					padding: 0.5rem 1rem;
 					border-radius: 4px;
