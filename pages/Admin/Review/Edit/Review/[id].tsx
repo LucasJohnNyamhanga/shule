@@ -10,7 +10,7 @@ import dynamic from 'next/dynamic';
 import axios from 'axios';
 import InputTextMui from '../../../../../components/tools/InputTextMui';
 import { NavContext } from '../../../../../components/context/StateContext';
-
+const url = 'https://shule-eight.vercel.app';
 //load when browser kicks in, on page load
 const CkEditor = dynamic(() => import('../../../../../components/tools/Ck'), {
 	ssr: false,
@@ -100,11 +100,11 @@ type formData = {
 }[];
 
 const EditNotes = ({
-	review,
-	forms,
-	subjects,
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	review,
+    	forms,
+    	subjects,
+    	userfound,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -197,7 +197,7 @@ const EditNotes = ({
 		setHideShow(false);
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/topicsReview',
+			url: url + '/api/topicsReview',
 			data: subjectDetails,
 		})
 			.then(function (response) {
@@ -231,7 +231,7 @@ const EditNotes = ({
 	let sendToDatabase = () => {
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/updateReview',
+			url: url + '/api/updateReview',
 			data: subjectDetails,
 		})
 			.then(function (response) {

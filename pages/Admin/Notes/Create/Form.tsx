@@ -6,7 +6,8 @@ import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import { NavContext } from '../../../../components/context/StateContext';
 import InputTextMui from '../../../../components/tools/InputTextMui';
-
+import LoaderWait from '../../../../components/tools/loaderWait';
+const url = 'https://shule-eight.vercel.app';
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
@@ -44,8 +45,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	};
 };
 const Form = ({
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	userfound,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -57,6 +58,8 @@ const Form = ({
 		formName: '',
 		userId: '',
 	});
+
+	const [loading, setLoad] = useState(false);
 
 	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
@@ -72,6 +75,7 @@ const Form = ({
 
 	let handleCreateNotes = () => {
 		if (formData.formName != '') {
+			setLoad(true);
 			verifyForm();
 		} else {
 			notifyError('Fill in form name to proceed.');
@@ -81,7 +85,7 @@ const Form = ({
 	let sendToDatabase = () => {
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/addForm',
+			url: url + '/api/addForm',
 			data: formData,
 		})
 			.then(function (response) {
@@ -95,14 +99,17 @@ const Form = ({
 
 				if (type == 'success') {
 					notifySuccess(jibu);
+					setLoad(false);
 				} else {
 					notifyError(jibu);
+					setLoad(false);
 				}
 			})
 			.catch(function (error) {
 				// handle error
 				console.log(error);
 				notifyError('Error has occured, try later.');
+				setLoad(false);
 			})
 			.then(function () {
 				// always executed
@@ -112,7 +119,7 @@ const Form = ({
 	let verifyForm = () => {
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/formsVerify',
+			url: url + '/api/formsVerify',
 			data: formData,
 		})
 			.then(function (response) {
@@ -120,6 +127,7 @@ const Form = ({
 				// handle success
 				if (FormsFromServer.length > 0) {
 					notifyError('Database contain another copy of this form.');
+					setLoad(false);
 				} else {
 					sendToDatabase();
 				}
@@ -148,9 +156,15 @@ const Form = ({
 					</div>
 				</div>
 				<div>
-					<div onClick={handleCreateNotes} className={Styles.imageSelect}>
-						Create Form
-					</div>
+					{loading ? (
+						<div className={Styles.imageSelect}>
+							<LoaderWait />
+						</div>
+					) : (
+						<div onClick={handleCreateNotes} className={Styles.imageSelect}>
+							Create Form
+						</div>
+					)}
 				</div>
 			</div>
 		</div>

@@ -6,8 +6,9 @@ import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import { NavContext } from '../../../../components/context/StateContext';
 import InputTextMui from '../../../../components/tools/InputTextMui';
-
+const url = 'https://shule-eight.vercel.app';
 import { getSession } from 'next-auth/react';
+import LoaderWait from '../../../../components/tools/loaderWait';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
 	if (!session) {
@@ -46,8 +47,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const Notes = ({
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	userfound,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 	const [formData, setFormData] = useState({
 		formName: '',
@@ -61,6 +62,7 @@ const Notes = ({
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+	const [loading, setLoad] = useState(false);
 	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
@@ -74,6 +76,7 @@ const Notes = ({
 	let handleCreateNotes = () => {
 		if (formData.formName != '') {
 			verifyForm();
+			setLoad(true);
 		} else {
 			notifyError('Fill in form name to proceed.');
 		}
@@ -81,7 +84,7 @@ const Notes = ({
 	let sendToDatabase = () => {
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/addFormExam',
+			url: url + '/api/addFormExam',
 			data: formData,
 		})
 			.then(function (response) {
@@ -97,11 +100,13 @@ const Notes = ({
 				} else {
 					notifyError(jibu);
 				}
+				setLoad(false);
 			})
 			.catch(function (error) {
 				// handle error
 				console.log(error);
 				notifyError('Error has occured, try later.');
+				setLoad(false);
 			})
 			.then(function () {
 				// always executed
@@ -110,7 +115,7 @@ const Notes = ({
 	let verifyForm = () => {
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/formsExamVerify',
+			url: url + '/api/formsExamVerify',
 			data: formData,
 		})
 			.then(function (response) {
@@ -118,6 +123,7 @@ const Notes = ({
 				// handle success
 				if (FormsFromServer.length > 0) {
 					notifyError('Database contain another copy of this form.');
+					setLoad(false);
 				} else {
 					sendToDatabase();
 				}
@@ -145,9 +151,15 @@ const Notes = ({
 					</div>
 				</div>
 				<div>
-					<div onClick={handleCreateNotes} className={Styles.imageSelect}>
-						Create Form
-					</div>
+					{loading ? (
+						<div className={Styles.imageSelect}>
+							<LoaderWait />
+						</div>
+					) : (
+						<div onClick={handleCreateNotes} className={Styles.imageSelect}>
+							Create Form
+						</div>
+					)}
 				</div>
 			</div>
 		</div>

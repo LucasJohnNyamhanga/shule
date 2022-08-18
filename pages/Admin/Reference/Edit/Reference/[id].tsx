@@ -15,7 +15,7 @@ import Progress from '../../../../../components/tools/progressFileUpload';
 const CkEditor = dynamic(() => import('../../../../../components/tools/Ck'), {
 	ssr: false,
 });
-
+const url = 'https://shule-eight.vercel.app';
 import FileUpload from '../../../../../components/tools/FileUpload';
 import { type } from 'os';
 import DisplayChip from '../../../../../components/tools/displayChip';
@@ -118,10 +118,10 @@ type selectFormType = {
 }[];
 
 const Reference = ({
-	reference,
-	subjects,
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	reference,
+    	subjects,
+    	userfound,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	const [selectOption, setSelectOption] = useState<dataTypeSelect>([]);
@@ -348,7 +348,7 @@ const Reference = ({
 
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/updateReference',
+			url: url + '/api/updateReference',
 			data: databaseData,
 		})
 			.then(function (response) {

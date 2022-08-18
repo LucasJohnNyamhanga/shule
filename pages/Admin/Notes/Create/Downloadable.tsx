@@ -11,7 +11,7 @@ import FileUpload from '../../../../components/tools/FileUploadAny';
 import toast, { Toaster } from 'react-hot-toast';
 import { NavContext } from '../../../../components/context/StateContext';
 import Progress from '../../../../components/tools/progressFileUpload';
-
+const url = 'https://shule-eight.vercel.app';
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
@@ -79,11 +79,11 @@ type formData = {
 }[];
 
 const Create = ({
-	forms,
-	subjects,
-	deactiveteImage,
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	forms,
+    	subjects,
+    	deactiveteImage,
+    	userfound,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -163,7 +163,7 @@ const Create = ({
 
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/addNotesDownloadable',
+			url: url + '/api/addNotesDownloadable',
 			data: databaseData,
 		})
 			.then(function (response) {

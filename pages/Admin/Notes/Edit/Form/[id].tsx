@@ -9,8 +9,9 @@ import Styles from '../../../../../styles/createNotes.module.scss';
 import { useRouter } from 'next/router';
 import toast, { Toaster } from 'react-hot-toast';
 import { NavContext } from '../../../../../components/context/StateContext';
-
+const url = 'https://shule-eight.vercel.app';
 import { getSession } from 'next-auth/react';
+import LoaderWait from '../../../../../components/tools/loaderWait';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
 	if (!session) {
@@ -75,11 +76,11 @@ type formData = {
 }[];
 
 const EditForm = ({
-	form,
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	form,
+    	userfound,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
-
+	const [loading, setLoad] = useState(false);
 	useEffect(() => {
 		setNavActive('Admin');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -116,6 +117,7 @@ const EditForm = ({
 	let handleCreateNotes = () => {
 		if (formData.formName != '') {
 			sendToDatabase();
+			setLoad(true);
 		} else {
 			notifyError('Fill in form name to proceed.');
 		}
@@ -123,7 +125,7 @@ const EditForm = ({
 	let sendToDatabase = () => {
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/updateForm',
+			url: url + '/api/updateForm',
 			data: formData,
 		})
 			.then(function (response) {
@@ -136,11 +138,13 @@ const EditForm = ({
 				let jibu: string = response.data.message;
 				notifySuccess(jibu);
 				delayRedirect();
+				setLoad(false);
 			})
 			.catch(function (error) {
 				// handle error
 				console.log(error);
 				notifyError('Error has occured, try later.');
+				setLoad(false);
 			})
 			.then(function () {
 				// always executed
@@ -175,9 +179,15 @@ const EditForm = ({
 					</div>
 				</div>
 				<div>
-					<div onClick={handleCreateNotes} className={Styles.imageSelect}>
-						Create Form
-					</div>
+					{loading ? (
+						<div onClick={handleCreateNotes} className={Styles.imageSelect}>
+							<LoaderWait />
+						</div>
+					) : (
+						<div onClick={handleCreateNotes} className={Styles.imageSelect}>
+							Update Form
+						</div>
+					)}
 				</div>
 			</div>
 		</div>

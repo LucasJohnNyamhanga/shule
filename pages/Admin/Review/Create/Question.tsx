@@ -17,8 +17,9 @@ import { NavContext } from '../../../../components/context/StateContext';
 const CkEditor = dynamic(() => import('../../../../components/tools/Ck'), {
 	ssr: false,
 });
-
+const url = 'https://shule-eight.vercel.app';
 import { getSession } from 'next-auth/react';
+import LoaderWait from '../../../../components/tools/loaderWait';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
 	if (!session) {
@@ -104,13 +105,13 @@ type answerDataType = {
 };
 
 const Create = ({
-	forms,
-	subjects,
-	questionFormat,
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	forms,
+    	subjects,
+    	questionFormat,
+    	userfound,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
-
+	const [loading, setLoad] = useState(false);
 	useEffect(() => {
 		setNavActive('Admin');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -335,9 +336,10 @@ const Create = ({
 	};
 
 	let retriaveTopicsData = () => {
+		setLoad(true);
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/topicsReview',
+			url: url + '/api/topicsReview',
 			data: subjectValidation,
 		})
 			.then(function (response) {
@@ -367,11 +369,13 @@ const Create = ({
 					setHideShowReview(false);
 					notifyError('No topics available for your selection.');
 				}
+				setLoad(false);
 			})
 			.catch(function (error) {
 				// handle error
 				console.log(error);
 				notifyError('Something went wrong.');
+				setLoad(false);
 			})
 			.then(function () {
 				// always executed
@@ -381,7 +385,7 @@ const Create = ({
 	let retriaveReviewData = () => {
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/review',
+			url: url + '/api/review',
 			data: subjectValidation,
 		})
 			.then(function (response) {
@@ -432,7 +436,7 @@ const Create = ({
 		};
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/addQuestion',
+			url: url + '/api/addQuestion',
 			data: database,
 		})
 			.then(function (response) {
@@ -730,9 +734,17 @@ const Create = ({
 					</div>
 				</div>
 				{showQuestion && (
-					<div onClick={handleCreateTopic} className={Styles.imageSelect}>
-						Create Question
-					</div>
+					<>
+						{loading ? (
+							<div className={Styles.imageSelect}>
+								<LoaderWait />
+							</div>
+						) : (
+							<div onClick={handleCreateTopic} className={Styles.imageSelect}>
+								Create Notes
+							</div>
+						)}
+					</>
 				)}
 			</div>
 		</div>

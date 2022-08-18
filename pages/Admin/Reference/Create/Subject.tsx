@@ -12,7 +12,7 @@ import SnackBar from '../../../../components/tools/SnackBar';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Progress from '../../../../components/tools/progressFileUpload';
 import { NavContext } from '../../../../components/context/StateContext';
-
+const url = 'https://shule-eight.vercel.app';
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
@@ -68,10 +68,10 @@ type dataTypeSelect = {
 }[];
 
 const CreateNotes = ({
-	forms,
-	deactiveteImage,
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	forms,
+    	deactiveteImage,
+    	userfound,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -199,7 +199,7 @@ const CreateNotes = ({
 
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/addSubjectReference',
+			url: url + '/api/addSubjectReference',
 			data: databaseData,
 		})
 			.then(function (response) {
@@ -258,7 +258,7 @@ const CreateNotes = ({
 		};
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/subjectsReferenceVerify',
+			url: url + '/api/subjectsReferenceVerify',
 			data: dataSubject,
 		})
 			.then(function (response) {

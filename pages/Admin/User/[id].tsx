@@ -9,7 +9,7 @@ import SelectMiu from '../../../components/tools/SelectMui';
 import { NavContext } from '../../../components/context/StateContext';
 import CardBox from '../../../components/tools/cardBoxWithView';
 import { getSession } from 'next-auth/react';
-import { users } from '@prisma/client';
+const url = 'https://shule-eight.vercel.app';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
 	if (!session) {
@@ -106,9 +106,9 @@ type formData = {
 }[];
 
 const EditExam = ({
-	userfound,
-	vifurushi,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	userfound,
+    	vifurushi,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
 
@@ -143,7 +143,7 @@ const EditExam = ({
 
 	let checkUser = async () => {
 		axios
-			.post('http://localhost:3000/api/getUser', {
+			.post(url + '/api/getUser', {
 				username: userfound.username,
 			})
 			.then(function (response) {
@@ -164,7 +164,7 @@ const EditExam = ({
 	}) => {
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/updateUserStatus',
+			url: url + '/api/updateUserStatus',
 			data: data,
 		})
 			.then(function (response) {
@@ -277,7 +277,7 @@ const EditExam = ({
 		let database = { ...databaseData, id: userfound.id };
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/updateKifurushi',
+			url: url + '/api/updateKifurushi',
 			data: database,
 		})
 			.then(function (response) {

@@ -9,7 +9,7 @@ import Styles from '../../../../../styles/createNotes.module.scss';
 import { useRouter } from 'next/router';
 import toast, { Toaster } from 'react-hot-toast';
 import { NavContext } from '../../../../../components/context/StateContext';
-
+const url = 'https://shule-eight.vercel.app';
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
@@ -75,9 +75,9 @@ type formData = {
 }[];
 
 const EditForm = ({
-	form,
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	form,
+    	userfound,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const [formData, setFormData] = useState({
 		formName: '',
 		id: '',
@@ -119,7 +119,7 @@ const EditForm = ({
 	let sendToDatabase = () => {
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/updateFormReference',
+			url: url + '/api/updateFormReference',
 			data: formData,
 		})
 			.then(function (response) {

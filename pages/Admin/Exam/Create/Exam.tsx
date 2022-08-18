@@ -15,13 +15,14 @@ import dynamic from 'next/dynamic';
 import axios from 'axios';
 import { NavContext } from '../../../../components/context/StateContext';
 import InputTextMui from '../../../../components/tools/InputTextMui';
-
+const url = 'https://shule-eight.vercel.app';
 //load when browser kicks in, on page load
 const CkEditor = dynamic(() => import('../../../../components/tools/Ck'), {
 	ssr: false,
 });
 
 import { getSession } from 'next-auth/react';
+import LoaderWait from '../../../../components/tools/loaderWait';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
 	if (!session) {
@@ -99,11 +100,11 @@ type formData = {
 }[];
 
 const Notes = ({
-	forms,
-	subjects,
-	examType,
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	forms,
+    	subjects,
+    	examType,
+    	userfound,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	const [formOptions, setFormOptions] = useState<formData>([]);
@@ -115,7 +116,7 @@ const Notes = ({
 		formId: '',
 		subjectId: '',
 	});
-
+	const [loading, setLoad] = useState(false);
 	const [examSelectValue, setExamSelectValue] = useState({
 		examTypeId: '',
 		exam: '',
@@ -169,7 +170,7 @@ const Notes = ({
 		setHideShow(false);
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/examType',
+			url: url + '/api/examType',
 			data: examDetails,
 		})
 			.then(function (response) {
@@ -246,13 +247,13 @@ const Notes = ({
 	let today = new Date().getFullYear();
 	let sendToDatabase = () => {
 		//!CHANGE TO DATE PICKER..
-
+		setLoad(true);
 		let year = examSelectValue.year;
 		let yearInNumber = parseInt(examSelectValue.year);
 		if (allnumeric(year) && 1999 < yearInNumber && yearInNumber < today + 1) {
 			axios({
 				method: 'post',
-				url: 'http://localhost:3000/api/addExam',
+				url: url + '/api/addExam',
 				data: examSelectValue,
 			})
 				.then(function (response) {
@@ -279,11 +280,13 @@ const Notes = ({
 					} else {
 						notifyError(jibu);
 					}
+					setLoad(false);
 				})
 				.catch(function (error) {
 					// handle error
 					console.log(error);
 					notifyError('Error has occured, try later.');
+					setLoad(false);
 				})
 				.then(function () {
 					// always executed
@@ -378,9 +381,15 @@ const Notes = ({
 					</div>
 				</div>
 				<div>
-					<div onClick={handleCreateNotes} className={Styles.imageSelect}>
-						Create Exam
-					</div>
+					{loading ? (
+						<div className={Styles.imageSelect}>
+							<LoaderWait />
+						</div>
+					) : (
+						<div onClick={handleCreateNotes} className={Styles.imageSelect}>
+							Create Notes
+						</div>
+					)}
 				</div>
 			</div>
 		</div>
