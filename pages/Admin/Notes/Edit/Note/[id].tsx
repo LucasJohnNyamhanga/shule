@@ -9,7 +9,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
 import { NavContext } from '../../../../../components/context/StateContext';
-const url = 'https://shule-eight.vercel.app/';
+const url = 'https://shule-eight.vercel.app';
 //load when browser kicks in, on page load
 const CkEditor = dynamic(() => import('../../../../../components/tools/Ck'), {
 	ssr: false,
@@ -133,6 +133,45 @@ const EditNotes = ({
 		userId: '',
 	});
 
+	useEffect(() => {
+		if (loadOnce) {
+			let subjectFromServer: formData = [];
+			subjects.map((subject: subject) => {
+				subjectFromServer.push({
+					label: subject.subjectName,
+					value: `${subject.id}`,
+				});
+			});
+			setSubjectOptions(subjectFromServer);
+
+			let formFromServer: formData = [];
+			formsList.map((form: form) => {
+				formFromServer.push({
+					label: form.formName,
+					value: `${form.id}`,
+				});
+			});
+			setFormOptions(formFromServer);
+
+			setTopicDetails({
+				formId: notesData.formId,
+				subjectId: notesData.subjectId,
+			});
+
+			setTopicSelectValue({
+				formId: notesData.formId,
+				subjectId: notesData.subjectId,
+				topicId: notesData.topicId,
+				content: notesData.content,
+				id: notesData.id,
+				userId: userfound.id,
+			});
+
+			setLoadOnce(false);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
@@ -152,76 +191,47 @@ const EditNotes = ({
 	};
 
 	useEffect(() => {
-		if (loadOnce) {
-			setTopicSelectValue({
-				formId: notesData.formId,
-				subjectId: notesData.subjectId,
-				topicId: notesData.topicId,
-				content: notesData.content,
-				id: notesData.id,
-				userId: userfound.id,
-			});
-
-			let subjectFromServer: formData = [];
-			subjects.map((subject: subject) => {
-				subjectFromServer.push({
-					label: subject.subjectName,
-					value: subject.id as unknown as string,
-				});
-			});
-			setSubjectOptions(subjectFromServer);
-
-			let formFromServer: formData = [];
-			formsList.map((form: form) => {
-				formFromServer.push({
-					label: form.formName,
-					value: form.id as unknown as string,
-				});
-			});
-			setFormOptions(formFromServer);
-			setLoadOnce(false);
-		}
-
-		if (topicDetails.formId != '' && topicDetails.subjectId != '') {
-			retriaveTopicsData();
-		}
-
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [change]);
+		retriaveTopicsData();
+	}, [topicDetails]);
 
 	let retriaveTopicsData = () => {
 		setHideShow(false);
-		axios({
-			method: 'post',
-			url: url + '/api/topics',
-			data: topicDetails,
-		})
-			.then(function (response) {
-				const topics: [] = JSON.parse(JSON.stringify(response.data));
-				// handle success
-				if (topics.length > 0) {
-					let topicFromServer: formData = [];
-					topics.map((topic: topic) => {
-						topicFromServer.push({
-							label: topic.topicName,
-							value: topic.id as unknown as string,
+		console.log('form Id:' + topicDetails.formId);
+		if (topicDetails.formId != '' && topicDetails.subjectId != '') {
+			axios({
+				method: 'post',
+				url: url + '/api/topics',
+				data: topicDetails,
+			})
+				.then(function (response) {
+					const topics: [] = JSON.parse(JSON.stringify(response.data));
+					// handle success
+					console.log(topics);
+					if (topics.length > 0) {
+						let topicFromServer: formData = [];
+						topics.map((topic: topic) => {
+							topicFromServer.push({
+								label: topic.topicName,
+								value: topic.id as unknown as string,
+							});
 						});
-					});
-					setTopicOptions(topicFromServer);
-					setHideShow(true);
-					notifySuccess('Select topic to proceed..');
-				} else {
-					notifyError('No topics available for your selection.');
-				}
-			})
-			.catch(function (error) {
-				// handle error
-				console.log(error);
-				notifyError('Something went wrong.');
-			})
-			.then(function () {
-				// always executed
-			});
+						setTopicOptions(topicFromServer);
+						setHideShow(true);
+						notifySuccess('Select topic to proceed..');
+					} else {
+						notifyError('No topics available for your selection.');
+						setHideShow(false);
+					}
+				})
+				.catch(function (error) {
+					// handle error
+					console.log(error);
+					notifyError('Something went wrong.');
+				})
+				.then(function () {
+					// always executed
+				});
+		}
 	};
 
 	let handleContent = (data: string) => {
@@ -231,13 +241,11 @@ const EditNotes = ({
 	let handleSelectSubject = (value: string) => {
 		setTopicDetails({ ...topicDetails, subjectId: value });
 		setTopicSelectValue({ ...topicSelectValue, subjectId: value });
-		setChange(change + 1);
 	};
 
 	let handleSelectForm = (value: string) => {
 		setTopicDetails({ ...topicDetails, formId: value });
 		setTopicSelectValue({ ...topicSelectValue, formId: value });
-		setChange(change + 1);
 	};
 
 	let handleSelectTopic = (value: string) => {
@@ -347,13 +355,15 @@ const EditNotes = ({
 							handlechange={handleSelectForm}
 							value={topicSelectValue.formId}
 						/>
-						<SelectMiu
-							show={true}
-							displayLabel='Select Topic'
-							forms={topicOptions}
-							handlechange={handleSelectTopic}
-							value={topicSelectValue.topicId}
-						/>
+						{hideShow && (
+							<SelectMiu
+								show={true}
+								displayLabel='Select Topic'
+								forms={topicOptions}
+								handlechange={handleSelectTopic}
+								value={topicSelectValue.topicId}
+							/>
+						)}
 					</div>
 				</div>
 				<div>

@@ -7,7 +7,7 @@ const LoaderWait = () => {
 				width='33'
 				height='33'
 				viewBox='0 0 16 16'
-				color='#FFFFFF'
+				color='#007aff'
 				fill='none'
 				xmlns='http://www.w3.org/2000/svg'>
 				<path
@@ -48,7 +48,8 @@ const LoaderWait = () => {
 					repeatCount='indefinite'
 					dur='1300ms'
 				/>
-			</svg>
+			</svg>{' '}
+			Connecting..
 		</div>
 	);
 };
