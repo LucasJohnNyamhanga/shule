@@ -31,7 +31,7 @@ import { useSession } from 'next-auth/react';
 import { FaUserSecret, FaUsers } from 'react-icons/fa';
 import InputTextMui from '../../components/tools/InputTextMui';
 import { prisma } from '../../db/prisma';
-const url = 'https://shule-eight.vercel.app/';
+const url = 'http://localhost:3000';
 
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -75,8 +75,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const Index = ({
-        	userfound,
-        }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	userfound,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const matches300 = useMediaQuery('(min-width:325px)');
 	const { status } = useSession();
 	const { navActive, setNavActive } = useContext(NavContext);
