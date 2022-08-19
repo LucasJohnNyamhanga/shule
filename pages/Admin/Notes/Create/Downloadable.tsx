@@ -11,7 +11,7 @@ import FileUpload from '../../../../components/tools/FileUploadAny';
 import toast, { Toaster } from 'react-hot-toast';
 import { NavContext } from '../../../../components/context/StateContext';
 import Progress from '../../../../components/tools/progressFileUpload';
-const url = 'https://shule-eight.vercel.app';
+const url = process.env.MAIN_URL;
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);

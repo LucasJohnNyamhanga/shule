@@ -9,7 +9,7 @@ import Styles from '../../../../../styles/createNotes.module.scss';
 import { useRouter } from 'next/router';
 import toast, { Toaster } from 'react-hot-toast';
 import { NavContext } from '../../../../../components/context/StateContext';
-const url = 'https://shule-eight.vercel.app';
+const url = process.env.MAIN_URL;
 import { getSession } from 'next-auth/react';
 import LoaderWait from '../../../../../components/tools/loaderWait';
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -76,9 +76,9 @@ type formData = {
 }[];
 
 const EditForm = ({
-    	form,
-    	userfound,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	form,
+	userfound,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 	const [loading, setLoad] = useState(false);
 	useEffect(() => {

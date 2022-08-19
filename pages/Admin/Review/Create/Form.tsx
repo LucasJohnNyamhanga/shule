@@ -6,7 +6,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import { NavContext } from '../../../../components/context/StateContext';
 import InputTextMui from '../../../../components/tools/InputTextMui';
-const url = 'https://shule-eight.vercel.app';
+const url = process.env.MAIN_URL;
 import { getSession } from 'next-auth/react';
 import LoaderWait from '../../../../components/tools/loaderWait';
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -46,8 +46,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	};
 };
 const Form = ({
-        	userfound,
-        }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	userfound,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 	const [loading, setLoad] = useState(false);
 	useEffect(() => {
@@ -153,7 +153,7 @@ const Form = ({
 				</div>
 				<div>
 					{loading ? (
-						<div  className={Styles.imageSelect}>
+						<div className={Styles.imageSelect}>
 							<LoaderWait />
 						</div>
 					) : (

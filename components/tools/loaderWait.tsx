@@ -49,7 +49,7 @@ const LoaderWait = () => {
 					dur='1300ms'
 				/>
 			</svg>{' '}
-			Connecting..
+			LOADING..
 		</div>
 	);
 };

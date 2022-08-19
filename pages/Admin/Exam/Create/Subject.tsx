@@ -12,7 +12,7 @@ import SnackBar from '../../../../components/tools/SnackBar';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Progress from '../../../../components/tools/progressFileUpload';
 import { NavContext } from '../../../../components/context/StateContext';
-const url = 'https://shule-eight.vercel.app';
+const url = process.env.MAIN_URL;
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
@@ -84,10 +84,10 @@ type dataTypeSelect = {
 }[];
 
 const CreateNotes = ({
-    	forms,
-    	deactiveteImage,
-    	userfound,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	forms,
+	deactiveteImage,
+	userfound,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	const [selectOption, setSelectOption] = useState<dataTypeSelect>([]);

@@ -15,7 +15,7 @@ import Progress from '../../../../../components/tools/progressFileUpload';
 const CkEditor = dynamic(() => import('../../../../../components/tools/Ck'), {
 	ssr: false,
 });
-const url = 'https://shule-eight.vercel.app';
+const url = process.env.MAIN_URL;
 import FileUpload from '../../../../../components/tools/FileUpload';
 import { type } from 'os';
 import DisplayChip from '../../../../../components/tools/displayChip';
@@ -118,10 +118,10 @@ type selectFormType = {
 }[];
 
 const Reference = ({
-    	reference,
-    	subjects,
-    	userfound,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	reference,
+	subjects,
+	userfound,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	const [selectOption, setSelectOption] = useState<dataTypeSelect>([]);

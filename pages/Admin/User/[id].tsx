@@ -9,7 +9,7 @@ import SelectMiu from '../../../components/tools/SelectMui';
 import { NavContext } from '../../../components/context/StateContext';
 import CardBox from '../../../components/tools/cardBoxWithView';
 import { getSession } from 'next-auth/react';
-const url = 'https://shule-eight.vercel.app';
+const url = process.env.MAIN_URL;
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
 	if (!session) {

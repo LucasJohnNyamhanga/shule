@@ -12,7 +12,7 @@ import Styles from '../../../../../styles/createNotes.module.scss';
 import SnackBar from '../../../../../components/tools/SnackBar';
 import { useRouter } from 'next/router';
 import { NavContext } from '../../../../../components/context/StateContext';
-const url = 'https://shule-eight.vercel.app';
+const url = process.env.MAIN_URL;
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
@@ -93,10 +93,10 @@ type dataTypeSelect = {
 }[];
 
 const EditSubject = ({
-    	subject,
-    	formsList,
-    	userfound,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	subject,
+	formsList,
+	userfound,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
