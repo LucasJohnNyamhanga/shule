@@ -371,7 +371,7 @@ const EditNotes = ({
 				</div>
 				<div>
 					{loading ? (
-						<div onClick={handleCreateNotes} className={Styles.imageSelect}>
+						<div className={Styles.imageSelect}>
 							<LoaderWait />
 						</div>
 					) : (
