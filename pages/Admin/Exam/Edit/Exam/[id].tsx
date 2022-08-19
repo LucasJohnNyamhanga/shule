@@ -10,7 +10,7 @@ import axios from 'axios';
 import { NavContext } from '../../../../../components/context/StateContext';
 import { prisma } from '../../../../../db/prisma';
 import InputTextMui from '../../../../../components/tools/InputTextMui';
-const url = process.env.MAIN_URL;
+
 //load when browser kicks in, on page load
 const CkEditor = dynamic(() => import('../../../../../components/tools/Ck'), {
 	ssr: false,
@@ -19,6 +19,7 @@ const CkEditor = dynamic(() => import('../../../../../components/tools/Ck'), {
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
+	const url = process.env.MAIN_URL;
 	if (!session) {
 		return {
 			redirect: {
@@ -96,6 +97,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			forms,
 			subjects,
 			userfound,
+			url,
 		},
 	};
 };
@@ -106,11 +108,12 @@ type formData = {
 }[];
 
 const EditExam = ({
-	exam,
-	forms,
-	subjects,
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	exam,
+    	forms,
+    	subjects,
+    	userfound,
+    	url,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {

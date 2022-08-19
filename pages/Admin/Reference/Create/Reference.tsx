@@ -18,11 +18,11 @@ import dynamic from 'next/dynamic';
 const CkEditor = dynamic(() => import('../../../../components/tools/Ck'), {
 	ssr: false,
 });
-const url = process.env.MAIN_URL;
 
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
+	const url = process.env.MAIN_URL;
 	if (!session) {
 		return {
 			redirect: {
@@ -80,6 +80,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			deactiveteImage,
 			subjects,
 			userfound,
+			url,
 		},
 	};
 };
@@ -105,11 +106,12 @@ type selectFormType = {
 }[];
 
 const CreateNotes = ({
-	forms,
-	deactiveteImage,
-	subjects,
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	forms,
+    	deactiveteImage,
+    	subjects,
+    	userfound,
+    	url,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	const [selectOption, setSelectOption] = useState<dataTypeSelect>([]);

@@ -81,17 +81,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		},
 	});
 	const vifurushi = await JSON.parse(JSON.stringify(vifurushiFromServer));
+	const url = process.env.MAIN_URL;
 
 	await prisma.$disconnect();
 	return {
-		props: { userfound, packageDetails, vifurushi },
+		props: { userfound, packageDetails, vifurushi, url },
 	};
 };
-const url = process.env.MAIN_URL;
 const Notes = ({
     	userfound,
     	packageDetails,
     	vifurushi,
+    	url,
     }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { query, push } = useRouter();
 	let callback = query.callbackUrl;

@@ -9,10 +9,11 @@ import Styles from '../../../../../styles/createNotes.module.scss';
 import { useRouter } from 'next/router';
 import toast, { Toaster } from 'react-hot-toast';
 import { NavContext } from '../../../../../components/context/StateContext';
-const url = process.env.MAIN_URL;
+
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
+	const url = process.env.MAIN_URL;
 	if (!session) {
 		return {
 			redirect: {
@@ -81,6 +82,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			formsList,
 			subjects,
 			userfound,
+			url,
 		},
 	};
 };
@@ -95,11 +97,12 @@ type formData = {
 }[];
 
 const EditSubject = ({
-	topic,
-	formsList,
-	subjects,
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	topic,
+    	formsList,
+    	subjects,
+    	userfound,
+    	url,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {

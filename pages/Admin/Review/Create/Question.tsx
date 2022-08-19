@@ -17,11 +17,12 @@ import { NavContext } from '../../../../components/context/StateContext';
 const CkEditor = dynamic(() => import('../../../../components/tools/Ck'), {
 	ssr: false,
 });
-const url = process.env.MAIN_URL;
+
 import { getSession } from 'next-auth/react';
 import LoaderWait from '../../../../components/tools/loaderWait';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
+	const url = process.env.MAIN_URL;
 	if (!session) {
 		return {
 			redirect: {
@@ -80,6 +81,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			subjects,
 			questionFormat,
 			userfound,
+			url,
 		},
 	};
 };
@@ -109,6 +111,7 @@ const Create = ({
     	subjects,
     	questionFormat,
     	userfound,
+    	url,
     }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 	const [loading, setLoad] = useState(false);

@@ -14,9 +14,6 @@ import toast, { Toaster } from 'react-hot-toast';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
 import { NavContext } from '../../../../components/context/StateContext';
-import useSWR from 'swr';
-
-const url = process.env.MAIN_URL;
 
 //load when browser kicks in, on page load
 const CkEditor = dynamic(() => import('../../../../components/tools/Ck'), {
@@ -27,6 +24,8 @@ import { getSession } from 'next-auth/react';
 import LoaderWait from '../../../../components/tools/loaderWait';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
+	const url = process.env.MAIN_URL;
+
 	if (!session) {
 		return {
 			redirect: {
@@ -76,6 +75,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			forms,
 			subjects,
 			userfound,
+			url,
 		},
 	};
 };
@@ -94,6 +94,7 @@ const Notes = ({
     	forms,
     	subjects,
     	userfound,
+    	url,
     }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 

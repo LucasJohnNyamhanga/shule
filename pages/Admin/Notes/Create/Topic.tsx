@@ -12,11 +12,12 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { Topic } from '@mui/icons-material';
 import toast, { Toaster } from 'react-hot-toast';
 import { NavContext } from '../../../../components/context/StateContext';
-const url = process.env.MAIN_URL;
+
 import { getSession } from 'next-auth/react';
 import LoaderWait from '../../../../components/tools/loaderWait';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
+	const url = process.env.MAIN_URL;
 	if (!session) {
 		return {
 			redirect: {
@@ -64,6 +65,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			forms,
 			subjects,
 			userfound,
+			url,
 		},
 	};
 };
@@ -79,10 +81,11 @@ type formData = {
 }[];
 
 const Create = ({
-	forms,
-	subjects,
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	forms,
+    	subjects,
+    	userfound,
+    	url,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 	const [loading, setLoad] = useState(false);
 	useEffect(() => {
