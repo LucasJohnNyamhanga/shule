@@ -14,6 +14,7 @@ import { useRouter } from 'next/router';
 import { NavContext } from '../../../../../components/context/StateContext';
 
 import { getSession } from 'next-auth/react';
+import LoaderWait from '../../../../../components/tools/loaderWait';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
 	const url = process.env.MAIN_URL;
@@ -120,7 +121,7 @@ const EditSubject = ({
 		subjectName: '',
 		subjectDefinition: '',
 	});
-
+	const [loading, setLoad] = useState(false);
 	//!delay redirect
 	function delay(ms: number) {
 		return new Promise((resolve) => setTimeout(resolve, ms));
@@ -222,6 +223,7 @@ const EditSubject = ({
 					},
 					(err) => {
 						//some error
+						setLoad(false);
 					}
 				);
 		} else {
@@ -265,11 +267,13 @@ const EditSubject = ({
 					subjectName: '',
 					subjectDefinition: '',
 				});
+				setLoad(false);
 				delayRedirect();
 			})
 			.catch(function (error) {
 				// handle error
 				console.log(error);
+				setLoad(false);
 			})
 			.then(function () {
 				// always executed
@@ -284,6 +288,7 @@ const EditSubject = ({
 			selectOption.length > 0
 		) {
 			//!handle upload
+			setLoad(true);
 			setToastMessage('Saving to database. Please wait..');
 			setOpen(true);
 			uploadToServer();
@@ -365,9 +370,15 @@ const EditSubject = ({
 						</div>
 					</div>
 				</div>
-				<div onClick={handleCreateSubject} className={Styles.imageSelect}>
-					Update Subject
-				</div>
+				{loading ? (
+					<div className={Styles.imageSelect}>
+						<LoaderWait />
+					</div>
+				) : (
+					<div onClick={handleCreateSubject} className={Styles.imageSelect}>
+						Update Notes
+					</div>
+				)}
 				<SnackBar
 					textMessage={ToastMessage}
 					opener={open}
