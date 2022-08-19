@@ -84,13 +84,13 @@ const Ck = ({ content, dataCk, onReadyToStart }: dataContent) => {
 					simpleUpload: {
 						// The URL that the images are uploaded to.
 						// uploadUrl: 'http://localhost:3000/api/uploadCk',
-						uploadUrl: 'https://database.co.tz/api/uploadCk',
+						uploadUrl: 'www.database.co.tz/api/uploadCk',
 						// uploadUrl: 'http://localhost:3000/api/uploadCkReDirect',
 						// withCredentials: true,
-						// headers: {
-						//     'X-CSRF-TOKEN': 'CSRF-Token',
-						//     Authorization: 'Bearer <JSON Web Token>'
-						// }
+						headers: {
+							'X-CSRF-TOKEN': 'CSRF-Token',
+							Authorization: 'Bearer <JSON Web Token>',
+						},
 					},
 				}}
 			/>
