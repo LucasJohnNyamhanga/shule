@@ -17,6 +17,7 @@ import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
 	const url = process.env.MAIN_URL;
+	const imageUrl = process.env.IMAGE_URL;
 	if (!session) {
 		return {
 			redirect: {
@@ -76,6 +77,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			deactiveteImage,
 			userfound,
 			url,
+			imageUrl,
 		},
 	};
 };
@@ -90,6 +92,7 @@ const CreateNotes = ({
     	deactiveteImage,
     	userfound,
     	url,
+    	imageUrl,
     }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
@@ -184,7 +187,7 @@ const CreateNotes = ({
 		const body = new FormData();
 		body.append('file', image);
 		axios
-			.post('/api/upload', body, {
+			.post(imageUrl + '/api/upload', body, {
 				onUploadProgress: (progressEvent) => {
 					// console.log('Upload Progress: ' + Math.round(progressEvent.loaded / progressEvent.total * 100) + "%");
 					setUploadData(
@@ -194,7 +197,7 @@ const CreateNotes = ({
 			})
 			.then(
 				(res) => {
-					let location = res.data.file;
+					let location = res.data;
 					setclearData(true);
 					clearDataProcess();
 					sendToDatabase(location);
