@@ -12,7 +12,7 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { Topic } from '@mui/icons-material';
 import toast, { Toaster } from 'react-hot-toast';
 import { NavContext } from '../../../../components/context/StateContext';
-const url = 'https://shule-eight.vercel.app';
+const url = process.env.MAIN_URL;
 import { getSession } from 'next-auth/react';
 import LoaderWait from '../../../../components/tools/loaderWait';
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -80,10 +80,10 @@ type formData = {
 }[];
 
 const Create = ({
-    	forms,
-    	subjects,
-    	userfound,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	forms,
+	subjects,
+	userfound,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {

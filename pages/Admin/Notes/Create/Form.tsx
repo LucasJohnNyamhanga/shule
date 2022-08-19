@@ -7,7 +7,7 @@ import axios from 'axios';
 import { NavContext } from '../../../../components/context/StateContext';
 import InputTextMui from '../../../../components/tools/InputTextMui';
 import LoaderWait from '../../../../components/tools/loaderWait';
-const url = 'https://shule-eight.vercel.app';
+const url = process.env.MAIN_URL;
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);

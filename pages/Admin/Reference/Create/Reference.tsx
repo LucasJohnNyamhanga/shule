@@ -18,7 +18,7 @@ import dynamic from 'next/dynamic';
 const CkEditor = dynamic(() => import('../../../../components/tools/Ck'), {
 	ssr: false,
 });
-const url = 'https://shule-eight.vercel.app';
+const url = process.env.MAIN_URL;
 
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -105,11 +105,11 @@ type selectFormType = {
 }[];
 
 const CreateNotes = ({
-    	forms,
-    	deactiveteImage,
-    	subjects,
-    	userfound,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	forms,
+	deactiveteImage,
+	subjects,
+	userfound,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	const [selectOption, setSelectOption] = useState<dataTypeSelect>([]);

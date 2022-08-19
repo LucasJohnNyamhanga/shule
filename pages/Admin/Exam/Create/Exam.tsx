@@ -15,7 +15,7 @@ import dynamic from 'next/dynamic';
 import axios from 'axios';
 import { NavContext } from '../../../../components/context/StateContext';
 import InputTextMui from '../../../../components/tools/InputTextMui';
-const url = 'https://shule-eight.vercel.app';
+const url = process.env.MAIN_URL;
 //load when browser kicks in, on page load
 const CkEditor = dynamic(() => import('../../../../components/tools/Ck'), {
 	ssr: false,
@@ -100,11 +100,11 @@ type formData = {
 }[];
 
 const Notes = ({
-    	forms,
-    	subjects,
-    	examType,
-    	userfound,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	forms,
+	subjects,
+	examType,
+	userfound,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	const [formOptions, setFormOptions] = useState<formData>([]);

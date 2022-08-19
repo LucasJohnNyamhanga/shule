@@ -87,12 +87,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		props: { userfound, packageDetails, vifurushi },
 	};
 };
-
+const url = process.env.MAIN_URL;
 const Notes = ({
-	userfound,
-	packageDetails,
-	vifurushi,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	userfound,
+    	packageDetails,
+    	vifurushi,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { query, push } = useRouter();
 	let callback = query.callbackUrl;
 	const [planQuantity, setPlanQuantity] = useState(1);
@@ -123,7 +123,7 @@ const Notes = ({
 	const checkPin = (number: string) => {
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/getOrderByNumber',
+			url: url + '/api/getOrderByNumber',
 			data: { number },
 		})
 			.then(function (response) {
@@ -363,7 +363,7 @@ const Notes = ({
 		setLoadingDisplay(true);
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/createOrder',
+			url: url + '/api/createOrder',
 			data: databaseData,
 		})
 			.then(function (response) {

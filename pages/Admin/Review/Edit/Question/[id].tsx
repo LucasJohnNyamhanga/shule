@@ -18,7 +18,7 @@ import axios from 'axios';
 import InputTextMui from '../../../../../components/tools/InputTextMui';
 import { NavContext } from '../../../../../components/context/StateContext';
 import { type } from 'os';
-const url = 'https://shule-eight.vercel.app';
+const url = process.env.MAIN_URL;
 //load when browser kicks in, on page load
 const CkEditor = dynamic(() => import('../../../../../components/tools/Ck'), {
 	ssr: false,
@@ -165,12 +165,12 @@ type typePrisma = {
 };
 
 const EditNotes = ({
-    	question,
-    	forms,
-    	subjects,
-    	questionFormat,
-    	userfound,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	question,
+	forms,
+	subjects,
+	questionFormat,
+	userfound,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 	let formatName = (id: number) => {
 		for (let format of questionFormat) {

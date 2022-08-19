@@ -16,7 +16,7 @@ import axios from 'axios';
 import { NavContext } from '../../../../components/context/StateContext';
 import useSWR from 'swr';
 
-const url = 'https://shule-eight.vercel.app';
+const url = process.env.MAIN_URL;
 
 //load when browser kicks in, on page load
 const CkEditor = dynamic(() => import('../../../../components/tools/Ck'), {

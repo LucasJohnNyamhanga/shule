@@ -41,10 +41,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		props: { packageDetails },
 	};
 };
-
+const url = process.env.MAIN_URL;
 const Pricing = ({
-	packageDetails,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	packageDetails,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { userData } = useContext(NavContext);
 	const { query, push } = useRouter();
 	let callback = query.callbackUrl;
@@ -56,7 +56,7 @@ const Pricing = ({
 		let database = { ...databaseData, id: userData.id };
 		axios({
 			method: 'post',
-			url: 'http://localhost:3000/api/updateKifurushi',
+			url: url + '/api/updateKifurushi',
 			data: database,
 		})
 			.then(function (response) {

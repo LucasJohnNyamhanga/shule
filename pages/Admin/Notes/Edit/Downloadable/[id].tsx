@@ -14,7 +14,7 @@ import FileUpload from '../../../../../components/tools/FileUploadAny';
 import toast, { Toaster } from 'react-hot-toast';
 import { NavContext } from '../../../../../components/context/StateContext';
 import Progress from '../../../../../components/tools/progressFileUpload';
-const url = 'https://shule-eight.vercel.app';
+const url = process.env.MAIN_URL;
 //load when browser kicks in, on page load
 const CkEditor = dynamic(() => import('../../../../../components/tools/Ck'), {
 	ssr: false,
@@ -106,11 +106,11 @@ type formData = {
 }[];
 
 const Create = ({
-    	notesData,
-    	formsList,
-    	subjects,
-    	userfound,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	notesData,
+	formsList,
+	subjects,
+	userfound,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {

@@ -12,7 +12,7 @@ import { prisma } from '../../../../../db/prisma';
 import InputTextMui from '../../../../../components/tools/InputTextMui';
 import FileUpload from '../../../../../components/tools/FileUploadAny';
 import Progress from '../../../../../components/tools/progressFileUpload';
-const url = 'https://shule-eight.vercel.app';
+const url = process.env.MAIN_URL;
 //load when browser kicks in, on page load
 const CkEditor = dynamic(() => import('../../../../../components/tools/Ck'), {
 	ssr: false,
