@@ -87,10 +87,10 @@ const Ck = ({ content, dataCk, onReadyToStart }: dataContent) => {
 						uploadUrl: 'www.database.co.tz/api/uploadCk',
 						// uploadUrl: 'http://localhost:3000/api/uploadCkReDirect',
 						// withCredentials: true,
-						// headers: {
-						//     'X-CSRF-TOKEN': 'CSRF-Token',
-						//     Authorization: 'Bearer <JSON Web Token>'
-						// }
+						headers: {
+							'X-CSRF-TOKEN': 'CSRF-Token',
+							Authorization: 'Bearer <JSON Web Token>',
+						},
 					},
 				}}
 			/>
