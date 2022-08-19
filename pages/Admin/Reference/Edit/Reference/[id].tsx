@@ -15,7 +15,7 @@ import Progress from '../../../../../components/tools/progressFileUpload';
 const CkEditor = dynamic(() => import('../../../../../components/tools/Ck'), {
 	ssr: false,
 });
-const url = process.env.MAIN_URL;
+
 import FileUpload from '../../../../../components/tools/FileUpload';
 import { type } from 'os';
 import DisplayChip from '../../../../../components/tools/displayChip';
@@ -23,6 +23,7 @@ import SnackBar from '../../../../../components/tools/SnackBar';
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
+	const url = process.env.MAIN_URL;
 	if (!session) {
 		return {
 			redirect: {
@@ -93,6 +94,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			reference,
 			subjects,
 			userfound,
+			url,
 		},
 	};
 };
@@ -118,10 +120,11 @@ type selectFormType = {
 }[];
 
 const Reference = ({
-	reference,
-	subjects,
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	reference,
+    	subjects,
+    	userfound,
+    	url,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	const [selectOption, setSelectOption] = useState<dataTypeSelect>([]);

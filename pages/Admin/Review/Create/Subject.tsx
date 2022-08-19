@@ -12,10 +12,11 @@ import SnackBar from '../../../../components/tools/SnackBar';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Progress from '../../../../components/tools/progressFileUpload';
 import { NavContext } from '../../../../components/context/StateContext';
-const url = process.env.MAIN_URL;
+
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
+	const url = process.env.MAIN_URL;
 	if (!session) {
 		return {
 			redirect: {
@@ -73,6 +74,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			forms,
 			deactiveteImage,
 			userfound,
+			url,
 		},
 	};
 };
@@ -88,10 +90,11 @@ type dataTypeSelect = {
 }[];
 
 const CreateNotes = ({
-	forms,
-	deactiveteImage,
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	forms,
+    	deactiveteImage,
+    	userfound,
+    	url,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {

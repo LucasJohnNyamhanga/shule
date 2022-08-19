@@ -31,11 +31,11 @@ import { useSession } from 'next-auth/react';
 import { FaUserSecret, FaUsers } from 'react-icons/fa';
 import InputTextMui from '../../components/tools/InputTextMui';
 import { prisma } from '../../db/prisma';
-const url = process.env.MAIN_URL;
 
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
+	const url = process.env.MAIN_URL;
 	if (!session) {
 		return {
 			redirect: {
@@ -70,12 +70,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 	await prisma.$disconnect();
 	return {
-		props: { userfound },
+		props: { userfound, url },
 	};
 };
 
 const Index = ({
     	userfound,
+    	url,
     }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const matches300 = useMediaQuery('(min-width:325px)');
 	const { status } = useSession();

@@ -35,15 +35,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		},
 	});
 	const packageDetails = await JSON.parse(JSON.stringify(packageFromServer));
+	const url = process.env.MAIN_URL;
 
 	await prisma.$disconnect();
 	return {
-		props: { packageDetails },
+		props: { packageDetails, url },
 	};
 };
-const url = process.env.MAIN_URL;
 const Pricing = ({
     	packageDetails,
+    	url,
     }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { userData } = useContext(NavContext);
 	const { query, push } = useRouter();

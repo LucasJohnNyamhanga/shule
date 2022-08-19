@@ -7,10 +7,11 @@ import axios from 'axios';
 import { NavContext } from '../../../../components/context/StateContext';
 import InputTextMui from '../../../../components/tools/InputTextMui';
 import LoaderWait from '../../../../components/tools/loaderWait';
-const url = process.env.MAIN_URL;
+
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
+	const url = process.env.MAIN_URL;
 	if (!session) {
 		return {
 			redirect: {
@@ -41,11 +42,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 	await prisma.$disconnect();
 	return {
-		props: { userfound },
+		props: { userfound,url },
 	};
 };
 const Form = ({
-    	userfound,
+    	userfound,url
     }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 

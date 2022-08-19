@@ -9,9 +9,10 @@ import SelectMiu from '../../../components/tools/SelectMui';
 import { NavContext } from '../../../components/context/StateContext';
 import CardBox from '../../../components/tools/cardBoxWithView';
 import { getSession } from 'next-auth/react';
-const url = process.env.MAIN_URL;
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
+	const url = process.env.MAIN_URL;
+
 	if (!session) {
 		return {
 			redirect: {
@@ -96,6 +97,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		props: {
 			userfound,
 			vifurushi,
+			url,
 		},
 	};
 };
@@ -108,6 +110,7 @@ type formData = {
 const EditExam = ({
     	userfound,
     	vifurushi,
+    	url,
     }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);

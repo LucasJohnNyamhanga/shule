@@ -9,7 +9,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
 import { NavContext } from '../../../../../components/context/StateContext';
-const url = process.env.MAIN_URL;
+
 //load when browser kicks in, on page load
 const CkEditor = dynamic(() => import('../../../../../components/tools/Ck'), {
 	ssr: false,
@@ -19,6 +19,7 @@ import { getSession } from 'next-auth/react';
 import LoaderWait from '../../../../../components/tools/loaderWait';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
+	const url = process.env.MAIN_URL;
 	if (!session) {
 		return {
 			redirect: {
@@ -87,6 +88,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			formsList,
 			subjects,
 			userfound,
+			url,
 		},
 	};
 };
@@ -101,11 +103,12 @@ type formData = {
 }[];
 
 const EditNotes = ({
-	notesData,
-	formsList,
-	subjects,
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	notesData,
+    	formsList,
+    	subjects,
+    	userfound,
+    	url,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
