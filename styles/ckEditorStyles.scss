@@ -332,19 +332,19 @@ $ck-todo-list-checkmark-size: 16px;
 	margin: 0.9em auto;
 	display: table;
 	overflow-x: auto;
+	width: 100%;
 }
 /* ckeditor5-table/theme/table.css */
 .ckContent .table table {
 	border-collapse: collapse;
 	border-spacing: 0;
-	width: 100%;
 	height: 100%;
-	border: 1px double hsl(0, 0%, 70%);
+	border: 2px double hsl(0, 0%, 75%);
+	width: 100%;
 }
 /* ckeditor5-table/theme/table.css */
 .ckContent .table table td,
 .ckContent .table table th {
-	min-width: 2em;
 	padding: 0.4em;
 	border: 1px solid hsl(0, 0%, 75%);
 }
@@ -352,6 +352,10 @@ $ck-todo-list-checkmark-size: 16px;
 .ckContent .table table th {
 	font-weight: bold;
 	background: hsla(0, 0%, 0%, 5%);
+}
+
+.ckContent .table table tr:nth-child(even) {
+	background-color: $answerBackground;
 }
 /* ckeditor5-table/theme/table.css */
 .ckContent[dir='rtl'] .table th {

@@ -83,7 +83,7 @@ const Ck = ({ content, dataCk, onReadyToStart }: dataContent) => {
 
 					simpleUpload: {
 						// The URL that the images are uploaded to.
-						// uploadUrl: 'http://localhost:3000/api/uploadCk',
+						// uploadUrl: 'http://127.0.0.1:8000/api/uploadCk',
 						uploadUrl: 'https://www.database.co.tz/api/uploadCk',
 						// uploadUrl: 'http://localhost:3000/api/uploadCkReDirect',
 						// withCredentials: true,
