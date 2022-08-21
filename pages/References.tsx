@@ -71,7 +71,7 @@ const References: NextPage = ({
 	return (
 		<>
 			<Hero
-				image={'/man1.webp'}
+				image={'/darasaplus.gif'}
 				header={`Books and references for downloading.`}
 				explanation={`Full library at the tip of you finger. Get the books and reference you need at click of a button, downloaded and in your device for anytime access.`}
 			/>
