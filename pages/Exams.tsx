@@ -75,15 +75,8 @@ const Exams: NextPage = ({
 		<>
 			<Hero
 				image={'/darasaplus.gif'}
-				text1={`<span style="color: #27ae60 ;"><strong>Read</strong></span><span>&#128195;</span>`}
-				text2={`<span style="color: #800080 ;"><strong>Explore</strong></span><span>&#127757;</span>`}
-				text3={`<span style="color: #d35400 ;"><strong>Search</strong></span><span>&#128269;</span>`}
-				text4={''}
-				text5={''}
-				explanation1={`To amaizingly`}
-				explanation2={` well prepared Notes.`}
-				color1={''}
-				color2={'#008080'}
+				header={`All past exams from everywhere.`}
+				explanation={`Get answered and unanswered past examinations from all schools accross all regions. To get you ready and well prepared for your next exam.`}
 			/>
 			<Study subjects={subjects} link={`Exams`} focus={`Let's Examinate`} />
 		</>

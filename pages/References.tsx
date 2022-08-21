@@ -72,15 +72,8 @@ const References: NextPage = ({
 		<>
 			<Hero
 				image={'/darasaplus.gif'}
-				text1={`<span style="color: #27ae60 ;"><strong>Read</strong></span><span>&#128195;</span>`}
-				text2={`<span style="color: #800080 ;"><strong>Explore</strong></span><span>&#127757;</span>`}
-				text3={`<span style="color: #d35400 ;"><strong>Search</strong></span><span>&#128269;</span>`}
-				text4={''}
-				text5={''}
-				explanation1={`To amaizingly`}
-				explanation2={` well prepared Notes.`}
-				color1={''}
-				color2={'#008080'}
+				header={`Books and references for downloading.`}
+				explanation={`Full library at the tip of you finger. Get the books and reference you need at click of a button, downloaded and in your device for anytime access.`}
 			/>
 			<Study
 				subjects={subjects}
