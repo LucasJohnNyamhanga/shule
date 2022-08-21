@@ -516,6 +516,14 @@ $ck-todo-list-checkmark-size: 16px;
 $checkmarksize: 16px;
 
 .ckContent {
+	ol li {
+		padding-bottom: 5px;
+	}
+
+	ul li {
+		padding-bottom: 5px;
+	}
+
 	a {
 		color: $lightblue;
 	}
