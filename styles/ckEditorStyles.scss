@@ -345,12 +345,12 @@ $ck-todo-list-checkmark-size: 16px;
 /* ckeditor5-table/theme/table.css */
 .ckContent .table table td,
 .ckContent .table table th {
-	padding: 0.4em;
+	padding: 10px;
 	border: 1px solid hsl(0, 0%, 75%) !important;
 }
 /* ckeditor5-table/theme/table.css */
 .ckContent .table table th {
-	font-weight: bold;
+	font-weight: bolder;
 	background: hsla(0, 0%, 0%, 5%);
 }
 
@@ -364,6 +364,22 @@ $ck-todo-list-checkmark-size: 16px;
 /* ckeditor5-table/theme/table.css */
 .ckContent[dir='ltr'] .table th {
 	text-align: left;
+}
+
+.ckContent {
+	table th,
+	table td {
+		padding: 0.625em !important;
+		font-family: $fontBody !important;
+		text-align: left !important;
+	}
+
+	table th {
+		font-size: 0.85em !important;
+		letter-spacing: 0.1em !important;
+		text-transform: uppercase !important;
+		font-family: $fontHeader !important;
+	}
 }
 /* ckeditor5-table/theme/tablecaption.css */
 .ckContent .table > figcaption {
