@@ -176,12 +176,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const Index = ({
-	htmlServer,
-	toc,
-	topics,
-	thisTopicData,
-	download,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	htmlServer,
+    	toc,
+    	topics,
+    	thisTopicData,
+    	download,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -262,6 +262,7 @@ const Index = ({
 							{thisTopicData.form.formName} <ChevronRightOutlinedIcon />{' '}
 							{truncate(thisTopicData.topicName)}
 						</div>
+
 						{download.length > 0 ? (
 							<Link
 								href={`/Notes/${subjectLocatorLink}/${formLocatorLink}/Downloads`}
@@ -275,10 +276,11 @@ const Index = ({
 						)}
 					</div>
 					<div className={Styles.BodyContent}>
+						<h2>`${thisTopicData.topicName}`</h2>
 						<div className='ckContent'>
 							{toc.length > 0 && (
 								<div className='toc'>
-									<h2>INSIDE THIS TOPIC 🧐</h2>
+									<h3>INSIDE THIS TOPIC 🧐</h3>
 									<ol>
 										{toc.map(({ id, title }) => (
 											<a href={`#${id}`} key={id}>
