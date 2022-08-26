@@ -257,7 +257,7 @@ const Index = ({
 						)}
 					</div>
 					<div className={Styles.BodyContent}>
-						<h2>`${note[0].topicName}`</h2>
+						<h2>{`Topic: ${note[0].topicName}`.toUpperCase()}</h2>
 						<div className='ckContent'>
 							{toc.length > 0 && (
 								<div className='toc'>
