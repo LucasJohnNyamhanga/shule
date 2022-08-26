@@ -279,7 +279,7 @@ const Index = ({
 						<div className='ckContent'>
 							{toc.length > 0 && (
 								<div className='toc'>
-									<h2>INSIDE THIS TOPIC 🧐</h2>
+									<h3>INSIDE THIS TOPIC 🧐</h3>
 									<ol>
 										{toc.map(({ id, title }) => (
 											<a href={`#${id}`} key={id}>
