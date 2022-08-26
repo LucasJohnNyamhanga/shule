@@ -154,12 +154,12 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Index = ({
-	htmlServer,
-	toc,
-	topics,
-	note,
-	download,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	htmlServer,
+    	toc,
+    	topics,
+    	note,
+    	download,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 	useEffect(() => {
 		setNavActive('Notes');
@@ -257,6 +257,7 @@ const Index = ({
 						)}
 					</div>
 					<div className={Styles.BodyContent}>
+						<h2>{`Topic: ${note[0].topicName}`.toUpperCase()}</h2>
 						<div className='ckContent'>
 							{toc.length > 0 && (
 								<div className='toc'>

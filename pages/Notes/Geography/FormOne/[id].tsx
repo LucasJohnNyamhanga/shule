@@ -176,12 +176,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const Index = ({
-	htmlServer,
-	toc,
-	topics,
-	thisTopicData,
-	download,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	htmlServer,
+    	toc,
+    	topics,
+    	thisTopicData,
+    	download,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -275,6 +275,7 @@ const Index = ({
 						)}
 					</div>
 					<div className={Styles.BodyContent}>
+						<h2>{`Topic: ${thisTopicData.topicName}`.toUpperCase()}</h2>
 						<div className='ckContent'>
 							{toc.length > 0 && (
 								<div className='toc'>
