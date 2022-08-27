@@ -394,6 +394,7 @@ $ck-todo-list-checkmark-size: 16px;
 	outline-offset: -1px;
 }
 /* ckeditor5-code-block/theme/codeblock.css */
+
 .ckContent pre {
 	padding: 1em;
 	background: hsla(0, 0%, 78%, 0.3);
@@ -471,8 +472,15 @@ $ck-todo-list-checkmark-size: 16px;
 		0 0 1px rgba(0, 0, 0, 0.1), 0 2px rgba(0, 0, 0, 0.02);
 }
 
-.ckContent pre:before,
-.ckContent pre:after {
+// .ckContent pre:before,
+// .ckContent pre:after {
+// 	content: '';
+// 	position: absolute;
+// 	top: 0;
+// 	bottom: 0;
+// }
+
+.ckContent pre:before {
 	content: '';
 	position: absolute;
 	top: 0;
@@ -488,18 +496,18 @@ $ck-todo-list-checkmark-size: 16px;
 	border-width: 0 1px;
 }
 
-.ckContent pre:after {
-	z-index: -1;
-	left: 0;
-	right: 0;
-	background: rgba(242, 246, 193, 0.9);
-	border: 1px solid rgba(170, 157, 134, 0.7);
-	-webkit-transform: rotate(2deg);
-	-moz-transform: rotate(2deg);
-	-ms-transform: rotate(2deg);
-	-o-transform: rotate(2deg);
-	transform: rotate(2deg);
-}
+// .ckContent pre:after {
+// 	z-index: -1;
+// 	left: 0;
+// 	right: 0;
+// 	background: rgba(242, 246, 193, 0.9);
+// 	border: 1px solid rgba(170, 157, 134, 0.7);
+// 	-webkit-transform: rotate(2deg);
+// 	-moz-transform: rotate(2deg);
+// 	-ms-transform: rotate(2deg);
+// 	-o-transform: rotate(2deg);
+// 	transform: rotate(2deg);
+// }
 /* ckeditor5-code-block/theme/codeblock.css */
 .ckContent pre code {
 	background: unset;
@@ -656,4 +664,7 @@ $checkmarksize: 16px;
 			margin: 0px;
 		}
 	}
+}
+.ckContent {
+	z-index: 1;
 }
