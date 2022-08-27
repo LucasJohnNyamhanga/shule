@@ -263,7 +263,13 @@ const SignIn = ({}) => {
 									Show Password
 								</div>
 							</div>
-							<div onClick={signInWithCredentials} className={Styles.button}>
+							<div
+								onSubmit={(e) => {
+									e.preventDefault();
+									signInWithCredentials();
+								}}
+								onClick={signInWithCredentials}
+								className={Styles.button}>
 								Sign In
 							</div>
 							<div className={Styles.separator}>
