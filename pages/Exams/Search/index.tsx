@@ -82,7 +82,18 @@ const Reference = ({
 	function truncateHTML(text: string, length: number) {
 		let startIndex = text
 			.toLowerCase()
-			.search(`${searchText.toLowerCase().replaceAll(' ', '|')}`);
+			.search(
+				`${searchText
+					.toLowerCase()
+					.replace('what', '')
+					.replace('is', '')
+					.replace('why', '')
+					.replace('when', '')
+					.replace('how', '')
+					.replace('are', '')
+					.trim()
+					.replaceAll(' ', '|')}`
+			);
 
 		if (startIndex > 70) {
 			startIndex -= 70;
