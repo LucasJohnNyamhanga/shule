@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import Styles from '../../styles/imageUpload.module.scss';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import { type } from 'os';
 
 type dataType = {
 	uploadToServer: (image: string | Blob, action: boolean) => void;

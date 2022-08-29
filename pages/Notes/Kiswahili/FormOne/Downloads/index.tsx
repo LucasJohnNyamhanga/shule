@@ -11,10 +11,10 @@ import { useRouter } from 'next/router';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 
-const subjectLocator = 'Geography';
-const formLocator = 'Form Three';
-const subjectLocatorLink = 'Geography';
-const formLocatorLink = 'FormThree';
+const subjectLocator = 'Kiswahili';
+const formLocator = 'Form One';
+const subjectLocatorLink = 'Kiswahili';
+const formLocatorLink = 'FormOne';
 
 export const getStaticProps: GetStaticProps = async () => {
 	const topicsFromServer = await prisma.notesDownloadable.findMany({
@@ -45,8 +45,8 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Index = ({
-	downloads,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	downloads,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
