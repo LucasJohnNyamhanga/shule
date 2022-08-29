@@ -65,8 +65,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const Notes = ({
-    	userfound,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	userfound,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const password = useRef<HTMLInputElement>(null!);
 	const password1 = useRef<HTMLInputElement>(null!);
 	const password2 = useRef<HTMLInputElement>(null!);

@@ -8,7 +8,7 @@ import Loader from '../../components/tools/loader';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import bcrypt from 'bcryptjs';
-
+//! insta @ johnsavanter
 const SignIn = ({}) => {
 	const [formData, setFormData] = useState({
 		username: '',
@@ -34,7 +34,7 @@ const SignIn = ({}) => {
 	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
-
+	//! insta @ johnsavanter
 	let handletext = (e: React.ChangeEvent<HTMLInputElement>) => {
 		let value = e.target.value;
 		let name = e.target.name;
@@ -49,7 +49,7 @@ const SignIn = ({}) => {
 		password1.current.style.color = 'black';
 		password2.current.style.color = 'black';
 	};
-
+	//! insta @ johnsavanter
 	const { query, push } = useRouter();
 	let callback = query.callbackUrl;
 

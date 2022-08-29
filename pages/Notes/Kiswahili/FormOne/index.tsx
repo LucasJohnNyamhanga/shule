@@ -15,10 +15,10 @@ import rehypeParse from 'rehype-parse';
 import { visit } from 'unist-util-visit';
 import parameterize from 'parameterize-js';
 
-const subjectLocator = 'Physics';
-const formLocator = 'Form Five';
-const subjectLocatorLink = 'Physics';
-const formLocatorLink = 'FormFive';
+const subjectLocator = 'Kiswahili';
+const formLocator = 'Form One';
+const subjectLocatorLink = 'Kiswahili';
+const formLocatorLink = 'FormOne';
 
 export const getStaticProps: GetStaticProps = async () => {
 	const topicsFromServer = await prisma.topic.findMany({
@@ -154,12 +154,12 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Index = ({
-	htmlServer,
-	toc,
-	topics,
-	note,
-	download,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	htmlServer,
+    	toc,
+    	topics,
+    	note,
+    	download,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 	useEffect(() => {
 		setNavActive('Notes');
@@ -257,10 +257,11 @@ const Index = ({
 						)}
 					</div>
 					<div className={Styles.BodyContent}>
+						<h2>{`Topic: ${note[0].topicName}`.toUpperCase()}</h2>
 						<div className='ckContent'>
 							{toc.length > 0 && (
 								<div className='toc'>
-									<h2>INSIDE THIS TOPIC 🧐</h2>
+									<h3>INSIDE THIS TOPIC 🧐</h3>
 									<ol>
 										{toc.map(({ id, title }) => (
 											<a href={`#${id}`} key={id}>

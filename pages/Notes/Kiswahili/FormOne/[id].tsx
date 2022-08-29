@@ -13,10 +13,10 @@ import rehypeParse from 'rehype-parse';
 import { visit } from 'unist-util-visit';
 import parameterize from 'parameterize-js';
 
-const subjectLocator = 'Geography';
-const formLocator = 'Form Two';
-const subjectLocatorLink = 'Geography';
-const formLocatorLink = 'FormTwo';
+const subjectLocator = 'Kiswahili';
+const formLocator = 'Form One';
+const subjectLocatorLink = 'Kiswahili';
+const formLocatorLink = 'FormOne';
 
 export const getStaticProps: GetStaticProps = async (context) => {
 	const id = context.params?.id;
@@ -176,12 +176,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const Index = ({
-	htmlServer,
-	toc,
-	topics,
-	thisTopicData,
-	download,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	htmlServer,
+    	toc,
+    	topics,
+    	thisTopicData,
+    	download,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -275,10 +275,11 @@ const Index = ({
 						)}
 					</div>
 					<div className={Styles.BodyContent}>
+						<h2>{`Topic: ${thisTopicData.topicName}`.toUpperCase()}</h2>
 						<div className='ckContent'>
 							{toc.length > 0 && (
 								<div className='toc'>
-									<h2>INSIDE THIS TOPIC 🧐</h2>
+									<h3>INSIDE THIS TOPIC 🧐</h3>
 									<ol>
 										{toc.map(({ id, title }) => (
 											<a href={`#${id}`} key={id}>
