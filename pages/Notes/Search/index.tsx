@@ -57,9 +57,9 @@ type note = {
 };
 
 const Reference = ({
-	searchResults,
-	searchText,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	searchResults,
+    	searchText,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 	const [searchResultsStatus, setSearchResultsStatus] = useState(false);
 
@@ -69,10 +69,9 @@ const Reference = ({
 	}, [navActive]);
 
 	function truncateHTML(text: string, length: number) {
-		let startIndex = text
-			.toLowerCase()
-			.search(
-				`${searchText
+		let startIndex = text.toLowerCase().search(
+			`${
+				searchText
 					.toLowerCase()
 					.replace('what', '')
 					.replace('is', '')
@@ -81,8 +80,9 @@ const Reference = ({
 					.replace('how', '')
 					.replace('are', '')
 					.trim()
-					.replaceAll(' ', '|')}`
-			);
+				// .replaceAll(' ', '|')
+			}`
+		);
 
 		if (startIndex > 70) {
 			startIndex -= 70;
