@@ -57,9 +57,9 @@ type note = {
 };
 
 const Reference = ({
-    	searchResults,
-    	searchText,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	searchResults,
+	searchText,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 	const [searchResultsStatus, setSearchResultsStatus] = useState(false);
 
@@ -194,9 +194,9 @@ const Reference = ({
 					searchResults.map(
 						(
 							result: {
-								form: any;
-								topic: any;
-								id: React.Key | null | undefined;
+								form: { formName: string };
+								topic: { topicName: string };
+								id: number;
 								subject: note;
 								content: string;
 							},
