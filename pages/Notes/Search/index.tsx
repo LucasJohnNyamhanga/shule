@@ -41,21 +41,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	};
 };
 
-type note = {
-	subjectName: any;
-	id: number;
-	content: string;
-	subject: {
-		subjectName: string;
-	};
-	form: {
-		formName: string;
-	};
-	topic: {
-		topicName: string;
-	};
-};
-
 const Reference = ({
 	searchResults,
 	searchText,
@@ -197,7 +182,9 @@ const Reference = ({
 								form: { formName: string };
 								topic: { topicName: string };
 								id: number;
-								subject: note;
+								subject: {
+									subjectName: string;
+								};
 								content: string;
 							},
 							index: number
