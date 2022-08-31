@@ -70,7 +70,7 @@ const Reference = ({
 
 	function truncateHTML(text: string, length: number) {
 		let startIndex = text.toLowerCase().search(
-			`${
+			`/${
 				searchText
 					.toLowerCase()
 					.replace('what', '')
@@ -81,7 +81,7 @@ const Reference = ({
 					.replace('are', '')
 					.trim()
 				// .replaceAll(' ', '|')
-			}`
+			}/i`
 		);
 
 		if (startIndex > 70) {
