@@ -30,6 +30,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			topic: {
 				select: {
 					topicName: true,
+					id: true,
 				},
 			},
 		},
@@ -55,18 +56,18 @@ const Reference = ({
 
 	function truncateHTML(text: string, length: number) {
 		let startIndex = text.toLowerCase().search(
-			`/${
+			`${
 				searchText
-					.toLowerCase()
-					.replace('what', '')
-					.replace('is', '')
-					.replace('why', '')
-					.replace('when', '')
-					.replace('how', '')
-					.replace('are', '')
+					// .toLowerCase()
+					// .replace('what', '')
+					// .replace('is', '')
+					// .replace('why', '')
+					// .replace('when', '')
+					// .replace('how', '')
+					// .replace('are', '')
 					.trim()
 				// .replaceAll(' ', '|')
-			}/i`
+			}`
 		);
 
 		if (startIndex > 70) {
@@ -179,9 +180,10 @@ const Reference = ({
 					searchResults.map(
 						(
 							result: {
-								form: { formName: string };
-								topic: { topicName: string };
 								id: number;
+								form: { formName: string };
+								topic: { topicName: string; id: number };
+
 								subject: {
 									subjectName: string;
 								};
@@ -198,7 +200,9 @@ const Reference = ({
 									<Link
 										href={`/Notes/${
 											result.subject.subjectName
-										}/${result.form.formName.replace(' ', '')}/${result.id}`}>
+										}/${result.form.formName.replace(' ', '')}/${
+											result.topic.id
+										}`}>
 										<a>
 											<div
 												className={`ckContent ${Styles.result}`}
