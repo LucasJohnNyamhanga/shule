@@ -15,7 +15,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			},
 		},
 		select: {
-			id: true,
 			content: true,
 			subject: {
 				select: {
@@ -58,7 +57,7 @@ const Reference = ({
 		let startIndex = text.toLowerCase().search(
 			`${
 				searchText
-					// .toLowerCase()
+					.toLowerCase()
 					// .replace('what', '')
 					// .replace('is', '')
 					// .replace('why', '')
@@ -180,7 +179,6 @@ const Reference = ({
 					searchResults.map(
 						(
 							result: {
-								id: number;
 								form: { formName: string };
 								topic: { topicName: string; id: number };
 
@@ -191,7 +189,7 @@ const Reference = ({
 							},
 							index: number
 						) => (
-							<div key={result.id}>
+							<div key={index}>
 								<>
 									<div
 										className={
