@@ -12,7 +12,6 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Progress } from '../components/tools/progress';
 import { useProgressStore } from '../Store';
-import { type } from 'os';
 import { NavContext } from '../components/context/StateContext';
 import { SessionProvider } from 'next-auth/react';
 
