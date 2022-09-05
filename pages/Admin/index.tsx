@@ -35,7 +35,6 @@ import { prisma } from '../../db/prisma';
 import { getSession } from 'next-auth/react';
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const session = await getSession(context);
-	const url = process.env.MAIN_URL;
 	if (!session) {
 		return {
 			redirect: {
@@ -70,13 +69,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 	await prisma.$disconnect();
 	return {
-		props: { userfound, url },
+		props: { userfound },
 	};
 };
 
 const Index = ({
     	userfound,
-    	url,
     }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const matches300 = useMediaQuery('(min-width:325px)');
 	const { status } = useSession();
@@ -403,7 +401,7 @@ const Index = ({
 	const retriaveSubjectsReview = async () => {
 		setLoading(true);
 		axios
-			.get(url + '/api/subjectsReview')
+			.get('/api/subjectsReview')
 			.then(function (response) {
 				const subjectsFromServer = JSON.parse(JSON.stringify(response.data));
 				// handle success
@@ -435,7 +433,7 @@ const Index = ({
 			});
 
 		axios
-			.get(url + '/api/formsReview')
+			.get('/api/formsReview')
 			.then(function (response) {
 				const FormsFromServer = JSON.parse(JSON.stringify(response.data));
 				// handle success
@@ -470,7 +468,7 @@ const Index = ({
 	const retriaveSubjectsExam = async () => {
 		setLoading(true);
 		axios
-			.get(url + '/api/subjectsExam')
+			.get('/api/subjectsExam')
 			.then(function (response) {
 				const subjectsFromServer = JSON.parse(JSON.stringify(response.data));
 				// handle success
@@ -502,7 +500,7 @@ const Index = ({
 			});
 
 		axios
-			.get(url + '/api/formsExam')
+			.get('/api/formsExam')
 			.then(function (response) {
 				const FormsFromServer = JSON.parse(JSON.stringify(response.data));
 				// handle success
@@ -536,7 +534,7 @@ const Index = ({
 	const retriaveSubjectsReference = async () => {
 		setLoading(true);
 		axios
-			.get(url + '/api/subjectsReference')
+			.get('/api/subjectsReference')
 			.then(function (response) {
 				const subjectsFromServer = JSON.parse(JSON.stringify(response.data));
 				// handle success
@@ -570,7 +568,7 @@ const Index = ({
 			});
 
 		axios
-			.get(url + '/api/formsReference')
+			.get('/api/formsReference')
 			.then(function (response) {
 				const FormsFromServer = JSON.parse(JSON.stringify(response.data));
 				// handle success
@@ -607,7 +605,7 @@ const Index = ({
 	const retriaveSubjects = async () => {
 		setLoading(true);
 		axios
-			.get(url + '/api/subjects')
+			.get('/api/subjects')
 			.then(function (response) {
 				const subjectsFromServer = JSON.parse(JSON.stringify(response.data));
 				// handle success
@@ -639,7 +637,7 @@ const Index = ({
 			});
 
 		axios
-			.get(url + '/api/forms')
+			.get('/api/forms')
 			.then(function (response) {
 				const FormsFromServer = JSON.parse(JSON.stringify(response.data));
 				// handle success
@@ -674,7 +672,7 @@ const Index = ({
 	let handleUpdateSubject = (published: boolean, id: number) => {
 		setLoading(true);
 		axios
-			.post(url + '/api/updateDraftOrPublished', {
+			.post('/api/updateDraftOrPublished', {
 				id,
 				published: !published,
 			})
@@ -697,7 +695,7 @@ const Index = ({
 	let handleUpdateExamDownloadable = (published: boolean, id: number) => {
 		setLoading(true);
 		axios
-			.post(url + '/api/updateDraftOrPublishedExamDownloadable', {
+			.post('/api/updateDraftOrPublishedExamDownloadable', {
 				id,
 				published: !published,
 			})
@@ -720,7 +718,7 @@ const Index = ({
 	let handleUpdatePublishExam = (published: boolean, id: number) => {
 		setLoading(true);
 		axios
-			.post(url + '/api/updateDraftOrPublishedExamination', {
+			.post('/api/updateDraftOrPublishedExamination', {
 				id,
 				published: !published,
 			})
@@ -743,7 +741,7 @@ const Index = ({
 	let handleUpdateSubjectReview = (published: boolean, id: number) => {
 		setLoading(true);
 		axios
-			.post(url + '/api/updateDraftOrPublishedsubjectReview', {
+			.post('/api/updateDraftOrPublishedsubjectReview', {
 				id,
 				published: !published,
 			})
@@ -766,7 +764,7 @@ const Index = ({
 	let handleUpdateSubjectExam = (published: boolean, id: number) => {
 		setLoading(true);
 		axios
-			.post(url + '/api/updateDraftOrPublishedExam', {
+			.post('/api/updateDraftOrPublishedExam', {
 				id,
 				published: !published,
 			})
@@ -789,7 +787,7 @@ const Index = ({
 	let handleUpdateSubjectReference = (published: boolean, id: number) => {
 		setLoading(true);
 		axios
-			.post(url + '/api/updateDraftOrPublishedSubjectReference', {
+			.post('/api/updateDraftOrPublishedSubjectReference', {
 				id,
 				published: !published,
 			})
@@ -812,7 +810,7 @@ const Index = ({
 	let handleUpdateNotesDownloadable = (published: boolean, id: number) => {
 		setLoading(true);
 		axios
-			.post(url + '/api/updateDraftOrPublishedNotesDownloadable', {
+			.post('/api/updateDraftOrPublishedNotesDownloadable', {
 				id,
 				published: !published,
 			})
@@ -835,7 +833,7 @@ const Index = ({
 	let handleUpdateTopic = (published: boolean, id: number) => {
 		setLoading(true);
 		axios
-			.post(url + '/api/updateDraftOrPublishedTopic', {
+			.post('/api/updateDraftOrPublishedTopic', {
 				id,
 				published: !published,
 			})
@@ -858,7 +856,7 @@ const Index = ({
 	let handleUpdateTopicReview = (published: boolean, id: number) => {
 		setLoading(true);
 		axios
-			.post(url + '/api/updateDraftOrPublishedTopicReview', {
+			.post('/api/updateDraftOrPublishedTopicReview', {
 				id,
 				published: !published,
 			})
@@ -881,7 +879,7 @@ const Index = ({
 	let handleUpdateExamType = (published: boolean, id: number) => {
 		setLoading(true);
 		axios
-			.post(url + '/api/updateDraftOrPublishedExamType', {
+			.post('/api/updateDraftOrPublishedExamType', {
 				id,
 				published: !published,
 			})
@@ -904,7 +902,7 @@ const Index = ({
 	let handleUpdateReference = (published: boolean, id: number) => {
 		setLoading(true);
 		axios
-			.post(url + '/api/updateDraftOrPublishedReference', {
+			.post('/api/updateDraftOrPublishedReference', {
 				id,
 				published: !published,
 			})
@@ -927,7 +925,7 @@ const Index = ({
 	let handleUpdateQuestion = (published: boolean, id: number) => {
 		setLoading(true);
 		axios
-			.post(url + '/api/updateDraftOrPublishedQuestions', {
+			.post('/api/updateDraftOrPublishedQuestions', {
 				id,
 				published: !published,
 			})
@@ -950,7 +948,7 @@ const Index = ({
 	let handleUpdateReviewPublished = (published: boolean, id: number) => {
 		setLoading(true);
 		axios
-			.post(url + '/api/updateDraftOrPublishedReview', {
+			.post('/api/updateDraftOrPublishedReview', {
 				id,
 				published: !published,
 			})
@@ -978,7 +976,7 @@ const Index = ({
 	let retrivalTopics = () => {
 		setLoading(true);
 		axios
-			.get(url + '/api/subjects')
+			.get('/api/subjects')
 			.then(function (response) {
 				const subjectsFromServer = JSON.parse(JSON.stringify(response.data));
 				// handle success
@@ -1010,7 +1008,7 @@ const Index = ({
 			});
 
 		axios
-			.get(url + '/api/forms')
+			.get('/api/forms')
 			.then(function (response) {
 				const FormsFromServer = JSON.parse(JSON.stringify(response.data));
 				// handle success
@@ -1046,7 +1044,7 @@ const Index = ({
 	let retrivalTopicsReview = () => {
 		setLoading(true);
 		axios
-			.get(url + '/api/subjectsReview')
+			.get('/api/subjectsReview')
 			.then(function (response) {
 				const subjectsFromServer = JSON.parse(JSON.stringify(response.data));
 				// handle success
@@ -1078,7 +1076,7 @@ const Index = ({
 			});
 
 		axios
-			.get(url + '/api/formsReview')
+			.get('/api/formsReview')
 			.then(function (response) {
 				const FormsFromServer = JSON.parse(JSON.stringify(response.data));
 				// handle success
@@ -1297,7 +1295,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: url + '/api/topics',
+				url: '/api/topics',
 				data: topicDetails,
 			})
 				.then(function (response) {
@@ -1334,7 +1332,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: url + '/api/downloadable',
+				url: '/api/downloadable',
 				data: downloadableDetails,
 			})
 				.then(function (response) {
@@ -1368,7 +1366,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: url + '/api/topicsReview',
+				url: '/api/topicsReview',
 				data: topicDetailsReview,
 			})
 				.then(function (response) {
@@ -1402,7 +1400,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: url + '/api/examType',
+				url: '/api/examType',
 				data: topicDetailsExam,
 			})
 				.then(function (response) {
@@ -1436,7 +1434,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: url + '/api/reference',
+				url: '/api/reference',
 				data: detailsReference,
 			})
 				.then(function (response) {
@@ -1471,7 +1469,7 @@ const Index = ({
 			setActivateNotes(false);
 			axios({
 				method: 'post',
-				url: url + '/api/topics',
+				url: '/api/topics',
 				data: notesDetails,
 			})
 				.then(function (response) {
@@ -1514,7 +1512,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: url + '/api/examType',
+				url: '/api/examType',
 				data: DetailsExam,
 			})
 				.then(function (response) {
@@ -1560,7 +1558,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: url + '/api/examType',
+				url: '/api/examType',
 				data: examListDetails,
 			})
 				.then(function (response) {
@@ -1611,7 +1609,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: url + '/api/examList',
+				url: '/api/examList',
 				data: examListDetails,
 			})
 				.then(function (response) {
@@ -1661,7 +1659,7 @@ const Index = ({
 			setActivateNotesReview(false);
 			axios({
 				method: 'post',
-				url: url + '/api/topicsReview',
+				url: '/api/topicsReview',
 				data: notesDetailsReview,
 			})
 				.then(function (response) {
@@ -1702,7 +1700,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: url + '/api/topicsReview',
+				url: '/api/topicsReview',
 				data: detailsQuestions,
 			})
 				.then(function (response) {
@@ -1750,7 +1748,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: url + '/api/review',
+				url: '/api/review',
 				data: detailsQuestions,
 			})
 				.then(function (response) {
@@ -1799,7 +1797,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: url + '/api/notes',
+				url: '/api/notes',
 				data: notesDetails,
 			})
 				.then(function (response) {
@@ -1837,7 +1835,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: url + '/api/exam',
+				url: '/api/exam',
 				data: DetailsExam,
 			})
 				.then(function (response) {
@@ -1876,7 +1874,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: url + '/api/examDownloadable',
+				url: '/api/examDownloadable',
 				data: examListDetails,
 			})
 				.then(function (response) {
@@ -1917,7 +1915,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: url + '/api/review',
+				url: '/api/review',
 				data: notesDetailsReview,
 			})
 				.then(function (response) {
@@ -1956,7 +1954,7 @@ const Index = ({
 			setLoading(true);
 			axios({
 				method: 'post',
-				url: url + '/api/questions',
+				url: '/api/questions',
 				data: detailsQuestions,
 			})
 				.then(function (response) {
@@ -1996,7 +1994,7 @@ const Index = ({
 
 	let handleUpdateNotes = (published: boolean, id: number) => {
 		axios
-			.post(url + '/api/updateDraftOrPublishedNotes', {
+			.post('/api/updateDraftOrPublishedNotes', {
 				id,
 				published: !published,
 			})
@@ -2067,7 +2065,7 @@ const Index = ({
 	let handleSearchUser = () => {
 		setLoading(true);
 		axios
-			.post(url + '/api/searchUser', {
+			.post('/api/searchUser', {
 				user: userDetail.value,
 			})
 			.then(function (response) {
@@ -2095,7 +2093,7 @@ const Index = ({
 	let handleAdmins = () => {
 		setLoading(true);
 		axios
-			.post(url + '/api/getAdmins', {
+			.post('/api/getAdmins', {
 				user: userDetail.value,
 			})
 			.then(function (response) {
@@ -2117,7 +2115,7 @@ const Index = ({
 	let handleOrder = () => {
 		setLoading(true);
 		axios
-			.post(url + '/api/getOrder', {
+			.post('/api/getOrder', {
 				user: userDetail.value,
 			})
 			.then(function (response) {
