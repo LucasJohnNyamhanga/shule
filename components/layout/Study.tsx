@@ -32,7 +32,7 @@ const Study = ({ subjects, focus, link }: dataType) => {
 							image={subject.imageLocation}
 							imageDescription={'Shule'}
 							forms={subject.forms}
-							link={`/${link}/${subject.subjectName.replace(/(.*)\//g, '')}`}
+							link={`/${link}/${subject.subjectName.replace(' ', '').trim()}`}
 						/>
 					))}
 				</div>
