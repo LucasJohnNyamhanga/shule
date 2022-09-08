@@ -11,9 +11,9 @@ import { useRouter } from 'next/router';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 
-const subjectLocator = ' Information And Computer Studies';
+const subjectLocator = 'Information And Computer Studies';
 const formLocator = 'Form One';
-const subjectLocatorLink = ' InformationAndComputerStudies';
+const subjectLocatorLink = 'InformationAndComputerStudies';
 const formLocatorLink = 'FormOne';
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -45,8 +45,8 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Index = ({
-	downloads,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	downloads,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
