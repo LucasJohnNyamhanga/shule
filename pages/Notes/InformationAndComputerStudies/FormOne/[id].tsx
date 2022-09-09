@@ -258,9 +258,9 @@ const Index = ({
 					</div>
 					<div className={Styles.BodyHeader}>
 						<div className={Styles.statusBar}>
-							{thisTopicData.subject.subjectName} <ChevronRightOutlinedIcon />{' '}
-							{thisTopicData.form.formName} <ChevronRightOutlinedIcon />{' '}
-							{truncate(thisTopicData.topicName)}
+							{truncate(thisTopicData.subject.subjectName)}{' '}
+							<ChevronRightOutlinedIcon /> {thisTopicData.form.formName}{' '}
+							<ChevronRightOutlinedIcon /> {truncate(thisTopicData.topicName)}
 						</div>
 						{download.length > 0 ? (
 							<Link

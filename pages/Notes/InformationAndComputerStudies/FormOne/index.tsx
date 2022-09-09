@@ -154,18 +154,18 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Index = ({
-    	htmlServer,
-    	toc,
-    	topics,
-    	note,
-    	download,
-    }: InferGetStaticPropsType<typeof getStaticProps>) => {
+	htmlServer,
+	toc,
+	topics,
+	note,
+	download,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 	useEffect(() => {
 		setNavActive('Notes');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [navActive]);
-
+	console.log(topics);
 	if (topics.length < 1) {
 		htmlServer = `<div className={Styles.notFound} > <h2> Notes for ${subjectLocator} ${formLocator} will be available soon.</h2></div>`;
 		return (
@@ -240,7 +240,7 @@ const Index = ({
 					</div>
 					<div className={Styles.BodyHeader}>
 						<div className={Styles.statusBar}>
-							{note[0].subject.subjectName} <ChevronRightOutlinedIcon />{' '}
+							{truncate(note[0].subject.subjectName)} <ChevronRightOutlinedIcon />{' '}
 							{note[0].form.formName} <ChevronRightOutlinedIcon />{' '}
 							{truncate(note[0].topicName)}
 						</div>
