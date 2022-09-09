@@ -74,8 +74,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const Index = ({
-	userfound,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    	userfound,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const matches300 = useMediaQuery('(min-width:325px)');
 	const { status } = useSession();
 	const { navActive, setNavActive } = useContext(NavContext);
@@ -1992,6 +1992,9 @@ const Index = ({
 		topic: {
 			topicName: string;
 		};
+		users: {
+			name: string;
+		};
 	};
 
 	let handleUpdateNotes = (published: boolean, id: number) => {
@@ -2479,7 +2482,7 @@ const Index = ({
 															handleUpdate={handleUpdateNotes}
 															link={`/Admin/Notes/Edit/Note/${note.id}`}
 															label={note.topic.topicName}
-															published={''}
+															published={note.users.name}
 															id={note.id}
 															key={note.id}
 														/>

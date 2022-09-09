@@ -24,7 +24,7 @@ const CardBoxStyle = ({
 
 	useEffect(() => {
 		typeof published == 'string'
-			? setShowHidePublish(false)
+			? setShowHidePublish(true)
 			: setShowHidePublish(true);
 	}, [published]);
 
@@ -39,10 +39,14 @@ const CardBoxStyle = ({
 								typeof published != 'string' ? handleUpdate(published, id) : '';
 							}}>
 							<div className={Styles.published}>
-								{published ? (
-									<div className={Styles.publisedPublised}>Published</div>
+								{typeof published != 'string' ? (
+									published ? (
+										<div className={Styles.publisedPublised}>Published</div>
+									) : (
+										<div className={Styles.publisedUnPublised}>Draft</div>
+									)
 								) : (
-									<div className={Styles.publisedUnPublised}>Draft</div>
+									<div className={Styles.publisedPublised}>{published}</div>
 								)}
 							</div>
 						</IconButton>
