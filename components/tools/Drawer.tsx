@@ -63,10 +63,10 @@ export const MuiDrawer = ({ textHeader, topic, active, link }: dataType) => {
 										topic.id
 									}`}>
 									<a>
-										<ListItemButton
+										<div
 											className={topic.id == active ? `${Styles.active}` : ''}>
-											<ListItemText primary={topic.topicName} />
-										</ListItemButton>
+											{topic.topicName}
+										</div>
 									</a>
 								</Link>
 							</div>
