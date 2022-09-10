@@ -5,6 +5,7 @@ import {
 	ListItem,
 	ListItemText,
 	Divider,
+	ListItemButton,
 } from '@mui/material';
 import { examType } from '@prisma/client';
 import Link from 'next/link';
@@ -68,12 +69,11 @@ export const MuiDrawer = ({ textHeader, topic, active, link }: dataType) => {
 										exam.subjectExams.subjectName
 									}/${exam.formExams.formName.replace(/ +/g, '')}/${exam.id}`}>
 									<a>
-										<ListItem
+										<ListItemButton
 											key={exam.id + 100}
-											button
 											className={exam.id == active ? `${Styles.active}` : ''}>
 											<ListItemText primary={exam.name} />
-										</ListItem>
+										</ListItemButton>
 									</a>
 								</Link>
 							</div>

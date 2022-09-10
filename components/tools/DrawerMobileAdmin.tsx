@@ -5,6 +5,7 @@ import {
 	ListItem,
 	ListItemText,
 	Divider,
+	ListItemButton,
 } from '@mui/material';
 import Link from 'next/link';
 import { type } from 'os';
@@ -59,11 +60,10 @@ export const MuiDrawer = ({
 							}}>
 							<Link passHref href={``}>
 								<a>
-									<ListItem
-										button
+									<ListItemButton
 										className={active == 'Subjects' ? `${Styles.active}` : ''}>
 										<ListItemText primary={'Subject'} />
-									</ListItem>
+									</ListItemButton>
 								</a>
 							</Link>
 						</div>
