@@ -71,7 +71,11 @@ export const MuiDrawer = ({ textHeader, topic, active, link }: dataType) => {
 									<a>
 										<div
 											key={exam.id + 100}
-											className={exam.id == active ? `${Styles.active}` : ''}>
+											className={
+												exam.id == active
+													? `${Styles.active} ${Styles.normal}`
+													: `${Styles.normal}`
+											}>
 											{exam.name}
 										</div>
 									</a>

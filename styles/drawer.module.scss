@@ -16,6 +16,17 @@
 	border: 2px solid $ugoro;
 }
 
+.normal {
+	display: flex;
+	width: 100%;
+	align-items: center;
+	justify-content: center;
+	padding: 10px;
+	font-family: $fontHeader;
+	font-weight: 500;
+	color: $ugoro;
+}
+
 .active {
 	border: 2px solid $lightblue;
 	background-color: $lightblue;

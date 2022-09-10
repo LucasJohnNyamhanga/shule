@@ -64,7 +64,11 @@ export const MuiDrawer = ({ textHeader, topic, active, link }: dataType) => {
 									}`}>
 									<a>
 										<div
-											className={topic.id == active ? `${Styles.active}` : ''}>
+											className={
+												topic.id == active
+													? `${Styles.active} ${Styles.normal}`
+													: `${Styles.normal}`
+											}>
 											{topic.topicName}
 										</div>
 									</a>

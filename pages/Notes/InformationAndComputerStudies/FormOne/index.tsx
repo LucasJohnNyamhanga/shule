@@ -165,7 +165,6 @@ const Index = ({
 		setNavActive('Notes');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [navActive]);
-	console.log(topics);
 	if (topics.length < 1) {
 		htmlServer = `<div className={Styles.notFound} > <h2> Notes for ${subjectLocator} ${formLocator} will be available soon.</h2></div>`;
 		return (
@@ -207,8 +206,8 @@ const Index = ({
 					<div className={Styles.sticky}>
 						<div className={Styles.topicHeader}>Topics list</div>
 						<div className={Styles.titleList}>
-							{topics.map((topic: topic) => (
-								<div key={topic.id}>
+							{topics.map((topic: topic, index) => (
+								<div key={index}>
 									<Link
 										passHref
 										href={`/Notes/${subjectLocatorLink}/${formLocatorLink}/${topic.id}`}>
@@ -240,9 +239,9 @@ const Index = ({
 					</div>
 					<div className={Styles.BodyHeader}>
 						<div className={Styles.statusBar}>
-							{truncate(note[0].subject.subjectName)} <ChevronRightOutlinedIcon />{' '}
-							{note[0].form.formName} <ChevronRightOutlinedIcon />{' '}
-							{truncate(note[0].topicName)}
+							{truncate(note[0].subject.subjectName)}{' '}
+							<ChevronRightOutlinedIcon /> {note[0].form.formName}{' '}
+							<ChevronRightOutlinedIcon /> {truncate(note[0].topicName)}
 						</div>
 						{download.length > 0 ? (
 							<Link
