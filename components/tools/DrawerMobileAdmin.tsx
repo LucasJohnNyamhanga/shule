@@ -61,7 +61,11 @@ export const MuiDrawer = ({
 							<Link passHref href={``}>
 								<a>
 									<div
-										className={active == 'Subjects' ? `${Styles.active}` : ''}>
+										className={
+											active == 'Subjects'
+												? `${Styles.active} ${Styles.normal}`
+												: `${Styles.normal}`
+										}>
 										{'Subject'}
 									</div>
 								</a>
@@ -75,7 +79,12 @@ export const MuiDrawer = ({
 							}}>
 							<Link passHref href={``}>
 								<a>
-									<div className={active == 'Forms' ? `${Styles.active}` : ''}>
+									<div
+										className={
+											active == 'Forms'
+												? `${Styles.active} ${Styles.normal}`
+												: `${Styles.normal}`
+										}>
 										{'Forms'}
 									</div>
 								</a>
@@ -89,7 +98,12 @@ export const MuiDrawer = ({
 							}}>
 							<Link passHref href={``}>
 								<a>
-									<div className={active == 'Topics' ? `${Styles.active}` : ''}>
+									<div
+										className={
+											active == 'Topics'
+												? `${Styles.active} ${Styles.normal}`
+												: `${Styles.normal}`
+										}>
 										{'Topic'}
 									</div>
 								</a>
@@ -103,7 +117,12 @@ export const MuiDrawer = ({
 							}}>
 							<Link passHref href={``}>
 								<a>
-									<div className={active == 'Notes' ? `${Styles.active}` : ''}>
+									<div
+										className={
+											active == 'Notes'
+												? `${Styles.active} ${Styles.normal}`
+												: `${Styles.normal}`
+										}>
 										{'Notes'}
 									</div>
 								</a>
@@ -118,7 +137,11 @@ export const MuiDrawer = ({
 							<Link passHref href={``}>
 								<a>
 									<div
-										className={active == 'Downloads' ? `${Styles.active}` : ''}>
+										className={
+											active == 'Downloads'
+												? `${Styles.active} ${Styles.normal}`
+												: `${Styles.normal}`
+										}>
 										{'Downloadables'}
 									</div>
 								</a>
@@ -138,7 +161,9 @@ export const MuiDrawer = ({
 								<a>
 									<div
 										className={
-											active == 'SubjectsReview' ? `${Styles.active}` : ''
+											active == 'SubjectsReview'
+												? `${Styles.active} ${Styles.normal}`
+												: `${Styles.normal}`
 										}>
 										{'Subject'}
 									</div>
@@ -155,7 +180,9 @@ export const MuiDrawer = ({
 								<a>
 									<div
 										className={
-											active == 'FormsReview' ? `${Styles.active}` : ''
+											active == 'FormsReview'
+												? `${Styles.active} ${Styles.normal}`
+												: `${Styles.normal}`
 										}>
 										{'Forms'}
 									</div>
@@ -172,7 +199,9 @@ export const MuiDrawer = ({
 								<a>
 									<div
 										className={
-											active == 'TopicsReview' ? `${Styles.active}` : ''
+											active == 'TopicsReview'
+												? `${Styles.active} ${Styles.normal}`
+												: `${Styles.normal}`
 										}>
 										{'Topics'}
 									</div>
@@ -187,7 +216,12 @@ export const MuiDrawer = ({
 							}}>
 							<Link passHref href={``}>
 								<a>
-									<div className={active == 'Review' ? `${Styles.active}` : ''}>
+									<div
+										className={
+											active == 'Review'
+												? `${Styles.active} ${Styles.normal}`
+												: `${Styles.normal}`
+										}>
 										{'Review'}
 									</div>
 								</a>
@@ -202,7 +236,11 @@ export const MuiDrawer = ({
 							<Link passHref href={``}>
 								<a>
 									<div
-										className={active == 'Questions' ? `${Styles.active}` : ''}>
+										className={
+											active == 'Questions'
+												? `${Styles.active} ${Styles.normal}`
+												: `${Styles.normal}`
+										}>
 										{'Questions'}
 									</div>
 								</a>
@@ -222,7 +260,9 @@ export const MuiDrawer = ({
 								<a>
 									<div
 										className={
-											active == 'SubjectsExam' ? `${Styles.active}` : ''
+											active == 'SubjectsExam'
+												? `${Styles.active} ${Styles.normal}`
+												: `${Styles.normal}`
 										}>
 										{'Subject'}
 									</div>
@@ -238,7 +278,11 @@ export const MuiDrawer = ({
 							<Link passHref href={``}>
 								<a>
 									<div
-										className={active == 'FormsExam' ? `${Styles.active}` : ''}>
+										className={
+											active == 'FormsExam'
+												? `${Styles.active} ${Styles.normal}`
+												: `${Styles.normal}`
+										}>
 										{'Forms'}
 									</div>
 								</a>
@@ -253,7 +297,11 @@ export const MuiDrawer = ({
 							<Link passHref href={``}>
 								<a>
 									<div
-										className={active == 'ExamType' ? `${Styles.active}` : ''}>
+										className={
+											active == 'ExamType'
+												? `${Styles.active} ${Styles.normal}`
+												: `${Styles.normal}`
+										}>
 										{'Exam Type'}
 									</div>
 								</a>
@@ -267,7 +315,12 @@ export const MuiDrawer = ({
 							}}>
 							<Link passHref href={``}>
 								<a>
-									<div className={active == 'Exam' ? `${Styles.active}` : ''}>
+									<div
+										className={
+											active == 'Exam'
+												? `${Styles.active} ${Styles.normal}`
+												: `${Styles.normal}`
+										}>
 										{'Exams'}
 									</div>
 								</a>
@@ -283,7 +336,9 @@ export const MuiDrawer = ({
 								<a>
 									<div
 										className={
-											active == 'ExamDownloads' ? `${Styles.active}` : ''
+											active == 'ExamDownloads'
+												? `${Styles.active} ${Styles.normal}`
+												: `${Styles.normal}`
 										}>
 										{'Downloadables'}
 									</div>
@@ -304,7 +359,9 @@ export const MuiDrawer = ({
 								<a>
 									<div
 										className={
-											active == 'SubjectReference' ? `${Styles.active}` : ''
+											active == 'SubjectReference'
+												? `${Styles.active} ${Styles.normal}`
+												: `${Styles.normal}`
 										}>
 										{'Subject'}
 									</div>
@@ -321,7 +378,9 @@ export const MuiDrawer = ({
 								<a>
 									<div
 										className={
-											active == 'FormReference' ? `${Styles.active}` : ''
+											active == 'FormReference'
+												? `${Styles.active} ${Styles.normal}`
+												: `${Styles.normal}`
 										}>
 										{'Forms'}
 									</div>
@@ -337,7 +396,11 @@ export const MuiDrawer = ({
 							<Link passHref href={``}>
 								<a>
 									<div
-										className={active == 'Reference' ? `${Styles.active}` : ''}>
+										className={
+											active == 'Reference'
+												? `${Styles.active} ${Styles.normal}`
+												: `${Styles.normal}`
+										}>
 										{'Reference'}
 									</div>
 								</a>
@@ -358,7 +421,11 @@ export const MuiDrawer = ({
 									<Link passHref href={``}>
 										<a>
 											<div
-												className={active == 'User' ? `${Styles.active}` : ''}>
+												className={
+													active == 'User'
+														? `${Styles.active} ${Styles.normal}`
+														: `${Styles.normal}`
+												}>
 												{'User'}
 											</div>
 										</a>
@@ -373,7 +440,11 @@ export const MuiDrawer = ({
 									<Link passHref href={``}>
 										<a>
 											<div
-												className={active == 'Admin' ? `${Styles.active}` : ''}>
+												className={
+													active == 'Admin'
+														? `${Styles.active} ${Styles.normal}`
+														: `${Styles.normal}`
+												}>
 												{'Admin'}
 											</div>
 										</a>
