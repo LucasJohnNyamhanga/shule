@@ -69,11 +69,11 @@ export const MuiDrawer = ({ textHeader, topic, active, link }: dataType) => {
 										exam.subjectExams.subjectName
 									}/${exam.formExams.formName.replace(/ +/g, '')}/${exam.id}`}>
 									<a>
-										<ListItemButton
+										<div
 											key={exam.id + 100}
 											className={exam.id == active ? `${Styles.active}` : ''}>
-											<ListItemText primary={exam.name} />
-										</ListItemButton>
+											{exam.name}
+										</div>
 									</a>
 								</Link>
 							</div>

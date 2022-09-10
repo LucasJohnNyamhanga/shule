@@ -60,10 +60,10 @@ export const MuiDrawer = ({
 							}}>
 							<Link passHref href={``}>
 								<a>
-									<ListItemButton
+									<div
 										className={active == 'Subjects' ? `${Styles.active}` : ''}>
-										<ListItemText primary={'Subject'} />
-									</ListItemButton>
+										{'Subject'}
+									</div>
 								</a>
 							</Link>
 						</div>
@@ -75,11 +75,9 @@ export const MuiDrawer = ({
 							}}>
 							<Link passHref href={``}>
 								<a>
-									<ListItem
-										button
-										className={active == 'Forms' ? `${Styles.active}` : ''}>
-										<ListItemText primary={'Forms'} />
-									</ListItem>
+									<div className={active == 'Forms' ? `${Styles.active}` : ''}>
+										{'Forms'}
+									</div>
 								</a>
 							</Link>
 						</div>
@@ -91,11 +89,9 @@ export const MuiDrawer = ({
 							}}>
 							<Link passHref href={``}>
 								<a>
-									<ListItem
-										button
-										className={active == 'Topics' ? `${Styles.active}` : ''}>
-										<ListItemText primary={'Topic'} />
-									</ListItem>
+									<div className={active == 'Topics' ? `${Styles.active}` : ''}>
+										{'Topic'}
+									</div>
 								</a>
 							</Link>
 						</div>
@@ -107,11 +103,9 @@ export const MuiDrawer = ({
 							}}>
 							<Link passHref href={``}>
 								<a>
-									<ListItem
-										button
-										className={active == 'Notes' ? `${Styles.active}` : ''}>
-										<ListItemText primary={'Notes'} />
-									</ListItem>
+									<div className={active == 'Notes' ? `${Styles.active}` : ''}>
+										{'Notes'}
+									</div>
 								</a>
 							</Link>
 						</div>
@@ -123,11 +117,10 @@ export const MuiDrawer = ({
 							}}>
 							<Link passHref href={``}>
 								<a>
-									<ListItem
-										button
+									<div
 										className={active == 'Downloads' ? `${Styles.active}` : ''}>
-										<ListItemText primary={'Downloadables'} />
-									</ListItem>
+										{'Downloadables'}
+									</div>
 								</a>
 							</Link>
 						</div>
@@ -143,13 +136,12 @@ export const MuiDrawer = ({
 							}}>
 							<Link passHref href={``}>
 								<a>
-									<ListItem
-										button
+									<div
 										className={
 											active == 'SubjectsReview' ? `${Styles.active}` : ''
 										}>
-										<ListItemText primary={'Subject'} />
-									</ListItem>
+										{'Subject'}
+									</div>
 								</a>
 							</Link>
 						</div>
@@ -161,13 +153,12 @@ export const MuiDrawer = ({
 							}}>
 							<Link passHref href={``}>
 								<a>
-									<ListItem
-										button
+									<div
 										className={
 											active == 'FormsReview' ? `${Styles.active}` : ''
 										}>
-										<ListItemText primary={'Forms'} />
-									</ListItem>
+										{'Forms'}
+									</div>
 								</a>
 							</Link>
 						</div>
@@ -179,13 +170,12 @@ export const MuiDrawer = ({
 							}}>
 							<Link passHref href={``}>
 								<a>
-									<ListItem
-										button
+									<div
 										className={
 											active == 'TopicsReview' ? `${Styles.active}` : ''
 										}>
-										<ListItemText primary={'Topics'} />
-									</ListItem>
+										{'Topics'}
+									</div>
 								</a>
 							</Link>
 						</div>
@@ -197,11 +187,9 @@ export const MuiDrawer = ({
 							}}>
 							<Link passHref href={``}>
 								<a>
-									<ListItem
-										button
-										className={active == 'Review' ? `${Styles.active}` : ''}>
-										<ListItemText primary={'Review'} />
-									</ListItem>
+									<div className={active == 'Review' ? `${Styles.active}` : ''}>
+										{'Review'}
+									</div>
 								</a>
 							</Link>
 						</div>
@@ -213,11 +201,10 @@ export const MuiDrawer = ({
 							}}>
 							<Link passHref href={``}>
 								<a>
-									<ListItem
-										button
+									<div
 										className={active == 'Questions' ? `${Styles.active}` : ''}>
-										<ListItemText primary={'Questions'} />
-									</ListItem>
+										{'Questions'}
+									</div>
 								</a>
 							</Link>
 						</div>
@@ -233,13 +220,12 @@ export const MuiDrawer = ({
 							}}>
 							<Link passHref href={``}>
 								<a>
-									<ListItem
-										button
+									<div
 										className={
 											active == 'SubjectsExam' ? `${Styles.active}` : ''
 										}>
-										<ListItemText primary={'Subject'} />
-									</ListItem>
+										{'Subject'}
+									</div>
 								</a>
 							</Link>
 						</div>
@@ -251,11 +237,10 @@ export const MuiDrawer = ({
 							}}>
 							<Link passHref href={``}>
 								<a>
-									<ListItem
-										button
+									<div
 										className={active == 'FormsExam' ? `${Styles.active}` : ''}>
-										<ListItemText primary={'Forms'} />
-									</ListItem>
+										{'Forms'}
+									</div>
 								</a>
 							</Link>
 						</div>
@@ -267,11 +252,10 @@ export const MuiDrawer = ({
 							}}>
 							<Link passHref href={``}>
 								<a>
-									<ListItem
-										button
+									<div
 										className={active == 'ExamType' ? `${Styles.active}` : ''}>
-										<ListItemText primary={'Exam Type'} />
-									</ListItem>
+										{'Exam Type'}
+									</div>
 								</a>
 							</Link>
 						</div>
@@ -283,11 +267,9 @@ export const MuiDrawer = ({
 							}}>
 							<Link passHref href={``}>
 								<a>
-									<ListItem
-										button
-										className={active == 'Exam' ? `${Styles.active}` : ''}>
-										<ListItemText primary={'Exams'} />
-									</ListItem>
+									<div className={active == 'Exam' ? `${Styles.active}` : ''}>
+										{'Exams'}
+									</div>
 								</a>
 							</Link>
 						</div>
@@ -299,13 +281,12 @@ export const MuiDrawer = ({
 							}}>
 							<Link passHref href={``}>
 								<a>
-									<ListItem
-										button
+									<div
 										className={
 											active == 'ExamDownloads' ? `${Styles.active}` : ''
 										}>
-										<ListItemText primary={'Downloadables'} />
-									</ListItem>
+										{'Downloadables'}
+									</div>
 								</a>
 							</Link>
 						</div>
@@ -321,13 +302,12 @@ export const MuiDrawer = ({
 							}}>
 							<Link passHref href={``}>
 								<a>
-									<ListItem
-										button
+									<div
 										className={
 											active == 'SubjectReference' ? `${Styles.active}` : ''
 										}>
-										<ListItemText primary={'Subject'} />
-									</ListItem>
+										{'Subject'}
+									</div>
 								</a>
 							</Link>
 						</div>
@@ -339,13 +319,12 @@ export const MuiDrawer = ({
 							}}>
 							<Link passHref href={``}>
 								<a>
-									<ListItem
-										button
+									<div
 										className={
 											active == 'FormReference' ? `${Styles.active}` : ''
 										}>
-										<ListItemText primary={'Forms'} />
-									</ListItem>
+										{'Forms'}
+									</div>
 								</a>
 							</Link>
 						</div>
@@ -357,11 +336,10 @@ export const MuiDrawer = ({
 							}}>
 							<Link passHref href={``}>
 								<a>
-									<ListItem
-										button
+									<div
 										className={active == 'Reference' ? `${Styles.active}` : ''}>
-										<ListItemText primary={'Reference'} />
-									</ListItem>
+										{'Reference'}
+									</div>
 								</a>
 							</Link>
 						</div>
@@ -379,11 +357,10 @@ export const MuiDrawer = ({
 									}}>
 									<Link passHref href={``}>
 										<a>
-											<ListItem
-												button
+											<div
 												className={active == 'User' ? `${Styles.active}` : ''}>
-												<ListItemText primary={'User'} />
-											</ListItem>
+												{'User'}
+											</div>
 										</a>
 									</Link>
 								</div>
@@ -395,11 +372,10 @@ export const MuiDrawer = ({
 									}}>
 									<Link passHref href={``}>
 										<a>
-											<ListItem
-												button
+											<div
 												className={active == 'Admin' ? `${Styles.active}` : ''}>
-												<ListItemText primary={'Admin'} />
-											</ListItem>
+												{'Admin'}
+											</div>
 										</a>
 									</Link>
 								</div>
