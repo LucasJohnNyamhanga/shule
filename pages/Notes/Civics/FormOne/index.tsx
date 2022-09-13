@@ -15,10 +15,10 @@ import rehypeParse from 'rehype-parse';
 import { visit } from 'unist-util-visit';
 import parameterize from 'parameterize-js';
 
-const subjectLocator = 'Information And Computer Studies';
-const formLocator = 'Form Two';
-const subjectLocatorLink = 'InformationAndComputerStudies';
-const formLocatorLink = 'FormTwo';
+const subjectLocator = 'Civics';
+const formLocator = 'Form One';
+const subjectLocatorLink = 'Civics';
+const formLocatorLink = 'FormOne';
 
 export const getStaticProps: GetStaticProps = async () => {
 	const topicsFromServer = await prisma.topic.findMany({

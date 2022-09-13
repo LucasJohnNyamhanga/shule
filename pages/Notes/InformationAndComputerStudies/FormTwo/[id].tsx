@@ -14,9 +14,9 @@ import { visit } from 'unist-util-visit';
 import parameterize from 'parameterize-js';
 
 const subjectLocator = 'Information And Computer Studies';
-const formLocator = 'Form One';
+const formLocator = 'Form Two';
 const subjectLocatorLink = 'InformationAndComputerStudies';
-const formLocatorLink = 'FormOne';
+const formLocatorLink = 'FormTwo';
 
 export const getStaticProps: GetStaticProps = async (context) => {
 	const id = context.params?.id;
