@@ -1,12 +1,10 @@
+import { GetStaticProps, GetStaticPaths, InferGetStaticPropsType } from 'next';
+import { prisma } from '../../../../db/prisma';
 import React, { useContext, useEffect } from 'react';
 import Styles from '../../../../styles/notesDisplay.module.scss';
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
-import { topic } from '@prisma/client';
-import { prisma } from '../../../../db/prisma';
-import type { GetStaticProps, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
-import Error from 'next/error';
 import Drawer from '../../../../components/tools/Drawer';
 import { NavContext } from '../../../../components/context/StateContext';
 import { unified } from 'unified';
@@ -15,39 +13,42 @@ import rehypeParse from 'rehype-parse';
 import { visit } from 'unist-util-visit';
 import parameterize from 'parameterize-js';
 
-const subjectLocator = 'Information And Computer Studies';
-const formLocator = 'Form Two';
-const subjectLocatorLink = 'InformationAndComputerStudies';
-const formLocatorLink = 'FormTwo';
+const subjectLocator = 'Civics';
+const formLocator = 'Form One';
+const subjectLocatorLink = 'Civics';
+const formLocatorLink = 'FormOne';
 
-export const getStaticProps: GetStaticProps = async () => {
-	const topicsFromServer = await prisma.topic.findMany({
+export const getStaticProps: GetStaticProps = async (context) => {
+	const id = context.params?.id;
+	let Id = parseInt(String(id));
+	// ...
+	const topicData = await prisma.topic.findUnique({
 		where: {
-			published: true,
-			subject: {
-				subjectName: subjectLocator,
-			},
-			form: {
-				formName: formLocator,
-			},
+			id: Id,
 		},
 		select: {
 			id: true,
 			topicName: true,
 			topicDefinition: true,
-			form: {
-				select: {
-					formName: true,
-				},
-			},
 			subject: {
 				select: {
 					subjectName: true,
 				},
 			},
+			form: {
+				select: {
+					formName: true,
+				},
+			},
+			note: {
+				select: {
+					content: true,
+				},
+			},
 		},
 	});
-	const topics = JSON.parse(JSON.stringify(topicsFromServer));
+
+	const thisTopicData = JSON.parse(JSON.stringify(topicData));
 
 	const downloadFromServer = await prisma.notesDownloadable.findMany({
 		where: {
@@ -65,8 +66,7 @@ export const getStaticProps: GetStaticProps = async () => {
 	});
 	const download = JSON.parse(JSON.stringify(downloadFromServer));
 
-	const noteFromServer = await prisma.topic.findMany({
-		take: 1,
+	const topicsFromServer = await prisma.topic.findMany({
 		where: {
 			published: true,
 			subject: {
@@ -78,9 +78,11 @@ export const getStaticProps: GetStaticProps = async () => {
 		},
 		select: {
 			id: true,
-			note: {
+			topicName: true,
+			topicDefinition: true,
+			subject: {
 				select: {
-					content: true,
+					subjectName: true,
 				},
 			},
 			form: {
@@ -88,27 +90,21 @@ export const getStaticProps: GetStaticProps = async () => {
 					formName: true,
 				},
 			},
-			subject: {
-				select: {
-					subjectName: true,
-				},
-			},
-			topicName: true,
-			topicDefinition: true,
 		},
 	});
-	const note = JSON.parse(JSON.stringify(noteFromServer));
+	const topics = JSON.parse(JSON.stringify(topicsFromServer));
 
-	let htmlServer: string;
+	//! irrigal stuffs
+	let htmlServer;
 	let toc: {
 		id: string;
 		title: string;
 	}[] = [];
 
-	if (note[0]?.note == null) {
-		htmlServer = `<div className={Styles.notFound} > <h2>Notes for this topic will be available soon.</h2> </div>`;
+	if (thisTopicData?.note == null) {
+		htmlServer = `<div className={Styles.notFound} ><h2> Notes for this topic will be available soon.</h2></div>`;
 	} else {
-		let result = note[0].note.content.replaceAll(
+		let result = thisTopicData.note.content.replaceAll(
 			`img`,
 			`Image layout="fill" objectfit="cover"`
 		);
@@ -146,44 +142,64 @@ export const getStaticProps: GetStaticProps = async () => {
 			htmlServer,
 			toc,
 			topics,
-			note,
+			thisTopicData,
 			download,
 		},
 		revalidate: 15,
 	};
 };
 
+export const getStaticPaths: GetStaticPaths = async () => {
+	// ...
+	const notesServer = await prisma.topic.findMany({
+		select: {
+			id: true,
+		},
+	});
+
+	type dataNote = {
+		id: number;
+	};
+	const notesData = JSON.parse(JSON.stringify(notesServer));
+	const paths = notesData.map((note: dataNote) => {
+		let id = String(note.id);
+		return {
+			params: {
+				id: `${id}`,
+			},
+		};
+	});
+	return {
+		paths,
+		fallback: 'blocking',
+	};
+};
+
 const Index = ({
-    	htmlServer,
-    	toc,
-    	topics,
-    	note,
-    	download,
-    }: InferGetStaticPropsType<typeof getStaticProps>) => {
+        	htmlServer,
+        	toc,
+        	topics,
+        	thisTopicData,
+        	download,
+        }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
+
 	useEffect(() => {
 		setNavActive('Notes');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [navActive]);
 
-	if (topics.length < 1) {
-		htmlServer = `<div className={Styles.notFound} > <h2> Notes for ${subjectLocator} ${formLocator} will be available soon.</h2></div>`;
-		return (
-			<div className={Styles.container}>
-				<div className={Styles.innerContainer}>
-					<div className={Styles.leftInnercontainerBody}></div>
-					<div className={Styles.rightInnercontainerBody}>
-						<div className={Styles.BodyHeader}></div>
-						<div className={Styles.BodyContent}>
-							<div className='ckContent'>
-								<div dangerouslySetInnerHTML={{ __html: htmlServer }} />
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		);
-	}
+	type dataTopic = {
+		id: number;
+		topicName: string;
+		topicDefinition: string;
+		subject: {
+			subjectName: string;
+		};
+		form: {
+			formName: string;
+		};
+	};
 
 	let truncateLimit = 12;
 	function truncate(str: string) {
@@ -197,17 +213,19 @@ const Index = ({
 	return (
 		<div className={Styles.container}>
 			<Head>
-				<title>{note[0].topicName}</title>
+				<title>{thisTopicData.topicName}</title>
 				<meta name='viewport' content='initial-scale=1.0, width=device-width' />
-				<meta name='description' content={note[0].topicDefinition} />
-				<meta name='keywords' content={note[0].topicName} />
+				<meta name='description' content={thisTopicData.topicDefinition} />
+				{/* //!add keywords */}
+				<meta name='keywords' content={thisTopicData.topicName} />
 			</Head>
 			<div className={Styles.innerContainer}>
 				<div className={Styles.leftInnercontainerBody}>
 					<div className={Styles.sticky}>
 						<div className={Styles.topicHeader}>Topics list</div>
+
 						<div className={Styles.titleList}>
-							{topics.map((topic: topic) => (
+							{topics.map((topic: dataTopic) => (
 								<div key={topic.id}>
 									<Link
 										passHref
@@ -216,7 +234,7 @@ const Index = ({
 											<div
 												key={topic.id}
 												className={
-													topic.id == note[0].id
+													topic.id == thisTopicData.id
 														? `${Styles.topicTittle} ${Styles.Active}`
 														: Styles.topicTittle
 												}>
@@ -234,15 +252,15 @@ const Index = ({
 						<Drawer
 							textHeader={'LIST OF TOPICS'}
 							topic={topics}
-							active={note[0].id}
+							active={thisTopicData.id}
 							link={'Notes'}
 						/>
 					</div>
 					<div className={Styles.BodyHeader}>
 						<div className={Styles.statusBar}>
-							{note[0].subject.subjectName} <ChevronRightOutlinedIcon />{' '}
-							{note[0].form.formName} <ChevronRightOutlinedIcon />{' '}
-							{truncate(note[0].topicName)}
+							{thisTopicData.subject.subjectName} <ChevronRightOutlinedIcon />{' '}
+							{thisTopicData.form.formName} <ChevronRightOutlinedIcon />{' '}
+							{truncate(thisTopicData.topicName)}
 						</div>
 						{download.length > 0 ? (
 							<Link
@@ -257,7 +275,7 @@ const Index = ({
 						)}
 					</div>
 					<div className={Styles.BodyContent}>
-						<h2>{`Topic: ${note[0].topicName}`.toUpperCase()}</h2>
+						<h2>{`Topic: ${thisTopicData.topicName}`.toUpperCase()}</h2>
 						<div className='ckContent'>
 							{toc.length > 0 && (
 								<div className='toc'>
@@ -282,12 +300,3 @@ const Index = ({
 };
 
 export default Index;
-
-// //*Removing default search bar :)
-// Index.getLayout = function PageLayout(page:ReactNode) {
-//   return (
-//       <>
-//           {page}
-//       </>
-//   )
-// }

@@ -1,14 +1,5 @@
-import {
-	Drawer,
-	Box,
-	List,
-	ListItem,
-	ListItemText,
-	Divider,
-	ListItemButton,
-} from '@mui/material';
+import { Drawer, Box, List, ListItemText, Divider } from '@mui/material';
 import Link from 'next/link';
-import { type } from 'os';
 import { useEffect, useState } from 'react';
 import Styles from '../../styles/drawer.module.scss';
 
