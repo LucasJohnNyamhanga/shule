@@ -60,8 +60,8 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Home: NextPage = ({
-	subjects,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+    	subjects,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const { navActive, setNavActive } = useContext(NavContext);
 
 	useEffect(() => {
@@ -73,7 +73,7 @@ const Home: NextPage = ({
 		<>
 			<Hero
 				image={'/darasaplus.gif'}
-				header={`Get the Best preparared notes.`}
+				header={`Get the Best prepared notes.`}
 				explanation={`Well written by the best teachers using language easy to
 									understand. This is the perfect learning point for you, start
 									by searching or go straight to subjects below.`}
