@@ -14,6 +14,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
 import { NavContext } from '../../../../components/context/StateContext';
+import { useRouter } from 'next/router';
 
 //load when browser kicks in, on page load
 const CkEditor = dynamic(() => import('../../../../components/tools/Ck'), {
@@ -124,6 +125,20 @@ const Notes = ({
 	const notify = (message: string) => toast(message);
 	const notifySuccess = (message: string) => toast.success(message);
 	const notifyError = (message: string) => toast.error(message);
+
+	//!delay redirect
+	const router = useRouter();
+	function delay(ms: number) {
+		return new Promise((resolve) => setTimeout(resolve, ms));
+	}
+
+	let delayRedirect = async () => {
+		await new Promise((f) =>
+			setTimeout(() => {
+				router.back();
+			}, 1000)
+		);
+	};
 
 	useEffect(() => {
 		let subjectFromServer: formData = [];
@@ -257,6 +272,7 @@ const Notes = ({
 				if (type == 'success') {
 					notifySuccess(jibu);
 					setLoad(false);
+					delayRedirect();
 				} else {
 					notifyError(jibu);
 					setLoad(false);
