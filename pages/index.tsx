@@ -74,7 +74,7 @@ const Home: NextPage = ({
     <>
       <Head>
         <title>
-          Notes For O level and advance level all subjects - Download Now
+          Notes For O level and Advance level all subjects - Download Now
         </title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta
