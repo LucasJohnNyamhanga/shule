@@ -8,12 +8,21 @@ export default function Document() {
         <meta
           key="desc"
           name="description"
-          content={`Get the best Notes, Answered Past Papers, Online Quiz and A full Books Library for O level and A level studies covering all subjects. - Download learning materials Now`}
+          content={`Get the best Prepared Notes, Answered Past Papers, Quizzes, Books Library for All Forms and Subjects. - Download learning materials Now`}
         />
         <meta
           name="google-site-verification"
           content="oBwl1w3_NlylQ2IpnH8227Zl6J-0vatDGgFYPsvl1zs"
         />
+        <meta
+          name="keywords"
+          content={`Get the best Prepared Notes, Past Papers, Quizzes, Books Library, Form One, Form Two, Form Three, Form Four, Form Five, Form Six, Biology, Book Keeping, Chemistry, Civics, Commerce, English, History, Information And Computer Studies, Kiswahili, Literature, Mathematics, Physics`}
+        />
+        <meta
+          property="og:description"
+          content="Get the best Prepared Notes, Past Papers, Quizzes, Books Library for All Forms and Subjects"
+        />
+        <meta property="og:image" content="/favicon.ico" />
       </Head>
       <body>
         <Main />

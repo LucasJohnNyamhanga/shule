@@ -75,23 +75,22 @@ const Home: NextPage = ({
       <Head>
         <title>
           Get the best Notes, Answered Past Papers, Online Quiz and A full Books
-          Library for O level and A level studies covering all subjects. -
-          Download learning materials Now.
+          Library for All level and subjects - Download learning materials Now.
         </title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta
           key="desc"
           name="description"
-          content={`Get the best Notes, Answered Past Papers, Online Quiz and A full Books Library for O level and A level studies covering all subjects. Download all the learning materials you need. - Start Downloading Now`}
+          content={`Get the best Notes, Answered Past Papers, Online Quiz and A full Books Library for All level studies covering all subjects. Download all the learning materials you need. - Start Downloading Now`}
         />
         {/* //!add keywords */}
         <meta
           name="keywords"
-          content={`Well Prepared Notes, Form One, Form Two, Form Three, Form Four, Form Five, Form Six, Biology, Book Keeping, Chemistry, Civics, Commerce, English, History, Information And Computer Studies, Kiswahili, Literature, Mathematics, Physics`}
+          content={`Get the best Prepared Notes, Past Papers, Quizzes, Books Library, Form One, Form Two, Form Three, Form Four, Form Five, Form Six, Biology, Book Keeping, Chemistry, Civics, Commerce, English, History, Information And Computer Studies, Kiswahili, Literature, Mathematics, Physics`}
         />
         <meta
           property="og:description"
-          content="Well Prepared Notes, Form One, Form Two, Form Three, Form Four, Form Five, Form Six, Biology, Book Keeping, Chemistry, Civics, Commerce, English, History, Information And Computer Studies, Kiswahili, Literature, Mathematics, Physics"
+          content="Get the best Prepared Notes, Past Papers, Quizzes, Books Library for All Forms and Subjects"
         />
         <meta property="og:image" content="/favicon.ico" />
       </Head>

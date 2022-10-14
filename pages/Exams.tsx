@@ -87,11 +87,11 @@ const Exams: NextPage = ({
         {/* //!add keywords */}
         <meta
           name="keywords"
-          content={`Past Paper Examinations, Form One, Form Two, Form Three, Form Four, Form Five, Form Six, Biology, Book Keeping, Chemistry, Civics, Commerce, English, History, Information And Computer Studies, Kiswahili, Literature, Mathematics, Physics`}
+          content={`Get the best Prepared Notes, Past Papers, Quizzes, Books Library, Form One, Form Two, Form Three, Form Four, Form Five, Form Six, Biology, Book Keeping, Chemistry, Civics, Commerce, English, History, Information And Computer Studies, Kiswahili, Literature, Mathematics, Physics`}
         />
         <meta
           property="og:description"
-          content="Notes, Form One, Form Two, Form Three, Form Four, Form Five, Form Six, Biology, Book Keeping, Chemistry, Civics, Commerce, English, History, Information And Computer Studies, Kiswahili, Literature, Mathematics, Physics"
+          content="Get the best Prepared Notes, Past Papers, Quizzes, Books Library for All Forms and Subjects"
         />
         <meta property="og:image" content="/favicon.ico" />
       </Head>
