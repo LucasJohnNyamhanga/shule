@@ -73,8 +73,8 @@ const References: NextPage = ({
     <>
       <Head>
         <title>
-          Collection of books for O level and Advanced level subjects - Download
-          Now
+          Collection of Books And References For O level and Advanced level
+          Subjects - Download Now
         </title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta

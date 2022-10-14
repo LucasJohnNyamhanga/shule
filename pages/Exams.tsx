@@ -76,8 +76,8 @@ const Exams: NextPage = ({
     <>
       <Head>
         <title>
-          Past Exams For O level and Advances level subject with answers from
-          schools across the country. - Download Now
+          Answered Past Examinations For O level and Advances level Subjects
+          from All Schools Across The Country. - Download Now
         </title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta

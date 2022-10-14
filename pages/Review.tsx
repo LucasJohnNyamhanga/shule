@@ -74,8 +74,8 @@ const Review: NextPage = ({
     <>
       <Head>
         <title>
-          Questions and Answers for O level and A level - Quiz with well
-          prepared answers
+          Questions and Answers for O level and A level Subjects - Collection of
+          Quizzes with well prepared answers
         </title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta
