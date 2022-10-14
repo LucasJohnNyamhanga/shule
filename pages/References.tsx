@@ -72,7 +72,10 @@ const References: NextPage = ({
   return (
     <>
       <Head>
-        <title>Library</title>
+        <title>
+          Collection of books for O level and Advanced level subjects - Download
+          Now
+        </title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta
           name="description"
@@ -81,8 +84,13 @@ const References: NextPage = ({
         {/* //!add keywords */}
         <meta
           name="keywords"
-          content={`Notes, Form One, Form Two, Form Three, Form Four, Form Five, Form Six, Biology, Book Keeping, Chemistry, Civics, Commerce, English, History, Information And Computer Studies, Kiswahili, Literature, Mathematics, Physics`}
+          content={`Books and References, Form One, Form Two, Form Three, Form Four, Form Five, Form Six, Biology, Book Keeping, Chemistry, Civics, Commerce, English, History, Information And Computer Studies, Kiswahili, Literature, Mathematics, Physics`}
         />
+        <meta
+          property="og:description"
+          content="Books and References, Form One, Form Two, Form Three, Form Four, Form Five, Form Six, Biology, Book Keeping, Chemistry, Civics, Commerce, English, History, Information And Computer Studies, Kiswahili, Literature, Mathematics, Physics"
+        />
+        <meta property="og:image" content="/favicon.ico" />
       </Head>
       <Hero
         image={"/darasaplus.gif"}

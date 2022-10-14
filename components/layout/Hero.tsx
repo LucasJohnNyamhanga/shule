@@ -12,8 +12,8 @@ type dataHero = {
 function hero({ header, explanation, image }: dataHero) {
   return (
     <div className={styles.container}>
-      <div className={styles.section}>
-        <div className={styles.hero}>
+      <section className={styles.section}>
+        <article className={styles.hero}>
           <div className={styles.info}>
             <div className={styles.details}>
               <h1>{header}</h1>
@@ -34,8 +34,8 @@ function hero({ header, explanation, image }: dataHero) {
               height={400}
             />
           </div>
-        </div>
-      </div>
+        </article>
+      </section>
     </div>
   );
 }

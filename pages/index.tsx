@@ -73,9 +73,12 @@ const Home: NextPage = ({
   return (
     <>
       <Head>
-        <title>Notes</title>
+        <title>
+          Notes For O level and advance level all subjects - Download Now
+        </title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta
+          key="desc"
           name="description"
           content={`Well written by the best teachers using language easy to
 									understand. This is the perfect learning point for you, start
@@ -84,8 +87,13 @@ const Home: NextPage = ({
         {/* //!add keywords */}
         <meta
           name="keywords"
-          content={`Notes, Form One, Form Two, Form Three, Form Four, Form Five, Form Six, Biology, Book Keeping, Chemistry, Civics, Commerce, English, History, Information And Computer Studies, Kiswahili, Literature, Mathematics, Physics`}
+          content={`Well Prepared Notes, Form One, Form Two, Form Three, Form Four, Form Five, Form Six, Biology, Book Keeping, Chemistry, Civics, Commerce, English, History, Information And Computer Studies, Kiswahili, Literature, Mathematics, Physics`}
         />
+        <meta
+          property="og:description"
+          content="Well Prepared Notes, Form One, Form Two, Form Three, Form Four, Form Five, Form Six, Biology, Book Keeping, Chemistry, Civics, Commerce, English, History, Information And Computer Studies, Kiswahili, Literature, Mathematics, Physics"
+        />
+        <meta property="og:image" content="/favicon.ico" />
       </Head>
       <Hero
         image={"/darasaplus.gif"}

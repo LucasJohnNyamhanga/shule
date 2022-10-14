@@ -73,7 +73,10 @@ const Review: NextPage = ({
   return (
     <>
       <Head>
-        <title>Quiz</title>
+        <title>
+          Questions and Answers for O level and A level - Quiz with well
+          prepared answers
+        </title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta
           name="description"
@@ -82,8 +85,13 @@ const Review: NextPage = ({
         {/* //!add keywords */}
         <meta
           name="keywords"
-          content={`Notes, Form One, Form Two, Form Three, Form Four, Form Five, Form Six, Biology, Book Keeping, Chemistry, Civics, Commerce, English, History, Information And Computer Studies, Kiswahili, Literature, Mathematics, Physics`}
+          content={`Questions and Answers, Form One, Form Two, Form Three, Form Four, Form Five, Form Six, Biology, Book Keeping, Chemistry, Civics, Commerce, English, History, Information And Computer Studies, Kiswahili, Literature, Mathematics, Physics`}
         />
+        <meta
+          property="og:description"
+          content="Questions and Answers, Form One, Form Two, Form Three, Form Four, Form Five, Form Six, Biology, Book Keeping, Chemistry, Civics, Commerce, English, History, Information And Computer Studies, Kiswahili, Literature, Mathematics, Physics"
+        />
+        <meta property="og:image" content="/favicon.ico" />
       </Head>
       <Hero
         image={"/darasaplus.gif"}
