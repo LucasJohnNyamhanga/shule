@@ -79,7 +79,7 @@ const References: NextPage = ({
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta
           name="description"
-          content={`Full library at the tip of you finger. Get the books and reference you need at click of a button, downloaded and in your device for anytime access.`}
+          content={`An Online library at the tip of you finger. Get the books and reference you need at click of a button, downloaded and in your device for anytime access.`}
         />
         {/* //!add keywords */}
         <meta

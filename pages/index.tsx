@@ -80,7 +80,7 @@ const Home: NextPage = ({
         <meta
           key="desc"
           name="description"
-          content={`Well written by the best teachers using language easy to
+          content={`Get Notes for O level and A level studies for all subjects that are well written by the best teachers using language easy to
 									understand. This is the perfect learning point for you, start
 									by searching or go straight to subjects below.`}
         />
