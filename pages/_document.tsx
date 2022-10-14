@@ -8,7 +8,7 @@ export default function Document() {
         <meta
           key="desc"
           name="description"
-          content={`Get the best Notes, Answered Past Papers, Online Quiz and A full Books Library for O level and A level studies for all subjects. - Download Now`}
+          content={`Get the best Notes, Answered Past Papers, Online Quiz and A full Books Library for O level and A level studies covering all subjects. - Download learning materials Now`}
         />
         <meta
           name="google-site-verification"

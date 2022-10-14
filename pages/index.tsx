@@ -74,15 +74,15 @@ const Home: NextPage = ({
     <>
       <Head>
         <title>
-          Notes For O level and Advance level All Subjects - Download Now
+          Get the best Notes, Answered Past Papers, Online Quiz and A full Books
+          Library for O level and A level studies covering all subjects. -
+          Download learning materials Now.
         </title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta
           key="desc"
           name="description"
-          content={`Get the best Notes for O level and A level studies for all subjects that are well written by the best teachers using language easy to
-									understand. This is the perfect learning point for you, start
-									by searching or go straight to subjects below.`}
+          content={`Get the best Notes, Answered Past Papers, Online Quiz and A full Books Library for O level and A level studies covering all subjects. Download all the learning materials you need. - Start Downloading Now`}
         />
         {/* //!add keywords */}
         <meta
