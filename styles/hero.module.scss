@@ -1,90 +1,90 @@
-@import 'index';
+@import "index";
 
 .container {
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	font-family: 'Montserrat';
-	margin: 0px;
-	padding: 0px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  font-family: "Montserrat";
+  margin: 0px;
+  padding: 0px;
 
-	* {
-		transition: 0.1s linear;
-	}
+  * {
+    transition: 0.1s linear;
+  }
 }
 
 .section {
-	width: 100%;
-	max-width: 1400px;
-	padding: 0px;
-	margin: 0px;
-	display: flex;
-	flex-direction: row;
+  width: 100%;
+  max-width: 1400px;
+  padding: 0px;
+  margin: 0px;
+  display: flex;
+  flex-direction: row;
 }
 
 .hero {
-	width: 100%;
-	margin: 0px 0px 0px 0px;
-	display: flex;
-	flex-direction: row;
-	gap: 0.5rem;
-	justify-content: center;
+  width: 100%;
+  margin: 0px 0px 0px 0px;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  justify-content: center;
 
-	.info {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		padding-right: 20px;
-		flex: 1 1 100%;
+  .info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-right: 20px;
+    flex: 1 1 100%;
 
-		.details {
-			h1 {
-				width: 90%;
-				font-size: 4.5rem;
-				font-family: $fontHeader;
-				font-weight: 700;
-				line-height: 1;
-				color: $ugoro;
-				margin-bottom: 16px;
-				margin-top: 16px;
-				margin-left: 10px;
-				padding-left: 10px;
-			}
+    .details {
+      h1 {
+        width: 90%;
+        font-size: 4.5rem;
+        font-family: $fontHeader;
+        font-weight: 700;
+        line-height: 1;
+        color: $ugoro;
+        margin-bottom: 16px;
+        margin-top: 16px;
+        margin-left: 10px;
+        padding-left: 10px;
+      }
 
-			.permanentLetters {
-				font-size: 1.125rem;
-				font-family: $fontBody;
-				line-height: 1.75rem;
-				font-weight: 500;
-				max-width: 32rem;
-				color: $black;
-			}
+      .permanentLetters {
+        font-size: 1.125rem;
+        font-family: $fontBody;
+        line-height: 1.75rem;
+        font-weight: 500;
+        max-width: 32rem;
+        color: $black;
+      }
 
-			p {
-				margin-left: 0;
-				padding-left: 0;
-				margin-left: 10px;
-				padding-left: 10px;
-			}
-		}
-	}
+      p {
+        margin-left: 0;
+        padding-left: 0;
+        margin-left: 10px;
+        padding-left: 10px;
+      }
+    }
+  }
 
-	.image {
-		display: flex;
-		flex: 1 1 500px;
-		aspect-ratio: 1/1;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
+  .image {
+    display: flex;
+    flex: 1 1 500px;
+    aspect-ratio: 1/1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-		img {
-			min-width: 500px;
-			height: auto;
-			max-height: 400px;
-		}
-	}
+    img {
+      min-width: 400px;
+      height: auto;
+      max-height: 400px;
+    }
+  }
 }
 
 // .hero h1 {
@@ -97,168 +97,168 @@
 // }
 
 .hero span {
-	color: $ugoro;
+  color: $ugoro;
 }
 
 .hero p {
-	font-family: 'Roboto';
-	font-weight: 400;
-	font-size: 20px;
-	padding: 0px;
-	margin: 0px;
-	margin-bottom: 10px;
-	margin-left: 10px;
+  font-family: "Roboto";
+  font-weight: 400;
+  font-size: 20px;
+  padding: 0px;
+  margin: 0px;
+  margin-bottom: 10px;
+  margin-left: 10px;
 }
 
 .button {
-	background-color: $ugoro;
-	color: $lightkahawa;
-	border: 2px solid transparent;
-	margin-left: 10px;
+  background-color: $ugoro;
+  color: $lightkahawa;
+  border: 2px solid transparent;
+  margin-left: 10px;
 }
 
 .button:hover {
-	background-color: $lightkahawa;
-	color: $ugoro;
-	border: 2px solid $lightblue;
+  background-color: $lightkahawa;
+  color: $ugoro;
+  border: 2px solid $lightblue;
 }
 
 @media only screen and (max-width: 1150px) {
-	.hero {
-		.image {
-			flex: 1 1 400px;
-			display: flex;
-			justify-content: center;
-			align-items: center;
+  .hero {
+    .image {
+      flex: 1 1 400px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-			img {
-				min-width: 400px;
-				height: auto;
-				max-height: 400px;
-			}
-		}
+      img {
+        min-width: 400px;
+        height: auto;
+        max-height: 400px;
+      }
+    }
 
-		.info {
-			.details {
-				h1 {
-					font-size: 3rem;
-					font-family: $fontHeader;
-					font-weight: 700;
-				}
+    .info {
+      .details {
+        h1 {
+          font-size: 3rem;
+          font-family: $fontHeader;
+          font-weight: 700;
+        }
 
-				.permanentLetters {
-					font-size: 1.125rem;
-					font-family: $fontBody;
-					line-height: 1.25rem;
-					font-weight: 500;
-					max-width: 32rem;
-					color: $black;
-				}
-			}
-		}
-	}
+        .permanentLetters {
+          font-size: 1.125rem;
+          font-family: $fontBody;
+          line-height: 1.25rem;
+          font-weight: 500;
+          max-width: 32rem;
+          color: $black;
+        }
+      }
+    }
+  }
 }
 
 @media only screen and (max-width: 848px) {
-	.hero {
-		width: 100%;
-		margin: 0px 5px 0px 5px;
-		display: flex;
-		flex-direction: column-reverse;
-		gap: 0rem;
-		justify-content: center;
+  .hero {
+    width: 100%;
+    margin: 0px 5px 0px 5px;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0rem;
+    justify-content: center;
 
-		h1 {
-			font-family: 'Montserrat';
-			font-weight: 700;
-			font-size: 30px;
-			margin: 0px;
-			margin-bottom: 10px;
-			color: $lightblue;
-		}
+    h1 {
+      font-family: "Montserrat";
+      font-weight: 700;
+      font-size: 30px;
+      margin: 0px;
+      margin-bottom: 10px;
+      color: $lightblue;
+    }
 
-		p {
-			font-family: 'Roboto';
-			font-weight: 400;
-			font-size: 16px;
-			padding: 0px;
-			margin: 0px;
-			margin-bottom: 10px;
-			margin-left: 10px;
-		}
+    p {
+      font-family: "Roboto";
+      font-weight: 400;
+      font-size: 16px;
+      padding: 0px;
+      margin: 0px;
+      margin-bottom: 10px;
+      margin-left: 10px;
+    }
 
-		.info {
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-			padding-right: 0px;
-			flex: 1 1 100%;
+    .info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding-right: 0px;
+      flex: 1 1 100%;
 
-			.details {
-				min-width: 95%;
-				min-height: fit-content;
-				font-size: 65px;
-				padding: 15px 10px;
+      .details {
+        min-width: 95%;
+        min-height: fit-content;
+        font-size: 65px;
+        padding: 15px 10px;
 
-				.permanentLetters {
-					font-size: 45px;
-				}
-			}
-		}
+        .permanentLetters {
+          font-size: 45px;
+        }
+      }
+    }
 
-		.image {
-			flex: 1 1 100%;
-			align-self: center;
+    .image {
+      flex: 1 1 100%;
+      align-self: center;
 
-			img {
-				width: 100%;
-				min-width: 0rem;
-				height: auto;
-				max-height: 400px;
-			}
-		}
-	}
+      img {
+        width: 100%;
+        min-width: 0rem;
+        height: auto;
+        max-height: 400px;
+      }
+    }
+  }
 }
 
 @media only screen and (max-width: 608px) {
-	.hero {
-		.info {
-			.details {
-				h1 {
-					font-size: 1.8rem;
-					font-family: $fontHeader;
-					font-weight: 700;
-				}
+  .hero {
+    .info {
+      .details {
+        h1 {
+          font-size: 1.8rem;
+          font-family: $fontHeader;
+          font-weight: 700;
+        }
 
-				.permanentLetters {
-					font-size: 1.125rem;
-					font-family: $fontBody;
-					line-height: 1.05rem;
-					font-weight: 500;
-					max-width: 32rem;
-					color: $black;
-				}
+        .permanentLetters {
+          font-size: 1.125rem;
+          font-family: $fontBody;
+          line-height: 1.05rem;
+          font-weight: 500;
+          max-width: 32rem;
+          color: $black;
+        }
 
-				p {
-					margin-left: 0;
-					padding-left: 0;
-				}
-			}
-		}
-	}
+        p {
+          margin-left: 0;
+          padding-left: 0;
+        }
+      }
+    }
+  }
 }
 
 @media only screen and (max-width: 458px) {
-	.hero {
-		.info {
-			.details {
-				font-size: 35px;
-				padding: 15px 10px;
-				.permanentLetters {
-					font-size: 22px;
-				}
-			}
-		}
-	}
+  .hero {
+    .info {
+      .details {
+        font-size: 35px;
+        padding: 15px 10px;
+        .permanentLetters {
+          font-size: 22px;
+        }
+      }
+    }
+  }
 }
