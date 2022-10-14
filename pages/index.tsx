@@ -81,23 +81,23 @@ const Home: NextPage = ({
         <meta
           key="desc"
           name="description"
-          content={`Get the best Notes, Answered Past Papers, Online Quiz and Library for All level studies covering all subjects. Download all the learning materials you need. - Start Downloading Now`}
+          content={`Get the best Notes, Past Papers, Online Quiz and Library for All level studies covering all subjects. Download all the learning materials you need. - Start Downloading Now`}
         />
         {/* //!add keywords */}
         <meta
           name="keywords"
-          content={`Get the best Prepared Notes, Past Papers, Quizzes, Books Library, Form One, Form Two, Form Three, Form Four, Form Five, Form Six, Biology, Book Keeping, Chemistry, Civics, Commerce, English, History, Information And Computer Studies, Kiswahili, Literature, Mathematics, Physics`}
+          content={`Download all the learning materials you need, covering from O level to A level. Get the best Prepared Notes, Past Papers, Quizzes, Books Library, Form One, Form Two, Form Three, Form Four, Form Five, Form Six, Biology, Book Keeping, Chemistry, Civics, Commerce, English, History, Information And Computer Studies, Kiswahili, Literature, Mathematics, Physics`}
         />
         <meta
           property="og:description"
-          content="Get the best Prepared Notes, Past Papers, Online Quizzes and Library for All level studies covering all subjects"
+          content="Get the best Prepared Notes, Past Papers, Online Quizzes and Library for All secondary studies covering all subjects"
         />
         <meta property="og:image" content="/favicon.ico" />
       </Head>
       <Hero
         image={"/darasaplus.gif"}
         header={`Get the Best prepared notes.`}
-        explanation={`Well written by the best teachers using language easy to
+        explanation={`Get Notes written by the best teachers using language easy to
 									understand. This is the perfect learning point for you, start
 									by searching or go straight to subjects below.`}
       />
