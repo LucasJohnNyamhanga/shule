@@ -97,9 +97,8 @@ const Home: NextPage = ({
       <Hero
         image={"/darasaplus.gif"}
         header={`Get the Best prepared notes.`}
-        explanation={`Get Notes written by the best teachers using language easy to
-									understand. This is the perfect learning point for you, start
-									by searching or go straight to subjects below.`}
+        explanation={`Get Notes written by the best teachers using easy and simple language. This is the Learning Resource Center, start
+									reading and download now.`}
       />
       <Study subjects={subjects} focus={`Let's study Notes`} link={"Notes"} />
     </>

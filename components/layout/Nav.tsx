@@ -34,7 +34,7 @@ const Nav = () => {
           <div className={Styles.topAdvatisment}>
             <p>
               Learning Resource Center for Notes, Past Papers, Online Quizzes
-              and Library - Download Now
+              and Library.
             </p>
           </div>
         </div>
