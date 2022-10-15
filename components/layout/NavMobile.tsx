@@ -38,10 +38,7 @@ export const NavMobile = () => {
       <div className={Styles.innerContainerTop}>
         <div className={Styles.NavDetails}>
           <div className={Styles.topAdvatisment}>
-            <p>
-              Learning Resource Center for Notes, Past Papers, Online Quizzes
-              and Library.
-            </p>
+            <p>Learning Resource Center - Downloads are available.</p>
           </div>
         </div>
         <div className={Styles.NavHeader}>
