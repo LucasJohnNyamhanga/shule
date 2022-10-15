@@ -74,7 +74,7 @@ const Home: NextPage = ({
     <>
       <Head>
         <title>
-          Educational Resource Center for Notes, Past Papers, Online Quizzes and
+          Learning Resource Center for Notes, Past Papers, Online Quizzes and
           Library - Download learning materials Now.
         </title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />

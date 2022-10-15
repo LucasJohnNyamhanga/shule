@@ -32,7 +32,10 @@ const Nav = () => {
       <div className={Styles.innerContainerTop}>
         <div className={Styles.NavDetails}>
           <div className={Styles.topAdvatisment}>
-            <p>This is only a demo version for developing purpose only. </p>
+            <p>
+              Learning Resource Center for Notes, Past Papers, Online Quizzes
+              and Library - Download Now
+            </p>
           </div>
         </div>
         <div className={Styles.NavHeader}>
