@@ -1,397 +1,397 @@
-import React, { ReactNode, useContext, useEffect } from 'react';
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { prisma } from '../../../../../db/prisma';
-import ImageUpload from '../../../../../components/tools/ImageUpload';
-import InputTextMui from '../../../../../components/tools/InputTextMui';
-import { type } from 'os';
-import DisplayChip from '../../../../../components/tools/displayChip';
-import SelectMiu from '../../../../../components/tools/SelectMui';
-import axios from 'axios';
-import { useState } from 'react';
-import Styles from '../../../../../styles/createNotes.module.scss';
-import SnackBar from '../../../../../components/tools/SnackBar';
-import { useRouter } from 'next/router';
-import { NavContext } from '../../../../../components/context/StateContext';
+import React, { ReactNode, useContext, useEffect } from "react";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { prisma } from "../../../../../db/prisma";
+import ImageUpload from "../../../../../components/tools/ImageUpload";
+import InputTextMui from "../../../../../components/tools/InputTextMui";
+import { type } from "os";
+import DisplayChip from "../../../../../components/tools/displayChip";
+import SelectMiu from "../../../../../components/tools/SelectMui";
+import axios from "axios";
+import { useState } from "react";
+import Styles from "../../../../../styles/createNotes.module.scss";
+import SnackBar from "../../../../../components/tools/SnackBar";
+import { useRouter } from "next/router";
+import { NavContext } from "../../../../../components/context/StateContext";
 
-import { getSession } from 'next-auth/react';
-import LoaderWait from '../../../../../components/tools/loaderWait';
+import { getSession } from "next-auth/react";
+import LoaderWait from "../../../../../components/tools/loaderWait";
 export const getServerSideProps: GetServerSideProps = async (context) => {
-	const session = await getSession(context);
-	const url = process.env.MAIN_URL;
-	const imageUrl = process.env.IMAGE_URL;
-	if (!session) {
-		return {
-			redirect: {
-				destination: `/Auth/SignIn?callbackUr=/`,
-				permanent: false,
-			},
-		};
-	}
-	const userFromServer = await prisma.users.findFirst({
-		where: {
-			username: session.user.email,
-		},
-		select: {
-			isAdmin: true,
-			id: true,
-		},
-	});
-	const userfound = await JSON.parse(JSON.stringify(userFromServer));
+  const session = await getSession(context);
+  const url = process.env.MAIN_URL;
+  const imageUrl = process.env.IMAGE_URL;
+  if (!session) {
+    return {
+      redirect: {
+        destination: `/Auth/SignIn?callbackUr=/`,
+        permanent: false,
+      },
+    };
+  }
+  const userFromServer = await prisma.users.findFirst({
+    where: {
+      username: session.user.email,
+    },
+    select: {
+      isAdmin: true,
+      id: true,
+    },
+  });
+  const userfound = await JSON.parse(JSON.stringify(userFromServer));
 
-	if (!userfound.isAdmin) {
-		return {
-			redirect: {
-				destination: '/',
-				permanent: false,
-			},
-		};
-	}
-	// const { params } = context;
-	// const { id } = params;
-	let id = context.params?.id as string;
-	let Id = parseInt(id);
+  if (!userfound.isAdmin) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+  // const { params } = context;
+  // const { id } = params;
+  let id = context.params?.id as string;
+  let Id = parseInt(id);
 
-	const subjectServer = await prisma.subject.findUnique({
-		where: {
-			id: Id,
-		},
-		select: {
-			id: true,
-			subjectName: true,
-			subjectDefinition: true,
-			imageLocation: true,
-			published: true,
-			forms: {
-				select: {
-					formName: true,
-					id: true,
-				},
-			},
-		},
-	});
+  const subjectServer = await prisma.subject.findUnique({
+    where: {
+      id: Id,
+    },
+    select: {
+      id: true,
+      subjectName: true,
+      subjectDefinition: true,
+      imageLocation: true,
+      published: true,
+      forms: {
+        select: {
+          formName: true,
+          id: true,
+        },
+      },
+    },
+  });
 
-	const subject = JSON.parse(JSON.stringify(subjectServer));
+  const subject = JSON.parse(JSON.stringify(subjectServer));
 
-	const formsFromServer = await prisma.form.findMany({
-		select: {
-			id: true,
-			formName: true,
-		},
-	});
-	const formsList = JSON.parse(JSON.stringify(formsFromServer));
-	await prisma.$disconnect();
-	return {
-		props: {
-			subject,
-			formsList,
-			userfound,
-			url,
-			imageUrl,
-		},
-	};
+  const formsFromServer = await prisma.form.findMany({
+    select: {
+      id: true,
+      formName: true,
+    },
+  });
+  const formsList = JSON.parse(JSON.stringify(formsFromServer));
+  await prisma.$disconnect();
+  return {
+    props: {
+      subject,
+      formsList,
+      userfound,
+      url,
+      imageUrl,
+    },
+  };
 };
 
 type dataTypeSelect = {
-	id: string;
-	label: string;
+  id: string;
+  label: string;
 }[];
 
 const EditSubject = ({
-    	subject,
-    	formsList,
-    	userfound,
-    	url,
-    	imageUrl,
-    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-	const { navActive, setNavActive } = useContext(NavContext);
+  subject,
+  formsList,
+  userfound,
+  url,
+  imageUrl,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const { navActive, setNavActive } = useContext(NavContext);
 
-	useEffect(() => {
-		setNavActive('Admin');
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [navActive]);
+  useEffect(() => {
+    setNavActive("Admin");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navActive]);
 
-	const [selectOption, setSelectOption] = useState<dataTypeSelect>([]);
-	const [open, setOpen] = useState(false);
-	const [action, setAction] = useState(false);
-	const [formValue, setformValue] = useState('');
-	const [ToastMessage, setToastMessage] = useState('');
-	const [image, setImage] = useState<string | Blob>('');
-	const router = useRouter();
-	const [subjectDetails, setsubjectDetails] = useState({
-		subjectName: '',
-		subjectDefinition: '',
-	});
-	const [loading, setLoad] = useState(false);
-	//!delay redirect
-	function delay(ms: number) {
-		return new Promise((resolve) => setTimeout(resolve, ms));
-	}
+  const [selectOption, setSelectOption] = useState<dataTypeSelect>([]);
+  const [open, setOpen] = useState(false);
+  const [action, setAction] = useState(false);
+  const [formValue, setformValue] = useState("");
+  const [ToastMessage, setToastMessage] = useState("");
+  const [image, setImage] = useState<string | Blob>("");
+  const router = useRouter();
+  const [subjectDetails, setsubjectDetails] = useState({
+    subjectName: "",
+    subjectDefinition: "",
+  });
+  const [loading, setLoad] = useState(false);
+  //!delay redirect
+  function delay(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
 
-	let delayRedirect = async () => {
-		await new Promise((f) =>
-			setTimeout(() => {
-				router.back();
-			}, 1000)
-		);
-	};
+  let delayRedirect = async () => {
+    await new Promise((f) =>
+      setTimeout(() => {
+        router.back();
+      }, 1000)
+    );
+  };
 
-	let handleTextInput = (
-		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-		name: string
-	) => {
-		let value = event.currentTarget.value;
-		setsubjectDetails({ ...subjectDetails, [name]: value });
-		console.log(subjectDetails);
-	};
+  let handleTextInput = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    name: string
+  ) => {
+    let value = event.currentTarget.value;
+    setsubjectDetails({ ...subjectDetails, [name]: value });
+    console.log(subjectDetails);
+  };
 
-	type templateType = {
-		id: string;
-		label: string;
-	};
+  type templateType = {
+    id: string;
+    label: string;
+  };
 
-	let options: { label: string; value: string }[] = [];
+  let options: { label: string; value: string }[] = [];
 
-	//!errror
+  //!errror
 
-	for (const form of formsList) {
-		options.push({
-			label: form.formName,
-			value: form.id,
-		});
-	}
+  for (const form of formsList) {
+    options.push({
+      label: form.formName,
+      value: form.id,
+    });
+  }
 
-	let handleSelect = (value: string) => {
-		setformValue(value);
-		let template: templateType = {
-			id: '',
-			label: '',
-		};
-		for (const form of options) {
-			if (form.value == value) {
-				template = {
-					id: value,
-					label: form.label,
-				};
-			}
-		}
-		add(selectOption, template);
-	};
+  let handleSelect = (value: string) => {
+    setformValue(value);
+    let template: templateType = {
+      id: "",
+      label: "",
+    };
+    for (const form of options) {
+      if (form.value == value) {
+        template = {
+          id: value,
+          label: form.label,
+        };
+      }
+    }
+    add(selectOption, template);
+  };
 
-	function add(arrName: dataTypeSelect, tamplate: templateType) {
-		const found = arrName.some((item) => item.id === tamplate.id);
-		if (!found) {
-			setSelectOption([...selectOption, tamplate]);
-		}
-	}
+  function add(arrName: dataTypeSelect, tamplate: templateType) {
+    const found = arrName.some((item) => item.id === tamplate.id);
+    if (!found) {
+      setSelectOption([...selectOption, tamplate]);
+    }
+  }
 
-	let handleDeleteFormDisplay = (label: string) => {
-		let filtered = selectOption.filter((data) => {
-			return data.label != label;
-		});
+  let handleDeleteFormDisplay = (label: string) => {
+    let filtered = selectOption.filter((data) => {
+      return data.label != label;
+    });
 
-		setSelectOption(filtered);
-	};
+    setSelectOption(filtered);
+  };
 
-	let uploadForServer = (image: string | Blob, action: boolean) => {
-		setImage(image);
-		setAction(action);
-		//!TO BE CALLED FOR UPLOAD
-		// uploadToServer();
-	};
+  let uploadForServer = (image: string | Blob, action: boolean) => {
+    setImage(image);
+    setAction(action);
+    //!TO BE CALLED FOR UPLOAD
+    // uploadToServer();
+  };
 
-	//! for uploading
-	const uploadToServer = async () => {
-		console.log(action);
-		if (action) {
-			const body = new FormData();
-			body.append('file', image);
-			axios
-				.post(imageUrl + '/api/upload', body, {
-					onUploadProgress: (progressEvent) => {
-						console.log(
-							'Upload Progress: ' +
-								Math.round((progressEvent.loaded / progressEvent.total) * 100) +
-								'%'
-						);
-					},
-				})
-				.then(
-					(res) => {
-						let location = res.data;
-						sendToDatabase(location);
-						console.log(location);
-					},
-					(err) => {
-						//some error
-						setLoad(false);
-					}
-				);
-		} else {
-			let location = image as string;
-			sendToDatabase(location);
-			console.log(location);
-		}
-	};
+  //! for uploading
+  const uploadToServer = async () => {
+    console.log(action);
+    if (action) {
+      const body = new FormData();
+      body.append("file", image);
+      axios
+        .post(imageUrl + "/api/upload", body, {
+          onUploadProgress: (progressEvent) => {
+            console.log(
+              "Upload Progress: " +
+                Math.round((progressEvent.loaded / progressEvent.total) * 100) +
+                "%"
+            );
+          },
+        })
+        .then(
+          (res) => {
+            let location = res.data;
+            sendToDatabase(location);
+            console.log(location);
+          },
+          (err) => {
+            //some error
+            setLoad(false);
+          }
+        );
+    } else {
+      let location = image as string;
+      sendToDatabase(location);
+      console.log(location);
+    }
+  };
 
-	let sendToDatabase = (location: string) => {
-		let forms = [];
-		for (const formData of selectOption) {
-			let Id = parseInt(formData.id);
-			forms.push({
-				id: Id,
-			});
-		}
+  let sendToDatabase = (location: string) => {
+    let forms = [];
+    for (const formData of selectOption) {
+      let Id = parseInt(formData.id);
+      forms.push({
+        id: Id,
+      });
+    }
 
-		let databaseData = {
-			id: subject.id,
-			subjectName: subjectDetails.subjectName,
-			subjectDefinition: subjectDetails.subjectDefinition,
-			imageLocation: location,
-			forms,
-			userId: userfound.id,
-		};
+    let databaseData = {
+      id: subject.id,
+      subjectName: subjectDetails.subjectName,
+      subjectDefinition: subjectDetails.subjectDefinition,
+      imageLocation: location,
+      forms,
+      userId: userfound.id,
+    };
 
-		axios({
-			method: 'post',
-			url: url + '/api/updateSubject',
-			data: databaseData,
-		})
-			.then(function (response) {
-				// handle success
-				console.log(databaseData);
-				setToastMessage(response.data.message);
-				setOpen(true);
+    axios({
+      method: "post",
+      url: url + "/api/updateSubject",
+      data: databaseData,
+    })
+      .then(function (response) {
+        // handle success
+        console.log(databaseData);
+        setToastMessage(response.data.message);
+        setOpen(true);
 
-				setSelectOption([]);
-				setsubjectDetails({
-					subjectName: '',
-					subjectDefinition: '',
-				});
-				setLoad(false);
-				delayRedirect();
-			})
-			.catch(function (error) {
-				// handle error
-				console.log(error);
-				setLoad(false);
-			})
-			.then(function () {
-				// always executed
-			});
-	};
+        setSelectOption([]);
+        setsubjectDetails({
+          subjectName: "",
+          subjectDefinition: "",
+        });
+        setLoad(false);
+        delayRedirect();
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+        setLoad(false);
+      })
+      .then(function () {
+        // always executed
+      });
+  };
 
-	let handleCreateSubject = () => {
-		if (
-			subjectDetails.subjectDefinition != '' &&
-			subjectDetails.subjectName != '' &&
-			image != '' &&
-			selectOption.length > 0
-		) {
-			//!handle upload
-			setLoad(true);
-			setToastMessage('Saving to database. Please wait..');
-			setOpen(true);
-			uploadToServer();
-		} else {
-			setToastMessage(
-				'Fill in all fields including image and forms selection.'
-			);
-			setOpen(true);
-		}
-	};
+  let handleCreateSubject = () => {
+    if (
+      subjectDetails.subjectDefinition != "" &&
+      subjectDetails.subjectName != "" &&
+      image != "" &&
+      selectOption.length > 0
+    ) {
+      //!handle upload
+      setLoad(true);
+      setToastMessage("Saving to database. Please wait..");
+      setOpen(true);
+      uploadToServer();
+    } else {
+      setToastMessage(
+        "Fill in all fields including image and forms selection."
+      );
+      setOpen(true);
+    }
+  };
 
-	let handleClearToast = () => {
-		setOpen(false);
-	};
+  let handleClearToast = () => {
+    setOpen(false);
+  };
 
-	type dataTemplate = {
-		id: string;
-		label: string;
-	};
+  type dataTemplate = {
+    id: string;
+    label: string;
+  };
 
-	useEffect(() => {
-		let templateData = [];
-		for (const form of subject.forms) {
-			let template = {
-				id: form.id,
-				label: form.formName,
-			};
-			templateData.push(template);
-		}
-		setSelectOption(templateData);
-		setsubjectDetails({
-			subjectName: subject.subjectName,
-			subjectDefinition: subject.subjectDefinition,
-		});
-		setImage(subject.imageLocation);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+  useEffect(() => {
+    let templateData = [];
+    for (const form of subject.forms) {
+      let template = {
+        id: form.id,
+        label: form.formName,
+      };
+      templateData.push(template);
+    }
+    setSelectOption(templateData);
+    setsubjectDetails({
+      subjectName: subject.subjectName,
+      subjectDefinition: subject.subjectDefinition,
+    });
+    setImage(subject.imageLocation);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-	return (
-		<div className={Styles.container}>
-			<div className={Styles.innerContainer}>
-				<div className={Styles.rightInnercontainerBody}>
-					<div className={Styles.mainMain}>
-						<div className={Styles.formHeader}>Subject Details.</div>
-						<InputTextMui
-							label='Subject Name'
-							content={subjectDetails.subjectName}
-							name='subjectName'
-							handleChange={handleTextInput}
-						/>
-						<InputTextMui
-							label='Subject Definition'
-							content={subjectDetails.subjectDefinition}
-							name='subjectDefinition'
-							handleChange={handleTextInput}
-						/>
+  return (
+    <div className={Styles.container}>
+      <div className={Styles.innerContainer}>
+        <div className={Styles.rightInnercontainerBody}>
+          <div className={Styles.mainMain}>
+            <div className={Styles.formHeader}>Subject Details.</div>
+            <InputTextMui
+              label="Subject Name"
+              content={subjectDetails.subjectName}
+              name="subjectName"
+              handleChange={handleTextInput}
+            />
+            <InputTextMui
+              label="Subject Definition"
+              content={subjectDetails.subjectDefinition}
+              name="subjectDefinition"
+              handleChange={handleTextInput}
+            />
 
-						<ImageUpload
-							image={image as string}
-							uploadToServer={uploadForServer}
-						/>
-					</div>
-					<div className={Styles.mainLeft}>
-						<div className={Styles.formHeader}>Forms for this subject.</div>
-						<SelectMiu
-							displayLabel='Select Form'
-							forms={options}
-							handlechange={handleSelect}
-							value={formValue}
-						/>
-						<div className={Styles.chipDisplay}>
-							{selectOption.map((option, index) => (
-								<DisplayChip
-									handleDelete={handleDeleteFormDisplay}
-									label={option.label}
-									key={index}
-								/>
-							))}
-						</div>
-					</div>
-				</div>
-				{loading ? (
-					<div className={Styles.imageSelect}>
-						<LoaderWait />
-					</div>
-				) : (
-					<div onClick={handleCreateSubject} className={Styles.imageSelect}>
-						Update Notes
-					</div>
-				)}
-				<SnackBar
-					textMessage={ToastMessage}
-					opener={open}
-					handleClearToast={handleClearToast}
-				/>
-			</div>
-		</div>
-	);
+            <ImageUpload
+              image={image as string}
+              uploadToServer={uploadForServer}
+            />
+          </div>
+          <div className={Styles.mainLeft}>
+            <div className={Styles.formHeader}>Forms for this subject.</div>
+            <SelectMiu
+              displayLabel="Select Form"
+              forms={options}
+              handlechange={handleSelect}
+              value={formValue}
+            />
+            <div className={Styles.chipDisplay}>
+              {selectOption.map((option, index) => (
+                <DisplayChip
+                  handleDelete={handleDeleteFormDisplay}
+                  label={option.label}
+                  key={index}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+        {loading ? (
+          <div className={Styles.imageSelect}>
+            <LoaderWait sms={"Wait.."} />
+          </div>
+        ) : (
+          <div onClick={handleCreateSubject} className={Styles.imageSelect}>
+            Update Notes
+          </div>
+        )}
+        <SnackBar
+          textMessage={ToastMessage}
+          opener={open}
+          handleClearToast={handleClearToast}
+        />
+      </div>
+    </div>
+  );
 };
 
 export default EditSubject;
 
 //*Removing default search bar :)
 EditSubject.getLayout = function PageLayout(page: ReactNode) {
-	return <>{page}</>;
+  return <>{page}</>;
 };

@@ -238,55 +238,55 @@ const Create = ({
 	};
 
 	return (
-		<div className={Styles.container}>
-			<Toaster position='top-center' reverseOrder={false} />
-			<div className={Styles.innerContainer}>
-				<div className={Styles.rightInnercontainerBody}>
-					<div className={Styles.mainMain}>
-						<div className={Styles.formHeader}>Exam Type Details.</div>
-						<InputTextMui
-							label='Exam Type Name'
-							content={subjectDetails.examTypeName}
-							name='examTypeName'
-							handleChange={handleTextInput}
-						/>
-						<InputTextMui
-							label='Exam Type Definition'
-							content={subjectDetails.examTypeDefinition}
-							name='examTypeDefinition'
-							handleChange={handleTextInput}
-						/>
-					</div>
-					<div className={Styles.mainLeft}>
-						<div className={Styles.formHeader}>Exam Type Relations.</div>
-						<SelectMiu
-							displayLabel='Select Subject'
-							show={true}
-							forms={subjectOptions}
-							handlechange={handleSelectSubject}
-							value={subjectDetails.subjectId}
-						/>
-						<SelectMiu
-							displayLabel='Select Form'
-							show={true}
-							forms={formOptions}
-							handlechange={handleSelectForm}
-							value={subjectDetails.formId}
-						/>
-					</div>
-				</div>
-				{loading ? (
-					<div className={Styles.imageSelect}>
-						<LoaderWait />
-					</div>
-				) : (
-					<div onClick={handleCreateTopic} className={Styles.imageSelect}>
-						Create Exam Type
-					</div>
-				)}
-			</div>
-		</div>
-	);
+    <div className={Styles.container}>
+      <Toaster position="top-center" reverseOrder={false} />
+      <div className={Styles.innerContainer}>
+        <div className={Styles.rightInnercontainerBody}>
+          <div className={Styles.mainMain}>
+            <div className={Styles.formHeader}>Exam Type Details.</div>
+            <InputTextMui
+              label="Exam Type Name"
+              content={subjectDetails.examTypeName}
+              name="examTypeName"
+              handleChange={handleTextInput}
+            />
+            <InputTextMui
+              label="Exam Type Definition"
+              content={subjectDetails.examTypeDefinition}
+              name="examTypeDefinition"
+              handleChange={handleTextInput}
+            />
+          </div>
+          <div className={Styles.mainLeft}>
+            <div className={Styles.formHeader}>Exam Type Relations.</div>
+            <SelectMiu
+              displayLabel="Select Subject"
+              show={true}
+              forms={subjectOptions}
+              handlechange={handleSelectSubject}
+              value={subjectDetails.subjectId}
+            />
+            <SelectMiu
+              displayLabel="Select Form"
+              show={true}
+              forms={formOptions}
+              handlechange={handleSelectForm}
+              value={subjectDetails.formId}
+            />
+          </div>
+        </div>
+        {loading ? (
+          <div className={Styles.imageSelect}>
+            <LoaderWait sms={"Wait.."} />
+          </div>
+        ) : (
+          <div onClick={handleCreateTopic} className={Styles.imageSelect}>
+            Create Exam Type
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default Create;

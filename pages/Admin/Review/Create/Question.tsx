@@ -548,210 +548,210 @@ const Create = ({
 	};
 
 	return (
-		<div className={Styles.container}>
-			<Toaster position='top-center' reverseOrder={false} />
-			<div className={Styles.innerContainer}>
-				<div className={Styles.rightInnercontainerBody}>
-					<div className={Styles.mainMain}>
-						<div className={Styles.formHeader}>Question Details.</div>
-						{questionDetails.questionFormatId == 0 && (
-							<div className={Styles.formatIntro}>
-								Choose question format to proceed.
-							</div>
-						)}
-						{formatName(questionDetails.questionFormatId) ==
-							'True or False' && (
-							<div className={Styles.question}>
-								<div className={Styles.questionFormatHeader}>
-									{formatName(questionDetails.questionFormatId)} Question Format
-								</div>
-								<div>Question</div>
-								<CkEditor
-									onReadyToStart={handleOnReady}
-									content={handleContentQuestion}
-									dataCk={''}
-								/>
-								<SelectMiu
-									displayLabel='Correct Answer'
-									show={true}
-									forms={trueAndFalse}
-									handlechange={handleAnswerValid}
-									value={answer1.answer}
-								/>
-								<div>More Answer Details</div>
-								<CkEditor
-									onReadyToStart={handleOnReady}
-									content={handleContentAnswerDetails}
-									dataCk={''}
-								/>
-							</div>
-						)}
-						{formatName(questionDetails.questionFormatId) ==
-							'Multiple Choice' && (
-							<div className={Styles.question}>
-								<div className={Styles.questionFormatHeader}>
-									{formatName(questionDetails.questionFormatId)} Question Format
-								</div>
-								<div>Question</div>
-								<CkEditor
-									onReadyToStart={handleOnReady}
-									content={handleContentQuestion}
-									dataCk={''}
-								/>
-								<div>Valid Answer</div>
-								<CkEditor
-									onReadyToStart={handleOnReady}
-									content={handleContentAnswerValid}
-									dataCk={''}
-								/>
-								<div>Option 1</div>
-								<CkEditor
-									onReadyToStart={handleOnReady}
-									content={handleContentAnswerInvalid1}
-									dataCk={''}
-								/>
-								<div>Option 2</div>
-								<CkEditor
-									onReadyToStart={handleOnReady}
-									content={handleContentAnswerInvalid2}
-									dataCk={''}
-								/>
-								<div>Option 3</div>
-								<CkEditor
-									onReadyToStart={handleOnReady}
-									content={handleContentAnswerInvalid3}
-									dataCk={''}
-								/>
-								<div>More Answer Details</div>
-								<CkEditor
-									onReadyToStart={handleOnReady}
-									content={handleContentAnswerDetails}
-									dataCk={''}
-								/>
-							</div>
-						)}
-						{formatName(questionDetails.questionFormatId) == 'Explanation' && (
-							<div className={Styles.question}>
-								<div className={Styles.questionFormatHeader}>
-									{formatName(questionDetails.questionFormatId)} Question Format
-								</div>
-								<div>Question</div>
-								<CkEditor
-									onReadyToStart={handleOnReady}
-									content={handleContentQuestion}
-									dataCk={''}
-								/>
-								<div>Correct Answer</div>
-								<CkEditor
-									onReadyToStart={handleOnReady}
-									content={handleContentAnswerValid}
-									dataCk={''}
-								/>
-								<div>More Answer Details</div>
-								<CkEditor
-									onReadyToStart={handleOnReady}
-									content={handleContentAnswerDetails}
-									dataCk={''}
-								/>
-							</div>
-						)}
-						{formatName(questionDetails.questionFormatId) == 'Fill In' && (
-							<div className={Styles.question}>
-								<div className={Styles.questionFormatHeader}>
-									{formatName(questionDetails.questionFormatId)} Question Format
-								</div>
-								<div>Question</div>
-								<CkEditor
-									onReadyToStart={handleOnReady}
-									content={handleContentQuestion}
-									dataCk={''}
-								/>
-								<div>Correct Answer</div>
-								<CkEditor
-									onReadyToStart={handleOnReady}
-									content={handleContentAnswerValid}
-									dataCk={''}
-								/>
-								<div>More Answer Details</div>
-								<CkEditor
-									onReadyToStart={handleOnReady}
-									content={handleContentAnswerDetails}
-									dataCk={''}
-								/>
-							</div>
-						)}
-					</div>
-					<div className={Styles.mainLeft}>
-						<div className={Styles.formHeader}>Question Relations.</div>
-						<SelectMiu
-							displayLabel='Question Format'
-							show={true}
-							forms={formatOptions}
-							handlechange={handleSelectFormat}
-							value={
-								questionDetails.questionFormatId == 0
-									? ''
-									: questionDetails.questionFormatId.toString()
-							}
-						/>
-						{showQuestion && (
-							<>
-								<SelectMiu
-									displayLabel='Select Subject'
-									show={true}
-									forms={subjectOptions}
-									handlechange={handleSelectSubject}
-									value={subjectValidation.subjectId}
-								/>
-								<SelectMiu
-									displayLabel='Select Form'
-									show={true}
-									forms={formOptions}
-									handlechange={handleSelectForm}
-									value={subjectValidation.formId}
-								/>
-							</>
-						)}
-						{hideShowTopic && (
-							<SelectMiu
-								displayLabel='Select Topic'
-								show={true}
-								forms={topicOptions}
-								handlechange={handleSelectTopic}
-								value={subjectValidation.topicId}
-							/>
-						)}
-						{hideShowReview && (
-							<SelectMiu
-								displayLabel='Select Review'
-								show={true}
-								forms={reviewOptions}
-								handlechange={handleSelectReview}
-								value={
-									questionDetails.reviewId == 0
-										? ''
-										: questionDetails.reviewId.toString()
-								}
-							/>
-						)}
-					</div>
-				</div>
-				{showQuestion && (
-					<>
-						{loading ? (
-							<div className={Styles.imageSelect}>
-								<LoaderWait />
-							</div>
-						) : (
-							<div onClick={handleCreateTopic} className={Styles.imageSelect}>
-								Create Notes
-							</div>
-						)}
-					</>
-				)}
-			</div>
-		</div>
-	);
+    <div className={Styles.container}>
+      <Toaster position="top-center" reverseOrder={false} />
+      <div className={Styles.innerContainer}>
+        <div className={Styles.rightInnercontainerBody}>
+          <div className={Styles.mainMain}>
+            <div className={Styles.formHeader}>Question Details.</div>
+            {questionDetails.questionFormatId == 0 && (
+              <div className={Styles.formatIntro}>
+                Choose question format to proceed.
+              </div>
+            )}
+            {formatName(questionDetails.questionFormatId) ==
+              "True or False" && (
+              <div className={Styles.question}>
+                <div className={Styles.questionFormatHeader}>
+                  {formatName(questionDetails.questionFormatId)} Question Format
+                </div>
+                <div>Question</div>
+                <CkEditor
+                  onReadyToStart={handleOnReady}
+                  content={handleContentQuestion}
+                  dataCk={""}
+                />
+                <SelectMiu
+                  displayLabel="Correct Answer"
+                  show={true}
+                  forms={trueAndFalse}
+                  handlechange={handleAnswerValid}
+                  value={answer1.answer}
+                />
+                <div>More Answer Details</div>
+                <CkEditor
+                  onReadyToStart={handleOnReady}
+                  content={handleContentAnswerDetails}
+                  dataCk={""}
+                />
+              </div>
+            )}
+            {formatName(questionDetails.questionFormatId) ==
+              "Multiple Choice" && (
+              <div className={Styles.question}>
+                <div className={Styles.questionFormatHeader}>
+                  {formatName(questionDetails.questionFormatId)} Question Format
+                </div>
+                <div>Question</div>
+                <CkEditor
+                  onReadyToStart={handleOnReady}
+                  content={handleContentQuestion}
+                  dataCk={""}
+                />
+                <div>Valid Answer</div>
+                <CkEditor
+                  onReadyToStart={handleOnReady}
+                  content={handleContentAnswerValid}
+                  dataCk={""}
+                />
+                <div>Option 1</div>
+                <CkEditor
+                  onReadyToStart={handleOnReady}
+                  content={handleContentAnswerInvalid1}
+                  dataCk={""}
+                />
+                <div>Option 2</div>
+                <CkEditor
+                  onReadyToStart={handleOnReady}
+                  content={handleContentAnswerInvalid2}
+                  dataCk={""}
+                />
+                <div>Option 3</div>
+                <CkEditor
+                  onReadyToStart={handleOnReady}
+                  content={handleContentAnswerInvalid3}
+                  dataCk={""}
+                />
+                <div>More Answer Details</div>
+                <CkEditor
+                  onReadyToStart={handleOnReady}
+                  content={handleContentAnswerDetails}
+                  dataCk={""}
+                />
+              </div>
+            )}
+            {formatName(questionDetails.questionFormatId) == "Explanation" && (
+              <div className={Styles.question}>
+                <div className={Styles.questionFormatHeader}>
+                  {formatName(questionDetails.questionFormatId)} Question Format
+                </div>
+                <div>Question</div>
+                <CkEditor
+                  onReadyToStart={handleOnReady}
+                  content={handleContentQuestion}
+                  dataCk={""}
+                />
+                <div>Correct Answer</div>
+                <CkEditor
+                  onReadyToStart={handleOnReady}
+                  content={handleContentAnswerValid}
+                  dataCk={""}
+                />
+                <div>More Answer Details</div>
+                <CkEditor
+                  onReadyToStart={handleOnReady}
+                  content={handleContentAnswerDetails}
+                  dataCk={""}
+                />
+              </div>
+            )}
+            {formatName(questionDetails.questionFormatId) == "Fill In" && (
+              <div className={Styles.question}>
+                <div className={Styles.questionFormatHeader}>
+                  {formatName(questionDetails.questionFormatId)} Question Format
+                </div>
+                <div>Question</div>
+                <CkEditor
+                  onReadyToStart={handleOnReady}
+                  content={handleContentQuestion}
+                  dataCk={""}
+                />
+                <div>Correct Answer</div>
+                <CkEditor
+                  onReadyToStart={handleOnReady}
+                  content={handleContentAnswerValid}
+                  dataCk={""}
+                />
+                <div>More Answer Details</div>
+                <CkEditor
+                  onReadyToStart={handleOnReady}
+                  content={handleContentAnswerDetails}
+                  dataCk={""}
+                />
+              </div>
+            )}
+          </div>
+          <div className={Styles.mainLeft}>
+            <div className={Styles.formHeader}>Question Relations.</div>
+            <SelectMiu
+              displayLabel="Question Format"
+              show={true}
+              forms={formatOptions}
+              handlechange={handleSelectFormat}
+              value={
+                questionDetails.questionFormatId == 0
+                  ? ""
+                  : questionDetails.questionFormatId.toString()
+              }
+            />
+            {showQuestion && (
+              <>
+                <SelectMiu
+                  displayLabel="Select Subject"
+                  show={true}
+                  forms={subjectOptions}
+                  handlechange={handleSelectSubject}
+                  value={subjectValidation.subjectId}
+                />
+                <SelectMiu
+                  displayLabel="Select Form"
+                  show={true}
+                  forms={formOptions}
+                  handlechange={handleSelectForm}
+                  value={subjectValidation.formId}
+                />
+              </>
+            )}
+            {hideShowTopic && (
+              <SelectMiu
+                displayLabel="Select Topic"
+                show={true}
+                forms={topicOptions}
+                handlechange={handleSelectTopic}
+                value={subjectValidation.topicId}
+              />
+            )}
+            {hideShowReview && (
+              <SelectMiu
+                displayLabel="Select Review"
+                show={true}
+                forms={reviewOptions}
+                handlechange={handleSelectReview}
+                value={
+                  questionDetails.reviewId == 0
+                    ? ""
+                    : questionDetails.reviewId.toString()
+                }
+              />
+            )}
+          </div>
+        </div>
+        {showQuestion && (
+          <>
+            {loading ? (
+              <div className={Styles.imageSelect}>
+                <LoaderWait sms={"Wait.."} />
+              </div>
+            ) : (
+              <div onClick={handleCreateTopic} className={Styles.imageSelect}>
+                Create Notes
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default Create;
