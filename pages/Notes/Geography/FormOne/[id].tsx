@@ -152,6 +152,15 @@ export const getStaticProps: GetStaticProps = async (context) => {
 export const getStaticPaths: GetStaticPaths = async () => {
   // ...
   const notesServer = await prisma.topic.findMany({
+    where: {
+      published: true,
+      subject: {
+        subjectName: subjectLocator,
+      },
+      form: {
+        formName: formLocator,
+      },
+    },
     select: {
       id: true,
     },
