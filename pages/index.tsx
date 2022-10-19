@@ -81,7 +81,7 @@ const Home: NextPage = ({
         <meta
           key="desc"
           name="description"
-          content={`Get and Download the best Notes, Past Papers, Online Quiz and Library for All level studies covering all subjects. Download all the learning materials you need. - Start Downloading Now`}
+          content={`Study and Download the best Notes, Past Papers, Online Quiz and Library for All level studies covering all subjects. Download all the learning materials you need. - Start Downloading Now`}
         />
         {/* //!add keywords */}
         <meta
@@ -90,7 +90,7 @@ const Home: NextPage = ({
         />
         <meta
           property="og:description"
-          content="Get and download the best Prepared Notes, Answered Past Papers, Online Quizzes and Library for All secondary studies covering all subjects"
+          content="Study and download the best Prepared Notes, Answered Past Papers, Online Quizzes and Library for All secondary studies covering all subjects"
         />
         <meta property="og:image" content="/favicon.ico" />
       </Head>
