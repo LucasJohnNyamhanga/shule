@@ -60,10 +60,12 @@
             "purpose":"any maskable"
         }
     ],
-    "start_url": "/",
+    "id": "/?source=pwa",
+    "start_url": "/?source=pwa",
     "scope":"/",
     "theme_color": "#800000",
     "background_color": "#FFFFFF",
     "display": "standalone",
+    "prefer_related_applications": false,
     "orientation": "portrait"
 }
