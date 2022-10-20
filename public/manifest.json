@@ -60,9 +60,10 @@
             "purpose":"maskable"
         }
     ],
+    "start_url": "/",
+    "scope":"/",
     "theme_color": "#800000",
     "background_color": "#FFFFFF",
-    "start_url": "/",
     "display": "standalone",
     "orientation": "portrait"
 }
