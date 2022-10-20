@@ -9,7 +9,7 @@ export default function Document() {
           name="google-site-verification"
           content="oBwl1w3_NlylQ2IpnH8227Zl6J-0vatDGgFYPsvl1zs"
         />
-        <link rel="manifest" href="../public/manifest.json" />
+
         <link rel="apple-touch-icon" href="/icon-512x512.png" />
       </Head>
       <body>
