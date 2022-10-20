@@ -1,0 +1,40 @@
+@import "index";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: $white;
+  min-height: 70vh;
+  transition: 0.2s linear;
+  font-size: 10px;
+
+  .innerContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    max-width: 1200px;
+
+    .sms {
+      display: flex;
+      flex-direction: column;
+
+      h1 {
+        font-size: 3rem;
+        color: $ugoro;
+        font-weight: 500;
+        font-family: $fontHeader;
+      }
+      div {
+        font-size: 2rem;
+        font-weight: 400;
+        font-family: $fontBody;
+      }
+    }
+  }
+}
