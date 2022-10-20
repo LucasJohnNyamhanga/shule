@@ -14,6 +14,7 @@ import { Progress } from "../components/tools/progress";
 import { useProgressStore } from "../Store";
 import { NavContext } from "../components/context/StateContext";
 import { SessionProvider } from "next-auth/react";
+import Head from "next/head";
 
 type Page<P = {}> = NextPage<P> & {
   // You can disable whichever you don't need
@@ -69,6 +70,12 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: dataProps) {
         height: 100%;
       }
     `}</style> */}
+        <Head>
+          <meta
+            name="viewport"
+            content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
+          />
+        </Head>
 
         <Progress isAnimating={isAnimating} />
         <SessionProvider session={session} refetchInterval={0}>
@@ -89,6 +96,12 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: dataProps) {
 
   return (
     <div className="container">
+      <Head>
+        <meta
+          name="viewport"
+          content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
+        />
+      </Head>
       <Progress isAnimating={isAnimating} />
       <SessionProvider
         session={session}
