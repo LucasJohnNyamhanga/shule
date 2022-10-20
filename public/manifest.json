@@ -60,12 +60,41 @@
             "purpose":"any maskable"
         }
     ],
-    "id": "/",
     "start_url": "/",
     "scope":"/",
     "theme_color": "#800000",
     "background_color": "#FFFFFF",
     "display": "standalone",
-    "prefer_related_applications": false,
-    "orientation": "portrait"
+    "orientation": "portrait",
+    "shortcuts": [
+    {
+      "name": "Study Notes",
+      "short_name": "Notes",
+      "description": "Study notes or download.",
+      "url": "/Notes",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Test your self",
+      "short_name": "Quiz",
+      "description": "Collection of excercises to get you ready.",
+      "url": "/Review",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Answered and un answered past papers",
+      "short_name": "Exams",
+      "description": "Collection of exams from all schools country wide.",
+      "url": "/Exams",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Books ready for download",
+      "short_name": "Library",
+      "description": "Study books on your device, download now.",
+      "url": "/References",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    }
+  ]
+    
 }
