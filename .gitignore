@@ -247,7 +247,7 @@
 .next/static/webpack/webpack.f8e725279738ca8b.hot-update.js
 .next/static/webpack/webpack.ff9d6adb4ba2815a.hot-update.js
 .next/trace
-*.json
+
 /public/robots.txt
 /public/sitemap.xml
 /public/sitemap-0.xml
