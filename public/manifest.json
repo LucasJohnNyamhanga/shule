@@ -60,8 +60,8 @@
             "purpose":"any maskable"
         }
     ],
-    "id": "/?source=pwa",
-    "start_url": "/?source=pwa",
+    "id": "/",
+    "start_url": "/",
     "scope":"/",
     "theme_color": "#800000",
     "background_color": "#FFFFFF",
