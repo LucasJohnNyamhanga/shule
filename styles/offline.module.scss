@@ -19,21 +19,24 @@
     flex-direction: row;
     width: 100%;
     max-width: 1200px;
+    padding-top: 2em;
 
     .sms {
       display: flex;
       flex-direction: column;
 
-      h1 {
+      .header {
         font-size: 3rem;
         color: $ugoro;
-        font-weight: 500;
+        font-weight: 600;
         font-family: $fontHeader;
+        margin: 2em 1em;
       }
-      div {
-        font-size: 2rem;
+      .text {
+        font-size: 1.5rem;
         font-weight: 400;
         font-family: $fontBody;
+        margin: 0em 1em;
       }
     }
   }
