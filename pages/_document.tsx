@@ -7,14 +7,14 @@ export default function Document() {
       <Head>
         <Script
           strategy="lazyOnload"
-          src="https://www.googletagmanager.com/gtag/js?id=G-SV4LGJQ10K"
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
         />
         <Script strategy="lazyOnload">{`
           window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-SV4LGJQ10K');
+  gtag('config', ${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS});
         `}</Script>
 
         <meta name="theme-color" content="#fff" />
