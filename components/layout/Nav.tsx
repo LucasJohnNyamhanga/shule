@@ -49,77 +49,62 @@ const Nav = () => {
             </Link>
             <div className={Styles.links}>
               <ul>
-                <li
-                  className={
-                    "Notes" == navActive ? Styles.active : Styles.links
-                  }
-                >
-                  <Link href="/">
+                <Link href="/">
+                  <li
+                    className={
+                      "Notes" == navActive ? Styles.active : Styles.links
+                    }
+                    onClick={() => {
+                      setNavActive("Notes");
+                    }}
+                  >
                     <a>
-                      <div
-                        onClick={() => {
-                          setNavActive("Notes");
-                        }}
-                      >
-                        Notes
-                      </div>
+                      <div>Notes</div>
                     </a>
-                  </Link>
-                </li>
-
-                <li
-                  className={
-                    "Review" == navActive ? Styles.active : Styles.links
-                  }
-                >
-                  <Link href="/Review">
+                  </li>
+                </Link>
+                <Link href="/Review">
+                  <li
+                    className={
+                      "Review" == navActive ? Styles.active : Styles.links
+                    }
+                    onClick={() => {
+                      setNavActive("Review");
+                    }}
+                  >
                     <a>
-                      <div
-                        onClick={() => {
-                          setNavActive("Review");
-                        }}
-                      >
-                        Quiz
-                      </div>
+                      <div>Quiz</div>
                     </a>
-                  </Link>
-                </li>
-
-                <li
-                  className={
-                    "Exams" == navActive ? Styles.active : Styles.links
-                  }
-                >
-                  <Link href="/Exams">
+                  </li>
+                </Link>
+                <Link href="/Exams">
+                  <li
+                    className={
+                      "Exams" == navActive ? Styles.active : Styles.links
+                    }
+                    onClick={() => {
+                      setNavActive("Exams");
+                    }}
+                  >
                     <a>
-                      <div
-                        onClick={() => {
-                          setNavActive("Exams");
-                        }}
-                      >
-                        Exams
-                      </div>
+                      <div>Exams</div>
                     </a>
-                  </Link>
-                </li>
-
-                <li
-                  className={
-                    "References" == navActive ? Styles.active : Styles.links
-                  }
-                >
-                  <Link href="/References">
+                  </li>
+                </Link>
+                <Link href="/References">
+                  <li
+                    className={
+                      "References" == navActive ? Styles.active : Styles.links
+                    }
+                    onClick={() => {
+                      setNavActive("References");
+                    }}
+                  >
                     <a>
-                      <div
-                        onClick={() => {
-                          setNavActive("References");
-                        }}
-                      >
-                        Library
-                      </div>
+                      <div>Library</div>
                     </a>
-                  </Link>
-                </li>
+                  </li>
+                </Link>
               </ul>
             </div>
             <div className={Styles.buttonsNav}>
