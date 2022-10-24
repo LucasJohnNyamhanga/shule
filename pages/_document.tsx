@@ -7,6 +7,11 @@ export default function Document() {
       <Head>
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/icon-512x512.png" />
+        <meta name="theme-color" content="#fff" />
+        <meta
+          name="google-site-verification"
+          content="oBwl1w3_NlylQ2IpnH8227Zl6J-0vatDGgFYPsvl1zs"
+        />
         <Script
           strategy="lazyOnload"
           src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
@@ -18,12 +23,6 @@ export default function Document() {
 
   gtag('config', ${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS});
         `}</Script>
-
-        <meta name="theme-color" content="#fff" />
-        <meta
-          name="google-site-verification"
-          content="oBwl1w3_NlylQ2IpnH8227Zl6J-0vatDGgFYPsvl1zs"
-        />
       </Head>
       <body>
         <Main />
