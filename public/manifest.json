@@ -2,6 +2,12 @@
     "name": "Shule",
     "short_name": "Shule",
     "description": "Shule is the educational platform, built strategically to help and equip a secondary level student with tools to empower learning with easy and understanding.",
+    "start_url": "/",
+    "scope":"/",
+    "theme_color": "#800000",
+    "background_color": "#FFFFFF",
+    "display": "standalone",
+    "orientation": "portrait",
     "icons": [
         {
             "src": "/icon-48x48.png",
@@ -57,15 +63,15 @@
             "src": "/maskable.png",
             "sizes": "512x512",
             "type": "image/png",
-            "purpose":"any maskable"
+            "purpose":"maskable"
+        },
+        {
+            "src": "/any.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose":"any"
         }
     ],
-    "start_url": "/",
-    "scope":"/",
-    "theme_color": "#800000",
-    "background_color": "#FFFFFF",
-    "display": "standalone",
-    "orientation": "portrait",
     "shortcuts": [
     {
       "name": "Notes",
