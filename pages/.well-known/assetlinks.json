@@ -1,0 +1,5 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target" : { "namespace": "android_app", "package_name": "shule.co.tz",
+               "sha256_cert_fingerprints": ["65:FA:42:4D:CF:02:AB:C2:F5:59:C1:C4:A3:9B:52:EF:3B:6C:15:3E:43:1C:7E:66:94:EC:A7:BE:EB:D9:33:02"] }
+}]
