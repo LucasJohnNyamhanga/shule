@@ -12,31 +12,20 @@
   background-color: $white;
   min-height: 70vh;
   transition: 0.2s linear;
-  font-size: 10px;
 
   .innerContainer {
     display: flex;
     flex-direction: column;
     width: 100%;
     max-width: 1200px;
-    padding-top: 2em;
+    margin-bottom: 55px;
+    margin-top: 15px;
 
-    .sms {
-      display: flex;
-      flex-direction: column;
-
-      .header {
-        font-size: 2.2rem;
-        color: $ugoro;
-        font-weight: 600;
-        font-family: $fontHeader;
-        margin: 1rem 0rem;
-      }
-      .text {
-        font-size: 1.5rem;
-        font-weight: 400;
-        font-family: $fontBody;
-      }
+    h2 {
+      margin-bottom: 5px;
+    }
+    p {
+      margin: 10px;
     }
   }
 }
