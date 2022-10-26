@@ -1,4 +1,5 @@
 import Styles from "../styles/privacy.module.scss";
+import Link from "next/link";
 
 const PrivacyPolicy = () => {
   return (
@@ -30,8 +31,10 @@ const PrivacyPolicy = () => {
           We use your data to provide and improve Service. By using Service, you
           agree to the collection and use of information in accordance with this
           policy. Unless otherwise defined in this Privacy Policy, the terms
-          used in this Privacy Policy have the same meanings as in our Terms and
-          Conditions.
+          used in this Privacy Policy have the same meanings as in our{" "}
+          <Link href="/Terms">
+            <a>Terms and Conditions.</a>
+          </Link>
         </p>
         <p>
           Our Terms and Conditions (<strong>&ldquo;Terms&rdquo;</strong>) govern

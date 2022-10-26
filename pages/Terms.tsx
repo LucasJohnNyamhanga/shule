@@ -1,4 +1,5 @@
 import Styles from "../styles/privacy.module.scss";
+import Link from "next/link";
 
 const PrivacyPolicy = () => {
   return (
@@ -24,9 +25,13 @@ const PrivacyPolicy = () => {
           <strong>datasoft technologies</strong>.
         </p>
         <p>
-          Our Privacy Policy also governs your use of our Service and explains
-          how we collect, safeguard and disclose information that results from
-          your use of our web pages.
+          Our{" "}
+          <Link href="/PrivacyPolicy">
+            <a>Privacy Policy</a>
+          </Link>{" "}
+          also governs your use of our Service and explains how we collect,
+          safeguard and disclose information that results from your use of our
+          web pages.
         </p>
         <p>
           Your agreement with us includes these Terms and our Privacy Policy
