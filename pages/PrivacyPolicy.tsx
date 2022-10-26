@@ -483,7 +483,8 @@ const PrivacyPolicy = () => {
         </ol>
         <p>
           If you have any questions about this Privacy Policy, please contact us
-          by email: <strong>info@database.co.tz</strong>
+          by email: <strong>info@database.co.tz</strong> or use our help line{" "}
+          <strong>+255784477999</strong>
         </p>
       </div>
     </div>
