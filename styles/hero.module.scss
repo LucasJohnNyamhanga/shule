@@ -223,6 +223,9 @@
 }
 
 @media only screen and (max-width: 608px) {
+  .container {
+    background-color: $nyeupe;
+  }
   .hero {
     .info {
       .details {
@@ -251,6 +254,9 @@
 }
 
 @media only screen and (max-width: 458px) {
+  .container {
+    background-color: $nyeupe;
+  }
   .hero {
     .info {
       .details {
