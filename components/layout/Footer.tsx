@@ -61,7 +61,13 @@ const Footer = () => {
 
         <div className={Styles.footerDetails}>
           <div className={Styles.header}>Social Media</div>
-          <div className={Styles.body}>Instagram: </div>
+          <a
+            target="_blank"
+            href="https://www.instagram.com/shuleapp/?theme=dark"
+            rel="noopener noreferrer"
+          >
+            <div className={Styles.body}>Instagram: shuleapp</div>
+          </a>
           <div className={Styles.body}>Twitter: </div>
           <div className={Styles.body}>Facebook: </div>
         </div>
