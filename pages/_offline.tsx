@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import Styles from "../styles/offline.module.scss";
 
@@ -11,6 +12,11 @@ const _offline = () => {
             When you are online and view this page, it will be saved
             automatically for offline viewing.
           </div>
+          <Link href="/">
+            <a>
+              <div className={Styles.Button}>Return Home</div>
+            </a>
+          </Link>
         </div>
       </div>
     </div>
