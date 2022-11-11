@@ -145,6 +145,8 @@
           font-size: 3rem;
           font-family: $fontHeader;
           font-weight: 700;
+          margin: 0px;
+          padding: 10px 0px;
         }
 
         .permanentLetters {
@@ -174,7 +176,7 @@
       font-weight: 700;
       font-size: 30px;
       margin: 0px;
-      margin-bottom: 10px;
+      padding: 10px 0px;
       color: $lightblue;
     }
 
@@ -200,7 +202,7 @@
         min-width: 95%;
         min-height: fit-content;
         font-size: 65px;
-        padding: 15px 10px;
+        padding: 0px 10px;
 
         .permanentLetters {
           font-size: 45px;
@@ -227,12 +229,14 @@
     background-color: $white;
   }
   .hero {
+    padding-bottom: 0px;
     .info {
       .details {
         h1 {
           font-size: 1.8rem;
           font-family: $fontHeader;
           font-weight: 700;
+          padding: 10px 0px;
         }
 
         .permanentLetters {
@@ -258,8 +262,10 @@
     background-color: $white;
   }
   .hero {
+    padding-bottom: 0px;
     .info {
       .details {
+        padding: 0px 10px;
         font-size: 35px;
         padding: 15px 10px;
         .permanentLetters {
