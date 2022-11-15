@@ -1,71 +1,82 @@
-@import 'index';
+@import "index";
 
 .card {
-	font-family: 'Roboto';
-	width: 100%;
-	height: 100%;
-	background-color: #fff;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	border-radius: 5px;
-	cursor: default;
-	box-shadow: 5px 9px 12px -4px rgba(0, 0, 0, 0.85);
-	-webkit-box-shadow: 5px 9px 12px -4px rgba(0, 0, 0, 0.85);
-	-moz-box-shadow: 5px 9px 12px -4px rgba(0, 0, 0, 0.85);
-	transition: transform 0.2s;
+  font-family: "Roboto";
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border-radius: 5px;
+  cursor: default;
+  box-shadow: 5px 9px 12px -4px rgba(0, 0, 0, 0.85);
+  -webkit-box-shadow: 5px 9px 12px -4px rgba(0, 0, 0, 0.85);
+  -moz-box-shadow: 5px 9px 12px -4px rgba(0, 0, 0, 0.85);
+  transition: transform 0.2s;
 }
 
 .image {
-	flex: 0 0 150px;
-	background-size: cover;
-	background-repeat: no-repeat;
-	background-position: center center;
-	max-height: 160px;
-	border-radius: 5px 5px 0px 0px;
+  flex: 0 0 150px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  max-height: 160px;
+  border-radius: 5px 5px 0px 0px;
 }
 
 .card:hover {
-	// background: rgb(233, 225, 225);
-	scale: 1.1;
-	-moz-transform: scale(1.1);
-	-webkit-transform: scale(1.1);
-	transform: scale(1.1);
-	z-index: 999;
+  // background: rgb(233, 225, 225);
+  scale: 1.1;
+  -moz-transform: scale(1.1);
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+  z-index: 999;
 }
 
 .header {
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-start;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 }
 
 .content {
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: center;
-	margin-top: 5px;
-	margin-bottom: 10px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 5px;
+  margin-bottom: 10px;
 }
 
 .header h1 {
-	width: 100%;
-	padding: 10px 15px 0px;
-	font-weight: 500;
-	font-size: 1.3rem;
-	margin: 0px;
-	color: $ugoro;
+  width: 100%;
+  padding: 10px 15px 0px;
+  font-weight: 500;
+  font-size: 1.3rem;
+  margin: 0px;
+  color: $ugoro;
 }
 
 @media only screen and (max-width: 908px) {
-	.header h1 {
-		width: 100%;
-		padding: 10px 15px 0px;
-		font-weight: 600;
-		font-size: 1rem;
-		margin: 0px;
-		color: $ugoro;
-	}
+  .header h1 {
+    width: 100%;
+    padding: 10px 15px 0px;
+    font-weight: 600;
+    font-size: 1rem;
+    margin: 0px;
+    color: $ugoro;
+  }
+}
+
+@media only screen and (max-width: 708px) {
+  .card:hover {
+    // background: rgb(233, 225, 225);
+    scale: 1;
+    -moz-transform: scale(1);
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    z-index: 0;
+  }
 }
