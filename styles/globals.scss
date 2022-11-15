@@ -2,6 +2,7 @@
 @import "index";
 html,
 body {
+  scroll-behavior: smooth;
   --scrollbarBG: black;
   --thumbBG: #007aff;
   padding: 0;
