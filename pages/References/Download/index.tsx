@@ -28,8 +28,20 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
     select: {
       id: true,
-      name: true,
       username: true,
+      name: true,
+      vifurushi: {
+        select: {
+          name: true,
+          value: true,
+        },
+      },
+      purchase: {
+        select: {
+          name: true,
+          value: true,
+        },
+      },
     },
   });
   const userfound = await JSON.parse(JSON.stringify(userFromServer));
@@ -83,32 +95,20 @@ const Index = ({
   };
 
   let checkUser = async (link: string) => {
-    let data = { username: userfound.userName };
-    axios
-      .post("http://localhost:3000/api/getUser", data)
-      .then(function (response) {
-        //responce
-        const userData = JSON.parse(JSON.stringify(response.data));
+    userfound.vifurushi.find(
+      ({ name, value }: { name: string; value: number }) => {
+        if (name === "booksDownload") {
+          if (value > 0) {
+            FileSaver.saveAs(link, link.replace(/(.*)\//g, ""));
 
-        userData.vifurushi.find(
-          ({ name, value }: { name: string; value: number }) => {
-            if (name === "booksDownload") {
-              if (value > 0) {
-                FileSaver.saveAs(link, link.replace(/(.*)\//g, ""));
-
-                //!call decrement code
-                decrementData({ name: "booksDownload", id: userData.id });
-              } else {
-                push(`/Pricing?callbackUrl=${asPath}`);
-              }
-            }
+            //!call decrement code
+            decrementData({ name: "booksDownload", id: userfound.id });
+          } else {
+            push(`/Pricing?callbackUrl=${asPath}`);
           }
-        );
-      })
-      .catch(function (error) {
-        // handle error
-        console.log("Something went wrong");
-      });
+        }
+      }
+    );
   };
 
   let decrementData = (databaseData: { name: string; id: string }) => {
