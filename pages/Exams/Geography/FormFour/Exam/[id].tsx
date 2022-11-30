@@ -12,9 +12,9 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import toast, { Toaster } from 'react-hot-toast';
 
-const subjectLocator = 'Physics';
+const subjectLocator = 'Geography';
 const formLocator = 'Form Four';
-const subjectLocatorLink = 'Physics';
+const subjectLocatorLink = "Geography";
 const formLocatorLink = 'FormFour';
 
 export const getStaticProps: GetStaticProps = async (context) => {

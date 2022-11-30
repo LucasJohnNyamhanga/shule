@@ -12,9 +12,9 @@ import { NavContext } from "../../../../components/context/StateContext";
 import Modal from "../../../../components/tools/modal";
 import Table from "../../../../components/tools/Table";
 
-const subjectLocator = "Physics";
+const subjectLocator = "Geography";
 const formLocator = "Form Three";
-const subjectLocatorLink = "Physics";
+const subjectLocatorLink = "Geography";
 const formLocatorLink = "FormThree";
 
 export const getStaticProps: GetStaticProps = async (context) => {
