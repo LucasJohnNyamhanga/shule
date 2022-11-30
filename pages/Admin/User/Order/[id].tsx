@@ -160,7 +160,7 @@ const EditExam = ({
     let database = { ...databaseData, id: order.userId };
     axios({
       method: "post",
-      url: "http://localhost:3000/api/updateKifurushi",
+      url: "/api/updateKifurushi",
       data: database,
     })
       .then(function (response) {
@@ -185,7 +185,7 @@ const EditExam = ({
     let database = { id: order.id, status: false };
     axios({
       method: "post",
-      url: "http://localhost:3000/api/updateOrder",
+      url: "/api/updateOrder",
       data: database,
     })
       .then(function (response) {
