@@ -208,14 +208,6 @@ const EditExam = ({
       });
   };
 
-  useEffect(() => {
-    if (order.status) {
-    } else {
-      setPaymentOk("Order Active");
-      setOnce(false);
-    }
-  }, []);
-
   return (
     <div className={Styles.container}>
       <Toaster position="top-center" reverseOrder={false} />
