@@ -142,6 +142,7 @@ const EditExam = ({
     quizExcercises: number
   ) => {
     if (once) {
+      setPaymentOk("Activating Order...");
       sendToDatabase({
         booksDownload,
         examAccess,
