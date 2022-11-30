@@ -1,5 +1,5 @@
 import Styles from "../../../../styles/orderDetail.module.scss";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { prisma } from "../../../../db/prisma";
 import toast, { Toaster } from "react-hot-toast";
@@ -207,6 +207,11 @@ const EditExam = ({
         // always executed
       });
   };
+
+  useEffect(() => {
+    if (order.status) setPaymentOk("Order Active");
+    setOnce(false);
+  }, []);
 
   return (
     <div className={Styles.container}>
