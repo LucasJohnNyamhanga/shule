@@ -6,7 +6,7 @@ import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import { BsGoogle } from "react-icons/bs";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
-import bcrypt from "bcryptjs";
+//import bcrypt from "bcryptjs";
 import LoaderText from "../../components/tools/loaderWait";
 //! insta @ johnsavanter
 const SignIn = ({}) => {
@@ -173,9 +173,11 @@ const SignIn = ({}) => {
       .catch(function (error) {
         // handle error
 
-        bcrypt.hash(register.password, 10, function (err, hash) {
-          registration(hash);
-        });
+        // bcrypt.hash(register.password, 10, function (err, hash) {
+        //   registration(hash);
+        // });
+
+        registration(register.password);
       });
   };
 
