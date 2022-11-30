@@ -209,8 +209,11 @@ const EditExam = ({
   };
 
   useEffect(() => {
-    if (order.status) setPaymentOk("Order Active");
-    setOnce(false);
+    if (order.status) {
+    } else {
+      setPaymentOk("Order Active");
+      setOnce(false);
+    }
   }, []);
 
   return (
