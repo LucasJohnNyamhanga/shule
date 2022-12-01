@@ -90,6 +90,19 @@ const Index = ({
     setNavActive("References");
   }, [navActive]);
 
+  function startDownload(url: string, filename: string) {
+    var a = document.createElement("a");
+    a.setAttribute("href", url);
+    a.setAttribute("download", filename || "");
+    document.body.appendChild(a);
+    a.onclick = function () {
+      setTimeout(function () {
+        document.body.removeChild(a);
+      }, 100);
+    };
+    a.click();
+  }
+
   let handleDownload = (link: string) => {
     checkUser(link);
   };
@@ -99,19 +112,10 @@ const Index = ({
       ({ name, value }: { name: string; value: number }) => {
         if (name === "booksDownload") {
           if (value > 0) {
-            FileSaver.saveAs(link, link.replace(/(.*)\//g, ""));
+            let fileName = link.replace(/(.*)\//g, "");
+            // FileSaver.saveAs(link, fileName);
 
-            // fetch(link)
-            //   .then((res) => {
-            //     return res.blob();
-            //   })
-            //   .then((data) => {
-            //     var a = document.createElement("a");
-            //     a.href = window.URL.createObjectURL(data);
-            //     a.download = link.replace(/(.*)\//g, "");
-            //     a.click();
-
-            //   });
+            startDownload(link, fileName);
 
             notifySuccess("Download has started.");
             //!call decrement code
