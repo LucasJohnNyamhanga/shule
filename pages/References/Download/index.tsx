@@ -99,19 +99,21 @@ const Index = ({
       ({ name, value }: { name: string; value: number }) => {
         if (name === "booksDownload") {
           if (value > 0) {
-            //FileSaver.saveAs(link, link.replace(/(.*)\//g, ""));
+            FileSaver.saveAs(link, link.replace(/(.*)\//g, ""));
 
-            fetch(link)
-              .then((res) => {
-                return res.blob();
-              })
-              .then((data) => {
-                var a = document.createElement("a");
-                a.href = window.URL.createObjectURL(data);
-                a.download = link.replace(/(.*)\//g, "");
-                a.click();
-                notifySuccess("Download has started.");
-              });
+            // fetch(link)
+            //   .then((res) => {
+            //     return res.blob();
+            //   })
+            //   .then((data) => {
+            //     var a = document.createElement("a");
+            //     a.href = window.URL.createObjectURL(data);
+            //     a.download = link.replace(/(.*)\//g, "");
+            //     a.click();
+
+            //   });
+
+            notifySuccess("Download has started.");
             //!call decrement code
             decrementData({ name: "booksDownload", id: userfound.id });
           } else {
