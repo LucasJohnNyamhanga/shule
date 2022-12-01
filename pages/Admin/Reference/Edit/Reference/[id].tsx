@@ -316,8 +316,7 @@ const Reference = ({
       })
       .then(
         (res) => {
-          let location = res.data.file;
-          console.log(location);
+          let location = res.data;
           setReferenceDetails({ ...referenceDetails, data: location });
           setclearData(true);
           clearDataProcess();
