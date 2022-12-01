@@ -191,10 +191,6 @@ const EditExam = ({
     });
     setFormOptions(formFromServer);
 
-    if (examDetails.formId != "" && examDetails.subjectId != "") {
-      retriaveExamTypeData();
-    }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -256,14 +252,12 @@ const EditExam = ({
 
   let handleSelectSubject = (value: string) => {
     setExamDetails({ ...examDetails, subjectId: value });
-    setChange(change + 1);
+    retriaveExamTypeData();
   };
 
   let handleSelectForm = (value: string) => {
     setExamDetails({ ...examDetails, formId: value });
-    setChange(change + 1);
     retriaveExamTypeData();
-    console.log("fetch started");
   };
 
   let handleSelectTopic = (value: string) => {
