@@ -199,6 +199,14 @@ const EditExam = ({
   }, []);
 
   let retriaveExamTypeData = () => {
+    let examTypeList: formData = [];
+    examTypeList.push({
+      label: "",
+      value: "",
+    });
+
+    setTopicOptions(examTypeList);
+
     setHideShow(false);
     axios({
       method: "post",
