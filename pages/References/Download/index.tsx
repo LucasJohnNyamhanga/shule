@@ -114,7 +114,7 @@ const Index = ({
   let decrementData = (databaseData: { name: string; id: string }) => {
     axios({
       method: "post",
-      url: "http://localhost:3000/api/updateKifurushiUse",
+      url: "/api/updateKifurushiUse",
       data: databaseData,
     })
       .then(function (response) {
