@@ -113,9 +113,9 @@ const Index = ({
         if (name === "booksDownload") {
           if (value > 0) {
             let fileName = link.replace(/(.*)\//g, "");
-            // FileSaver.saveAs(link, fileName);
+            FileSaver.saveAs(link, "test.pdf");
 
-            startDownload(link, fileName);
+            //startDownload(link, fileName);
 
             notifySuccess("Download has started.");
             //!call decrement code
