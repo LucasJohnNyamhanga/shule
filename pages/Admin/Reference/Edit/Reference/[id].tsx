@@ -22,6 +22,7 @@ import { getSession } from "next-auth/react";
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
   const url = process.env.MAIN_URL;
+  const imageUrl = process.env.IMAGE_URL;
   if (!session) {
     return {
       redirect: {
@@ -93,6 +94,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       subjects,
       userfound,
       url,
+      imageUrl,
     },
   };
 };
@@ -122,6 +124,7 @@ const Reference = ({
   subjects,
   userfound,
   url,
+  imageUrl,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { navActive, setNavActive } = useContext(NavContext);
 
@@ -303,7 +306,7 @@ const Reference = ({
     const body = new FormData();
     body.append("file", image);
     axios
-      .post(url + "/api/upload", body, {
+      .post(imageUrl + "/api/upload", body, {
         onUploadProgress: (progressEvent) => {
           // console.log('Upload Progress: ' + Math.round(progressEvent.loaded / progressEvent.total * 100) + "%");
           setUploadData(
