@@ -352,7 +352,7 @@ const Reference = ({
 
     axios({
       method: "post",
-      url: "/api/updateReference",
+      url: url + "/api/updateReference",
       data: databaseData,
     })
       .then(function (response) {
