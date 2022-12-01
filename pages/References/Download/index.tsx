@@ -110,6 +110,7 @@ const Index = ({
                 a.href = window.URL.createObjectURL(data);
                 a.download = link.replace(/(.*)\//g, "");
                 a.click();
+                notifySuccess("Download has started.");
               });
             //!call decrement code
             decrementData({ name: "booksDownload", id: userfound.id });
