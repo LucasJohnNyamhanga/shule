@@ -68,6 +68,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
           name: true,
           subjectId: true,
           formId: true,
+          formExams: {
+            select: {
+              examType: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
         },
       },
     },
@@ -137,7 +147,7 @@ const EditExam = ({
   const [subjectOptions, setSubjectOptions] = useState<formData>([]);
   const [topicOptions, setTopicOptions] = useState<formData>([]);
   const [change, setChange] = useState(0);
-  const [hideShow, setHideShow] = useState(false);
+  const [hideShow, setHideShow] = useState(true);
   const [examDetails, setExamDetails] = useState({
     formId: exam.examType.formId,
     subjectId: exam.examType.subjectId,
@@ -162,6 +172,15 @@ const EditExam = ({
       formId: exam.examType.formId,
       subjectId: exam.examType.subjectId,
     });
+
+    let examTypeList: formData = [];
+    exam.examType.formExams.examType.map((ex: examType) => {
+      examTypeList.push({
+        label: ex.name,
+        value: ex.id.toString(),
+      });
+    });
+    setTopicOptions(examTypeList);
 
     setExamSelectValue({
       examTypeId: exam.examTypeId,
@@ -194,7 +213,7 @@ const EditExam = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  let retriaveExamTypeData = () => {
+  let retriaveExamTypeData = (formId: string, subjectId: string) => {
     let examTypeList: formData = [];
     examTypeList.push({
       label: "",
@@ -207,7 +226,7 @@ const EditExam = ({
     axios({
       method: "post",
       url: "/api/examType",
-      data: examDetails,
+      data: { formId, subjectId },
     })
       .then(function (response) {
         const exams: [] = JSON.parse(JSON.stringify(response.data));
@@ -221,6 +240,7 @@ const EditExam = ({
             });
           });
           setTopicOptions(examFromServer);
+          console.log(exams);
           setExamSelectValue({
             ...examSelectValue,
             examTypeId: "",
@@ -252,12 +272,12 @@ const EditExam = ({
 
   let handleSelectSubject = (value: string) => {
     setExamDetails({ ...examDetails, subjectId: value });
-    retriaveExamTypeData();
+    retriaveExamTypeData(examDetails.formId, value);
   };
 
   let handleSelectForm = (value: string) => {
     setExamDetails({ ...examDetails, formId: value });
-    retriaveExamTypeData();
+    retriaveExamTypeData(value, examDetails.subjectId);
   };
 
   let handleSelectTopic = (value: string) => {
